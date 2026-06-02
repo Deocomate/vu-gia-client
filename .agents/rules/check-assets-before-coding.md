@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # Check Existing Assets Before Coding
 
 Before implementing any UI components or writing code that requires images, icons, fonts, or other media files, you **must** inspect the provided codebase structure to check for existing assets.

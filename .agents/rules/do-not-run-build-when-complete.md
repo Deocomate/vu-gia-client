@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # Do Not Run Build When Complete
 
 To optimize time and resources, **never automatically run build commands** (e.g., `npm run build`, `yarn build`, `pnpm build`, `next build`, or starting the dev server) to test or verify the project after completing a coding task.
