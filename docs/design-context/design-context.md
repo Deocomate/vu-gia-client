@@ -1,0 +1,2 @@
+Convert this image to detail design context to help AI coding.Convert this image to detail design context to help AI coding.
+If something in the images don't clear, ask me to have detail information first before generating a full detailed design context.

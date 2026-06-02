@@ -1,0 +1,18 @@
+export const ROUTES = {
+  HOME: "/",
+  PRODUCTS: "/san-pham",
+  NEWS: "/tin-tuc",
+  ABOUT: "/ve-chung-toi",
+  FACTORY: "/nha-xuong",
+  SHOWROOM: "/showroom",
+  GALLERY: "/thu-vien-hinh-anh",
+  CONTACT: "/lien-he",
+  PRIVACY_POLICY: "/bao-mat-thong-tin",
+  SHIPPING_POLICY: "/chinh-sach-van-chuyen",
+  RETURN_POLICY: "/chinh-sach-doi-tra",
+  FAQ: "/cau-hoi-thuong-gap",
+  CART: "/gio-hang",
+  CHECKOUT: "/thanh-toan",
+  ACCOUNT: "/tai-khoan",
+  ORDERS: "/tai-khoan/don-hang",
+};

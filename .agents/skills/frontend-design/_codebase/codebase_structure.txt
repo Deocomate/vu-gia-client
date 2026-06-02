@@ -1,0 +1,16 @@
+# frontend-design | Structure | 2026-05-30 03:13:07
+
+.
+├── references/
+│   ├── ai-multimodal-overview.md
+│   ├── analysis-best-practices.md
+│   ├── analysis-prompts.md
+│   ├── analysis-techniques.md
+│   ├── animejs.md
+│   ├── anti-slop-rules.md
+│   ├── asset-generation.md
+│   ├── bento-motion-engine.md
+│   ├── design-extraction-overview.md
+│   ├── extraction-best-practices.md
+│   └── ... (+18 more)
+└── SKILL.md

@@ -1,0 +1,220 @@
+# vu-gia-client | Structure | 2026-06-02 13:29:27
+
+.
+├── docs/
+│   └── design-context/
+│       ├── all/
+│       │   ├── font-desktop.md
+│       │   └── font-mobile.md
+│       ├── trang-chu/
+│       │   ├── trang-chu-desktop.html
+│       │   ├── trang-chu-font.md
+│       │   ├── trang-chu-mobile.html
+│       │   ├── trang-chu-mobile.png
+│       │   └── trang-chu.png
+│       └── design-context.md
+├── public/
+│   ├── fonts/
+│   │   ├── circularStd_book/
+│   │   │   └── CircularStd-Book.woff2
+│   │   └── uvf_amplify/
+│   │       ├── ReadMe.txt
+│   │       └── UVF-Amplify.otf
+│   ├── icons/
+│   │   ├── pagination-left-arrow.png
+│   │   ├── pagination-left-arrow.svg
+│   │   ├── pagination-right-arrow.png
+│   │   ├── product-toolbar-down-arrow.png
+│   │   └── product-toolbar-search-icon.png
+│   └── images/
+│       ├── bg-pattern/
+│       │   ├── bg-pattern-brown.svg
+│       │   └── bg-pattern.svg
+│       ├── footer/
+│       │   ├── design-desktop-detail-1.png
+│       │   ├── design-desktop-detail-2.png
+│       │   ├── design-desktop.png
+│       │   ├── design-mobile.png
+│       │   ├── footer-bo-cong-thuong.png
+│       │   ├── footer-location-icon.png
+│       │   ├── footer-logo.png
+│       │   ├── footer-mail-icon.png
+│       │   ├── footer-pattern-left.png
+│       │   ├── footer-pattern-right.png
+│       │   └── footer-phone-icon.png
+│       ├── header/
+│       │   ├── _header-desktop.png
+│       │   ├── _header-mobile-close.png
+│       │   ├── _header-mobile-open.png
+│       │   ├── bg-pattern-mobile.png
+│       │   ├── cart-icon.png
+│       │   ├── close-icon.png
+│       │   ├── hamburger-menu-icon.png
+│       │   ├── logo.png
+│       │   ├── search-icon.png
+│       │   └── user.png
+│       └── home/
+│           ├── am-chen-bat-trang.png
+│           ├── below-product-list-heading-pattern.png
+│           ├── bg-pattern-left.png
+│           ├── bg-pattern-right.png
+│           ├── binh-phong-thuy-icon.png
+│           ├── bo-do-tho-icon.png
+│           ├── button-right-arrow.png
+│           ├── chat-luong-tuyen-chon-icon.png
+│           ├── chum-sanh-ruou-ngam-icon.png
+│           ├── giao-hang-dam-bao-icon.png
+│           ├── green-round-check.png
+│           ├── hero-hamburger-icon.png
+│           ├── icon-trich-dan.png
+│           ├── luc-binh-gom-su-icon.png
+│           ├── position-top-right-hero-image-icon.png
+│           ├── product-card-image-item.jpg
+│           ├── qua-tang-gom-su-icon.png
+│           ├── right-arrow-icon.png
+│           ├── thu-cong-doc-ban-icon.png
+│           ├── tinh-hoa-bat-trang-icon.png
+│           └── video-play-button.png
+├── src/
+│   ├── app/
+│   │   ├── (main)/
+│   │   │   ├── lien-he/
+│   │   │   │   └── page.jsx
+│   │   │   ├── nha-xuong/
+│   │   │   │   └── page.jsx
+│   │   │   ├── san-pham/
+│   │   │   │   ├── [slug]/
+│   │   │   │   │   └── page.jsx
+│   │   │   │   └── page.jsx
+│   │   │   ├── showroom/
+│   │   │   │   └── page.jsx
+│   │   │   ├── thu-vien-hinh-anh/
+│   │   │   │   └── page.jsx
+│   │   │   ├── tin-tuc/
+│   │   │   │   ├── [slug]/
+│   │   │   │   │   └── page.jsx
+│   │   │   │   └── page.jsx
+│   │   │   ├── ve-chung-toi/
+│   │   │   │   └── page.jsx
+│   │   │   └── page.jsx
+│   │   ├── (policies)/
+│   │   │   ├── bao-mat-thong-tin/
+│   │   │   │   └── page.jsx
+│   │   │   ├── cau-hoi-thuong-gap/
+│   │   │   │   └── page.jsx
+│   │   │   ├── chinh-sach-doi-tra/
+│   │   │   │   └── page.jsx
+│   │   │   └── chinh-sach-van-chuyen/
+│   │   │       └── page.jsx
+│   │   ├── (shop)/
+│   │   │   ├── gio-hang/
+│   │   │   │   └── page.jsx
+│   │   │   └── thanh-toan/
+│   │   │       └── page.jsx
+│   │   ├── (user)/
+│   │   │   └── tai-khoan/
+│   │   │       ├── don-hang/
+│   │   │       │   └── page.jsx
+│   │   │       └── page.jsx
+│   │   ├── globals.css
+│   │   └── layout.js
+│   ├── assets/
+│   │   └── images/
+│   │       ├── home/
+│   │       │   ├── categories-banner-image-1.png
+│   │       │   ├── categories-banner-image-2.png
+│   │       │   ├── categories-banner-image-3.png
+│   │       │   ├── closing-thumb.png
+│   │       │   ├── hero-image-1-top.png
+│   │       │   ├── hero-image-2-left.png
+│   │       │   ├── hero-image-3-right.png
+│   │       │   ├── home-new-1.png
+│   │       │   ├── home-new-2.png
+│   │       │   ├── home-new-3.png
+│   │       │   ├── HomeCraftsmanship-1.png
+│   │       │   ├── HomeCraftsmanship-2.png
+│   │       │   ├── HomeCraftsmanship-3.png
+│   │       │   └── video-thumb.png
+│   │       ├── product-detail/
+│   │       │   ├── chi-tiet-sp-thumb-1.png
+│   │       │   ├── chi-tiet-sp-thumb-2.png
+│   │       │   ├── chi-tiet-sp-thumb-3.png
+│   │       │   ├── product-card-image-1.png
+│   │       │   ├── product-card-image-2.png
+│   │       │   ├── product-card-image-3.png
+│   │       │   ├── product-detail-big-thumb.png
+│   │       │   └── product-detail-thumbnail.png
+│   │       └── products/
+│   │           ├── product-category-thumb.png
+│   │           ├── product-content-image-thumb.png
+│   │           ├── product-image-thumb.png
+│   │           └── product-new-thumb.png
+│   ├── components/
+│   │   ├── home/
+│   │   │   ├── HomeAboutStats.jsx
+│   │   │   ├── HomeCategoryBanners.jsx
+│   │   │   ├── HomeClosing.jsx
+│   │   │   ├── HomeCraftsmanship.jsx
+│   │   │   ├── HomeFeatures.jsx
+│   │   │   ├── HomeHero.jsx
+│   │   │   ├── HomeHighlights.jsx
+│   │   │   ├── HomeNews.jsx
+│   │   │   ├── HomeProductList.jsx
+│   │   │   └── HomeVideoProcess.jsx
+│   │   ├── product-detail/
+│   │   │   ├── ProductDescription.jsx
+│   │   │   ├── ProductDetail.jsx
+│   │   │   ├── ProductInfo.jsx
+│   │   │   ├── ProductSpecifications.jsx
+│   │   │   └── SimilarProducts.jsx
+│   │   ├── products/
+│   │   │   ├── CategoryDescription.jsx
+│   │   │   ├── CategoryNavigation.jsx
+│   │   │   ├── CategoryNews.jsx
+│   │   │   ├── CategorySEOContent.jsx
+│   │   │   ├── ProductGrid.jsx
+│   │   │   └── ProductToolbar.jsx
+│   │   └── shared/
+│   │       ├── AboutUsSection.jsx
+│   │       ├── Breadcrumb.jsx
+│   │       ├── Footer.jsx
+│   │       ├── Header.jsx
+│   │       ├── NewsCard.jsx
+│   │       ├── Pagination.jsx
+│   │       ├── ProductCard.jsx
+│   │       ├── SearchBar.jsx
+│   │       └── SectionTitle.jsx
+│   ├── hooks/
+│   ├── services/
+│   ├── store/
+│   ├── utils/
+│   │   └── routes.js
+│   └── views/
+│       ├── AboutView.jsx
+│       ├── CartView.jsx
+│       ├── CheckoutView.jsx
+│       ├── ContactView.jsx
+│       ├── FactoryView.jsx
+│       ├── FaqView.jsx
+│       ├── GalleryView.jsx
+│       ├── HomeView.jsx
+│       ├── NewsDetailView.jsx
+│       ├── NewsView.jsx
+│       ├── OrdersView.jsx
+│       ├── PagePlaceholder.jsx
+│       ├── PrivacyPolicyView.jsx
+│       ├── ProductDetailView.jsx
+│       ├── ProductsView.jsx
+│       ├── ProfileView.jsx
+│       ├── ReturnPolicyView.jsx
+│       ├── ShippingPolicyView.jsx
+│       └── ShowroomView.jsx
+├── .gitignore
+├── eslint.config.mjs
+├── jsconfig.json
+├── next.config.mjs
+├── package-lock.json
+├── package.json
+├── postcss.config.mjs
+├── README.md
+└── skills-lock.json
