@@ -1,18 +1,11 @@
-# vu-gia-client | Structure | 2026-06-02 13:29:27
+# vu-gia-client | Structure | 2026-06-04 02:51:37
 
 .
 ├── docs/
 │   └── design-context/
-│       ├── all/
-│       │   ├── font-desktop.md
-│       │   └── font-mobile.md
-│       ├── trang-chu/
-│       │   ├── trang-chu-desktop.html
-│       │   ├── trang-chu-font.md
-│       │   ├── trang-chu-mobile.html
-│       │   ├── trang-chu-mobile.png
-│       │   └── trang-chu.png
-│       └── design-context.md
+│       └── fonts/
+│           ├── font-desktop.md
+│           └── font-mobile.md
 ├── public/
 │   ├── fonts/
 │   │   ├── circularStd_book/
@@ -216,5 +209,4 @@
 ├── package-lock.json
 ├── package.json
 ├── postcss.config.mjs
-├── README.md
-└── skills-lock.json
+└── README.md

@@ -1,13 +1,13 @@
 {
   "schema_version": 13,
   "included_paths": [
-    "package.json"
+    "package.json",
+    "README.md",
+    ".gitignore"
   ],
   "excluded_paths": [
-    ".gitignore",
     "eslint.config.mjs",
     "package-lock.json",
-    "README.md",
     "public",
     "docs",
     "src/assets",
@@ -15,6 +15,7 @@
     ".agents"
   ],
   "priority_roots": [
+    ".gitignore",
     "jsconfig.json",
     "next.config.mjs",
     "package.json",
@@ -105,10 +106,30 @@
     "src/components/shared/ProductCard.jsx",
     "src/components/shared/SearchBar.jsx",
     "src/components/shared/SectionTitle.jsx",
+    "src/components/shared/AboutUsSection.jsx",
+    "src/components/shared/Breadcrumb.jsx",
+    "src/components/shared/Header.jsx",
+    "src/components/shared/Pagination.jsx",
+    "src/components/product-detail",
+    "src/components/product-detail/ProductDescription.jsx",
+    "src/components/product-detail/ProductDetail.jsx",
+    "src/components/product-detail/ProductInfo.jsx",
+    "src/components/product-detail/ProductSpecifications.jsx",
+    "src/components/product-detail/SimilarProducts.jsx",
+    "src/components/products",
+    "src/components/products/CategoryDescription.jsx",
+    "src/components/products/CategoryNavigation.jsx",
+    "src/components/products/CategoryNews.jsx",
+    "src/components/products/CategorySEOContent.jsx",
+    "src/components/products/ProductGrid.jsx",
+    "src/components/products/ProductToolbar.jsx",
     ".agents",
     ".agents/rules",
-    ".agents/rules/breakpoint-and-responsive-rules.md",
-    ".agents/AGENTS.md"
+    ".agents/rules/check-assets-before-coding.md",
+    ".agents/rules/do-not-run-build-when-complete.md",
+    ".agents/rules/read-codebase-structure-before-everything.md",
+    ".agents/AGENTS.md",
+    "README.md"
   ],
   "global_ignore_patterns": [
     ".git/",

@@ -5,7 +5,7 @@ trigger: always_on
 # Read Codebase Structure Before Everything
 
 > [!IMPORTANT]
-> **ENGLISH:** Before starting any task (including research, analysis, planning, writing code, or performing modifications), you **must** read the codebase structure file located at: `_codebase/codebase_structure.txt`.
+> Before starting any task (including research, analysis, planning, writing code, or performing modifications), you **must** read the codebase structure file located at: `_codebase/codebase_structure.txt`.
 ---
 
 ## 1. Key Requirements
