@@ -26,8 +26,9 @@ const categories = [
 
 export default function HomeCategoryBanners() {
   return (
-    <section className="w-full bg-[#FFF6ED] py-[50px]">
-      <div className="mx-auto w-full px-[60px]">
+    <section className="w-full bg-[#FFF6ED] pt-[30px] pb-[35px] lg:py-[50px]">
+      {/* Desktop Layout */}
+      <div className="hidden lg:block mx-auto w-full px-[60px]">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-[25px]">
           {categories.map((cat, idx) => (
             <Link
@@ -59,6 +60,39 @@ export default function HomeCategoryBanners() {
             </Link>
           ))}
         </div>
+      </div>
+
+      {/* Mobile Layout */}
+      <div className="lg:hidden w-full overflow-x-auto no-scrollbar flex gap-[20px] px-[28px] scroll-px-[28px] snap-x snap-mandatory">
+        {categories.map((cat, idx) => (
+          <Link
+            key={idx}
+            href={cat.link}
+            className="relative block w-[283px] h-[315px] shrink-0 rounded-[10px] overflow-hidden snap-start"
+          >
+            <Image
+              src={cat.image}
+              alt={cat.title}
+              fill
+              className="object-cover"
+              sizes="283px"
+            />
+
+            {/* Box Tiêu đề - Mobile */}
+            <div className="absolute top-[20px] left-1/2 -translate-x-1/2 bg-primary rounded-[8px] w-[185px] h-[26px] flex items-center justify-center z-10 shadow-sm">
+              <h3 className="text-white font-montserrat font-[800] text-[14px] uppercase leading-normal text-center whitespace-nowrap">
+                {cat.title}
+              </h3>
+            </div>
+
+            {/* Text link xem chi tiết - Mobile */}
+            <div className="absolute bottom-[13px] right-[20px] z-10">
+              <span className="text-[#FFF6ED] font-montserrat font-semibold text-[12px] leading-[16px] underline decoration-solid decoration-from-font [text-decoration-skip-ink:none] [text-underline-position:from-font] [text-shadow:0px_4px_4px_rgba(0,0,0,0.25)]">
+                Xem chi tiết danh mục
+              </span>
+            </div>
+          </Link>
+        ))}
       </div>
     </section>
   );

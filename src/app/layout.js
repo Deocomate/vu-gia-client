@@ -75,8 +75,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="vi">
+    <html lang="vi" suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`
           ${montserrat.variable} 
           ${inter.variable} 
