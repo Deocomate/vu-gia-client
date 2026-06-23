@@ -1,9 +1,8 @@
 {
-  "schema_version": 13,
+  "schema_version": 14,
   "included_paths": [
     "package.json",
-    "README.md",
-    ".gitignore"
+    ".agents/rules"
   ],
   "excluded_paths": [
     "eslint.config.mjs",
@@ -12,14 +11,26 @@
     "docs",
     "src/assets",
     "skills-lock.json",
-    ".agents"
+    ".agents",
+    "Dockerfile",
+    ".dockerignore",
+    "docker-compose.yml",
+    "README.md",
+    ".gitignore",
+    "plans",
+    "templates",
+    "src/hooks",
+    "src/services",
+    "src/store",
+    "src/utils",
+    "src/views",
+    "src/components"
   ],
   "priority_roots": [
-    ".gitignore",
-    "jsconfig.json",
-    "next.config.mjs",
     "package.json",
+    "jsconfig.json",
     "postcss.config.mjs",
+    "next.config.mjs",
     "src",
     "src/hooks",
     "src/services",
@@ -128,8 +139,7 @@
     ".agents/rules/check-assets-before-coding.md",
     ".agents/rules/do-not-run-build-when-complete.md",
     ".agents/rules/read-codebase-structure-before-everything.md",
-    ".agents/AGENTS.md",
-    "README.md"
+    ".agents/AGENTS.md"
   ],
   "global_ignore_patterns": [
     ".git/",
@@ -163,7 +173,11 @@
     "src/assets/",
     "public/"
   ],
-  "attention_patterns": [],
+  "attention_patterns": [
+    "src/views/HomeView.jsx",
+    "src/components/home/HomeHero.jsx",
+    "src/components/home/HomeFeatures.jsx"
+  ],
   "split_config": {
     "enabled": false,
     "split_count": 5,
@@ -174,7 +188,8 @@
       "txt"
     ],
     "split_enabled": false,
-    "split_count": 5
+    "split_count": 5,
+    "line_numbers_enabled": false
   },
   "instructions": {
     "enabled": false

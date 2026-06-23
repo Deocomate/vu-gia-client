@@ -15,4 +15,5 @@ export const ROUTES = {
   CHECKOUT: "/thanh-toan",
   ACCOUNT: "/tai-khoan",
   ORDERS: "/tai-khoan/don-hang",
+  ALTAR_CUSTOMIZER: "/tuy-chinh-bo-do-tho",
 };

@@ -57,7 +57,12 @@ function ProductGallery({ galleryImages, mainImage, setMainImage }) {
 // ==========================================
 // 2. PRODUCT PURCHASE PANEL COMPONENT
 // ==========================================
-function ProductPurchasePanel({ mainQuantity, setMainQuantity, onBuyNow, onAddToCart }) {
+function ProductPurchasePanel({
+  mainQuantity,
+  setMainQuantity,
+  onBuyNow,
+  onAddToCart,
+}) {
   return (
     <div className="flex flex-col font-montserrat">
       {/* Title */}
@@ -90,14 +95,14 @@ function ProductPurchasePanel({ mainQuantity, setMainQuantity, onBuyNow, onAddTo
       <hr className="border-t border-[#E6E8EC] mb-[21px]" />
 
       {/* Price Block */}
-      <div className="flex items-center gap-4 mb-[15px]">
+      <div className="flex items-center justify-between gap-4 mb-[15px]">
         <span className="text-[#97400C] text-[32px] font-[700] leading-[40px]">
           2.000.000đ
         </span>
         <span className="text-[#838383] text-[18px] font-[400] line-through leading-[24px]">
           2.500.000đ
         </span>
-        <span className="bg-[#97400C] text-white text-[12px] font-[700] uppercase leading-[12px] px-3 py-1 rounded-[4px]">
+        <span className="bg-[#97400C] text-white text-[12px] font-[700] uppercase leading-[12px] px-3 py-3 rounded-[4px]">
           Tiết kiệm 30%
         </span>
       </div>

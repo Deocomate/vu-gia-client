@@ -1,0 +1,1997 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vũ Gia - Tùy chỉnh bộ đồ thờ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+    <style>
+:root {
+  --primary-red: #97400c;
+  --primary-dark: #2e2f2a;
+  --cream: #f9f7f3;
+  --cream-border: #fef4e9;
+  --line: #ebe5df;
+  --muted: #606060;
+  --neutral-1: #141416;
+  --neutral-2: #23262f;
+  --neutral-4: #777e90;
+  --neutral-6: #e6e8ec;
+  --neutral-7: #f4f5f6;
+  --green: #67a865;
+  --footer-text: #eaecf0;
+  --page-width: 1920px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #fff;
+  color: var(--primary-dark);
+  font-family: "Montserrat", "Inter", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input { font-family: inherit; }
+
+button { cursor: pointer; }
+
+img { display: block; max-width: 100%; }
+
+a { color: inherit; text-decoration: none; }
+
+
+
+
+
+
+
+
+
+
+main {
+  width: min(100%, var(--page-width));
+  margin: 0 auto;
+  position: relative;
+}
+
+.intro-section {
+  position: relative;
+  height: 206px;
+  text-align: center;
+}
+
+.intro-section h1 {
+  margin: 0;
+  padding-top: 62px;
+  color: var(--primary-red);
+  font-size: 40px;
+  line-height: 49px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.intro-section p {
+  margin: 20px auto 0;
+  max-width: 1320px;
+  color: #000;
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-style: italic;
+  line-height: 28px;
+}
+
+.exit-button {
+  position: absolute;
+  right: 42px;
+  top: 44px;
+  width: 92px;
+  height: 31px;
+  border-radius: 5px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: #903f11;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.exit-button span { margin-left: 5px; }
+
+.customizer-grid {
+  margin-left: 55px;
+  display: grid;
+  grid-template-columns: 297px 1191px 305px;
+  gap: 15px;
+  align-items: start;
+}
+
+.left-rail,
+.right-rail { position: relative; }
+
+.left-rail {
+  width: 297px;
+  min-height: 828px;
+  isolation: isolate;
+}
+
+.left-rail::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  top: 0;
+  width: 297px;
+  height: 649px;
+  border: 1px solid var(--cream-border);
+  border-radius: 10px;
+  background: var(--cream);
+}
+
+.selector-card,
+.guide-card,
+.support-card,
+.summary-card,
+.trust-card,
+.designer-panel {
+  border-radius: 10px;
+  border: 1px solid var(--cream-border);
+}
+
+.selector-card {
+  position: relative;
+  z-index: 1;
+  width: 297px;
+  height: 480px;
+  overflow: hidden;
+  background: #fff;
+  border-color: var(--line);
+}
+
+.selector-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 35px minmax(0, 1fr) 7px;
+  gap: 15px;
+  width: 100%;
+  height: 120px;
+  padding: 28px 19px 0 21px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+  color: var(--primary-dark);
+  text-align: left;
+}
+
+.selector-row:last-child { border-bottom: 0; }
+.selector-row.is-active { color: var(--primary-red); }
+
+.step-index {
+  width: 35px;
+  height: 35px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e9e4de;
+  color: var(--primary-dark);
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 600;
+}
+
+.selector-row.is-active .step-index {
+  background: var(--primary-red);
+  color: #fff;
+}
+
+.selector-row strong {
+  display: block;
+  margin-top: 5px;
+  color: currentColor;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.selector-row em {
+  display: block;
+  margin-top: 10px;
+  color: currentColor;
+  font-style: normal;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.selector-row i {
+  position: absolute;
+  right: 21px;
+  top: 54px;
+  width: 7px;
+  height: 12px;
+  color: transparent;
+  font-size: 0;
+  font-style: normal;
+}
+
+.selector-row i::before {
+  content: "";
+  position: absolute;
+  inset: 1px 1px 1px 0;
+  border-top: 1.6px solid #9f9f9f;
+  border-right: 1.6px solid #9f9f9f;
+  transform: rotate(45deg);
+  transform-origin: center;
+}
+
+.selector-row.is-active i::before {
+  border-color: var(--primary-red);
+}
+
+.guide-card {
+  position: relative;
+  z-index: 1;
+  width: 297px;
+  height: 169px;
+  margin-top: 0;
+  padding: 21px 40px 0 23px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.guide-card h3,
+.support-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--primary-red);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rail-icon {
+  display: inline-block;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.guide-icon {
+  width: 26px;
+  height: 24px;
+  margin-left: 0;
+}
+
+.guide-card p,
+.support-card p,
+.support-card small {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+.guide-card p {
+  width: 213px;
+  margin-top: 13px;
+  margin-left: 18px;
+}
+
+.support-card {
+  position: relative;
+  z-index: 1;
+  width: 297px;
+  height: 169px;
+  margin-top: 10px;
+  padding: 18px 40px 0 29px;
+  border-color: var(--cream-border);
+  border-radius: 10px;
+  background: var(--cream);
+}
+
+.support-card h3 {
+  gap: 10px;
+}
+
+.support-icon {
+  width: 19px;
+  height: 22px;
+}
+
+.support-card p {
+  width: 213px;
+  margin-top: 12px;
+  margin-left: 13px;
+}
+
+.support-card strong {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 7px 0 0;
+  color: var(--primary-red);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.phone-icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.9;
+}
+
+.support-hours {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 8px !important;
+  white-space: nowrap;
+}
+
+.clock-icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.6;
+}
+
+.designer-panel {
+  position: relative;
+  width: 1191px;
+  height: 1210px;
+  overflow: hidden;
+  border-color: var(--line);
+  background: #fff;
+}
+
+.tool-bar {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  right: 14px;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 3;
+}
+
+.tool-button,
+.zoom-control {
+  height: 39px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--primary-dark);
+}
+
+.tool-button {
+  padding: 0 13px 0 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.tool-button svg {
+  width: 20px;
+  height: 19px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: #575757;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.undo-button { width: 130px; }
+.redo-button { width: 113px; }
+.center-button { width: 129px; }
+.mirror-button { width: 160px; }
+.clear-button { width: 135px; }
+.restore-button { width: 179px; }
+
+.zoom-control {
+  margin-left: auto;
+  width: 162px;
+  display: grid;
+  grid-template-columns: 44px 74px 44px;
+  align-items: center;
+  justify-items: center;
+  overflow: hidden;
+}
+
+.zoom-control button {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--primary-dark);
+  font-family: "Montserrat", sans-serif;
+  font-size: 24px;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.zoom-control span {
+  width: 74px;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  color: var(--primary-dark);
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.altar-preview {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  width: 1191px;
+  height: 556px;
+  overflow: hidden;
+  background: #eee;
+}
+
+.altar-preview > img {
+  position: absolute;
+  left: 0;
+  top: -43.34%;
+  width: 100%;
+  height: 160.66%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.drag-hint {
+  position: absolute;
+  left: 50%;
+  top: 514px;
+  transform: translateX(-50%);
+  width: 347px;
+  height: 33px;
+  border-radius: 10px;
+  background: rgba(164, 164, 164, 0.7);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.drag-hint svg {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.product-tabs {
+  position: absolute;
+  top: 638px;
+  left: 55px;
+  right: 74px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  white-space: nowrap;
+}
+
+.tab-button {
+  border: 0;
+  background: transparent;
+  color: rgba(46, 47, 42, 0.7);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  padding: 0;
+}
+
+.tab-button.is-active {
+  color: var(--primary-red);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+}
+
+.custom-products {
+  position: absolute;
+  top: 682px;
+  left: 26px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.mini-product-card {
+  position: relative;
+  width: 219px;
+  height: 328px;
+  flex: 0 0 219px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.mini-product-card figure {
+  position: relative;
+  margin: 0;
+  width: 217px;
+  height: 200px;
+  border-radius: 8px 8px 0 0;
+  background: #fff;
+  overflow: hidden;
+}
+
+.mini-product-card figure img {
+  position: absolute;
+  max-width: none;
+  display: block;
+  mix-blend-mode: darken;
+}
+
+.mini-product-card:nth-child(1) figure img {
+  left: 0;
+  top: 18px;
+  width: 217px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.mini-product-card:nth-child(2) figure img,
+.mini-product-card:nth-child(4) figure img {
+  left: 23px;
+  top: 27px;
+  width: 173px;
+  height: 173px;
+  object-fit: contain;
+}
+
+.mini-product-card:nth-child(3) figure img {
+  left: 19px;
+  top: 20px;
+  width: 182px;
+  height: 182px;
+  object-fit: contain;
+}
+
+.mini-product-card h3,
+.mini-product-card p,
+.mini-product-card strong {
+  margin-left: 20px;
+  color: var(--primary-dark);
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.mini-product-card h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 600;
+}
+
+.mini-product-card p {
+  margin-top: 5px;
+  margin-bottom: 0;
+  font-weight: 400;
+}
+
+.mini-product-card strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--primary-red);
+  font-weight: 600;
+}
+
+.mini-product-card button {
+  position: absolute;
+  left: 20px;
+  bottom: 17px;
+  width: 179px;
+  height: 30px;
+  border: 1px solid var(--primary-red);
+  border-radius: 5px;
+  background: #fff;
+  color: var(--primary-red);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.accessory-title {
+  position: absolute;
+  top: 1040px;
+  left: 55px;
+  color: var(--primary-dark);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.accessory-title strong { font-weight: 700; }
+
+.accessory-list {
+  position: absolute;
+  top: 1079px;
+  left: 55px;
+  display: grid;
+  grid-template-columns: 284px 327px 312px;
+  column-gap: 60px;
+  align-items: center;
+}
+
+.accessory-list article {
+  position: relative;
+  height: 106px;
+  display: grid;
+  grid-template-columns: 116px 1fr 27px;
+  align-items: center;
+  gap: 13px;
+}
+
+.accessory-list article + article::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 27px;
+  width: 1px;
+  height: 58px;
+  background: #e5e0db;
+}
+
+.accessory-image {
+  position: relative;
+  display: block;
+  width: 116px;
+  height: 106px;
+  overflow: hidden;
+}
+
+.accessory-image img {
+  position: absolute;
+  display: block;
+  max-width: none;
+  mix-blend-mode: darken;
+}
+
+.accessory-image-tro img {
+  left: 0;
+  top: -56px;
+  width: 672px;
+  height: 224px;
+}
+
+.accessory-image-cot img {
+  left: -237px;
+  top: -64px;
+  width: 704px;
+  height: 235px;
+}
+
+.accessory-image-that-thao img {
+  left: -539px;
+  top: -75px;
+  width: 765px;
+  height: 256px;
+}
+
+.accessory-list b,
+.accessory-list div span {
+  display: block;
+  color: var(--primary-dark);
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.accessory-list b {
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.accessory-list div span { font-weight: 400; }
+
+.accessory-list button {
+  width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  border-radius: 5px;
+  border: 1px solid #c56e49;
+  background: #fff;
+  color: var(--primary-red);
+  font-size: 22px;
+  line-height: 20px;
+  font-weight: 400;
+  padding: 0 0 3px;
+}
+
+.right-rail {
+  width: 305px;
+  min-height: 719px;
+  position: relative;
+}
+
+.summary-card {
+  position: relative;
+  z-index: 2;
+  width: 305px;
+  height: 527px;
+  padding: 21px 10px 0 18px;
+  border-color: var(--line);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.summary-card h2 {
+  margin: 0 0 11px;
+  color: var(--primary-dark);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.selected-items {
+  width: 277px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.selected-items li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 76px 14px;
+  align-items: center;
+  column-gap: 7px;
+  height: 37px;
+  border-bottom: 0.5px solid rgba(221, 216, 212, 0.9);
+  color: var(--primary-dark);
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 500;
+}
+
+.selected-items span {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.selected-items b {
+  opacity: 0.8;
+  color: var(--primary-dark);
+  font-size: 12px;
+  line-height: 15px;
+  font-weight: 500;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.selected-items button {
+  width: 14px;
+  height: 14px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: rgba(46, 47, 42, 0.8);
+  font-size: 0;
+  line-height: 1;
+  padding: 0;
+}
+
+.selected-items button::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  display: block;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9 3h6l1 2h4v2H4V5h4l1-2Zm-2 6h10l-.7 11.2c-.1 1-1 1.8-2 1.8H9.7c-1.1 0-1.9-.8-2-1.8L7 9Zm2.1 2 .5 8h1.8l-.4-8H9.1Zm3.9 0v8h1.8v-8H13Z'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9 3h6l1 2h4v2H4V5h4l1-2Zm-2 6h10l-.7 11.2c-.1 1-1 1.8-2 1.8H9.7c-1.1 0-1.9-.8-2-1.8L7 9Zm2.1 2 .5 8h1.8l-.4-8H9.1Zm3.9 0v8h1.8v-8H13Z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.summary-total {
+  width: 277px;
+  padding-top: 14px;
+}
+
+.summary-total span {
+  display: block;
+  margin: 0 0 6px;
+  color: var(--primary-dark);
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+.summary-total strong {
+  display: block;
+  margin: 0 0 10px;
+  color: var(--primary-red);
+  font-size: 24px;
+  line-height: 29px;
+  font-weight: 600;
+}
+
+.summary-total p {
+  width: 275px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.18;
+  font-weight: 400;
+}
+
+.summary-actions {
+  width: 267px;
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 169px 39px 39px;
+  grid-template-rows: 39px 39px;
+  gap: 10px;
+}
+
+.summary-actions button {
+  height: 39px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 17px;
+}
+
+.primary-action {
+  grid-column: 1 / span 2;
+  grid-row: 1;
+  width: 218px;
+  border: 1px solid #903f11;
+  background: #903f11;
+  color: #fff;
+}
+
+.phone-action {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.secondary-action {
+  grid-column: 1;
+  grid-row: 2;
+  width: 169px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--primary-dark);
+}
+
+.download-action { grid-column: 2; grid-row: 2; }
+.bookmark-action { grid-column: 3; grid-row: 2; }
+
+.summary-actions .icon-action {
+  width: 39px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--primary-dark);
+}
+
+.summary-actions .phone-action {
+  border-color: #903f11;
+  background: #903f11;
+  color: #fff;
+}
+
+.summary-actions svg {
+  width: 21px;
+  height: 21px;
+  fill: currentColor;
+}
+
+.trust-card {
+  position: relative;
+  z-index: 1;
+  width: 305px;
+  height: 220px;
+  margin-top: -28px;
+  padding: 49px 20px 0;
+  border-color: var(--cream-border);
+  border-radius: 10px;
+  background: #f9f5f0;
+  text-align: center;
+}
+
+.trust-card p {
+  width: 252px;
+  margin: 0 auto 20px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 15px;
+  font-weight: 400;
+}
+
+.trust-icons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 10px;
+}
+
+.trust-icons span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.4;
+  font-weight: 500;
+  text-align: center;
+}
+
+.trust-icons svg {
+  width: 50px;
+  height: 51px;
+  margin-bottom: 8px;
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.size-guide-section {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.size-guide-section h2 {
+  margin: 0 0 40px;
+  color: var(--primary-red);
+  font-size: 22px;
+  line-height: 40px;
+  letter-spacing: -0.22px;
+  font-weight: 600;
+}
+
+.table-wrap {
+  width: 1422px;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+th,
+td {
+  height: 65px;
+  padding: 0 16px;
+  text-align: center;
+  color: #101010;
+  font-size: 18px;
+  line-height: 25px;
+}
+
+th {
+  height: 64px;
+  color: var(--primary-dark);
+  font-weight: 700;
+  text-transform: uppercase;
+  background: #f2f3f5;
+}
+
+td { font-weight: 400; }
+td:nth-child(2) { font-weight: 600; }
+tbody tr:nth-child(even) td { background: #f2f3f5; }
+
+.similar-section {
+  width: 1440px;
+  margin: 97px auto 100px;
+}
+
+.similar-section h2 {
+  margin: 0 0 40px;
+  color: var(--primary-red);
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 700;
+}
+
+.similar-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 340px);
+  gap: 26px;
+}
+
+.similar-card {
+  height: 421px;
+  border: 1px solid var(--neutral-6);
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.similar-card figure {
+  height: 255px;
+  margin: 0;
+  background: var(--neutral-2);
+  overflow: hidden;
+}
+
+.similar-card figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.92;
+}
+
+.similar-content {
+  padding: 15px 18px 0;
+}
+
+.similar-content h3 {
+  margin: 0 0 10px;
+  color: var(--neutral-1);
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 700;
+}
+
+.similar-content > span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--neutral-4);
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 500;
+}
+
+.price-row {
+  border-top: 1px solid var(--neutral-6);
+  padding-top: 7px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price-row strong {
+  color: var(--primary-red);
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 700;
+}
+
+.price-row em {
+  color: var(--green);
+  font-size: 12px;
+  line-height: 12px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.similar-content del {
+  color: #838383;
+  font-size: 14px;
+  line-height: 24px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 1600px) {
+  :root { --page-width: 1440px; }
+  .customizer-grid {
+    margin-left: 40px;
+    width: calc(100% - 80px);
+    grid-template-columns: 230px minmax(720px, 1fr) 305px;
+    gap: 12px;
+  }
+  .left-rail { transform-origin: top left; }
+  .selector-row { grid-template-columns: 28px 1fr 12px; gap: 9px; padding-left: 13px; }
+  .step-index { width: 28px; height: 28px; font-size: 14px; }
+  .selector-row strong { font-size: 14px; }
+  .selector-row em { font-size: 12px; }
+  .guide-card, .support-card { padding-left: 25px; padding-right: 25px; }
+  .designer-panel { width: 100%; height: 920px; }
+  .tool-bar { overflow-x: auto; }
+  .tool-bar button { font-size: 12px; height: 32px; padding-inline: 10px; }
+  .zoom-control { height: 32px; min-width: 126px; }
+  .altar-preview { height: 430px; }
+  .product-tabs { top: 515px; left: 30px; right: 30px; overflow-x: auto; justify-content: flex-start; padding-bottom: 8px; }
+  .tab-button { font-size: 12px; }
+  .custom-products { top: 560px; left: 30px; right: 30px; gap: 16px; overflow-x: auto; padding-bottom: 12px; }
+  .mini-product-card { flex: 0 0 170px; width: 170px; height: 280px; }
+  .mini-product-card figure { height: 165px; }
+  .mini-product-card h3, .mini-product-card p, .mini-product-card strong { margin-left: 14px; font-size: 12px; }
+  .mini-product-card button { left: 14px; width: 142px; font-size: 12px; }
+  .accessory-title { top: 855px; left: 30px; }
+  .accessory-list { display: none; }
+  .summary-card { padding: 21px 10px 0 18px; }
+  .summary-card h2 { font-size: 18px; }
+  .selected-items li { font-size: 14px; }
+  .selected-items b { font-size: 12px; }
+  .trust-card { padding: 49px 20px 0; }
+  .trust-card p { width: 252px; }
+  .table-wrap, .similar-section { width: calc(100% - 160px); }
+  .similar-grid { grid-template-columns: repeat(4, 1fr); }
+  .similar-card { height: auto; min-height: 360px; }
+  .similar-card figure { height: 210px; }
+}
+
+@media (max-width: 1180px) {
+    .intro-section { height: auto; padding: 38px 20px 28px; }
+  .intro-section h1 { padding-top: 0; font-size: 30px; line-height: 38px; }
+  .intro-section p { font-size: 15px; line-height: 24px; }
+  .exit-button { position: static; margin: 0 0 16px auto; display: block; }
+  .customizer-grid { display: block; width: calc(100% - 32px); margin: 0 auto; }
+  .left-rail, .right-rail { min-height: 0; }
+  .selector-card { height: auto; display: grid; grid-template-columns: repeat(2, 1fr); }
+  .selector-row { height: 96px; border-right: 1px solid var(--line); }
+  .guide-card, .support-card { height: auto; padding: 20px; }
+  .designer-panel { margin-top: 16px; min-height: 920px; }
+  .right-rail { width: auto; margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .summary-card, .trust-card { width: 100%; height: auto; margin: 0; }
+  .selected-items, .summary-total { width: 100%; }
+  .summary-total p { width: 100%; }
+  .size-guide-section { margin-top: 50px; }
+  .table-wrap { width: calc(100% - 32px); }
+  th, td { font-size: 13px; padding: 0 10px; }
+  .similar-section { width: calc(100% - 32px); }
+  .similar-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+@media (max-width: 720px) {
+  .selector-card { grid-template-columns: 1fr; }
+  .selector-row { border-right: 0; }
+  .designer-panel { height: 860px; }
+  .tool-bar { left: 10px; right: 10px; }
+  .altar-preview { height: 260px; }
+  .product-tabs { top: 344px; }
+  .custom-products { top: 390px; }
+  .accessory-title { top: 760px; }
+  .right-rail { grid-template-columns: 1fr; }
+  .similar-grid { grid-template-columns: 1fr; }
+}
+
+/* Stability and responsive polish after Figma implementation */
+body {
+  overflow-x: hidden;
+}
+
+.customizer-grid > * {
+  min-width: 0;
+}
+
+.left-rail {
+  width: 100%;
+  max-width: 297px;
+}
+
+.left-rail::before,
+.selector-card,
+.guide-card,
+.support-card {
+  width: 100%;
+}
+
+.selector-row span:nth-child(2) {
+  min-width: 0;
+}
+
+.selector-row strong,
+.selector-row em {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.designer-panel {
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.designer-panel::-webkit-scrollbar,
+.selected-items::-webkit-scrollbar,
+.product-tabs::-webkit-scrollbar,
+.custom-products::-webkit-scrollbar,
+.tool-bar::-webkit-scrollbar {
+  height: 8px;
+  width: 6px;
+}
+
+.designer-panel::-webkit-scrollbar-thumb,
+.selected-items::-webkit-scrollbar-thumb,
+.product-tabs::-webkit-scrollbar-thumb,
+.custom-products::-webkit-scrollbar-thumb,
+.tool-bar::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(46, 47, 42, 0.3);
+}
+
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 527px;
+  height: 527px;
+  padding-bottom: 10px;
+  overflow: hidden;
+}
+
+.summary-card h2,
+.summary-total,
+.summary-actions {
+  flex: 0 0 auto;
+}
+
+.selected-items {
+  flex: 0 1 auto;
+  max-height: 228px;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+  scrollbar-gutter: stable;
+}
+
+.selected-items li {
+  min-height: 37px;
+}
+
+.selected-items button {
+  flex: 0 0 auto;
+}
+
+.summary-total {
+  margin-top: 0;
+}
+
+.summary-actions {
+  margin-bottom: 0;
+}
+
+@media (max-width: 1600px) {
+  .customizer-grid {
+    width: calc(100% - 48px);
+    margin-left: auto;
+    margin-right: auto;
+    grid-template-columns: 297px minmax(0, 1fr) 305px;
+    gap: 12px;
+  }
+
+  .left-rail {
+    max-width: 297px;
+    transform: none;
+  }
+
+  .left-rail::before,
+  .selector-card,
+  .guide-card,
+  .support-card {
+    width: 100%;
+  }
+
+  .designer-panel {
+    width: 100%;
+  }
+
+  .right-rail {
+    width: 305px;
+  }
+}
+
+@media (max-width: 1180px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .customizer-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    width: min(100% - 32px, 860px);
+    margin: 0 auto;
+    gap: 16px;
+  }
+
+  .left-rail {
+    width: 100%;
+    max-width: none;
+    min-height: 0;
+  }
+
+  .left-rail::before {
+    display: none;
+  }
+
+  .selector-card {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-color: var(--line);
+    background: #fff;
+  }
+
+  .selector-row {
+    min-height: 108px;
+    height: auto;
+    grid-template-columns: 35px minmax(0, 1fr) 12px;
+    gap: 14px;
+    padding: 24px 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .selector-row:nth-child(odd) {
+    border-right: 1px solid var(--line);
+  }
+
+  .selector-row:nth-child(3),
+  .selector-row:nth-child(4) {
+    border-bottom: 0;
+  }
+
+  .selector-row i {
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%);
+  }
+
+  .selector-row strong {
+    margin-top: 3px;
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .selector-row em {
+    font-size: 15px;
+    line-height: 20px;
+  }
+
+  .guide-card,
+  .support-card {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--cream-border);
+    border-radius: 10px;
+    background: var(--cream);
+    padding: 22px 24px;
+  }
+
+  .guide-card {
+    margin-top: 16px;
+  }
+
+  .support-card {
+    margin-top: 12px;
+  }
+
+  .guide-card p,
+  .support-card p {
+    width: auto;
+  }
+
+  .designer-panel {
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .right-rail {
+    width: 100%;
+    margin-top: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(240px, 0.85fr);
+    gap: 16px;
+  }
+
+  .summary-card {
+    width: 100%;
+    min-height: 0;
+    height: auto;
+    max-height: none;
+    padding: 21px 18px 18px;
+    overflow: visible;
+  }
+
+  .selected-items {
+    width: 100%;
+    max-height: 260px;
+  }
+
+  .summary-total,
+  .summary-total p {
+    width: 100%;
+  }
+
+  .summary-actions {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) 39px 39px;
+  }
+
+  .primary-action,
+  .secondary-action {
+    width: 100%;
+  }
+
+  .trust-card {
+    width: 100%;
+    height: auto;
+    min-height: 220px;
+    margin-top: 0;
+    padding: 28px 20px 24px;
+  }
+
+  .trust-card p {
+    width: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .right-rail {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .trust-card {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .customizer-grid {
+    width: min(100% - 28px, 560px);
+  }
+
+  .selector-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .selector-row,
+  .selector-row:nth-child(odd) {
+    border-right: 0;
+  }
+
+  .selector-row:nth-child(3) {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .selector-row strong {
+    white-space: normal;
+  }
+
+  .selector-row em {
+    white-space: normal;
+  }
+
+  .summary-card {
+    padding: 21px 16px 18px;
+  }
+
+  .selected-items {
+    max-height: 230px;
+  }
+
+  .summary-total strong {
+    font-size: clamp(22px, 6vw, 24px);
+    line-height: 1.2;
+  }
+
+  .summary-actions {
+    grid-template-columns: minmax(0, 1fr) 39px 39px;
+    gap: 8px;
+  }
+
+  .secondary-action {
+    font-size: 13px;
+  }
+
+  .trust-icons {
+    column-gap: 6px;
+  }
+
+  .trust-icons svg {
+    width: 44px;
+    height: 45px;
+  }
+}
+
+    </style>
+  </head>
+  <body>
+<main>
+      <section class="intro-section">
+        <button class="exit-button" type="button">Thoát <span>×</span></button>
+        <h1>Tùy chỉnh bộ đồ thờ</h1>
+        <p>Chọn loại bàn thờ, kích thước và phong cách mong muốn. Bạn có thể thêm vật phẩm, sắp xếp bố cục và gửi yêu cầu về Gốm Vũ Gia</p>
+      </section>
+
+      <section class="customizer-grid" aria-label="Bộ tùy chỉnh đồ thờ">
+        <aside class="left-rail">
+          <div class="selector-card">
+            <button class="selector-row is-active" type="button">
+              <span class="step-index">1</span>
+              <span>
+                <strong>Chọn loại bàn thờ</strong>
+                <em>Bàn thờ gia tiên</em>
+              </span>
+              <i>›</i>
+            </button>
+            <button class="selector-row" type="button">
+              <span class="step-index">2</span>
+              <span>
+                <strong>Chọn kích thước</strong>
+                <em>127 x 61 cm</em>
+              </span>
+              <i>›</i>
+            </button>
+            <button class="selector-row" type="button">
+              <span class="step-index">3</span>
+              <span>
+                <strong>Chọn phong cách</strong>
+                <em>Men lam vẽ vàng</em>
+              </span>
+              <i>›</i>
+            </button>
+            <button class="selector-row" type="button">
+              <span class="step-index">4</span>
+              <span>
+                <strong>Chọn bộ gợi ý</strong>
+                <em>Bộ tiêu chuẩn</em>
+              </span>
+              <i>›</i>
+            </button>
+          </div>
+
+          <div class="guide-card">
+            <h3>
+              <svg class="rail-icon guide-icon" viewBox="0 0 28 26" aria-hidden="true">
+                <path d="M9.4 18.3c-3.5 0-6.3 1.8-6.3 4v1.5" />
+                <path d="M15.8 23.8v-1.5c0-1.8-1.8-3.3-4.4-3.8" />
+                <circle cx="9.4" cy="10.6" r="4.2" />
+                <path d="M18.2 15.8c2.5 0 4.5 1.3 4.5 3v1.2" />
+                <path d="M16.5 5.8a3.3 3.3 0 1 1 2.8 5.9" />
+                <circle cx="22.2" cy="4.8" r="3.4" />
+              </svg>
+              Hướng dẫn sử dụng
+            </h3>
+            <p>Chọn thông tin bên trái để hệ thống gợi ý bố cục ban đầu. Sau đó, bạn có thể thêm, bớt hoặc sắp xếp lại vật phẩm theo ý muốn</p>
+          </div>
+
+          <div class="support-card">
+            <h3>
+              <svg class="rail-icon support-icon" viewBox="0 0 22 24" aria-hidden="true">
+                <path d="M11 3.2a5.3 5.3 0 0 1 4.9 7.3" />
+                <path d="M16.4 6.9h2.3a2.5 2.5 0 0 1 2.5 2.5v1.3a2.5 2.5 0 0 1-2.5 2.5h-2.3V6.9Z" />
+                <path d="M8.2 17.8a5.5 5.5 0 0 0 6.8-3.2" />
+                <path d="M7.5 13.8H5.3a2.5 2.5 0 0 1-2.5-2.5V9.9a2.5 2.5 0 0 1 2.5-2.5h2.2v6.4Z" />
+                <circle cx="11" cy="13" r="3.8" />
+                <path d="M11 9.4v7.2M7.4 13h7.2" />
+              </svg>
+              Cần hỗ trợ
+            </h3>
+            <p>Đội ngũ Gốm Vũ Gia luôn sẵn sàng hỗ trợ và tư vấn cho bạn</p>
+            <strong class="support-phone">
+              <svg class="rail-icon phone-icon" viewBox="0 0 18 18" aria-hidden="true">
+                <path d="M5.8 2.1 7.6 5c.3.5.2 1.1-.2 1.5l-.9.9a9.7 9.7 0 0 0 4.1 4.1l.9-.9c.4-.4 1-.5 1.5-.2l2.9 1.8c.5.3.6.9.3 1.4l-1 1.7c-.3.5-.9.8-1.5.7C8 15.2 2.8 10 2 4.3c-.1-.6.2-1.2.7-1.5l1.7-1c.5-.3 1.1-.2 1.4.3Z" />
+              </svg>
+              0394 123 981
+            </strong>
+            <small class="support-hours">
+              <svg class="rail-icon clock-icon" viewBox="0 0 18 18" aria-hidden="true">
+                <circle cx="9" cy="9" r="6.6" />
+                <path d="M9 5.1v4.2l2.8 1.7" />
+              </svg>
+              Thời gian: 8:00 - 18:00 (T2 - CN)
+            </small>
+          </div>
+        </aside>
+
+        <section class="designer-panel" aria-label="Khu vực tùy chỉnh bố cục đồ thờ">
+          <div class="tool-bar" aria-label="Thanh công cụ">
+            <button class="tool-button undo-button" type="button">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 4.5 3.5 8.5l4 4"/><path d="M4 8.5h8.2a4.3 4.3 0 1 1 0 8.6H9.5"/></svg>
+              <span>Hoàn tác</span>
+            </button>
+            <button class="tool-button redo-button" type="button">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m12.5 4.5 4 4-4 4"/><path d="M16 8.5H7.8a4.3 4.3 0 1 0 0 8.6h2.7"/></svg>
+              <span>Làm lại</span>
+            </button>
+            <button class="tool-button center-button" type="button">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 5h12M7 10h6M5 15h10"/></svg>
+              <span>Căn giữa</span>
+            </button>
+            <button class="tool-button mirror-button" type="button">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v14"/><path d="M7.5 5 3 8.2v3.6l4.5 3.2V5ZM12.5 5l4.5 3.2v3.6L12.5 15V5Z"/></svg>
+              <span>Tạo đối xứng</span>
+            </button>
+            <button class="tool-button clear-button" type="button">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 6h12"/><path d="M8 6V4h4v2"/><path d="m6 8 .6 8h6.8L14 8"/><path d="M8.5 9.5v4.8M11.5 9.5v4.8"/></svg>
+              <span>Xóa tất cả</span>
+            </button>
+            <button class="tool-button restore-button" type="button">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.6 6.2A6 6 0 1 1 4 10.2"/><path d="M5.7 3.8v2.5h2.5"/><path d="M8 10h4v4H8z"/></svg>
+              <span>Khôi phục mẫu</span>
+            </button>
+            <div class="zoom-control" aria-label="Điều khiển thu phóng">
+              <button id="zoomOut" type="button" aria-label="Thu nhỏ">−</button>
+              <span id="zoomValue">100%</span>
+              <button id="zoomIn" type="button" aria-label="Phóng to">+</button>
+            </div>
+          </div>
+
+          <div class="altar-preview">
+            <img src="./assets/altar-preview.png" alt="Không gian bàn thờ gỗ" />
+            <div class="drag-hint">
+              <svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="7"/><path d="M9 5v8M5 9h8"/></svg>
+              <span>Kéo thả vật phẩm để thay đổi vị trí</span>
+            </div>
+          </div>
+
+          <div class="product-tabs" role="tablist" aria-label="Nhóm vật phẩm">
+            <button class="tab-button" type="button" role="tab">Tất cả</button>
+            <button class="tab-button is-active" type="button" role="tab">Bộ tam sự - ngũ sự</button>
+            <button class="tab-button" type="button" role="tab">Bát hương &amp; phụ kiện</button>
+            <button class="tab-button" type="button" role="tab">Lọ hoa &amp; phụ kiện</button>
+            <button class="tab-button" type="button" role="tab">Phụ kiện thờ</button>
+            <button class="tab-button" type="button" role="tab">Thần tài - Thổ địa</button>
+          </div>
+
+          <div class="custom-products" aria-label="Danh sách sản phẩm có thể thêm">
+            <article class="mini-product-card">
+              <figure><img src="./assets/bat-huong-1.png" alt="Bát hương size S" /></figure>
+              <h3>Bát hương size S</h3>
+              <p>20 cm</p>
+              <strong>850.000 ₫</strong>
+              <button class="add-item" type="button" data-name="Bát hương 20cm" data-price="850000">Thêm</button>
+            </article>
+            <article class="mini-product-card">
+              <figure><img src="./assets/bat-huong-2.png" alt="Bát hương size S" /></figure>
+              <h3>Bát hương size S</h3>
+              <p>20 cm</p>
+              <strong>850.000 ₫</strong>
+              <button class="add-item" type="button" data-name="Bát hương 20cm" data-price="850000">Thêm</button>
+            </article>
+            <article class="mini-product-card">
+              <figure><img src="./assets/bat-huong-3.png" alt="Bát hương size S" /></figure>
+              <h3>Bát hương size S</h3>
+              <p>20 cm</p>
+              <strong>850.000 ₫</strong>
+              <button class="add-item" type="button" data-name="Bát hương 20cm" data-price="850000">Thêm</button>
+            </article>
+            <article class="mini-product-card">
+              <figure><img src="./assets/bat-huong-2.png" alt="Bát hương size S" /></figure>
+              <h3>Bát hương size S</h3>
+              <p>20 cm</p>
+              <strong>850.000 ₫</strong>
+              <button class="add-item" type="button" data-name="Bát hương 20cm" data-price="850000">Thêm</button>
+            </article>
+          </div>
+
+          <div class="accessory-title"><strong>Phụ kiện đi kèm</strong> <span>(không hiển thị trên bàn thờ)</span></div>
+          <div class="accessory-list">
+            <article>
+              <span class="accessory-image accessory-image-tro"><img src="./assets/accessories-sprite.png" alt="Tro nếp" /></span>
+              <div><b>Tro nếp</b><span>120.000 ₫</span></div>
+              <button class="add-item" type="button" data-name="Tro nếp" data-price="120000" aria-label="Thêm Tro nếp">+</button>
+            </article>
+            <article>
+              <span class="accessory-image accessory-image-cot"><img src="./assets/accessories-sprite.png" alt="Cốt bát hương" /></span>
+              <div><b>Cốt bát hương</b><span>150.000 ₫</span></div>
+              <button class="add-item" type="button" data-name="Cốt bát hương" data-price="150000" aria-label="Thêm Cốt bát hương">+</button>
+            </article>
+            <article>
+              <span class="accessory-image accessory-image-that-thao"><img src="./assets/accessories-sprite.png" alt="Bộ thất thảo" /></span>
+              <div><b>Bộ thất thảo</b><span>250.000 ₫</span></div>
+              <button class="add-item" type="button" data-name="Bộ thất thảo" data-price="250000" aria-label="Thêm Bộ thất thảo">+</button>
+            </article>
+          </div>
+        </section>
+
+        <aside class="right-rail" aria-label="Tóm tắt vật phẩm đã chọn">
+          <div class="summary-card">
+            <h2>Danh sách vật phẩm</h2>
+            <ul id="selectedItems" class="selected-items">
+              <li data-price="850000"><span>1 x Bát hương 20cm</span><b>850.000đ</b><button type="button" aria-label="Xóa Bát hương 20cm"></button></li>
+              <li data-price="1400000"><span>2 x Lọ hoa 28cm</span><b>1.400.000đ</b><button type="button" aria-label="Xóa Lọ hoa 28cm"></button></li>
+              <li data-price="650000"><span>1 x Mâm bồng 24cm</span><b>650.000đ</b><button type="button" aria-label="Xóa Mâm bồng 24cm"></button></li>
+              <li data-price="550000"><span>1 x Kỷ 5 chén</span><b>550.000đ</b><button type="button" aria-label="Xóa Kỷ 5 chén"></button></li>
+              <li data-price="1200000"><span>1 x Chóe 18cm</span><b>1.200.000đ</b><button type="button" aria-label="Xóa Chóe 18cm"></button></li>
+              <li data-price="450000"><span>1 x Ống hương 31cm</span><b>450.000đ</b><button type="button" aria-label="Xóa Ống hương 31cm"></button></li>
+            </ul>
+            <div class="summary-total">
+              <span>Giá tổng</span>
+              <strong id="totalPrice">4.800.000 đ</strong>
+              <p>Giá có thể thay đổi theo kích thước, màu men và tình trạng sản phẩm thực tế. Gốm Vũ Gia sẽ xác nhận trước khi chốt đơn</p>
+            </div>
+            <div class="summary-actions">
+              <button class="primary-action" type="button">Mua ngay</button>
+              <button class="icon-action phone-action" type="button" aria-label="Gọi tư vấn">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.3 3.4c.4-.4 1-.5 1.5-.2l2.1 1.3c.5.3.7.9.5 1.4l-.9 2.5c-.2.5-.6.8-1.1.9l-1.1.1c.9 2.7 3 4.8 5.6 5.6l.2-1.1c.1-.5.4-1 .9-1.1l2.5-.9c.5-.2 1.1 0 1.4.5l1.3 2.1c.3.5.2 1.1-.2 1.5l-1.6 1.7c-.9.9-2.2 1.2-3.4.9C9.4 17.2 5 12.8 3.3 7.2c-.4-1.2 0-2.5.9-3.4l1.7-1.6Z"/></svg>
+              </button>
+              <button class="secondary-action" type="button">Thêm vào giỏ hàng</button>
+              <button class="icon-action download-action" type="button" aria-label="Tải xuống cấu hình">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.75a.75.75 0 0 1 .75.75v9.2l3-3a.75.75 0 1 1 1.06 1.06l-4.28 4.28a.75.75 0 0 1-1.06 0l-4.28-4.28a.75.75 0 1 1 1.06-1.06l3 3V4.5A.75.75 0 0 1 12 3.75ZM5.75 18a.75.75 0 0 1 .75.75h11a.75.75 0 0 1 .75-.75.75.75 0 0 1 .75.75v.75A1.5 1.5 0 0 1 17.5 21h-11A1.5 1.5 0 0 1 5 19.5v-.75A.75.75 0 0 1 5.75 18Z"/></svg>
+              </button>
+              <button class="icon-action bookmark-action" type="button" aria-label="Lưu cấu hình">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 3.5h9A1.5 1.5 0 0 1 18 5v15.3c0 .5-.6.8-1 .5L12 17l-5 3.8c-.4.3-1 0-1-.5V5a1.5 1.5 0 0 1 1.5-1.5Zm0 1.5v13.5l4.05-3.07a.75.75 0 0 1 .9 0l4.05 3.07V5h-9Z"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="trust-card">
+            <p>Gốm Vũ Gia cam kết tư vấn tận tâm<br />chuẩn kích thước và đúng nhu cầu</p>
+            <div class="trust-icons">
+              <span>
+                <svg viewBox="0 0 52 52" aria-hidden="true"><path d="M14 30v-5c0-6.6 5.4-12 12-12s12 5.4 12 12v5"/><path d="M13.5 29h-2.2A3.3 3.3 0 0 0 8 32.3v4.4a3.3 3.3 0 0 0 3.3 3.3h2.2V29ZM38.5 40h2.2a3.3 3.3 0 0 0 3.3-3.3v-4.4a3.3 3.3 0 0 0-3.3-3.3h-2.2v11Z"/><path d="M18 27c0-4.4 3.6-8 8-8s8 3.6 8 8v7c0 4.4-3.6 8-8 8h-4"/><path d="M22 42h-3.5a2.5 2.5 0 0 1 0-5H22v5Z"/><path d="M22 30h.01M30 30h.01"/></svg>
+                Tư vấn<br />miễn phí
+              </span>
+              <span>
+                <svg viewBox="0 0 52 52" aria-hidden="true"><path d="M15 8h18l7 7v29H15V8Z"/><path d="M33 8v8h7"/><path d="M20 21h14M20 27h14M20 33h8"/><path d="M25.5 37.5c0 1.4 1.6 2.5 3.5 2.5s3.5-1.1 3.5-2.5S31 35.2 29 35.2s-3.5-1-3.5-2.3S27 30.5 29 30.5s3.5 1.1 3.5 2.4"/><path d="M29 29v12"/></svg>
+                Báo giá<br />minh mạch
+              </span>
+              <span>
+                <svg viewBox="0 0 52 52" aria-hidden="true"><path d="M7 29h22v11H7V19h22v6"/><path d="M29 25h8l7 7v8H29V25Z"/><path d="M37 25v7h7"/><path d="M14 44a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM36 44a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M18 40h14M7 40h3M40 40h4"/><path d="M25 10c-3.3 0-6 2.7-6 6 0 4.7 6 10 6 10s6-5.3 6-10c0-3.3-2.7-6-6-6Z"/><path d="M25 16h.01"/></svg>
+                Giao hàng<br />toàn quốc
+              </span>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="size-guide-section">
+        <h2>Bảng gợi ý kích thước vật phẩm đồ thờ theo kích thước ban thờ</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Kích thước bàn thờ</th>
+                <th>Bát hương</th>
+                <th>Mâm bồng</th>
+                <th>Lọ hoa</th>
+                <th>Chóe</th>
+                <th>Kỷ nước</th>
+                <th>Phụ kiện</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>41 - 48 cm</td><td>12 - 14 cm</td><td>18 cm</td><td>H20</td><td>H14</td><td>3 chén</td><td>S2</td></tr>
+              <tr><td>2</td><td>61 - 67 cm</td><td>14 - 16 cm</td><td>20 - 22cm</td><td>H20, 23, 25</td><td>H14</td><td>3 chén</td><td>S2</td></tr>
+              <tr><td>3</td><td>81 - 89 cm</td><td>14 - 16 - 18 cm</td><td>20 - 22 - 25 cm</td><td>H23, 25, 26</td><td>H14, 16</td><td>3, 5 chén</td><td>S2</td></tr>
+              <tr><td>4</td><td>107 - 127 cm</td><td>16 - 18 - 20 cm</td><td>16 - 18 - 20 cm</td><td>H25, 26, 30</td><td>H16</td><td>3, 5 chén</td><td>S2</td></tr>
+              <tr><td>5</td><td>153 - 155 cm</td><td>16 - 18 - 20 cm</td><td>16 - 18 - 20 cm</td><td>H25, 26, 30, 35, 40</td><td>H16, 19</td><td>3, 5 chén</td><td>S1, 2</td></tr>
+              <tr><td>6</td><td>175 - 197 cm</td><td>18 - 20 - 22 cm</td><td>18 - 20 - 22 cm</td><td>H25, 26, 30, 35, 40, 50</td><td>H16, 19</td><td>5 chén</td><td>S1</td></tr>
+              <tr><td>7</td><td>217 cm</td><td>20 - 22 - 25 -27 cm</td><td>20 - 22 - 25 -27 cm</td><td>H30, 35, 40, 50</td><td>H19, 21</td><td>5 chén</td><td>S1</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="similar-section">
+        <h2>Sản phẩm tương tự</h2>
+        <div class="similar-grid">
+          <article class="similar-card">
+            <figure><img src="./assets/similar-product-1.jpg" alt="Bình hút lộc" /></figure>
+            <div class="similar-content">
+              <h3>Bình hút lộc<br />Mã đáo thành công</h3>
+              <span>MSP: VG001</span>
+              <div class="price-row"><strong>2.000.000đ</strong><em>Đã bán: 12</em></div>
+              <del>2.500.000đ</del>
+            </div>
+          </article>
+          <article class="similar-card">
+            <figure><img src="./assets/similar-product-2.jpg" alt="Bình hút lộc" /></figure>
+            <div class="similar-content">
+              <h3>Bình hút lộc<br />Mã đáo thành công</h3>
+              <span>MSP: VG001</span>
+              <div class="price-row"><strong>2.000.000đ</strong><em>Đã bán: 12</em></div>
+              <del>2.500.000đ</del>
+            </div>
+          </article>
+          <article class="similar-card">
+            <figure><img src="./assets/similar-product-3.jpg" alt="Bình hút lộc" /></figure>
+            <div class="similar-content">
+              <h3>Bình hút lộc<br />Mã đáo thành công</h3>
+              <span>MSP: VG001</span>
+              <div class="price-row"><strong>2.000.000đ</strong><em>Đã bán: 12</em></div>
+              <del>2.500.000đ</del>
+            </div>
+          </article>
+          <article class="similar-card">
+            <figure><img src="./assets/similar-product-3.jpg" alt="Bình hút lộc" /></figure>
+            <div class="similar-content">
+              <h3>Bình hút lộc<br />Mã đáo thành công</h3>
+              <span>MSP: VG001</span>
+              <div class="price-row"><strong>2.000.000đ</strong><em>Đã bán: 12</em></div>
+              <del>2.500.000đ</del>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+    <script>
+const currency = new Intl.NumberFormat('vi-VN');
+let zoom = 100;
+
+const totalPrice = document.querySelector('#totalPrice');
+const selectedItems = document.querySelector('#selectedItems');
+const zoomValue = document.querySelector('#zoomValue');
+
+function formatMoney(value) {
+  return `${currency.format(value)}đ`;
+}
+
+function getItemText(name, qty) {
+  return `${qty} x ${name}`;
+}
+
+function getItemKey(name, unitPrice) {
+  return `${name.trim().toLowerCase()}::${unitPrice}`;
+}
+
+function parseQuantityAndName(text) {
+  const match = text.trim().match(/^(\d+)\s*x\s*(.+)$/i);
+  if (!match) return { qty: 1, name: text.trim() };
+  return { qty: Number(match[1]) || 1, name: match[2].trim() };
+}
+
+function normalizeSummaryItem(li) {
+  const label = li.querySelector('span')?.textContent || 'Sản phẩm';
+  const { qty, name } = parseQuantityAndName(label);
+  const linePrice = Number(li.dataset.price || 0);
+  const unitPrice = Number(li.dataset.unitPrice || Math.round(linePrice / Math.max(qty, 1)) || linePrice);
+
+  li.dataset.name = name;
+  li.dataset.qty = String(qty);
+  li.dataset.unitPrice = String(unitPrice);
+  li.dataset.price = String(unitPrice * qty);
+  li.dataset.key = getItemKey(name, unitPrice);
+
+  const removeButton = li.querySelector('button');
+  if (removeButton && !removeButton.dataset.bound) {
+    removeButton.dataset.bound = 'true';
+    removeButton.addEventListener('click', () => {
+      li.remove();
+      updateTotalFromItems();
+    });
+  }
+}
+
+function updateSummaryItem(li) {
+  const name = li.dataset.name || 'Sản phẩm';
+  const qty = Number(li.dataset.qty || 1);
+  const unitPrice = Number(li.dataset.unitPrice || 0);
+  const linePrice = qty * unitPrice;
+
+  li.dataset.price = String(linePrice);
+  const label = li.querySelector('span');
+  const price = li.querySelector('b');
+  if (label) label.textContent = getItemText(name, qty);
+  if (price) price.textContent = formatMoney(linePrice);
+}
+
+function updateTotalFromItems() {
+  const total = [...selectedItems.querySelectorAll('li')].reduce((sum, li) => {
+    return sum + Number(li.dataset.price || 0);
+  }, 0);
+  totalPrice.textContent = `${currency.format(total)} đ`;
+}
+
+function addSummaryItem(name, unitPrice) {
+  const key = getItemKey(name, unitPrice);
+  let li = [...selectedItems.querySelectorAll('li')].find((item) => item.dataset.key === key);
+
+  if (li) {
+    li.dataset.qty = String(Number(li.dataset.qty || 1) + 1);
+    updateSummaryItem(li);
+    li.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    return;
+  }
+
+  li = document.createElement('li');
+  li.dataset.name = name;
+  li.dataset.qty = '1';
+  li.dataset.unitPrice = String(unitPrice);
+  li.dataset.price = String(unitPrice);
+  li.dataset.key = key;
+  li.innerHTML = `<span>${getItemText(name, 1)}</span><b>${formatMoney(unitPrice)}</b><button type="button" aria-label="Xóa ${name}"></button>`;
+
+  li.querySelector('button').addEventListener('click', () => {
+    li.remove();
+    updateTotalFromItems();
+  });
+
+  selectedItems.appendChild(li);
+  li.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+
+selectedItems.querySelectorAll('li').forEach(normalizeSummaryItem);
+updateTotalFromItems();
+
+document.querySelectorAll('.add-item').forEach((button) => {
+  button.addEventListener('click', () => {
+    const price = Number(button.dataset.price || 0);
+    const name = button.dataset.name || 'Sản phẩm';
+    addSummaryItem(name, price);
+    updateTotalFromItems();
+    button.animate(
+      [{ transform: 'scale(1)' }, { transform: 'scale(0.96)' }, { transform: 'scale(1)' }],
+      { duration: 180, easing: 'ease-out' }
+    );
+  });
+});
+
+document.querySelectorAll('.tab-button').forEach((tab) => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab-button').forEach((item) => item.classList.remove('is-active'));
+    tab.classList.add('is-active');
+  });
+});
+
+document.querySelector('#zoomIn')?.addEventListener('click', () => {
+  zoom = Math.min(150, zoom + 10);
+  zoomValue.textContent = `${zoom}%`;
+});
+
+document.querySelector('#zoomOut')?.addEventListener('click', () => {
+  zoom = Math.max(50, zoom - 10);
+  zoomValue.textContent = `${zoom}%`;
+});
+
+document.querySelector('.exit-button')?.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+    </script>
+  </body>
+</html>

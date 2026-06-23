@@ -28,3 +28,33 @@
     display: none;  /* Chrome, Safari and Opera */
   }
 }
+
+@utility animate-fade-in {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.showroom-map-container {
+  height: 400px;
+}
+
+@media (min-width: 768px) {
+  .showroom-map-container {
+    height: 700px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .showroom-map-container {
+    height: 1050px;
+  }
+}
+

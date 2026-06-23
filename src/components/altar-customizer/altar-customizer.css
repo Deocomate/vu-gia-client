@@ -1,0 +1,1201 @@
+.altar-customizer {
+  --primary-red: #97400c;
+  --primary-dark: #2e2f2a;
+  --cream: #f9f7f3;
+  --cream-border: #fef4e9;
+  --line: #ebe5df;
+  --muted: #606060;
+  --neutral-1: #141416;
+  --neutral-2: #23262f;
+  --neutral-4: #777e90;
+  --neutral-6: #e6e8ec;
+  --neutral-7: #f4f5f6;
+  --green: #67a865;
+  --footer-text: #eaecf0;
+  --page-width: 1920px;
+}
+
+.altar-customizer {
+  width: min(100%, var(--page-width));
+  margin: 0 auto;
+  position: relative;
+  color: var(--primary-dark);
+  -webkit-font-smoothing: antialiased;
+}
+
+.altar-customizer .customizer-grid {
+  margin-left: 55px;
+  display: grid;
+  grid-template-columns: 297px 1191px 305px;
+  gap: 15px;
+  align-items: start;
+}
+
+.altar-customizer .left-rail,
+.altar-customizer .right-rail { position: relative; }
+
+.altar-customizer .left-rail {
+  width: 297px;
+  min-height: 828px;
+  isolation: isolate;
+}
+
+.altar-customizer .left-rail::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  top: 0;
+  width: 297px;
+  height: 649px;
+  border: 1px solid var(--cream-border);
+  border-radius: 10px;
+  background: var(--cream);
+}
+
+.altar-customizer .selector-card,
+.altar-customizer .guide-card,
+.altar-customizer .support-card,
+.altar-customizer .summary-card,
+.altar-customizer .trust-card,
+.altar-customizer .designer-panel {
+  border-radius: 10px;
+  border: 1px solid var(--cream-border);
+}
+
+.altar-customizer .selector-card {
+  position: relative;
+  z-index: 1;
+  width: 297px;
+  height: 480px;
+  overflow: hidden;
+  background: #fff;
+  border-color: var(--line);
+}
+
+.altar-customizer .selector-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 35px minmax(0, 1fr) 7px;
+  gap: 15px;
+  width: 100%;
+  height: 120px;
+  padding: 28px 19px 0 21px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+  color: var(--primary-dark);
+  text-align: left;
+}
+
+.altar-customizer .selector-row:last-child { border-bottom: 0; }
+.altar-customizer .selector-row.is-active { color: var(--primary-red); }
+
+.altar-customizer .step-index {
+  width: 35px;
+  height: 35px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e9e4de;
+  color: var(--primary-dark);
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 600;
+}
+
+.altar-customizer .selector-row.is-active .step-index {
+  background: var(--primary-red);
+  color: #fff;
+}
+
+.altar-customizer .selector-row strong {
+  display: block;
+  margin-top: 5px;
+  color: currentColor;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.altar-customizer .selector-row em {
+  display: block;
+  margin-top: 10px;
+  color: currentColor;
+  font-style: normal;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.altar-customizer .selector-row .selector-chevron {
+  position: absolute;
+  right: 21px;
+  top: 54px;
+  width: 12px;
+  height: 12px;
+  color: #9f9f9f;
+  flex-shrink: 0;
+}
+
+.altar-customizer .selector-row.is-active .selector-chevron {
+  color: var(--primary-red);
+}
+
+.altar-customizer .guide-card {
+  position: relative;
+  z-index: 1;
+  width: 297px;
+  height: 169px;
+  margin-top: 0;
+  padding: 21px 40px 0 23px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.altar-customizer .guide-card h3,
+.altar-customizer .support-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--primary-red);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.altar-customizer .rail-icon {
+  display: inline-block;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.altar-customizer .guide-icon {
+  width: 26px;
+  height: 24px;
+  margin-left: 0;
+}
+
+.altar-customizer .guide-card p,
+.altar-customizer .support-card p,
+.altar-customizer .support-card small {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+.altar-customizer .guide-card p {
+  width: 213px;
+  margin-top: 13px;
+  margin-left: 18px;
+}
+
+.altar-customizer .support-card {
+  position: relative;
+  z-index: 1;
+  width: 297px;
+  height: 169px;
+  margin-top: 10px;
+  padding: 18px 40px 0 29px;
+  border-color: var(--cream-border);
+  border-radius: 10px;
+  background: var(--cream);
+}
+
+.altar-customizer .support-card h3 {
+  gap: 10px;
+}
+
+.altar-customizer .support-icon {
+  width: 19px;
+  height: 22px;
+}
+
+.altar-customizer .support-card p {
+  width: 213px;
+  margin-top: 12px;
+  margin-left: 13px;
+}
+
+.altar-customizer .support-card strong {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 7px 0 0;
+  color: var(--primary-red);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.altar-customizer .phone-icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.9;
+}
+
+.altar-customizer .support-hours {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 8px !important;
+  white-space: nowrap;
+}
+
+.altar-customizer .clock-icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.6;
+}
+
+.altar-customizer .designer-panel {
+  position: relative;
+  width: 1191px;
+  height: 1210px;
+  overflow: hidden;
+  border-color: var(--line);
+  background: #fff;
+}
+
+.altar-customizer .tool-bar {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  right: 14px;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 3;
+}
+
+.altar-customizer .tool-button,
+.altar-customizer .zoom-control {
+  height: 39px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--primary-dark);
+}
+
+.altar-customizer .tool-button {
+  padding: 0 13px 0 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.altar-customizer .tool-button .tool-icon {
+  width: 20px;
+  height: 19px;
+  flex: 0 0 auto;
+  stroke: #575757;
+}
+
+.altar-customizer .undo-button { width: 130px; }
+.altar-customizer .redo-button { width: 113px; }
+.altar-customizer .center-button { width: 129px; }
+.altar-customizer .mirror-button { width: 160px; }
+.altar-customizer .clear-button { width: 135px; }
+.altar-customizer .restore-button { width: 179px; }
+
+.altar-customizer .zoom-control {
+  margin-left: auto;
+  width: 162px;
+  display: grid;
+  grid-template-columns: 44px 74px 44px;
+  align-items: center;
+  justify-items: center;
+  overflow: hidden;
+}
+
+.altar-customizer .zoom-control button {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--primary-dark);
+  font-family: "Montserrat", sans-serif;
+  font-size: 24px;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.altar-customizer .zoom-control span {
+  width: 74px;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  color: var(--primary-dark);
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.altar-customizer .altar-preview {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  width: 1191px;
+  height: 556px;
+  overflow: hidden;
+  background: #eee;
+}
+
+.altar-customizer .altar-preview > img {
+  position: absolute;
+  left: 0;
+  top: -43.34%;
+  width: 100%;
+  height: 160.66%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.altar-customizer .drag-hint {
+  position: absolute;
+  left: 50%;
+  top: 514px;
+  transform: translateX(-50%);
+  width: 347px;
+  height: 33px;
+  border-radius: 10px;
+  background: rgba(164, 164, 164, 0.7);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.altar-customizer .drag-hint .drag-hint-icon {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+  stroke: currentColor;
+}
+
+.altar-customizer .product-tabs {
+  position: absolute;
+  top: 638px;
+  left: 55px;
+  right: 74px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  white-space: nowrap;
+}
+
+.altar-customizer .tab-button {
+  border: 0;
+  background: transparent;
+  color: rgba(46, 47, 42, 0.7);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  padding: 0;
+}
+
+.altar-customizer .tab-button.is-active {
+  color: var(--primary-red);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+}
+
+.altar-customizer .custom-products {
+  position: absolute;
+  top: 682px;
+  left: 26px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.altar-customizer .mini-product-card {
+  position: relative;
+  width: 219px;
+  height: 328px;
+  flex: 0 0 219px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.altar-customizer .mini-product-card figure {
+  position: relative;
+  margin: 0;
+  width: 217px;
+  height: 200px;
+  border-radius: 8px 8px 0 0;
+  background: #fff;
+  overflow: hidden;
+}
+
+.altar-customizer .mini-product-card figure img {
+  position: absolute;
+  max-width: none;
+  display: block;
+  mix-blend-mode: darken;
+}
+
+.altar-customizer .mini-product-card:nth-child(1) figure img {
+  left: 0;
+  top: 18px;
+  width: 217px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.altar-customizer .mini-product-card:nth-child(2) figure img,
+.altar-customizer .mini-product-card:nth-child(4) figure img {
+  left: 23px;
+  top: 27px;
+  width: 173px;
+  height: 173px;
+  object-fit: contain;
+}
+
+.altar-customizer .mini-product-card:nth-child(3) figure img {
+  left: 19px;
+  top: 20px;
+  width: 182px;
+  height: 182px;
+  object-fit: contain;
+}
+
+.altar-customizer .mini-product-card h3,
+.altar-customizer .mini-product-card p,
+.altar-customizer .mini-product-card strong {
+  margin-left: 20px;
+  color: var(--primary-dark);
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.altar-customizer .mini-product-card h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 600;
+}
+
+.altar-customizer .mini-product-card p {
+  margin-top: 5px;
+  margin-bottom: 0;
+  font-weight: 400;
+}
+
+.altar-customizer .mini-product-card strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--primary-red);
+  font-weight: 600;
+}
+
+.altar-customizer .mini-product-card button {
+  position: absolute;
+  left: 20px;
+  bottom: 17px;
+  width: 179px;
+  height: 30px;
+  border: 1px solid var(--primary-red);
+  border-radius: 5px;
+  background: #fff;
+  color: var(--primary-red);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.altar-customizer .accessory-title {
+  position: absolute;
+  top: 1040px;
+  left: 55px;
+  color: var(--primary-dark);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.altar-customizer .accessory-title strong { font-weight: 700; }
+
+.altar-customizer .accessory-list {
+  position: absolute;
+  top: 1079px;
+  left: 55px;
+  display: grid;
+  grid-template-columns: 284px 327px 312px;
+  column-gap: 60px;
+  align-items: center;
+}
+
+.altar-customizer .accessory-list article {
+  position: relative;
+  height: 106px;
+  display: grid;
+  grid-template-columns: 116px 1fr 27px;
+  align-items: center;
+  gap: 13px;
+}
+
+.altar-customizer .accessory-list article + article::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 27px;
+  width: 1px;
+  height: 58px;
+  background: #e5e0db;
+}
+
+.altar-customizer .accessory-image {
+  position: relative;
+  display: block;
+  width: 116px;
+  height: 106px;
+  overflow: hidden;
+}
+
+.altar-customizer .accessory-image img {
+  position: absolute;
+  display: block;
+  max-width: none;
+  mix-blend-mode: darken;
+}
+
+.altar-customizer .accessory-image-tro img {
+  left: 0;
+  top: -56px;
+  width: 672px;
+  height: 224px;
+}
+
+.altar-customizer .accessory-image-cot img {
+  left: -237px;
+  top: -64px;
+  width: 704px;
+  height: 235px;
+}
+
+.altar-customizer .accessory-image-that-thao img {
+  left: -539px;
+  top: -75px;
+  width: 765px;
+  height: 256px;
+}
+
+.altar-customizer .accessory-list b,
+.altar-customizer .accessory-list div span {
+  display: block;
+  color: var(--primary-dark);
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.altar-customizer .accessory-list b {
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.altar-customizer .accessory-list div span { font-weight: 400; }
+
+.altar-customizer .accessory-list button {
+  width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  border-radius: 5px;
+  border: 1px solid #c56e49;
+  background: #fff;
+  color: var(--primary-red);
+  font-size: 22px;
+  line-height: 20px;
+  font-weight: 400;
+  padding: 0 0 3px;
+}
+
+.altar-customizer .right-rail {
+  width: 305px;
+  min-height: 719px;
+  position: relative;
+}
+
+.altar-customizer .summary-card {
+  position: relative;
+  z-index: 2;
+  width: 305px;
+  height: 527px;
+  padding: 21px 10px 0 18px;
+  border-color: var(--line);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.altar-customizer .summary-card h2 {
+  margin: 0 0 11px;
+  color: var(--primary-dark);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.altar-customizer .selected-items {
+  width: 277px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.altar-customizer .selected-items li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 76px 14px;
+  align-items: center;
+  column-gap: 7px;
+  height: 37px;
+  border-bottom: 0.5px solid rgba(221, 216, 212, 0.9);
+  color: var(--primary-dark);
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 500;
+}
+
+.altar-customizer .selected-items span {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.altar-customizer .selected-items b {
+  opacity: 0.8;
+  color: var(--primary-dark);
+  font-size: 12px;
+  line-height: 15px;
+  font-weight: 500;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.altar-customizer .selected-items button {
+  width: 14px;
+  height: 14px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: rgba(46, 47, 42, 0.8);
+  padding: 0;
+  cursor: pointer;
+}
+
+.altar-customizer .selected-items .remove-item-icon {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+}
+
+.altar-customizer .summary-total {
+  width: 277px;
+  padding-top: 14px;
+}
+
+.altar-customizer .summary-total span {
+  display: block;
+  margin: 0 0 6px;
+  color: var(--primary-dark);
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+.altar-customizer .summary-total strong {
+  display: block;
+  margin: 0 0 10px;
+  color: var(--primary-red);
+  font-size: 24px;
+  line-height: 29px;
+  font-weight: 600;
+}
+
+.altar-customizer .summary-total p {
+  width: 275px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.18;
+  font-weight: 400;
+}
+
+.altar-customizer .summary-actions {
+  width: 267px;
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 169px 39px 39px;
+  grid-template-rows: 39px 39px;
+  gap: 10px;
+}
+
+.altar-customizer .summary-actions button {
+  height: 39px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 17px;
+}
+
+.altar-customizer .primary-action {
+  grid-column: 1 / span 2;
+  grid-row: 1;
+  width: 218px;
+  border: 1px solid #903f11;
+  background: #903f11;
+  color: #fff;
+}
+
+.altar-customizer .phone-action {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.altar-customizer .secondary-action {
+  grid-column: 1;
+  grid-row: 2;
+  width: 169px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--primary-dark);
+}
+
+.altar-customizer .download-action { grid-column: 2; grid-row: 2; }
+.altar-customizer .bookmark-action { grid-column: 3; grid-row: 2; }
+
+.altar-customizer .summary-actions .icon-action {
+  width: 39px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--primary-dark);
+}
+
+.altar-customizer .summary-actions .phone-action {
+  border-color: #903f11;
+  background: #903f11;
+  color: #fff;
+}
+
+.altar-customizer .summary-actions svg {
+  width: 21px;
+  height: 21px;
+  stroke: currentColor;
+}
+
+.altar-customizer .trust-card {
+  position: relative;
+  z-index: 1;
+  width: 305px;
+  height: 220px;
+  margin-top: -28px;
+  padding: 49px 20px 0;
+  border-color: var(--cream-border);
+  border-radius: 10px;
+  background: #f9f5f0;
+  text-align: center;
+}
+
+.altar-customizer .trust-card p {
+  width: 252px;
+  margin: 0 auto 20px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 15px;
+  font-weight: 400;
+}
+
+.altar-customizer .trust-icons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 10px;
+}
+
+.altar-customizer .trust-icons span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.4;
+  font-weight: 500;
+  text-align: center;
+}
+
+.altar-customizer .trust-icons .trust-icon {
+  width: 50px;
+  height: 51px;
+  margin-bottom: 8px;
+  stroke: var(--muted);
+}
+
+/* Stability and responsive polish after Figma implementation */
+
+.altar-customizer .customizer-grid > * {
+  min-width: 0;
+}
+
+.altar-customizer .left-rail {
+  width: 100%;
+  max-width: 297px;
+}
+
+.altar-customizer .left-rail::before,
+.altar-customizer .selector-card,
+.altar-customizer .guide-card,
+.altar-customizer .support-card {
+  width: 100%;
+}
+
+.altar-customizer .selector-row span:nth-child(2) {
+  min-width: 0;
+}
+
+.altar-customizer .selector-row strong,
+.altar-customizer .selector-row em {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.altar-customizer .designer-panel {
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.altar-customizer .designer-panel::-webkit-scrollbar,
+.altar-customizer .selected-items::-webkit-scrollbar,
+.altar-customizer .product-tabs::-webkit-scrollbar,
+.altar-customizer .custom-products::-webkit-scrollbar,
+.altar-customizer .tool-bar::-webkit-scrollbar {
+  height: 8px;
+  width: 6px;
+}
+
+.altar-customizer .designer-panel::-webkit-scrollbar-thumb,
+.altar-customizer .selected-items::-webkit-scrollbar-thumb,
+.altar-customizer .product-tabs::-webkit-scrollbar-thumb,
+.altar-customizer .custom-products::-webkit-scrollbar-thumb,
+.altar-customizer .tool-bar::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(46, 47, 42, 0.3);
+}
+
+.altar-customizer .summary-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 527px;
+  height: 527px;
+  padding-bottom: 10px;
+  overflow: hidden;
+}
+
+.altar-customizer .summary-card h2,
+.altar-customizer .summary-total,
+.altar-customizer .summary-actions {
+  flex: 0 0 auto;
+}
+
+.altar-customizer .selected-items {
+  flex: 0 1 auto;
+  max-height: 228px;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+  scrollbar-gutter: stable;
+}
+
+.altar-customizer .selected-items li {
+  min-height: 37px;
+}
+
+.altar-customizer .selected-items button {
+  flex: 0 0 auto;
+}
+
+.altar-customizer .summary-total {
+  margin-top: 0;
+}
+
+.altar-customizer .summary-actions {
+  margin-bottom: 0;
+}
+
+@media (max-width: 1600px) {
+  .altar-customizer .customizer-grid {
+    width: calc(100% - 48px);
+    margin-left: auto;
+    margin-right: auto;
+    grid-template-columns: 297px minmax(0, 1fr) 305px;
+    gap: 12px;
+  }
+
+  .altar-customizer .left-rail {
+    max-width: 297px;
+    transform: none;
+  }
+
+  .altar-customizer .left-rail::before,
+  .altar-customizer .selector-card,
+  .altar-customizer .guide-card,
+  .altar-customizer .support-card {
+    width: 100%;
+  }
+
+  .altar-customizer .designer-panel {
+    width: 100%;
+  }
+
+  .altar-customizer .right-rail {
+    width: 305px;
+  }
+}
+
+@media (max-width: 1180px) {
+  .altar-customizer .customizer-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    width: min(100% - 32px, 860px);
+    margin: 0 auto;
+    gap: 16px;
+  }
+
+  .altar-customizer .left-rail {
+    width: 100%;
+    max-width: none;
+    min-height: 0;
+  }
+
+  .altar-customizer .left-rail::before {
+    display: none;
+  }
+
+  .altar-customizer .selector-card {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-color: var(--line);
+    background: #fff;
+  }
+
+  .altar-customizer .selector-row {
+    min-height: 108px;
+    height: auto;
+    grid-template-columns: 35px minmax(0, 1fr) 12px;
+    gap: 14px;
+    padding: 24px 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .altar-customizer .selector-row:nth-child(odd) {
+    border-right: 1px solid var(--line);
+  }
+
+  .altar-customizer .selector-row:nth-child(3),
+  .altar-customizer .selector-row:nth-child(4) {
+    border-bottom: 0;
+  }
+
+  .altar-customizer .selector-row .selector-chevron {
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%);
+  }
+
+  .altar-customizer .selector-row strong {
+    margin-top: 3px;
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .altar-customizer .selector-row em {
+    font-size: 15px;
+    line-height: 20px;
+  }
+
+  .altar-customizer .guide-card,
+  .altar-customizer .support-card {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--cream-border);
+    border-radius: 10px;
+    background: var(--cream);
+    padding: 22px 24px;
+  }
+
+  .altar-customizer .guide-card {
+    margin-top: 16px;
+  }
+
+  .altar-customizer .support-card {
+    margin-top: 12px;
+  }
+
+  .altar-customizer .guide-card p,
+  .altar-customizer .support-card p {
+    width: auto;
+  }
+
+  .altar-customizer .designer-panel {
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .altar-customizer .right-rail {
+    width: 100%;
+    margin-top: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(240px, 0.85fr);
+    gap: 16px;
+  }
+
+  .altar-customizer .summary-card {
+    width: 100%;
+    min-height: 0;
+    height: auto;
+    max-height: none;
+    padding: 21px 18px 18px;
+    overflow: visible;
+  }
+
+  .altar-customizer .selected-items {
+    width: 100%;
+    max-height: 260px;
+  }
+
+  .altar-customizer .summary-total,
+  .altar-customizer .summary-total p {
+    width: 100%;
+  }
+
+  .altar-customizer .summary-actions {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) 39px 39px;
+  }
+
+  .altar-customizer .primary-action,
+  .altar-customizer .secondary-action {
+    width: 100%;
+  }
+
+  .altar-customizer .trust-card {
+    width: 100%;
+    height: auto;
+    min-height: 220px;
+    margin-top: 0;
+    padding: 28px 20px 24px;
+  }
+
+  .altar-customizer .trust-card p {
+    width: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .altar-customizer .right-rail {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .altar-customizer .trust-card {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .altar-customizer .customizer-grid {
+    width: min(100% - 28px, 560px);
+  }
+
+  .altar-customizer .selector-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .altar-customizer .selector-row,
+  .altar-customizer .selector-row:nth-child(odd) {
+    border-right: 0;
+  }
+
+  .altar-customizer .selector-row:nth-child(3) {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .altar-customizer .selector-row strong {
+    white-space: normal;
+  }
+
+  .altar-customizer .selector-row em {
+    white-space: normal;
+  }
+
+  .altar-customizer .summary-card {
+    padding: 21px 16px 18px;
+  }
+
+  .altar-customizer .selected-items {
+    max-height: 230px;
+  }
+
+  .altar-customizer .summary-total strong {
+    font-size: clamp(22px, 6vw, 24px);
+    line-height: 1.2;
+  }
+
+  .altar-customizer .summary-actions {
+    grid-template-columns: minmax(0, 1fr) 39px 39px;
+    gap: 8px;
+  }
+
+  .altar-customizer .secondary-action {
+    font-size: 13px;
+  }
+
+  .altar-customizer .trust-icons {
+    column-gap: 6px;
+  }
+
+  .altar-customizer .trust-icons .trust-icon {
+    width: 44px;
+    height: 45px;
+  }
+}

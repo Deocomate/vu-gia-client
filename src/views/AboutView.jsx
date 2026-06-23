@@ -1,11 +1,13 @@
-import PagePlaceholder from "@/views/PagePlaceholder";
+import AboutHero from "@/components/about/AboutHero";
+import AboutHeritage from "@/components/about/AboutHeritage";
+import AboutProcessStats from "@/components/about/AboutProcessStats";
 
 export default function AboutView() {
   return (
-    <PagePlaceholder
-      description="Giới thiệu câu chuyện, giá trị và hành trình của Gốm Sứ Vũ Gia."
-      eyebrow="Giới thiệu"
-      title="Về chúng tôi"
-    />
+    <div className="w-full bg-[#F9F8F8] overflow-hidden">
+      <AboutHero />
+      <AboutHeritage />
+      <AboutProcessStats />
+    </div>
   );
 }

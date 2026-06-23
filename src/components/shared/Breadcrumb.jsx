@@ -13,23 +13,23 @@ export default function Breadcrumb({ items, separator = "/", className = "" }) {
 
   return (
     <nav className={`flex items-center select-none ${className}`} aria-label="Breadcrumb">
-      <ol className="flex items-center flex-wrap text-[16px] font-montserrat font-bold uppercase tracking-normal">
+      <ol className="flex items-center flex-wrap text-[14px] font-montserrat font-[400] text-[#2E2F2A] tracking-normal">
         {trail.map((item, index) => {
           const isLast = index === trail.length - 1;
 
           return (
             <li key={index} className="flex items-center">
               {index > 0 && (
-                <span className="text-[#383838] mx-2 flex-shrink-0 select-none font-bold">
+                <span className="text-[#2E2F2A] mx-2 flex-shrink-0 select-none font-[400]">
                   {separator}
                 </span>
               )}
               {isLast || !item.href ? (
-                <span className="text-[#97400C] font-bold">{item.name}</span>
+                <span className="text-[#2E2F2A] font-[400]">{item.name}</span>
               ) : (
                 <Link
                   href={item.href}
-                  className="text-[#383838] hover:text-[#97400C] transition-colors duration-300"
+                  className="text-[#2E2F2A] hover:underline transition-colors duration-300"
                 >
                   {item.name}
                 </Link>
