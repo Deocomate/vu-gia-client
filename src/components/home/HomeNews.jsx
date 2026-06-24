@@ -42,16 +42,16 @@ const HomeNews = () => {
   );
 
   return (
-    <section className="w-full py-[70px] bg-white">
-      {/* Căn lề padding-x 60px trên Desktop (từ cạnh viền tới ảnh) */}
-      <div className="max-w-[1920px] mx-auto px-[20px] lg:px-[60px]">
-        {/* Tiêu đề (Khoảng cách dưới 70px) */}
-        <h2 className="text-center text-primary font-montserrat font-[800] text-[32px] lg:text-[40px] leading-[40px] uppercase mb-[70px]">
+    <section className="w-full py-[35px] lg:py-[70px] bg-white overflow-hidden">
+      {/* Căn lề padding-x 20px trên mobile, 60px trên Desktop */}
+      <div className="max-w-[1920px] mx-auto px-[31px] lg:px-[60px]">
+        {/* Tiêu đề (Khoảng cách dưới 22px trên mobile, 70px trên desktop) */}
+        <h2 className="text-center text-primary font-montserrat font-[800] text-[20px] lg:text-[40px] leading-[32px] lg:leading-[40px] uppercase mb-[22px] lg:mb-[70px]">
           Tin tức & sự kiện
         </h2>
 
-        {/* Danh sách bài viết (Khoảng cách giữa các cột: 20px) */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-[20px]">
+        {/* Desktop Layout (Danh sách bài viết 3 cột) */}
+        <div className="hidden lg:grid grid-cols-3 gap-[20px]">
           {newsData.map((news) => (
             <NewsCard
               key={news.id}
@@ -61,6 +61,22 @@ const HomeNews = () => {
               description={news.description}
               slug={news.slug}
               hasTwoLineTitle={hasTwoLineTitle}
+            />
+          ))}
+        </div>
+
+        {/* Mobile Layout (Vuốt ngang) */}
+        <div className="lg:hidden w-[calc(100%+62px)] mx-[-31px] px-[31px] overflow-x-auto no-scrollbar flex flex-row gap-[22px] scroll-px-[31px] snap-x snap-mandatory pb-[10px]">
+          {newsData.map((news) => (
+            <NewsCard
+              key={news.id}
+              image={news.image}
+              category={news.category}
+              title={news.title}
+              description={news.description}
+              slug={news.slug}
+              hasTwoLineTitle={hasTwoLineTitle}
+              className="w-[252px] shrink-0 snap-start"
             />
           ))}
         </div>

@@ -63,7 +63,7 @@ export default function HomeCategoryBanners() {
       </div>
 
       {/* Mobile Layout */}
-      <div className="lg:hidden w-full overflow-x-auto no-scrollbar flex gap-[20px] px-[28px] scroll-px-[28px] snap-x snap-mandatory">
+      <div className="lg:hidden w-full overflow-x-auto no-scrollbar flex gap-[20px] px-[31px] scroll-px-[31px] snap-x snap-mandatory">
         {categories.map((cat, idx) => (
           <Link
             key={idx}

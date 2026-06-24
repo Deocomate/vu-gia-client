@@ -5,9 +5,9 @@ import { ROUTES } from "@/utils/routes";
 
 export default function Footer() {
   return (
-    <footer className="relative bg-primary overflow-hidden w-full pt-[31px] lg:pt-[65px] font-montserrat z-10 mt-auto">
+    <footer className="relative bg-primary overflow-hidden w-full pt-[32px] lg:pt-[36px] font-montserrat z-10 mt-auto">
       {/* Background Patterns (Desktop only) */}
-      <div className="absolute left-[-160px] top-[-220px] w-[300px] lg:w-[400px] h-full pointer-events-none z-[-1] hidden lg:block opacity-70">
+      <div className="absolute left-[-160px] top-[-160px] w-[300px] lg:w-[400px] h-full pointer-events-none z-[-1] hidden lg:block opacity-70">
         <Image
           src="/images/footer/footer-pattern-left.png"
           alt=""
@@ -15,9 +15,19 @@ export default function Footer() {
           className="object-contain object-left-top"
         />
       </div>
-      <div className="absolute right-[-160px] top-[175px] w-[300px] lg:w-[400px] h-full pointer-events-none z-[-1] hidden lg:block opacity-70">
+      <div className="absolute right-[-160px] top-[165px] w-[300px] lg:w-[400px] h-full pointer-events-none z-[-1] hidden lg:block opacity-70">
         <Image
           src="/images/footer/footer-pattern-right.png"
+          alt=""
+          fill
+          className="object-contain object-right-bottom"
+        />
+      </div>
+
+      {/* Background Pattern (Mobile only) */}
+      <div className="absolute right-[-80px] bottom-[-100px] w-[270px] h-[350px] pointer-events-none z-[-1] lg:hidden opacity-20">
+        <Image
+          src="/images/bg-pattern/bg-pattern.svg"
           alt=""
           fill
           className="object-contain object-right-bottom"
@@ -29,10 +39,10 @@ export default function Footer() {
         <div className="flex flex-col lg:flex-row justify-between gap-[20px]">
           
           {/* ================= CỘT TRÁI: LOGO & THÔNG TIN ================= */}
-          <div className="flex flex-row lg:flex-col justify-between items-start w-full lg:w-[320px] shrink-0 pb-0 lg:pb-[30px]">
+          <div className="flex flex-row lg:flex-col justify-between items-start w-full lg:w-[320px] shrink-0 pb-0 lg:pb-[44px]">
             <Link
               href={ROUTES.HOME}
-              className="mb-0 lg:mb-[38px] shrink-0"
+              className="mb-0 lg:mb-[40px] shrink-0"
             >
               <Image
                 src="/images/footer/footer-logo.png"
@@ -44,7 +54,7 @@ export default function Footer() {
             </Link>
 
             {/* Text Title */}
-            <div className="hidden lg:flex mb-[30px] items-center">
+            <div className="hidden lg:flex mb-[20px] items-center">
               <span className="text-[#EAECF0] text-[24px] font-[600] uppercase leading-[24px]">
                 Thanh hai
               </span>
@@ -54,38 +64,38 @@ export default function Footer() {
             </div>
 
             {/* Address List */}
-            <ul className="flex flex-col gap-[9px] lg:gap-[15px] text-right lg:text-left mt-[5px] lg:mt-0">
-              <li className="flex items-start justify-end lg:justify-start gap-[9px] lg:gap-[15px]">
+            <ul className="flex flex-col gap-[9px] lg:gap-[12px] text-left">
+              <li className="flex items-start justify-start gap-[9px] lg:gap-[15px]">
                 <Image
                   src="/images/footer/footer-location-icon.png"
                   alt="Location"
                   width={16}
                   height={16}
-                  className="w-[16px] h-[16px] object-contain mt-[4px] lg:mt-[5px] shrink-0 hidden lg:block"
+                  className="w-[14px] h-[14px] lg:w-[16px] lg:h-[16px] object-contain mt-[4px] lg:mt-[5px] shrink-0"
                 />
                 <span className="text-[#EAECF0] text-[14px] lg:text-[16px] font-[400] leading-[24px] lg:leading-[26px]">
                   18 Giang Cao, Bát Tràng
                 </span>
               </li>
-              <li className="flex items-start justify-end lg:justify-start gap-[9px] lg:gap-[15px]">
+              <li className="flex items-start justify-start gap-[9px] lg:gap-[15px]">
                 <Image
                   src="/images/footer/footer-mail-icon.png"
                   alt="Email"
                   width={16}
                   height={16}
-                  className="w-[16px] h-[16px] object-contain mt-[4px] lg:mt-[5px] shrink-0 hidden lg:block"
+                  className="w-[14px] h-[14px] lg:w-[16px] lg:h-[16px] object-contain mt-[4px] lg:mt-[5px] shrink-0"
                 />
                 <span className="text-[#EAECF0] text-[14px] lg:text-[16px] font-[400] leading-[24px] lg:leading-[26px]">
                   gomvugia@gmail.com
                 </span>
               </li>
-              <li className="flex items-start justify-end lg:justify-start gap-[9px] lg:gap-[15px]">
+              <li className="flex items-start justify-start gap-[9px] lg:gap-[15px]">
                 <Image
                   src="/images/footer/footer-phone-icon.png"
                   alt="Phone"
                   width={16}
                   height={16}
-                  className="w-[16px] h-[16px] object-contain mt-[4px] lg:mt-[5px] shrink-0 hidden lg:block"
+                  className="w-[13px] h-[15px] lg:w-[16px] lg:h-[16px] object-contain mt-[4px] lg:mt-[5px] shrink-0"
                 />
                 <span className="text-[#EAECF0] text-[14px] lg:text-[16px] font-[400] leading-[24px] lg:leading-[26px]">
                   091 7777 247
@@ -95,10 +105,10 @@ export default function Footer() {
           </div>
 
           {/* ================= CỘT PHẢI: WRAPPER ================= */}
-          <div className="flex flex-col flex-1 w-full lg:min-w-0 mt-[20px] lg:mt-0">
+          <div className="flex flex-col flex-1 w-full lg:min-w-0 mt-[20px] lg:mt-[30px]">
             
             {/* Phía trên của cột phải: Links + Form */}
-            <div className="flex flex-col lg:flex-row justify-between gap-[30px] lg:gap-[50px]">
+            <div className="flex flex-col lg:flex-row justify-between gap-[0px] md:gap-[30px] lg:gap-[50px]">
               
               {/* Form Newsletter & Bộ Công Thương */}
               <div className="flex flex-col w-full lg:w-auto shrink-0 items-center lg:items-start order-1 lg:order-2 mb-[10px] lg:mb-0">
@@ -110,9 +120,9 @@ export default function Footer() {
                   <input
                     type="email"
                     placeholder="Email của bạn"
-                    className="w-full lg:w-[282px] h-[45px] lg:h-[54px] bg-[#EABA96]/60 rounded-[60px] px-[20px] text-[#97400C] placeholder:text-[#97400C]/70 placeholder:italic lg:placeholder:not-italic outline-none text-[14px] lg:text-[16px] font-normal"
+                    className="w-[282px] h-[37px] lg:h-[54px] bg-[#EABA96]/60 rounded-[60px] px-[20px] text-[#97400C] placeholder:text-[#97400C]/70 placeholder:italic lg:placeholder:not-italic outline-none text-[14px] lg:text-[16px] font-normal"
                   />
-                  <button className="flex-shrink-0 w-[70px] h-[45px] lg:h-[54px] bg-white/60 rounded-[60px] text-[#97400C] font-[600] text-[16px] lg:text-[20px] flex items-center justify-center hover:bg-white/80 transition-colors">
+                  <button className="flex-shrink-0 w-[70px] h-[37px] lg:h-[54px] bg-white/60 rounded-[60px] text-[#97400C] font-[600] text-[16px] lg:text-[20px] flex items-center justify-center hover:bg-white/80 transition-colors">
                     Gửi
                   </button>
                 </div>
@@ -242,26 +252,46 @@ export default function Footer() {
             </div>
 
             {/* Phía dưới của cột phải: Divider & Copyright */}
-            <div className="w-full h-[1px] bg-white/20 mt-[33px] lg:mt-[44px] mb-[20px] lg:mb-[30px]"></div>
+            <div className="w-[calc(100%+70px)] mx-[-35px] lg:w-full lg:mx-0 h-[1px] bg-white/20 mt-[33px] lg:mt-auto mb-[15px]"></div>
 
-            <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-[15px] lg:gap-0 pb-[30px]">
-              <p className="text-[#E0C5B6] lg:text-white text-[11px] lg:text-[14px] font-[400] leading-[26px]">
+            {/* Desktop Bottom Footer (Copyright & Policy links distributed inline) */}
+            <div className="hidden lg:flex items-center justify-between w-full pb-[15px] text-white text-[14px] font-montserrat">
+              <p className="font-[400] leading-[26px]">
                 Copyright © 2026 . All rights reserved
               </p>
-              <div className="flex items-center gap-[10px] lg:gap-[20px] flex-wrap justify-center">
-                <Link href={ROUTES.SHIPPING_POLICY} className="text-[#E0C5B6] lg:text-white text-[12px] lg:text-[14px] font-[400] leading-[26px] hover:opacity-80 transition-opacity">
+              <span className="font-inter opacity-60">|</span>
+              <Link href={ROUTES.SHIPPING_POLICY} className="hover:opacity-80 transition-opacity">
+                Điều khoản dịch vụ
+              </Link>
+              <span className="font-inter opacity-60">|</span>
+              <Link href={ROUTES.PRIVACY_POLICY} className="hover:opacity-80 transition-opacity">
+                Chính sách bảo mật
+              </Link>
+              <span className="font-inter opacity-60">|</span>
+              <Link href={ROUTES.RETURN_POLICY} className="hover:opacity-80 transition-opacity">
+                Quy định chung
+              </Link>
+            </div>
+
+            {/* Mobile Bottom Footer (Policies on top, Copyright below) */}
+            <div className="lg:hidden flex flex-col-reverse items-center justify-between pb-[15px] w-[calc(100%+70px)] mx-[-35px] px-[35px]">
+              <p className="text-[#E0C5B6] text-[11px] font-[400] leading-[26px]">
+                Copyright © 2026 . All rights reserved
+              </p>
+              <div className="flex items-center gap-[8px] flex-nowrap justify-center whitespace-nowrap">
+                <Link href={ROUTES.SHIPPING_POLICY} className="text-[#E0C5B6] text-[12px] font-[400] leading-[26px] hover:opacity-80 transition-opacity">
                   Điều khoản dịch vụ
                 </Link>
-                <span className="font-archivo lg:font-inter text-[#E0C5B6] lg:text-white opacity-60 text-[14px]">
+                <span className="font-archivo text-[#E0C5B6] opacity-60 text-[14px]">
                   |
                 </span>
-                <Link href={ROUTES.PRIVACY_POLICY} className="text-[#E0C5B6] lg:text-white text-[12px] lg:text-[14px] font-[400] leading-[26px] hover:opacity-80 transition-opacity">
+                <Link href={ROUTES.PRIVACY_POLICY} className="text-[#E0C5B6] text-[12px] font-[400] leading-[26px] hover:opacity-80 transition-opacity">
                   Chính sách bảo mật
                 </Link>
-                <span className="font-archivo lg:font-inter text-[#E0C5B6] lg:text-white opacity-60 text-[14px]">
+                <span className="font-archivo text-[#E0C5B6] opacity-60 text-[14px]">
                   |
                 </span>
-                <Link href={ROUTES.RETURN_POLICY} className="text-[#E0C5B6] lg:text-white text-[12px] lg:text-[14px] font-[400] leading-[26px] hover:opacity-80 transition-opacity">
+                <Link href={ROUTES.RETURN_POLICY} className="text-[#E0C5B6] text-[12px] font-[400] leading-[26px] hover:opacity-80 transition-opacity">
                   Quy định chung
                 </Link>
               </div>

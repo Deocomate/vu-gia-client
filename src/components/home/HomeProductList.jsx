@@ -94,7 +94,7 @@ export default function HomeProductList({ title, tabs = [], products = [] }) {
   };
 
   return (
-    <section className="max-w-[1470px] mx-auto w-full px-[16px] md:px-[30px] my-[50px] lg:my-[100px]">
+    <section className="max-w-[1470px] mx-auto w-full px-[31px] md:px-[30px] my-[50px] lg:my-[100px]">
       <SectionTitle title={title} />
 
       {/* Desktop Tab Selector */}

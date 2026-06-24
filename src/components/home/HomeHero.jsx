@@ -62,7 +62,7 @@ export default function HomeHero() {
           aria-hidden
         />
       </div>
-      <div className="hidden lg:block absolute bottom-10 scale-175 left-[-190px] w-[200px] h-[281px] sm:w-[280px] sm:h-[393px] lg:w-[400px] lg:h-[562px] pointer-events-none z-0">
+      <div className="hidden lg:block absolute bottom-24 scale-175 left-[-190px] w-[200px] h-[281px] sm:w-[280px] sm:h-[393px] lg:w-[400px] lg:h-[562px] pointer-events-none z-0">
         <Image
           src="/images/home/home-hero-pattern-left.png"
           alt=""
@@ -73,7 +73,7 @@ export default function HomeHero() {
       </div>
 
       <div className="relative z-10 max-w-[1470px] mx-auto w-full px-[31px] mt-0 mb-0 lg:px-[30px] lg:my-[70px] grid grid-cols-1 gap-[20px] lg:gap-[26px]">
-        <div className="lg:hidden h-[35px] rounded-[8px] border border-[#E1DEDE] bg-white flex items-center gap-[8px] px-[9px]">
+        <div className="lg:hidden h-[35px] mt-5 rounded-[8px] border border-[#E1DEDE] bg-white flex items-center gap-[8px] px-[9px]">
           <Search className="w-[14px] h-[14px] text-[#777777]" aria-hidden />
           <span className="font-montserrat text-[14px] leading-[26px] text-[#777777]">
             Tìm kiếm

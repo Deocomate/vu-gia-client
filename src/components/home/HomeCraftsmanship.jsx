@@ -6,28 +6,28 @@ import craft3 from "@/assets/images/home/HomeCraftsmanship-3.png";
 
 const HomeCraftsmanship = () => {
   return (
-    <section className="relative w-full bg-[#FFF6ED] lg:bg-[#FCF8F5] overflow-hidden font-montserrat">
+    <section className="relative w-full bg-[#FFF6ED] overflow-hidden font-montserrat">
       {/* Background Pattern (Trái) */}
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[250px] h-[80%] hidden lg:block pointer-events-none z-0">
+      <div className="absolute left-[-299px] top-[-51px] w-[530px] h-[744px] hidden lg:block pointer-events-none z-0">
         <Image
           src="/images/home/bg-pattern-left.png"
           alt=""
           fill
-          className="object-contain object-left opacity-30"
+          className="object-contain object-left opacity-80"
         />
       </div>
 
       {/* Background Pattern (Phải) */}
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[250px] h-[80%] hidden lg:block pointer-events-none z-0">
+      <div className="absolute right-[-300px] bottom-[5px] w-[530px] h-[744px] hidden lg:block pointer-events-none z-0">
         <Image
           src="/images/home/bg-pattern-right.png"
           alt=""
           fill
-          className="object-contain object-right opacity-30"
+          className="object-contain object-right opacity-80"
         />
       </div>
 
-      <div className="container mx-auto px-4 lg:px-[30px] max-w-[1470px] flex flex-col items-center relative z-10">
+      <div className="container mx-auto px-[31px] lg:px-[30px] max-w-[1470px] flex flex-col items-center relative z-10">
         {/* ================= DESKTOP LAYOUT ================= */}
         <div className="hidden lg:flex flex-col items-center w-full">
           {/* ================= TIÊU ĐỀ ================= */}

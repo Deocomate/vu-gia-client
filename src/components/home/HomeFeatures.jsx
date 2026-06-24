@@ -25,7 +25,7 @@ export default function HomeFeatures() {
   ];
 
   return (
-    <section className="max-w-[1470px] mx-auto w-full px-[23px] mt-[26px] mb-[50px] lg:px-[30px] lg:my-[60px]">
+    <section className="max-w-[1470px] mx-auto w-full px-[31px] mt-[26px] mb-[50px] lg:px-[30px] lg:my-[60px]">
       <div className="max-w-[1352px] mx-auto grid grid-cols-4 gap-x-0 lg:flex lg:flex-row lg:items-start lg:justify-between">
         {features.map((item, idx) => (
           <div

@@ -7,13 +7,13 @@ const HomeVideoProcess = () => {
   return (
     <section className="w-full flex flex-col items-center overflow-hidden bg-white">
       {/* Tiêu đề */}
-      <h2 className="mt-[78px] mb-[70px] text-center text-[#97400C] font-['Montserrat'] text-[40px] font-extrabold uppercase leading-[40px]">
+      <h2 className="mt-[35px] mb-[17px] lg:mt-[78px] lg:mb-[70px] text-center text-[#97400C] font-['Montserrat'] text-[20px] lg:text-[40px] font-extrabold uppercase leading-[32px] lg:leading-[40px]">
         Quy trình sản xuất
       </h2>
 
       {/* Container chứa video/thumbnail */}
       {/* Container bắt buộc phải có thuộc tính 'relative' để Image dùng thuộc tính 'fill' bên trong */}
-      <div className="relative w-full max-w-[1470px] h-[747px] mx-auto">
+      <div className="relative w-full max-w-[430px] lg:max-w-[1470px] h-[223px] lg:h-[747px] mx-auto">
         {/* Ảnh nền Thumbnail (Sử dụng next/image) */}
         <Image
           src={videoThumb}
@@ -29,18 +29,18 @@ const HomeVideoProcess = () => {
 
         {/* Nút Play */}
         <button
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[108px] h-[108px] hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer z-10"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[51.8px] h-[51.8px] lg:w-[108px] lg:h-[108px] hover:scale-110 transition-transform duration-300 ease-in-out cursor-pointer z-10"
           aria-label="Xem video quy trình sản xuất"
         >
           {/* Nút play được gọi từ thư mục public (Sử dụng next/image) */}
-          {/* Với ảnh từ public (string), bạn cần cung cấp width và height rõ ràng */}
-          <Image
-            src="/images/home/video-play-button.png"
-            alt="Play icon"
-            width={108}
-            height={108}
-            className="object-contain"
-          />
+          <div className="relative w-full h-full">
+            <Image
+              src="/images/home/video-play-button.png"
+              alt="Play icon"
+              fill
+              className="object-contain"
+            />
+          </div>
         </button>
       </div>
     </section>
