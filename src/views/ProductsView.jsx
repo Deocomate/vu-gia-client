@@ -194,8 +194,8 @@ export default function ProductsView() {
   );
 
   return (
-    <div className="w-full bg-white pb-16">
-      <div className="max-w-[1470px] mx-auto px-[20px] lg:px-[60px]">
+    <div className="w-full bg-white">
+      <div className="max-w-[1470px] mx-auto px-[31px] lg:px-[60px]">
         {/* Toolbar with live filters */}
         <ProductToolbar
           totalResults={processedProducts.length}

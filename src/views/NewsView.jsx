@@ -259,9 +259,9 @@ export default function NewsView() {
       />
 
       {/* 3. News Grid Layout */}
-      <div className="max-w-[1470px] mx-auto px-[20px] lg:px-[60px] pt-[50px] pb-0">
+      <div className="max-w-[1444px] mx-auto px-[30px] xl:px-0 pt-[30px] lg:pt-[50px] pb-0">
         {paginatedNews.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[15px] gap-y-[60px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[16px] gap-y-[40px] lg:gap-y-[60px]">
             {paginatedNews.map((news) => (
               <NewsCard
                 key={news.id}
@@ -286,7 +286,7 @@ export default function NewsView() {
         )}
 
         {/* 4. Navigation Pagination */}
-        <div className="mt-[20px] mb-[-40px] flex justify-center">
+        <div className="mt-[40px] lg:mt-[50px] flex justify-center">
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}

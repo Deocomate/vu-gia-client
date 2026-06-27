@@ -6,13 +6,12 @@ import Link from "next/link";
 import { ROUTES } from "@/utils/routes";
 
 // Import local assets
-import heroBg from "@/assets/images/about/hero-bg.png";
-import image1 from "@/assets/images/home/HomeCraftsmanship-2.png"; // shelves of ceramics
-import image2 from "@/assets/images/about/about-image-1.png";
-import image3 from "@/assets/images/about/about-image-2.png";
-import image4 from "@/assets/images/about/about-image-3.png";
-import image5 from "@/assets/images/home/HomeCraftsmanship-1.png";
-import image6 from "@/assets/images/home/HomeCraftsmanship-3.png";
+import heroBg from "@/assets/images/gallery/hero-bg.jpg";
+import image1 from "@/assets/images/gallery/gallery-1.jpg";
+import image2 from "@/assets/images/gallery/gallery-2.jpg";
+import image3 from "@/assets/images/gallery/gallery-3.jpg";
+import image4 from "@/assets/images/gallery/gallery-4.jpg";
+import image5 from "@/assets/images/gallery/gallery-5.jpg";
 
 const GALLERY_IMAGES = [
   { src: image1, alt: "Kệ phơi sản phẩm gốm mộc tại xưởng chế tác" },
@@ -29,10 +28,6 @@ const GALLERY_IMAGES = [
     src: image5,
     alt: "Các tác phẩm bình phong thủy men rạn độc bản hoàn thiện",
   },
-  {
-    src: image6,
-    alt: "Đôi tay nghệ nhân chăm chút nét vẽ trên xương đất gốm sứ",
-  },
 ];
 
 export default function GalleryView() {
@@ -46,7 +41,7 @@ export default function GalleryView() {
   useEffect(() => {
     const updateCount = () => {
       if (window.innerWidth < 640) {
-        setVisibleCount(2);
+        setVisibleCount(1);
       } else if (window.innerWidth < 1024) {
         setVisibleCount(3);
       } else {
@@ -109,9 +104,9 @@ export default function GalleryView() {
   const currentImage = GALLERY_IMAGES[activeIndex];
 
   return (
-    <div className="w-full min-h-screen bg-[#FAF7F7] overflow-hidden">
+    <div className="w-full min-h-[400px] lg:min-h-screen bg-[#FAF7F7] overflow-hidden">
       {/* ================= HERO BANNER ================= */}
-      <section className="relative w-full h-[320px] md:h-[350px] overflow-hidden flex items-center justify-center">
+      <section className="relative w-full h-[132px] lg:h-[320px] overflow-hidden flex items-center justify-center">
         {/* Background Image */}
         <Image
           src={heroBg}
@@ -122,12 +117,12 @@ export default function GalleryView() {
           priority
         />
 
-        {/* Dark Screen Overlay */}
-        <div className="absolute inset-0 bg-black/45 z-10" />
+        {/* Dark Screen Overlay (49% as per Figma context) */}
+        <div className="absolute inset-0 bg-black/[0.49] z-10" />
 
         {/* Breadcrumb Text */}
         <div className="relative z-20 text-center px-4">
-          <nav className="text-white text-[20px] md:text-[24px] font-inter font-bold uppercase tracking-wider leading-[16px] flex items-center justify-center gap-2">
+          <nav className="text-white text-[16px] lg:text-[24px] font-inter font-bold uppercase tracking-wider leading-[16px] flex items-center justify-center gap-2">
             <Link
               href={ROUTES.HOME}
               className="hover:text-primary transition-colors duration-300"
@@ -141,16 +136,16 @@ export default function GalleryView() {
       </section>
 
       {/* ================= MAIN CONTENT SECTION ================= */}
-      <section className="w-full bg-[#FAF7F7] pt-[89px] pb-[99px] font-montserrat">
-        <div className="max-w-[1470px] mx-auto px-[20px] md:px-[60px] lg:px-[80px]">
+      <section className="w-full bg-[#FAF7F7] pt-[30px] lg:pt-[89px] pb-[70px] lg:pb-[100px] font-montserrat">
+        <div className="max-w-[1440px] mx-auto px-[31px] lg:px-0">
           {/* Section Heading */}
-          <h2 className="text-primary text-[28px] md:text-[32px] font-montserrat font-[700] uppercase leading-[40px] mb-[50px] text-left tracking-wide">
+          <h2 className="text-primary text-[22px] lg:text-[32px] font-montserrat font-[700] uppercase leading-[40px] mb-[30px] lg:mb-[50px] pl-[16px] lg:pl-0 text-left">
             Hình ảnh của khách hàng
           </h2>
 
           {/* Large Main Display Image */}
           <div
-            className="relative w-full aspect-[16/10] overflow-hidden group cursor-pointer bg-neutral-100 shadow-sm border border-neutral-200 rounded-[2px]"
+            className="relative w-full aspect-[16/9] overflow-hidden group cursor-pointer bg-neutral-100 shadow-sm border border-neutral-200 rounded-[2px]"
             onClick={() => setIsLightboxOpen(true)}
           >
             {/* The Active Image */}
@@ -196,18 +191,18 @@ export default function GalleryView() {
           </div>
 
           {/* Spacing Gap */}
-          <div className="h-[60px]" />
+          <div className="h-[20px] lg:h-[60px]" />
 
           {/* Slider Controls & Thumbnail Carousel */}
           <div className="relative w-full select-none">
             {/* Left Shift Button */}
             <button
               onClick={handlePrev}
-              className="absolute left-[-15px] md:left-[-48px] lg:left-[-64px] top-1/2 -translate-y-1/2 w-[48px] h-[48px] rounded-full border border-neutral-300 flex items-center justify-center bg-white hover:bg-neutral-50 active:scale-95 transition-all text-neutral-600 hover:text-primary hover:border-primary z-10 cursor-pointer"
+              className="absolute -left-[24px] md:-left-[48px] lg:-left-[61px] top-1/2 -translate-y-1/2 w-[18px] h-[18px] md:w-[48px] md:h-[48px] lg:w-[34px] lg:h-[34px] rounded-full border border-neutral-300 flex items-center justify-center bg-white hover:bg-neutral-50 active:scale-95 transition-all text-neutral-600 hover:text-primary hover:border-primary z-10 cursor-pointer"
               aria-label="Previous image"
             >
               <svg
-                className="w-5 h-5"
+                className="w-3 h-3 md:w-5 md:h-5 lg:w-4 lg:h-4"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2.5"
@@ -234,7 +229,7 @@ export default function GalleryView() {
                   return (
                     <div
                       key={idx}
-                      className="relative aspect-[4/3] shrink-0 select-none cursor-pointer overflow-hidden rounded-[2px]"
+                      className="relative aspect-[16/9] shrink-0 select-none cursor-pointer overflow-hidden rounded-[2px]"
                       style={{
                         width: `calc((100% - ${(visibleCount - 1) * 24}px) / ${visibleCount})`,
                       }}
@@ -253,7 +248,7 @@ export default function GalleryView() {
                         className={`absolute inset-0 transition-all duration-300 ${
                           isActive
                             ? "bg-black/0 ring-4 ring-primary ring-inset"
-                            : "bg-black/45 hover:bg-black/25"
+                            : "bg-black/50 hover:bg-black/25"
                         }`}
                       />
                     </div>
@@ -265,11 +260,11 @@ export default function GalleryView() {
             {/* Right Shift Button */}
             <button
               onClick={handleNext}
-              className="absolute right-[-15px] md:right-[-48px] lg:right-[-64px] top-1/2 -translate-y-1/2 w-[48px] h-[48px] rounded-full border border-neutral-300 flex items-center justify-center bg-white hover:bg-neutral-50 active:scale-95 transition-all text-neutral-600 hover:text-primary hover:border-primary z-10 cursor-pointer"
+              className="absolute -right-[24px] md:-right-[48px] lg:-right-[61px] top-1/2 -translate-y-1/2 w-[18px] h-[18px] md:w-[48px] md:h-[48px] lg:w-[34px] lg:h-[34px] rounded-full border border-neutral-300 flex items-center justify-center bg-white hover:bg-neutral-50 active:scale-95 transition-all text-neutral-600 hover:text-primary hover:border-primary z-10 cursor-pointer"
               aria-label="Next image"
             >
               <svg
-                className="w-5 h-5"
+                className="w-3 h-3 md:w-5 md:h-5 lg:w-4 lg:h-4"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2.5"
@@ -341,7 +336,7 @@ export default function GalleryView() {
           </button>
 
           {/* Active Image container */}
-          <div className="relative max-w-[90%] max-h-[80vh] aspect-[16/10] w-full md:w-[80vw] z-10 flex items-center justify-center">
+          <div className="relative max-w-[90%] max-h-[80vh] aspect-[16/9] w-full md:w-[80vw] z-10 flex items-center justify-center">
             <Image
               src={currentImage.src}
               alt={currentImage.alt}

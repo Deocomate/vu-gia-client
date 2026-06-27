@@ -50,18 +50,18 @@ export default function CategoryNavigation({
   };
 
   return (
-    <div className="w-full pt-8 pb-0">
-      <div className="flex items-center justify-start lg:justify-center gap-[30px] lg:gap-[110px] overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
+    <div className="w-full pt-[24px] lg:pt-8 pb-0">
+      <div className="flex items-start justify-start lg:justify-center gap-[34px] lg:gap-[108px] overflow-x-auto no-scrollbar lg:pb-4 w-[calc(100%+62px)] mx-[-31px] px-[31px] scroll-px-[31px] snap-x snap-mandatory">
         {items.map((cat, idx) => {
           const isActive = activeCategory === cat.id;
           return (
             <div
               key={cat.id || idx}
               onClick={() => handleItemClick(cat.id)}
-              className="flex-shrink-0 text-center group cursor-pointer select-none"
+              className="flex-shrink-0 text-center group cursor-pointer select-none snap-start"
             >
               {/* Circular image container */}
-              <div className="relative w-[150px] h-[150px] rounded-full overflow-hidden mx-auto">
+              <div className="relative w-[84.53px] h-[84.53px] lg:w-[152px] lg:h-[152px] rounded-full overflow-hidden mx-auto bg-[#D9D9D9]">
                 <Image
                   src={cat.image}
                   alt={cat.name}
@@ -72,7 +72,7 @@ export default function CategoryNavigation({
 
               {/* Label */}
               <p
-                className={`mt-4 font-montserrat font-[700] text-[18px] leading-[24px] whitespace-nowrap transition-colors duration-300 text-center ${
+                className={`mt-[11px] lg:mt-4 font-montserrat font-[600] lg:font-[700] text-[14px] lg:text-[18px] leading-[24px] text-center w-[84.53px] lg:w-auto mx-auto lg:whitespace-nowrap transition-colors duration-300 break-words ${
                   isActive
                     ? "text-[#97400C]"
                     : "text-[#383838] group-hover:text-[#97400C]"

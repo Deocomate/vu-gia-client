@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ROUTES } from "@/utils/routes";
 
-import heroBg from "@/assets/images/about/hero-bg.png";
+import heroBg from "@/assets/images/gallery/hero-bg.jpg";
 import vaseImage from "@/assets/images/showroom/showroom-hero-1.png";
 
 export default function ContactView() {

@@ -2,11 +2,31 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Check } from "lucide-react";
+import NewsCard from "@/components/shared/NewsCard";
 
 import craft1 from "@/assets/images/home/HomeCraftsmanship-1.png";
 import craft2 from "@/assets/images/home/HomeCraftsmanship-2.png";
 import craft3 from "@/assets/images/home/HomeCraftsmanship-3.png";
 import closingThumb from "@/assets/images/home/closing-thumb.png";
+
+const RELATED_ARTICLES = [
+  {
+    id: 1,
+    image: craft1,
+    category: "Cẩm nang làng nghề",
+    title: "Ý nghĩa chữ Thọ tròn mà bạn cần nên biết",
+    description: "How do you create compelling presentations that wow your colleagues and impress your managers?",
+    slug: "y-nghia-chu-tho-tron-trong-tam-linh-viet",
+  },
+  {
+    id: 2,
+    image: craft2,
+    category: "Kiến thức sản phẩm",
+    title: "Ý nghĩa chữ Thọ tròn mà bạn cần nên biết",
+    description: "How do you create compelling presentations that wow your colleagues and impress your managers?",
+    slug: "phan-biet-men-ran-co-va-men-lam",
+  },
+];
 
 export default function NewsDetailContent({
   article,
@@ -40,7 +60,7 @@ export default function NewsDetailContent({
 
           {/* 2. Large Image Block (Wide Accent Section, Full Column Width) */}
           <div className="w-full my-4 flex flex-col gap-2">
-            <div className="relative w-full aspect-[16/9] rounded-[8px] overflow-hidden bg-gray-100">
+            <div className="relative w-full aspect-[430/275] md:aspect-[16/9] rounded-[8px] overflow-hidden bg-gray-100">
               <Image
                 src={closingThumb}
                 alt="Xưởng sản xuất gốm sứ Vũ Gia"
@@ -126,6 +146,9 @@ export default function NewsDetailContent({
 
           {/* 8. Share Section */}
           <div className="flex flex-col gap-[10px] mt-8">
+            {/* Top Divider (Mobile Only) */}
+            <div className="h-[1px] bg-[#E1DEDE] w-full mb-4 lg:hidden"></div>
+
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-inter leading-[24px]">
               {/* Label (Inter, Semibold, 16px, leading-24, color #667085) */}
               <span className="text-[16px] font-semibold text-[#667085] font-inter leading-[24px]">
@@ -211,11 +234,34 @@ export default function NewsDetailContent({
               </div>
             </div>
 
-            {/* 7. Divider Line (Below Share Row) */}
-            <div className="h-[1px] bg-[#E1DEDE] w-full"></div>
+            {/* Bottom Divider (Desktop Only) */}
+            <div className="h-[1px] bg-[#E1DEDE] w-full mt-[10px] hidden lg:block"></div>
+
+            {/* RELATED ARTICLES SECTION (Mobile Only) */}
+            <div className="mt-8 flex flex-col gap-6 lg:hidden">
+              <h3 className="text-[20px] font-bold text-[#97400C] uppercase font-montserrat text-center md:text-left">
+                Bài viết liên quan
+              </h3>
+              
+              <div className="flex md:grid md:grid-cols-2 gap-[20px] overflow-x-auto md:overflow-x-visible no-scrollbar pb-4 md:pb-0 scroll-smooth snap-x snap-mandatory w-[calc(100%+62px)] mx-[-31px] px-[31px] scroll-px-[31px] md:w-auto md:mx-0 md:px-0">
+                {RELATED_ARTICLES.map((art) => (
+                  <div key={art.id} className="flex-shrink-0 w-[252px] md:w-auto snap-start">
+                    <NewsCard
+                      image={art.image}
+                      category={art.category}
+                      title={art.title}
+                      description={art.description}
+                      slug={art.slug}
+                      hasTwoLineTitle={true}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </>
       )}
     </article>
   );
 }
+

@@ -14,9 +14,9 @@ export default function CategoryDescription({ description }) {
   );
 
   return (
-    <div className="max-w-[1300px] mx-auto text-center pt-[45px] pb-8 px-4 flex flex-col items-center">
+    <div className="max-w-[1269px] mx-auto pt-[40px] pb-8 px-0 lg:px-4 flex flex-col items-center">
       {/* Main Text */}
-      <p className="font-montserrat text-[16px] font-[400] text-[#383838] leading-[28px] break-words">
+      <p className="font-montserrat text-[16px] font-[400] text-[#383838] leading-[24px] lg:leading-[28px] text-justify lg:text-center break-words">
         {description || defaultText}
       </p>
     </div>

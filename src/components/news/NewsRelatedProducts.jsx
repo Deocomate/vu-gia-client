@@ -52,25 +52,26 @@ export default function NewsRelatedProducts() {
 
   return (
     <section className="w-full bg-white pt-[50px] pb-16">
-      <div className="max-w-[1470px] mx-auto px-[20px] lg:px-[60px]">
+      <div className="max-w-[1438px] mx-auto px-[30px] xl:px-0">
         {/* Title */}
-        <h2 className="font-montserrat font-bold text-[28px] lg:text-[32px] text-[#97400C] mb-8 uppercase tracking-wide">
+        <h2 className="font-montserrat font-bold text-[26px] lg:text-[32px] text-[#97400C] mb-[20px] lg:mb-[40px] leading-[40px] tracking-wide">
           Có thể bạn quan tâm
         </h2>
 
-        {/* Product Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+        {/* Product Grid / Swipe List on Mobile */}
+        <div className="flex lg:grid lg:grid-cols-4 gap-[14px] lg:gap-[26px] overflow-x-auto lg:overflow-x-visible no-scrollbar pb-4 lg:pb-0 scroll-smooth snap-x snap-mandatory w-[calc(100%+60px)] mx-[-30px] px-[30px] scroll-px-[30px] lg:w-auto lg:mx-0 lg:px-0">
           {RECOMMEND_PRODUCTS.map((prod) => (
-            <ProductCard
-              key={prod.id}
-              image={prod.image}
-              name={prod.name}
-              sku={prod.sku}
-              salePrice={prod.salePrice}
-              originalPrice={prod.originalPrice}
-              soldCount={prod.soldCount}
-              hasTwoLineTitle={hasTwoLineTitle}
-            />
+            <div key={prod.id} className="flex-shrink-0 w-[175px] lg:w-auto snap-start">
+              <ProductCard
+                image={prod.image}
+                name={prod.name}
+                sku={prod.sku}
+                salePrice={prod.salePrice}
+                originalPrice={prod.originalPrice}
+                soldCount={prod.soldCount}
+                hasTwoLineTitle={hasTwoLineTitle}
+              />
+            </div>
           ))}
         </div>
       </div>

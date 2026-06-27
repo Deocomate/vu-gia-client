@@ -1,22 +1,22 @@
 import React from "react";
 import Image from "next/image";
-import craftArtisan from "@/assets/images/home/HomeCraftsmanship-3.png";
-import craftVases from "@/assets/images/home/HomeCraftsmanship-1.png";
+import aboutImg1 from "@/assets/images/about/about-image-1.jpg";
+import aboutImg2 from "@/assets/images/about/about-image-2.jpg";
 
 export default function AboutHeritage() {
   return (
-    <section className="w-full bg-[#F9F8F8] py-[60px] font-montserrat">
-      <div className="max-w-[1470px] mx-auto px-[20px] lg:px-[30px]">
+    <section className="w-full bg-[#F9F8F8] py-[40px] lg:py-[60px] font-montserrat">
+      <div className="max-w-[1470px] mx-auto px-[31px] lg:px-[30px]">
         {/* Section Title */}
-        <h2 className="text-center text-[#97400C] text-[32px] font-montserrat font-[700] uppercase leading-[40px] mb-[78px]">
-          HỘI TỤ TINH HOA LÀNG NGHỀ
+        <h2 className="text-center text-[#97400C] text-[24px] lg:text-[32px] font-montserrat font-[700] uppercase leading-[32px] lg:leading-[40px] mb-[30px] lg:mb-[78px]">
+          HỘI TỤ TINH HOA <br className="lg:hidden" /> LÀNG NGHỀ
         </h2>
 
         {/* Alternate Block 1: Left Text, Right Image */}
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-[40px] lg:gap-[60px] mb-[100px]">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-[40px] lg:gap-[60px] mb-[40px] lg:mb-[100px]">
           {/* Left Text */}
           <div className="w-full lg:max-w-[642px] flex flex-col gap-[20px]">
-            <h3 className="text-black text-[24px] font-montserrat font-[600] leading-[38px]">
+            <h3 className="text-black text-[16px] lg:text-[24px] font-montserrat font-[600] leading-[38px]">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             </h3>
             <p className="text-black text-[16px] font-montserrat font-[400] leading-[26px]">
@@ -25,9 +25,9 @@ export default function AboutHeritage() {
           </div>
 
           {/* Right Image (No round) */}
-          <div className="relative w-full lg:w-[705px] h-[300px] lg:h-[428px] overflow-hidden shrink-0">
+          <div className="relative w-full lg:w-[705px] h-[224px] lg:h-[428px] overflow-hidden shrink-0">
             <Image
-              src={craftArtisan}
+              src={aboutImg1}
               alt="Artisan painting vase"
               fill
               className="object-cover hover:scale-105 transition-transform duration-700 ease-out"
@@ -37,11 +37,11 @@ export default function AboutHeritage() {
         </div>
 
         {/* Alternate Block 2: Left Image, Right Text */}
-        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-[40px] lg:gap-[60px] mb-[60px]">
-          {/* Left Image (No round) */}
-          <div className="relative w-full lg:w-[705px] h-[300px] lg:h-[428px] overflow-hidden shrink-0">
+        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-[40px] lg:gap-[60px] mb-[40px] lg:mb-[60px]">
+          {/* Left Image (No round) - Bleeds edge-to-edge on mobile */}
+          <div className="relative w-[calc(100%+62px)] mx-[-31px] lg:w-[705px] h-[264px] lg:h-[428px] overflow-hidden shrink-0">
             <Image
-              src={craftVases}
+              src={aboutImg2}
               alt="Ceramic vases collection"
               fill
               className="object-cover hover:scale-105 transition-transform duration-700 ease-out"
@@ -51,7 +51,7 @@ export default function AboutHeritage() {
 
           {/* Right Text */}
           <div className="w-full lg:max-w-[645px] flex flex-col gap-[20px]">
-            <h3 className="text-black text-[24px] font-montserrat font-[600] leading-[38px]">
+            <h3 className="text-black text-[16px] lg:text-[24px] font-montserrat font-[600] leading-[38px]">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             </h3>
             <p className="text-black text-[16px] font-montserrat font-[400] leading-[26px]">

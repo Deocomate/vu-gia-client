@@ -46,23 +46,43 @@ export default function CategoryNews({ news }) {
   );
 
   return (
-    <div className="w-full px-[20px] md:px-[60px] py-16 bg-white">
-      <h2 className="text-center text-[30px] lg:text-[40px] font-montserrat font-[800] text-[#97400C] uppercase mb-[70px] leading-[40px]">
-        Tin tức & sự kiện
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[20px]">
-        {list.map((item) => (
-          <NewsCard
-            key={item.id}
-            image={item.image}
-            category={item.category}
-            title={item.title}
-            description={item.description}
-            slug={item.slug}
-            hasTwoLineTitle={hasTwoLineTitle}
-          />
-        ))}
+    <section className="w-full py-[35px] lg:py-[70px] bg-white overflow-hidden">
+      <div className="max-w-[1920px] mx-auto px-[31px] lg:px-[60px]">
+        <h2 className="text-center text-primary font-montserrat font-[800] text-[20px] lg:text-[40px] leading-[32px] lg:leading-[40px] uppercase mb-[22px] lg:mb-[70px]">
+          Tin tức & sự kiện
+        </h2>
+
+        {/* Desktop Layout (Danh sách bài viết 3 cột) */}
+        <div className="hidden lg:grid grid-cols-3 gap-[20px]">
+          {list.map((item) => (
+            <NewsCard
+              key={item.id}
+              image={item.image}
+              category={item.category}
+              title={item.title}
+              description={item.description}
+              slug={item.slug}
+              hasTwoLineTitle={hasTwoLineTitle}
+            />
+          ))}
+        </div>
+
+        {/* Mobile Layout (Vuốt ngang) */}
+        <div className="lg:hidden w-[calc(100%+62px)] mx-[-31px] px-[31px] overflow-x-auto no-scrollbar flex flex-row gap-[22px] scroll-px-[31px] snap-x snap-mandatory pb-[10px]">
+          {list.map((item) => (
+            <NewsCard
+              key={item.id}
+              image={item.image}
+              category={item.category}
+              title={item.title}
+              description={item.description}
+              slug={item.slug}
+              hasTwoLineTitle={hasTwoLineTitle}
+              className="w-[252px] shrink-0 snap-start"
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
