@@ -14,21 +14,21 @@ export default function PrivacyPolicyView() {
   return (
     <CustomerServiceLayout breadcrumbs={breadcrumbs}>
       {/* Title */}
-      <h1 className="font-arima text-[#2E2F2A] text-[28px] md:text-[36px] font-[400] leading-[40px] md:leading-[48px] mb-6">
+      <h1 className="font-arima text-[#2E2F2A] text-[28px] md:text-[36px] font-[500] leading-[36px] md:leading-[48px] mb-6">
         Chính sách bảo mật thông tin
       </h1>
 
       {/* Intro */}
-      <p className="font-montserrat text-black text-[16px] font-[400] leading-[26px] mb-8">
+      <p className="font-montserrat text-[#2E2F2A] text-[16px] font-[400] leading-[26px] mb-5">
         Gốm Vũ Gia cam kết tôn trọng và bảo vệ quyền riêng tư của khách hàng. Chính sách này mô tả cách chúng tôi thu thập, sử dụng và bảo vệ thông tin cá nhân mà bạn cung cấp khi truy cập website hoặc sử dụng dịch vụ của chúng tôi.
       </p>
 
       {/* Section 1 */}
-      <section className="mb-6">
-        <h2 className="font-montserrat text-black text-[16px] font-[600] leading-[26px] mb-3">
+      <section className="mb-5">
+        <h2 className="font-montserrat text-[#2E2F2A] text-[18px] font-[700] leading-[28px] mb-5">
           Mục đích thu thập thông tin cá nhân
         </h2>
-        <ul className="list-disc pl-5 font-montserrat text-black text-[16px] font-[400] leading-[26px] mb-6 space-y-2">
+        <ul className="list-disc pl-5 font-montserrat text-[#2E2F2A] text-[16px] font-[400] leading-[28px] mb-6 space-y-2">
           <li>
             <strong>Xử lý đơn hàng:</strong> Giao hàng, thông báo về tiến độ sản xuất gốm sứ theo yêu cầu và thanh toán.
           </li>
@@ -45,14 +45,14 @@ export default function PrivacyPolicyView() {
       </section>
 
       {/* Section 2 */}
-      <section className="mb-6">
-        <h2 className="font-montserrat text-black text-[16px] font-[600] leading-[26px] mb-3">
+      <section className="mb-5">
+        <h2 className="font-montserrat text-[#2E2F2A] text-[18px] font-[700] leading-[28px] mb-5">
           Phạm vi sử dụng thông tin
         </h2>
-        <p className="font-montserrat text-black text-[16px] font-[400] leading-[26px] mb-3">
+        <p className="font-montserrat text-[#2E2F2A] text-[16px] font-[400] leading-[28px] mb-3">
           Các thông tin chúng tôi có thể thu thập bao gồm:
         </p>
-        <ul className="list-disc pl-5 font-montserrat text-black text-[16px] font-[400] leading-[26px] mb-6 space-y-2">
+        <ul className="list-disc pl-5 font-montserrat text-[#2E2F2A] text-[16px] font-[400] leading-[28px] mb-6 space-y-2">
           <li>Họ và tên, số điện thoại, email.</li>
           <li>Địa chỉ giao hàng (công trình hoặc nhà riêng).</li>
           <li>Nội dung tư vấn/Yêu cầu thiết kế riêng.</li>
@@ -61,24 +61,24 @@ export default function PrivacyPolicyView() {
       </section>
 
       {/* Section 3 */}
-      <section className="mb-6">
-        <h2 className="font-montserrat text-black text-[16px] font-[600] leading-[26px] mb-3">
+      <section className="mb-5">
+        <h2 className="font-montserrat text-[#2E2F2A] text-[18px] font-[700] leading-[28px] mb-5">
           Thời gian lưu trữ thông tin
         </h2>
-        <p className="font-montserrat text-black text-[16px] font-[400] leading-[26px] mb-6">
+        <p className="font-montserrat text-[#2E2F2A] text-[16px] font-[400] leading-[28px] mb-6">
           Thông tin cá nhân của khách hàng sẽ được lưu trữ cho đến khi có yêu cầu hủy bỏ từ phía khách hàng hoặc khi thông tin đó không còn cần thiết cho các mục đích nêu trên. Trong mọi trường hợp, thông tin khách hàng sẽ được bảo mật trên máy chủ của Gốm Vũ Gia.
         </p>
       </section>
 
       {/* Section 4 */}
-      <section className="mb-6">
-        <h2 className="font-montserrat text-black text-[16px] font-[600] leading-[26px] mb-3">
+      <section className="mb-5">
+        <h2 className="font-montserrat text-[#2E2F2A] text-[18px] font-[700] leading-[28px] mb-5">
           Chia sẻ thông tin với bên thứ ba
         </h2>
-        <p className="font-montserrat text-black text-[16px] font-[400] leading-[26px] mb-3">
+        <p className="font-montserrat text-[#2E2F2A] text-[16px] font-[400] leading-[28px] mb-3">
           Chúng tôi cam kết không bán, cho thuê hoặc chia sẻ thông tin cá nhân của bạn cho bất kỳ bên thứ ba nào, ngoại trừ các trường hợp cần thiết sau:
         </p>
-        <ul className="list-disc pl-5 font-montserrat text-black text-[16px] font-[400] leading-[26px] mb-6 space-y-2">
+        <ul className="list-disc pl-5 font-montserrat text-[#2E2F2A] text-[16px] font-[400] leading-[28px] mb-6 space-y-2">
           <li>
             <strong>Đơn vị vận chuyển:</strong> Cung cấp tên, số điện thoại và địa chỉ để giao hàng đến tận công trình.
           </li>
@@ -89,14 +89,14 @@ export default function PrivacyPolicyView() {
       </section>
 
       {/* Section 5 */}
-      <section className="mb-6">
-        <h2 className="font-montserrat text-black text-[16px] font-[600] leading-[26px] mb-3">
+      <section className="mb-5">
+        <h2 className="font-montserrat text-[#2E2F2A] text-[18px] font-[700] leading-[28px] mb-5">
           Cam kết bảo mật thông tin
         </h2>
-        <p className="font-montserrat text-black text-[16px] font-[400] leading-[26px] mb-3">
+        <p className="font-montserrat text-[#2E2F2A] text-[16px] font-[400] leading-[28px] mb-3">
           Chúng tôi áp dụng các biện pháp an ninh kỹ thuật cao để bảo vệ thông tin cá nhân của bạn:
         </p>
-        <ul className="list-disc pl-5 font-montserrat text-black text-[16px] font-[400] leading-[26px] mb-6 space-y-2">
+        <ul className="list-disc pl-5 font-montserrat text-[#2E2F2A] text-[16px] font-[400] leading-[28px] mb-6 space-y-2">
           <li>Sử dụng giao thức mã hóa SSL (Secure Sockets Layer) để đảm bảo an toàn dữ liệu truyền tải qua internet.</li>
           <li>Hệ thống tường lửa và kiểm soát truy cập nghiêm ngặt đối với nhân viên nội bộ.</li>
           <li>Trong trường hợp máy chủ lưu trữ thông tin bị hacker tấn công dẫn đến mất mát dữ liệu cá nhân, chúng tôi sẽ có trách nhiệm thông báo vụ việc cho cơ quan chức năng điều tra xử lý và thông báo kịp thời cho khách hàng.</li>
@@ -104,14 +104,14 @@ export default function PrivacyPolicyView() {
       </section>
 
       {/* Section 6 */}
-      <section className="mb-6">
-        <h2 className="font-montserrat text-black text-[16px] font-[600] leading-[26px] mb-3">
+      <section className="mb-5">
+        <h2 className="font-montserrat text-[#2E2F2A] text-[18px] font-[700] leading-[28px] mb-5">
           Quyền của khách hàng đối với thông tin cá nhân
         </h2>
-        <p className="font-montserrat text-black text-[16px] font-[400] leading-[26px] mb-3">
+        <p className="font-montserrat text-[#2E2F2A] text-[16px] font-[400] leading-[28px] mb-3">
           Khách hàng có quyền:
         </p>
-        <ul className="list-disc pl-5 font-montserrat text-black text-[16px] font-[400] leading-[26px] mb-6 space-y-2">
+        <ul className="list-disc pl-5 font-montserrat text-[#2E2F2A] text-[16px] font-[400] leading-[28px] mb-6 space-y-2">
           <li>Yêu cầu kiểm tra, cập nhật hoặc điều chỉnh thông tin cá nhân của mình.</li>
           <li>Yêu cầu dừng việc sử dụng thông tin cho mục đích quảng cáo/tiếp thị.</li>
           <li>Yêu cầu xóa bỏ hoàn toàn dữ liệu cá nhân trên hệ thống của chúng tôi.</li>
@@ -119,11 +119,11 @@ export default function PrivacyPolicyView() {
       </section>
 
       {/* Section 7 */}
-      <section className="mb-6">
-        <h2 className="font-montserrat text-black text-[16px] font-[600] leading-[26px] mb-3">
+      <section className="mb-5">
+        <h2 className="font-montserrat text-[#2E2F2A] text-[18px] font-[700] leading-[28px] mb-5">
           Thông tin liên hệ đơn vị thu thập và quản lý
         </h2>
-        <p className="font-montserrat text-black text-[16px] font-[400] leading-[26px] mb-4">
+        <p className="font-montserrat text-[#2E2F2A] text-[16px] font-[400] leading-[28px] mb-5">
           Nếu bạn có bất kỳ câu hỏi hoặc khiếu nại nào liên quan đến chính sách bảo mật, vui lòng liên hệ:
         </p>
 

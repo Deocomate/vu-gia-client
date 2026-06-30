@@ -183,7 +183,7 @@ export default function FaqView() {
             className="w-full h-full object-cover opacity-80"
           />
           {/* Subtle Dark Overlay */}
-          <div className="absolute inset-0 bg-black/25"></div>
+          <div className="absolute inset-0 bg-black/5"></div>
         </div>
 
         {/* Search Bar */}
@@ -211,14 +211,14 @@ export default function FaqView() {
       </section>
 
       {/* Main Content Grid */}
-      <section className="w-[85%] max-w-[1320px] mx-auto pt-12 pb-16 md:py-20 grid grid-cols-1 lg:grid-cols-4 gap-8 md:gap-12 lg:gap-20">
+      <section className="w-[85%] max-w-[1320px] mx-auto pt-12 pb-16 md:pt-[70px] md:pb-[100px] grid grid-cols-1 lg:grid-cols-4 gap-8 md:gap-12 lg:gap-20">
         {/* Sidebar */}
         <div className="lg:col-span-1 lg:sticky lg:top-28 h-fit">
-          <div className="mb-8">
+          <div className="mb-4">
             <h1 className="text-[48px] font-aref-ruqaa text-[#2E2F2A] mb-4 md:mb-6 font-bold leading-[40px]">
               FAQ
             </h1>
-            <hr className="border-t border-black/10 w-full" />
+            <hr className="border-t border-black/10 w-full mt-12" />
           </div>
           <nav className="flex flex-col gap-3">
             {FAQ_DATA.map((section) => (
@@ -228,8 +228,8 @@ export default function FaqView() {
                 onClick={(e) => scrollToSection(e, section.id)}
                 className={`text-[14px] font-archivo font-medium uppercase leading-[40px] tracking-wider transition-colors duration-200 select-none ${
                   activeSection === section.id
-                    ? "text-[#97400C]"
-                    : "text-[#2E2F2A] hover:text-[#97400C]"
+                    ? "text-[#C76E00]"
+                    : "text-[#2E2F2A] hover:text-[#C76E00]"
                 }`}
               >
                 {section.title}
@@ -241,11 +241,20 @@ export default function FaqView() {
         {/* Content Area */}
         <div className="lg:col-span-3">
           {/* Breadcrumbs */}
-          <div className="flex items-center gap-2 text-[14px] font-archivo font-normal leading-[40px] text-[#2E2F2A]/60 mb-8 font-medium">
+          <div className="flex items-center gap-[16px] text-[14px] font-archivo font-normal leading-[40px] text-[#2E2F2A]/60 mb-[22px] font-medium">
             <Link href={ROUTES.HOME} className="text-[#2E2F2A] hover:underline transition-all">
               Trang chủ
             </Link>
-            <span>&gt;</span>
+            <svg
+              className="w-[10px] h-[20px] text-[#2E2F2A]/60 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
             <span className="text-[#2E2F2A]">Câu hỏi thường gặp</span>
           </div>
 
@@ -254,8 +263,8 @@ export default function FaqView() {
               {filteredData.map((section) => (
                 <div key={section.id} id={section.id} className="scroll-mt-28">
                   {/* Category Header */}
-                  <div className="flex items-center gap-[12px] mb-8 pt-4 border-b border-[#2E2F2A]/5 pb-4">
-                    <div className="w-[6px] h-8 bg-[#97400C]"></div>
+                  <div className="flex items-center gap-[12px] pt-4 border-b border-[#2E2F2A]/5 pb-4">
+                    <div className="w-[3px] h-8 bg-[#C76E00]"></div>
                     <h2 className="text-[32px] leading-[40px] font-arima font-semibold text-[#2E2F2A]">
                       {section.title}
                     </h2>
@@ -268,15 +277,15 @@ export default function FaqView() {
                       const isOpen = searchQuery ? true : !!openItems[itemKey];
 
                       return (
-                        <div key={itemKey} className="py-4">
+                        <div key={itemKey} className="py-3">
                           <button
                             onClick={() => toggleItem(itemKey)}
                             className="w-full flex justify-between items-center text-left gap-4 group focus:outline-none py-3"
                           >
-                            <span className="text-[16px] font-arima font-medium leading-[28px] text-[#2E2F2A] group-hover:text-[#97400C] transition-colors duration-200">
+                            <span className="text-[16px] font-arima font-medium leading-[28px] text-[#2E2F2A] group-hover:text-[#C76E00] transition-colors duration-200">
                               {item.question}
                             </span>
-                            <span className="flex-shrink-0 text-[#97400C] transition-transform duration-300">
+                            <span className="flex-shrink-0 text-[#C76E00] transition-transform duration-300">
                               {isOpen ? (
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                                   <path strokeLinecap="round" strokeLinejoin="round" d="M18 12H6" />

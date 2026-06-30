@@ -32,19 +32,19 @@ export default function ShowroomGallery() {
   );
 
   return (
-    <section className="w-full pt-[60px] lg:pt-[150px] pb-[60px] lg:pb-[150px]">
+    <section className="w-full pt-[20px] lg:pt-[150px] pb-[20px] lg:pb-[150px]">
       {/* Slider Viewport - Full Width */}
       <div
         className="embla overflow-hidden w-full"
         ref={emblaRef}
       >
-        <div className="embla__container flex -ml-[50px]">
+        <div className="embla__container flex -ml-[20px] lg:-ml-[50px]">
           {GALLERY_IMAGES.map((item, index) => (
             <div
               key={index}
-              className="embla__slide pl-[50px] w-[525px] shrink-0"
+              className="embla__slide pl-[20px] lg:pl-[50px] w-[325px] lg:w-[525px] shrink-0"
             >
-              <div className="relative w-full h-[600px] bg-neutral-100 overflow-hidden shadow-sm">
+              <div className="relative w-full h-[400px] lg:h-[600px] bg-neutral-100 overflow-hidden shadow-sm">
                 <Image
                   src={item.src}
                   alt={item.alt}

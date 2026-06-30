@@ -2,9 +2,11 @@
 
 import {
   Bookmark,
+  Clock,
   Download,
   FileText,
   Headphones,
+  Headset,
   Phone,
   Trash2,
   Truck,
@@ -103,6 +105,21 @@ export default function AltarCustomizerSummary({
             </span>
           ))}
         </div>
+      </div>
+
+      <div className="support-card lg:hidden">
+        <h3>
+          <Headset className="rail-icon support-icon" aria-hidden="true" />
+          Cần hỗ trợ
+        </h3>
+        <p>Đội ngũ Gốm Vũ Gia luôn sẵn sàng hỗ trợ và tư vấn cho bạn</p>
+        <strong className="support-phone">
+          <Phone className="rail-icon phone-icon" aria-hidden="true" />
+          0394 123 981
+        </strong>
+        <p>
+          Thời gian: 8:00 - 18:00 (T2 - CN)
+        </p>
       </div>
     </aside>
   );

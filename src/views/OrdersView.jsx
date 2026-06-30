@@ -305,12 +305,12 @@ export default function OrdersView() {
   return (
     <CustomerServiceLayout breadcrumbs={breadcrumbs}>
       {/* Title */}
-      <h1 className="font-arima text-[#2E2F2A] text-[36px] font-[400] leading-[40px] mb-6">
+      <h1 className="font-arima text-[#2E2F2A] text-[30px] md:text-[36px] font-[400] leading-[40px] mb-6">
         Trạng thái đơn hàng
       </h1>
 
       {/* Sub Title */}
-      <h2 className="font-montserrat text-[#2E2F2A] text-[18px] font-[600] mb-4">
+      <h2 className="font-montserrat text-[#2E2F2A] text-[16px] md:text-[18px] font-[600] mb-4">
         Đơn hàng của tôi
       </h2>
 

@@ -28,16 +28,79 @@ export default function CheckoutOrderSummary({
   };
 
   return (
-    <div className="w-full bg-white border-[0.5px] border-[#909090] rounded-[6px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] p-4 md:pl-[44px] md:pr-[43px] md:pt-[35px] md:pb-[35px] flex flex-col font-montserrat">
+    <div 
+      className="w-full rounded-[6px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] px-8 py-5 md:pl-[44px] md:pr-[43px] md:pt-[35px] md:pb-[35px] flex flex-col font-montserrat"
+      style={{
+        border: "1px solid transparent",
+        backgroundImage: "linear-gradient(white, white), linear-gradient(to bottom, #C76E00, rgba(199, 110, 0, 0))",
+        backgroundOrigin: "border-box",
+        backgroundClip: "padding-box, border-box",
+      }}
+    >
       {/* Top Divider */}
-      <div className="hidden md:block w-full h-[1px] bg-neutral-200 mb-[15px]" />
+      <div className="w-full h-[1px] bg-neutral-200 mb-[20px]" />
 
       {/* Items List */}
       <div className="flex flex-col gap-[25px] mb-[15px]">
         {items.map((item) => {
           const rowTotal = (item.price || 0) * (item.quantity || 0);
           return (
-            <div key={item.id} className="grid grid-cols-12 gap-4 items-start">
+            <div key={item.id}>
+              {/* MOBILE LAYOUT */}
+              <div className="block md:hidden">
+                <div className="flex gap-[24px]">
+                  <div className="w-[80px] h-[80px] shrink-0 rounded-[6px] relative border border-[#D1D5DB]">
+                    <div className="p-[9px] w-full h-full overflow-hidden rounded-[5px]">
+                      {item.image && typeof item.image === "object" ? (
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <img
+                          src={item.image || "/images/products/product-image-thumb.png"}
+                          alt={item.title}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
+                    </div>
+                    <div className="absolute -top-[6px] -right-[6px] w-[20px] h-[20px] bg-[#C76E00] rounded-[2px] flex items-center justify-center text-white text-[10px] font-[700] leading-[15px] shadow-sm">
+                      {item.quantity}
+                    </div>
+                  </div>
+
+                  <div className="flex-1 min-w-0 flex flex-col">
+                    <h4 className="text-[14px] font-[700] text-[#2E2F2A] leading-[20px]">
+                      {item.title}
+                    </h4>
+
+                    <div className="mt-auto">
+                      <div className="flex justify-between items-start">
+                        <div className="text-[12px] font-[400] uppercase text-[rgba(46,47,42,0.40)] leading-[18px]">
+                          <div>MSP: {item.sku || item.msp || "N/A"}</div>
+                        </div>
+                        <span className="text-[10px] font-[700] uppercase text-[#2E2F2A] leading-[15px] shrink-0 ml-2">
+                          Tổng
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between items-center">
+                        <div className="text-[12px] font-[400] text-[rgba(46,47,42,0.40)] leading-[18px]">
+                          Phân loại: {item.classification || "Mặc định"}
+                        </div>
+                        <span className="text-[14px] font-[500] text-[#2E2F2A] shrink-0 ml-2">
+                          {formatNumber(rowTotal)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* DESKTOP LAYOUT */}
+              <div className="hidden md:grid md:grid-cols-12 gap-4 items-start">
               {/* Product Info (Col span 9) */}
               <div className="col-span-9 flex gap-[26.5px] items-start">
                 {/* Image Wrapper */}
@@ -105,6 +168,7 @@ export default function CheckoutOrderSummary({
                   {formatNumber(rowTotal)}
                 </span>
               </div>
+              </div>
             </div>
           );
         })}
@@ -136,25 +200,25 @@ export default function CheckoutOrderSummary({
       <div className="w-full h-[1px] bg-neutral-200" />
 
       {/* Summary Breakdown */}
-      <div className="flex flex-col gap-[5px] text-[#2E2F2A] mt-[18px]">
+      <div className="flex flex-col gap-1.5 text-[#2E2F2A] mt-[18px]">
         {/* Discount Row */}
-        <div className="flex justify-between items-center text-[13px] font-[300] leading-[40px]">
+        <div className="flex justify-between items-center text-[12px] md:text-[13px] font-[400] md:font-[300] leading-[16px] md:leading-normal">
           <span>Giảm giá</span>
-          <span>
+          <span className="font-[500] md:font-[300]">
             {discount > 0 ? `-${formatNumber(discount)} ₫` : "-0000 ₫"}
           </span>
         </div>
 
         {/* Tax Row */}
-        <div className="flex justify-between items-center text-[13px] font-[300] leading-[40px]">
+        <div className="flex justify-between items-center text-[12px] md:text-[13px] font-[400] md:font-[300] leading-[16px] md:leading-normal">
           <span>Thuế</span>
-          <span>{tax === 0 ? "MIỄN PHÍ" : formatCurrency(tax)}</span>
+          <span className="font-[500] md:font-[300]">{tax === 0 ? "MIỄN PHÍ" : formatCurrency(tax)}</span>
         </div>
 
         {/* Total Price Row */}
-        <div className="flex justify-between items-center text-[16px] font-[600] leading-[40px] mt-[12px]">
-          <span>Tổng</span>
-          <span className="text-[16px] font-[600]">
+        <div className="flex justify-between items-center text-[14px] md:text-[16px] font-[700] md:font-[600] leading-[40px]">
+          <span className="uppercase md:normal-case">Tổng</span>
+          <span className="font-[700] md:font-[600]">
             {formatCurrency(total)}
           </span>
         </div>

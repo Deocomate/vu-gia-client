@@ -98,13 +98,12 @@ export default function CheckoutView() {
   };
 
   return (
-    <div className="w-full bg-white min-h-screen py-[40px] px-4 md:px-[60px] lg:px-[80px]">
+    <div className="w-full bg-white min-h-screen pt-[40px] pb-[50px] lg:pb-[100px] px-4 md:px-[60px] lg:px-[80px]">
       <div className="max-w-[1440px] mx-auto flex flex-col">
         {/* Breadcrumb Trail */}
         <Breadcrumb
           items={breadcrumbs}
-          separator=">"
-          className="mb-[25px]"
+          className="hidden md:block mb-[25px]"
         />
 
         {/* Page Title */}
@@ -113,7 +112,7 @@ export default function CheckoutView() {
         </h1>
 
         {/* Checkout Content Columns */}
-        <div className="flex flex-col lg:flex-row gap-[50px] items-start w-full">
+        <div className="flex flex-col lg:flex-row gap-[30px] lg:gap-[70px] items-start w-full">
           {/* Left Column - Form fields */}
           <div className="flex-1 w-full">
             {checkoutItems.length > 0 ? (

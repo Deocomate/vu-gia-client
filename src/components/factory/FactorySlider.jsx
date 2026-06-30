@@ -33,7 +33,7 @@ export default function FactorySlider() {
   return (
     <section className="w-full flex flex-col pb-[60px]">
       {/* Navigation Controls Bar - Aligned to standard container */}
-      <div className="max-w-[1470px] mx-auto px-[20px] lg:px-[30px] w-full flex justify-end gap-[16px] mb-[33px]">
+      <div className="max-w-[1470px] mx-auto px-[20px] lg:px-[12%] w-full hidden md:flex justify-end gap-[16px] mb-[33px]">
         {/* Left Arrow */}
         <button
           onClick={scrollPrev}
@@ -83,16 +83,16 @@ export default function FactorySlider() {
 
       {/* Slider Viewport - Left aligned with container, bleeding right */}
       <div
-        className="embla overflow-hidden ml-[20px] lg:ml-[30px] xl:ml-[calc((100%-1470px)/2+30px)]"
+        className="embla overflow-hidden ml-0 md:ml-[20px] lg:ml-[30px] xl:ml-[calc((100%-1470px)/2+30px)]"
         ref={emblaRef}
       >
         <div className="embla__container flex -ml-[21px]">
           {SLIDER_IMAGES.map((item, index) => (
             <div
               key={index}
-              className="embla__slide pl-[21px] flex-[0_0_100%] md:flex-[0_0_50%] min-w-0"
+              className="embla__slide md:pl-[21px] flex-[0_0_100%] md:flex-[0_0_70%] min-w-0"
             >
-              <div className="relative w-full h-[250px] sm:h-[350px] md:h-[400px] lg:h-[480px] bg-neutral-100 overflow-hidden">
+              <div className="relative w-full h-[215px] sm:h-[350px] md:h-[400px] lg:h-[587px] bg-neutral-100 overflow-hidden">
                 <Image
                   src={item.src}
                   alt={item.alt}

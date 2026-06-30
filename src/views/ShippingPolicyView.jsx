@@ -19,128 +19,128 @@ export default function ShippingPolicyView() {
       </h1>
 
       {/* Intro */}
-      <p className="font-montserrat text-[#101010] text-[16px] font-[400] leading-[25px] mb-8">
+      <p className="font-montserrat text-[#101010] text-[16px] font-[400] leading-[25px] mb-5">
         Tại Gốm Vũ Gia, chúng tôi hiểu rằng hàng gốm sứ rất dễ vỡ. Vì vậy, quy trình vận chuyển được chúng tôi thiết lập chuyên nghiệp để đảm bảo sản phẩm đến tay khách hàng an toàn với chi phí tối ưu nhất.
       </p>
 
       {/* Section 1 */}
       <section className="mb-8">
-        <h2 className="font-montserrat text-[#2E2F2A] text-[16px] font-[600] leading-[40px] mb-3">
+        <h2 className="font-montserrat text-[#2E2F2A] text-[16px] font-[600] leading-[40px] mb-5">
           1. Phân loại Phí vận chuyển & Thời gian giao hàng
         </h2>
 
         {/* Responsive Table Wrapper */}
-        <div className="w-full overflow-x-auto mb-6">
-          <table className="min-w-[700px] w-full border-collapse border border-black text-[14px] font-montserrat">
+        <div className="w-full mb-6">
+          <table className="w-full border-collapse border border-[#2E2F2A] text-[14px] font-montserrat">
             <thead>
-              <tr className="bg-white text-[#2E2F2A]">
-                <th className="border border-black px-4 py-3 font-[600] text-[16px] leading-[25px] w-[127px]">
+              <tr className="text-[#2E2F2A]">
+                <th className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[600] text-[14px] md:text-[16px] leading-[20px] md:leading-[25px] w-[71px] md:w-[127px]">
                   Khu vực
                 </th>
-                <th className="border border-black px-4 py-3 font-[600] text-[16px] leading-[25px] w-[158px]">
+                <th className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[600] text-[14px] md:text-[16px] leading-[20px] md:leading-[25px] w-[74px] md:w-[158px]">
                   Phương thức<br />vận chuyển
                 </th>
-                <th className="border border-black px-4 py-3 font-[600] text-[16px] leading-[25px]">
+                <th className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[600] text-[14px] md:text-[16px] leading-[20px] md:leading-[25px] w-[151px] md:w-auto">
                   Chi tiết chi phí & Ghi chú
                 </th>
-                <th className="border border-black px-4 py-3 font-[600] text-[16px] leading-[25px] w-[147px]">
+                <th className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[600] text-[14px] md:text-[16px] leading-[20px] md:leading-[25px] w-[68px] md:w-[147px]">
                   Thời gian<br />dự kiến
                 </th>
               </tr>
             </thead>
             <tbody>
               {/* Row 1: Nội thành Hà Nội - Ship ghép */}
-              <tr className="text-[#101010]">
+              <tr className="text-[#2E2F2A]">
                 <td
                   rowSpan={2}
-                  className="border border-black px-4 py-3 font-[600] text-[16px] text-[#2E2F2A] text-center align-middle"
+                  className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[600] text-[14px] md:text-[16px] text-center align-middle"
                 >
                   Nội thành<br />Hà Nội
                 </td>
-                <td className="border border-black px-4 py-3 font-[500] italic text-center align-middle">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[500] italic text-center align-middle">
                   Ship ghép chuyến
                 </td>
-                <td className="border border-black px-4 py-3 font-[400] leading-[25px]">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[400] leading-[20px] md:leading-[25px]">
                   Phí từ 70.000đ (tùy số km). <br />
                   Giao theo khung giờ: Sáng (trước 13h) hoặc Chiều (trước 18h). <br />
                   Quý khách vui lòng báo trước 5 tiếng để sắp xếp lộ trình.
                 </td>
-                <td className="border border-black px-4 py-3 font-[400] text-center align-middle">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[400] text-center align-middle">
                   Trong hoặc<br />sau 1 ngày
                 </td>
               </tr>
               {/* Row 2: Nội thành Hà Nội - Ship riêng */}
-              <tr className="text-[#101010]">
-                <td className="border border-black px-4 py-3 font-[500] italic text-center align-middle">
+              <tr className="text-[#2E2F2A]">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[500] italic text-center align-middle">
                   Ship riêng chuyến
                 </td>
-                <td className="border border-black px-4 py-3 font-[400] leading-[25px]">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[400] leading-[20px] md:leading-[25px]">
                   Phí tính theo số km thực tế từ Bát Tràng đến địa chỉ nhận hàng. Ưu tiên thời gian theo yêu cầu của khách hàng.
                 </td>
-                <td className="border border-black px-4 py-3 font-[400] text-center align-middle">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[400] text-center align-middle">
                   Giao ngay
                 </td>
               </tr>
 
               {/* Row 3: Tỉnh thành miền Bắc - Xe tải */}
-              <tr className="text-[#101010]">
+              <tr className="text-[#2E2F2A]">
                 <td
                   rowSpan={2}
-                  className="border border-black px-4 py-3 font-[600] text-[16px] text-[#2E2F2A] text-center align-middle"
+                  className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[600] text-[14px] md:text-[16px] text-center align-middle"
                 >
                   Tỉnh thành<br />miền Bắc
                 </td>
-                <td className="border border-black px-4 py-3 font-[500] italic text-center align-middle">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[500] italic text-center align-middle">
                   Xe tải<br />chuyên dụng
                 </td>
-                <td className="border border-black px-4 py-3 font-[400] leading-[25px]">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[400] leading-[20px] md:leading-[25px]">
                   Khuyến khích cho đơn hàng nặng (từ 1 tấn trở lên). Vũ Gia hỗ trợ liên hệ nhà xe hoặc giao theo xe khách chỉ định.
                 </td>
-                <td className="border border-black px-4 py-3 font-[400] text-center align-middle">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[400] text-center align-middle">
                   1 - 2 ngày
                 </td>
               </tr>
               {/* Row 4: Tỉnh thành miền Bắc - Gửi xe khách */}
-              <tr className="text-[#101010]">
-                <td className="border border-black px-4 py-3 font-[500] italic text-center align-middle">
+              <tr className="text-[#2E2F2A]">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[500] italic text-center align-middle">
                   Gửi xe khách
                 </td>
-                <td className="border border-black px-4 py-3 font-[400] leading-[25px]">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[400] leading-[20px] md:leading-[25px]">
                   Phí = [Phí vận chuyển từ Bát Tràng ra bến xe] + [Cước nhà xe về địa chỉ khách].<br />
                   Giao tại các bến: Nước Ngầm, Giáp Bát, Gia Lâm.
                 </td>
-                <td className="border border-black px-4 py-3 font-[400] text-center align-middle">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[400] text-center align-middle">
                   1 - 2 ngày
                 </td>
               </tr>
 
               {/* Row 5: Miền Trung & Miền Nam - Xe tải ghép */}
-              <tr className="text-[#101010]">
+              <tr className="text-[#2E2F2A]">
                 <td
                   rowSpan={2}
-                  className="border border-black px-4 py-3 font-[600] text-[16px] text-[#2E2F2A] text-center align-middle"
+                  className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[600] text-[14px] md:text-[16px] text-center align-middle"
                 >
                   Miền Trung &<br />Miền Nam
                 </td>
-                <td className="border border-black px-4 py-3 font-[500] italic text-center align-middle">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[500] italic text-center align-middle">
                   Xe tải ghép<br />Bắc - Nam
                 </td>
-                <td className="border border-black px-4 py-3 font-[400] leading-[25px]">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[400] leading-[20px] md:leading-[25px]">
                   Áp dụng cho đơn hàng lớn. Cước tính theo thùng/kiện hoặc theo tấn (nếu đi riêng chuyến).
                 </td>
-                <td className="border border-black px-4 py-3 font-[400] text-center align-middle">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[400] text-center align-middle">
                   3 - 7 ngày
                 </td>
               </tr>
               {/* Row 6: Miền Trung & Miền Nam - Gửi xe khách */}
-              <tr className="text-[#101010]">
-                <td className="border border-black px-4 py-3 font-[500] italic text-center align-middle">
+              <tr className="text-[#2E2F2A]">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[500] italic text-center align-middle">
                   Gửi xe khách
                 </td>
-                <td className="border border-black px-4 py-3 font-[400] leading-[25px]">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[400] leading-[20px] md:leading-[25px]">
                   Áp dụng cho hàng mẫu hoặc đơn hàng số lượng ít để rút ngắn thời gian nhận hàng.
                 </td>
-                <td className="border border-black px-4 py-3 font-[400] text-center align-middle">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[400] text-center align-middle">
                   2 - 4 ngày
                 </td>
               </tr>
@@ -151,7 +151,7 @@ export default function ShippingPolicyView() {
 
       {/* Section 2 */}
       <section className="mb-8">
-        <h2 className="font-montserrat text-[#2E2F2A] text-[16px] font-[600] leading-[26px] mb-3">
+        <h2 className="font-montserrat text-[#2E2F2A] text-[16px] font-[600] leading-[26px] mb-5">
           2. Quy định đóng gói & Bảo hiểm nứt vỡ
         </h2>
         <p className="font-montserrat text-[#101010] text-[16px] font-[400] leading-[26px] mb-4">
@@ -175,7 +175,7 @@ export default function ShippingPolicyView() {
 
       {/* Section 3 */}
       <section className="mb-8">
-        <h2 className="font-montserrat text-[#2E2F2A] text-[16px] font-[600] leading-[26px] mb-3">
+        <h2 className="font-montserrat text-[#2E2F2A] text-[16px] font-[600] leading-[26px] mb-5">
           3. Chính sách Kiểm hàng (Kiểm tra trước khi thanh toán)
         </h2>
         <p className="font-montserrat text-[#101010] text-[16px] font-[400] leading-[26px] mb-4">
@@ -209,55 +209,55 @@ export default function ShippingPolicyView() {
         </p>
 
         {/* Steps Table Wrapper */}
-        <div className="w-full overflow-x-auto mb-6">
-          <table className="min-w-[700px] w-full border-collapse border border-black text-[14px] font-montserrat">
+        <div className="w-full mb-6">
+          <table className="w-full border-collapse border border-[#2E2F2A] text-[14px] font-montserrat">
             <thead>
-              <tr className="bg-white text-[#2E2F2A]">
-                <th className="border border-black px-4 py-3 font-[600] text-[16px] leading-[25px] w-[146px]">
+              <tr className="text-[#2E2F2A]">
+                <th className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[600] text-[14px] md:text-[16px] leading-[20px] md:leading-[25px] w-[68px] md:w-[146px]">
                   Bước
                 </th>
-                <th className="border border-black px-4 py-3 font-[600] text-[16px] leading-[25px] w-[448px]">
+                <th className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[600] text-[14px] md:text-[16px] leading-[20px] md:leading-[25px] w-[176px] md:w-[448px]">
                   Hành động của khách hàng
                 </th>
-                <th className="border border-black px-4 py-3 font-[600] text-[16px] leading-[25px] w-[302px]">
+                <th className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[600] text-[14px] md:text-[16px] leading-[20px] md:leading-[25px] w-[120px] md:w-[302px]">
                   Trách nhiệm của Vũ Gia
                 </th>
               </tr>
             </thead>
             <tbody>
               {/* Step 1 */}
-              <tr className="text-[#101010]">
-                <td className="border border-black px-4 py-3 font-[600] text-[#101010] text-center align-middle">
+              <tr className="text-[#2E2F2A]">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[600] text-center align-middle text-[14px] md:text-[14px]">
                   Bước 1
                 </td>
-                <td className="border border-black px-4 py-3 font-[400] leading-[26px]">
-                  <strong>Quay phim/Chụp ảnh:</strong> Chụp lại hiện trạng thùng hàng và các sản phẩm bị vỡ ngay khi mở kiện (giữ nguyên vị trí trong thùng).
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[400] leading-[20px] md:leading-[26px]">
+                  Quay phim/Chụp ảnh: Chụp lại hiện trạng thùng hàng và các sản phẩm bị vỡ ngay khi mở kiện (giữ nguyên vị trí trong thùng).
                 </td>
-                <td className="border border-black px-4 py-3 font-[400] leading-[26px] text-center align-middle">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[400] leading-[20px] md:leading-[26px] text-center align-middle">
                   Tiếp nhận thông tin qua Hotline/Zalo trực 24/7 để xác nhận sự cố.
                 </td>
               </tr>
               {/* Step 2 */}
-              <tr className="text-[#101010]">
-                <td className="border border-black px-4 py-3 font-[600] text-[#101010] text-center align-middle">
+              <tr className="text-[#2E2F2A]">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[600] text-center align-middle text-[14px] md:text-[14px]">
                   Bước 2
                 </td>
-                <td className="border border-black px-4 py-3 font-[400] leading-[26px]">
-                  <strong>Liên hệ ngay:</strong> Gọi Hotline hoặc gửi hình ảnh qua Zalo bộ phận chăm sóc khách hàng trong vòng 24h kể từ khi nhận hàng.
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[400] leading-[20px] md:leading-[26px]">
+                  Liên hệ ngay: Gọi Hotline hoặc gửi hình ảnh qua Zalo bộ phận chăm sóc khách hàng trong vòng 24h kể từ khi nhận hàng.
                 </td>
-                <td className="border border-black px-4 py-3 font-[400] leading-[26px] text-center align-middle">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[400] leading-[20px] md:leading-[26px] text-center align-middle">
                   Phản hồi phương án xử lý trong vòng 2 tiếng làm việc.
                 </td>
               </tr>
               {/* Step 3 */}
-              <tr className="text-[#101010]">
-                <td className="border border-black px-4 py-3 font-[600] text-[#101010] text-center align-middle">
+              <tr className="text-[#2E2F2A]">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[600] text-center align-middle text-[14px] md:text-[14px]">
                   Bước 3
                 </td>
-                <td className="border border-black px-4 py-3 font-[400] leading-[26px]">
-                  <strong>Xác nhận số lượng:</strong> Liệt kê mã sản phẩm và số lượng viên/mảnh bị vỡ để chúng tôi lên đơn hàng bù.
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[400] leading-[20px] md:leading-[26px]">
+                  Xác nhận số lượng: Liệt kê mã sản phẩm và số lượng viên/mảnh bị vỡ để chúng tôi lên đơn hàng bù.
                 </td>
-                <td className="border border-black px-4 py-3 font-[400] leading-[26px] text-center align-middle">
+                <td className="border border-[#2E2F2A] px-2 md:px-4 py-3 font-[400] leading-[20px] md:leading-[26px] text-center align-middle">
                   Gửi bù sản phẩm mới 100% hoàn toàn miễn phí hoặc hoàn tiền tương ứng vào tài khoản khách hàng.
                 </td>
               </tr>
@@ -268,7 +268,7 @@ export default function ShippingPolicyView() {
 
       {/* Spacing & Lưu ý */}
       <section className="mb-8">
-        <h2 className="font-montserrat text-[#2E2F2A] text-[16px] font-[600] uppercase leading-[26px] mb-3">
+        <h2 className="font-montserrat text-[#2E2F2A] text-[16px] font-[600] uppercase leading-[26px] mb-5">
           3 Lưu ý "Vàng" để được hỗ trợ nhanh nhất:
         </h2>
         <ul className="list-disc pl-5 font-montserrat text-[#101010] text-[16px] font-[400] leading-[26px] mb-8 space-y-2">
@@ -285,7 +285,7 @@ export default function ShippingPolicyView() {
       </section>
 
       {/* Reassurance Quote */}
-      <p className="font-montserrat text-[#101010] text-[16px] font-[400] italic leading-[26px] text-center my-8">
+      <p className="font-montserrat text-[#101010] text-[16px] font-[400] italic leading-[26px] my-8">
         "Sự an tâm của quý khách là ưu tiên hàng đầu của chúng tôi. Mọi rủi ro vận chuyển đã có Vũ Gia lo!"
       </p>
     </CustomerServiceLayout>

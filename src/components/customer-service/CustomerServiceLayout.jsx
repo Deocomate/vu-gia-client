@@ -10,7 +10,7 @@ export default function CustomerServiceLayout({ children, breadcrumbs = [] }) {
       <div className="max-w-[1470px] mx-auto px-[20px] md:px-[60px] lg:px-[80px]">
         {/* ================= BREADCRUMBS ================= */}
         {breadcrumbs && breadcrumbs.length > 0 && (
-          <nav className="mb-[25px]" aria-label="Breadcrumb">
+          <nav className="hidden md:block mb-[25px]" aria-label="Breadcrumb">
             <ol className="flex items-center flex-wrap text-[14px] font-[500] text-[#2E2F2A] leading-[40px] select-none">
               {breadcrumbs.map((item, idx) => {
                 const isLast = idx === breadcrumbs.length - 1;

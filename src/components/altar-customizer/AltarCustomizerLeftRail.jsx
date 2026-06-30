@@ -38,7 +38,7 @@ export default function AltarCustomizerLeftRail({ activeStep, onStepChange }) {
         </p>
       </div>
 
-      <div className="support-card">
+      <div className="support-card hidden lg:block">
         <h3>
           <Headset className="rail-icon support-icon" aria-hidden="true" />
           Cần hỗ trợ

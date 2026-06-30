@@ -11,8 +11,10 @@ import { ROUTES } from "@/utils/routes";
 import imgDonHang1 from "@/assets/images/don-hang/don-hang-1.png";
 import imgDonHang2 from "@/assets/images/don-hang/don-hang-2.png";
 
-// Import a sample product image for related list if available
-import imgRelatedDefault from "@/assets/images/products/product-image-thumb.png";
+import imgRelated1 from "@/assets/images/product-detail/product-card-image-1.png";
+import imgRelated2 from "@/assets/images/product-detail/product-card-image-2.png";
+import imgRelated3 from "@/assets/images/product-detail/product-card-image-3.png";
+import imgRelated4 from "@/assets/images/product-detail/product-detail-thumbnail.png";
 
 export default function CartView() {
   const breadcrumbItems = [
@@ -61,7 +63,6 @@ export default function CartView() {
     return subtotal - discountAmount + tax;
   }, [subtotal, discountAmount, tax]);
 
-  // Related products array
   const relatedProducts = [
     {
       id: 101,
@@ -70,7 +71,7 @@ export default function CartView() {
       originalPrice: "2.500.000đ",
       salePrice: "2.000.000đ",
       soldCount: 12,
-      image: imgRelatedDefault,
+      image: imgRelated1,
     },
     {
       id: 102,
@@ -79,7 +80,7 @@ export default function CartView() {
       originalPrice: "2.500.000đ",
       salePrice: "2.000.000đ",
       soldCount: 12,
-      image: imgRelatedDefault,
+      image: imgRelated2,
     },
     {
       id: 103,
@@ -88,7 +89,7 @@ export default function CartView() {
       originalPrice: "2.500.000đ",
       salePrice: "2.000.000đ",
       soldCount: 12,
-      image: imgRelatedDefault,
+      image: imgRelated3,
     },
     {
       id: 104,
@@ -97,7 +98,7 @@ export default function CartView() {
       originalPrice: "2.500.000đ",
       salePrice: "2.000.000đ",
       soldCount: 12,
-      image: imgRelatedDefault,
+      image: imgRelated4,
     },
   ];
 
@@ -144,13 +145,12 @@ export default function CartView() {
   };
 
   return (
-    <div className="w-full bg-[#FAF7F7] min-h-screen py-[40px] px-4 md:px-[60px] lg:px-[80px]">
+    <div className="w-full bg-[#FAF7F7] min-h-screen pt-[40px] pb-[50px] lg:pb-[100px] px-4 md:px-[60px] lg:px-[80px]">
       <div className="max-w-[1440px] mx-auto flex flex-col">
         {/* Breadcrumb Trail */}
         <Breadcrumb
           items={breadcrumbItems}
-          separator=">"
-          className="mb-[25px]"
+          className="hidden md:block mb-[25px]"
         />
 
         {/* Page Title */}
@@ -159,7 +159,7 @@ export default function CartView() {
         </h1>
 
         {/* Columns Grid */}
-        <div className="flex flex-col lg:flex-row gap-[50px] items-start w-full">
+        <div className="flex flex-col lg:flex-row gap-[20px] lg:gap-[50px] items-start w-full">
           {/* Left Column - Cart Item List */}
           <div className="flex-1 w-full">
             {cartItems.length > 0 ? (
@@ -203,15 +203,15 @@ export default function CartView() {
           </div>
         </div>
 
-        {/* Related Products Section (Có thể bạn quan tâm) */}
+        {/* Related Products Section */}
         <div className="mt-[50px] w-full flex flex-col">
-          <h2 className="text-[#97400C] text-[32px] font-[700] leading-[40px] mb-6 font-montserrat">
+          <h2 className="text-[#97400C] text-[26px] lg:text-[32px] font-[700] leading-[40px] mb-6 font-montserrat">
             Có thể bạn quan tâm
           </h2>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-[26px]">
+          <div className="flex lg:grid lg:grid-cols-4 gap-[14px] lg:gap-[26px] overflow-x-auto lg:overflow-x-visible no-scrollbar pb-4 lg:pb-0 scroll-smooth snap-x snap-mandatory w-[calc(100%+60px)] mx-[-30px] px-[30px] scroll-px-[30px] lg:w-auto lg:mx-0 lg:px-0">
             {relatedProducts.map((product) => (
-              <div key={product.id} className="w-full max-w-[340px] mx-auto">
+              <div key={product.id} className="flex-shrink-0 w-[175px] lg:w-auto snap-start">
                 <ProductCard
                   image={product.image}
                   name={product.name}

@@ -50,15 +50,15 @@ export default function CheckoutForm({ onSubmit = () => {} }) {
           placeholder="Tên khách hàng"
           value={formData.fullName}
           onChange={(e) => handleChange("fullName", e.target.value)}
-          className="w-full h-[50px] border border-[#E5E5E5] px-[15px] font-montserrat font-[300] text-[16px] text-[#2E2F2A] bg-white rounded-[3px] focus:outline-none focus:border-[#C76E00] placeholder:text-[#909090]"
+          className="w-full h-[54px] border border-[#E5E5E5] px-[15px] font-montserrat font-[300] text-[16px] text-[#2E2F2A] bg-white rounded-[7px] focus:outline-none focus:border-[#C76E00] placeholder:text-[#909090]"
         />
 
         {/* Address Dropdown */}
-        <div className="relative w-full h-[50px]">
+        <div className="relative w-full h-[54px]">
           <select
             value={formData.address}
             onChange={(e) => handleChange("address", e.target.value)}
-            className="w-full h-full border border-[#E5E5E5] pl-[15px] pr-10 font-montserrat font-[300] text-[16px] text-[#2E2F2A] bg-white rounded-[3px] focus:outline-none focus:border-[#C76E00] appearance-none cursor-pointer"
+            className="w-full h-full border border-[#E5E5E5] pl-[15px] pr-10 font-montserrat font-[300] text-[16px] text-[#2E2F2A] bg-white rounded-[7px] focus:outline-none focus:border-[#C76E00] appearance-none cursor-pointer"
           >
             <option value="" disabled hidden>
               Địa chỉ
@@ -96,7 +96,7 @@ export default function CheckoutForm({ onSubmit = () => {} }) {
             type="text"
             placeholder="Nhập địa chỉ chi tiết của bạn"
             onChange={(e) => handleChange("address", e.target.value)}
-            className="w-full h-[50px] border border-[#E5E5E5] px-[15px] font-montserrat font-[300] text-[16px] text-[#2E2F2A] bg-white rounded-[3px] focus:outline-none focus:border-[#C76E00] placeholder:text-[#909090] animate-fadeIn"
+            className="w-full h-[54px] border border-[#E5E5E5] px-[15px] font-montserrat font-[300] text-[16px] text-[#2E2F2A] bg-white rounded-[7px] focus:outline-none focus:border-[#C76E00] placeholder:text-[#909090] animate-fadeIn"
           />
         )}
 
@@ -107,14 +107,14 @@ export default function CheckoutForm({ onSubmit = () => {} }) {
             placeholder="Thành phố"
             value={formData.city}
             onChange={(e) => handleChange("city", e.target.value)}
-            className="w-full h-[50px] border border-[#E5E5E5] px-[15px] font-montserrat font-[300] text-[16px] text-[#2E2F2A] bg-white rounded-[3px] focus:outline-none focus:border-[#C76E00] placeholder:text-[#909090]"
+            className="w-full h-[54px] border border-[#E5E5E5] px-[15px] font-montserrat font-[300] text-[16px] text-[#2E2F2A] bg-white rounded-[7px] focus:outline-none focus:border-[#C76E00] placeholder:text-[#909090]"
           />
           <input
             type="text"
             placeholder="Điện thoại"
             value={formData.phone}
             onChange={(e) => handleChange("phone", e.target.value)}
-            className="w-full h-[50px] border border-[#E5E5E5] px-[15px] font-montserrat font-[300] text-[16px] text-[#2E2F2A] bg-white rounded-[3px] focus:outline-none focus:border-[#C76E00] placeholder:text-[#909090]"
+            className="w-full h-[54px] border border-[#E5E5E5] px-[15px] font-montserrat font-[300] text-[16px] text-[#2E2F2A] bg-white rounded-[7px] focus:outline-none focus:border-[#C76E00] placeholder:text-[#909090]"
           />
         </div>
       </div>
@@ -123,11 +123,11 @@ export default function CheckoutForm({ onSubmit = () => {} }) {
       <h2 className="text-[16px] font-[600] leading-normal uppercase mb-[16px] tracking-normal">
         Phương thức vận chuyển
       </h2>
-      <div className="relative w-full h-[50px] mb-[25px]">
+      <div className="relative w-full h-[54px] mb-[25px]">
         <select
           value={formData.shippingMethod}
           onChange={(e) => handleChange("shippingMethod", e.target.value)}
-          className="w-full h-full border border-[#E5E5E5] pl-[15px] pr-10 font-montserrat font-[300] text-[16px] text-[#2E2F2A] bg-white rounded-[3px] focus:outline-none focus:border-[#C76E00] appearance-none cursor-pointer"
+          className="w-full h-full border border-[#E5E5E5] pl-[15px] pr-10 font-montserrat font-[300] text-[16px] text-[#2E2F2A] bg-white rounded-[7px] focus:outline-none focus:border-[#C76E00] appearance-none cursor-pointer"
         >
           <option value="" disabled hidden>
             Hình thức vận chuyển
@@ -158,7 +158,7 @@ export default function CheckoutForm({ onSubmit = () => {} }) {
       <h2 className="text-[16px] font-[600] leading-normal uppercase mb-[15px] tracking-normal">
         Phương thức thanh toán
       </h2>
-      <div className="flex flex-col border border-[#E5E5E5] rounded-[3px] bg-white mb-[42px] overflow-hidden">
+      <div className="flex flex-col border border-[#E5E5E5] rounded-[7px] bg-white mb-[42px] overflow-hidden">
         {/* Credit Card Option */}
         <label
           className="flex items-center h-[54px] pl-[22px] pr-4 border-b border-[#E5E5E5] cursor-pointer hover:bg-neutral-50 transition-colors select-none"
@@ -199,9 +199,9 @@ export default function CheckoutForm({ onSubmit = () => {} }) {
       <div className="w-full flex justify-center">
         <button
           type="submit"
-          className="w-full max-w-[276px] h-[45px] bg-[#C76E00] hover:bg-[#AD5036] active:bg-[#C76E00] text-white font-archivo font-[800] text-[16px] uppercase tracking-[0.05em] rounded-[3px] transition-all duration-300 shadow-md cursor-pointer flex items-center justify-center"
+          className="w-full lg:w-[313px] h-[45px] bg-[#C76E00] hover:bg-[#AD5036] active:bg-[#C76E00] text-white font-archivo font-[800] text-[16px] uppercase tracking-[0.05em] rounded-[3px] transition-all duration-300 shadow-md cursor-pointer flex items-center justify-center"
         >
-          Hoàn tất thanh toán
+          HOÀN TẤT THANH TOÁN
         </button>
       </div>
     </form>

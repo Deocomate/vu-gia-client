@@ -42,9 +42,9 @@ export default function FactoryShowcase() {
           {SHOWCASE_IMAGES.map((item, index) => (
             <div
               key={index}
-              className="embla__slide pl-[21px] flex-[0_0_100%] md:flex-[0_0_66%] min-w-0"
+              className="embla__slide pl-[21px] flex-[0_0_100%] md:flex-[0_0_70%] min-w-0"
             >
-              <div className="relative w-full h-[250px] sm:h-[350px] md:h-[450px] lg:h-[587px] bg-neutral-100 overflow-hidden">
+              <div className="relative w-full h-[166px] sm:h-[350px] md:h-[450px] lg:h-[587px] bg-neutral-100 overflow-hidden">
                 <Image
                   src={item.src}
                   alt={item.alt}

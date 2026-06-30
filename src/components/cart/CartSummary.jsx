@@ -28,10 +28,18 @@ export default function CartSummary({
   };
 
   return (
-    <div className="w-full bg-white border-[0.5px] border-[#909090] rounded-[6px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] px-4 py-6 md:px-[50px] md:pt-[30px] md:pb-[30px] flex flex-col font-montserrat justify-between min-h-[344px]">
+    <div 
+      className="w-full rounded-[6px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] p-8 md:px-[50px] md:pt-[30px] md:pb-[30px] flex flex-col font-montserrat justify-between min-h-[344px]"
+      style={{
+        border: "1px solid transparent",
+        backgroundImage: "linear-gradient(white, white), linear-gradient(to bottom, #C76E00, rgba(199, 110, 0, 0))",
+        backgroundOrigin: "border-box",
+        backgroundClip: "padding-box, border-box",
+      }}
+    >
       {/* Promo Code Entry */}
-      <div className="flex flex-col gap-2 mb-6">
-        <label className="text-[#909090] text-[14px] font-[400] leading-[20px]">
+      <div className="flex flex-col gap-2 mb-10">
+        <label className="text-[#909090] text-[12px] md:text-[14px] font-[400] leading-[20px]">
           Nhập mã tại đây
         </label>
         <form onSubmit={handleApply} className="flex flex-row gap-0 items-center">
@@ -40,11 +48,11 @@ export default function CartSummary({
             placeholder="Mã ưu đãi"
             value={promoCode}
             onChange={(e) => setPromoCode(e.target.value)}
-            className="flex-1 max-w-[251px] h-[42px] border border-[#C76E00] px-3 font-montserrat font-[400] text-[14px] text-[#2E2F2A] rounded-l-[3px] focus:outline-none placeholder:text-[#909090]"
+            className="flex-1 h-[38px] md:h-[42px] border border-[#C76E00] border-r-0 md:border-r px-3 font-montserrat font-[400] text-[14px] text-[#2E2F2A] rounded-l-[3px] focus:outline-none placeholder:text-[#9CA3AF] md:placeholder:text-[#909090]"
           />
           <button
             type="submit"
-            className="w-[134px] h-[42px] bg-[#C76E00] hover:bg-[#a65c00] border border-[#C76E00] text-white font-archivo font-[700] text-[14px] flex items-center justify-center rounded-r-[3px] transition duration-200 cursor-pointer shrink-0"
+            className="w-[103px] md:w-[134px] h-[38px] md:h-[42px] bg-[#C76E00] hover:bg-[#a65c00] border border-[#C76E00] text-white font-archivo font-[800] md:font-[700] text-[12px] md:text-[14px] flex items-center justify-center rounded-r-[3px] transition duration-200 cursor-pointer shrink-0"
           >
             ÁP DỤNG
           </button>
@@ -54,15 +62,15 @@ export default function CartSummary({
       {/* Breakdown Details */}
       <div className="flex flex-col">
         {/* Discount Line */}
-        <div className="flex justify-between items-center text-[#909090] text-[12px] font-[400] leading-[28px]">
+        <div className="flex justify-between items-center text-[rgba(46,47,42,0.60)] text-[14px] md:text-[12px] font-[400] leading-[28px]">
           <span>Giảm giá:</span>
-          <span>{formatDiscount(discount)}</span>
+          <span className="text-[#2E2F2A]">{formatDiscount(discount)}</span>
         </div>
 
         {/* Tax Line */}
-        <div className="flex justify-between items-center text-[#909090] text-[12px] font-[400] leading-[28px]">
+        <div className="flex justify-between items-center text-[rgba(46,47,42,0.60)] text-[14px] md:text-[12px] font-[400] leading-[28px]">
           <span>Thuế:</span>
-          <span>{formatNumber(tax)}</span>
+          <span className="text-[#2E2F2A]">{formatNumber(tax)}</span>
         </div>
 
         {/* Divider */}
@@ -70,14 +78,14 @@ export default function CartSummary({
 
         {/* Total Price Display */}
         <div className="flex justify-between items-start pt-1">
-          <span className="text-[#3C4043] text-[16px] font-[700] leading-[28px]">
+          <span className="text-[#2E2F2A] text-[20px] md:text-[16px] font-[700] leading-[20px] md:leading-[28px]">
             Tổng:
           </span>
           <div className="flex flex-col items-end">
-            <span className="text-[#3C4043] text-[16px] font-[700] leading-[28px]">
+            <span className="text-[#2E2F2A] text-[20px] md:text-[16px] font-[700] leading-[20px] md:leading-[28px]">
               {formatNumber(total)}
             </span>
-            <span className="text-[#2E2F2A] text-[14px] font-[600] mt-0.5">
+            <span className="text-[#2E2F2A] text-[10px] md:text-[14px] font-[700] md:font-[600] mt-0.5 leading-[15px] md:leading-normal">
               VND
             </span>
           </div>
@@ -87,7 +95,7 @@ export default function CartSummary({
       {/* Checkout Button */}
       <button
         onClick={onCheckout}
-        className="w-full max-w-[276px] h-[42px] mx-auto flex items-center justify-center bg-[#C76E00] hover:bg-[#a65c00] text-white font-archivo font-[700] text-[14px] leading-[20px] transition duration-200 cursor-pointer mt-6 rounded-[3px]"
+        className="w-full md:max-w-[276px] h-[52px] md:h-[42px] mx-auto flex items-center justify-center bg-[#C76E00] hover:bg-[#a65c00] text-white font-montserrat md:font-archivo font-[700] text-[16px] md:text-[14px] leading-[20px] tracking-[0.70px] md:tracking-normal transition duration-200 cursor-pointer mt-10 rounded-[3px]"
       >
         THANH TOÁN
       </button>

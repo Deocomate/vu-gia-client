@@ -17,6 +17,7 @@ export default function AltarCustomizerView() {
     zoom,
     zoomIn,
     zoomOut,
+    setZoom,
     activeTab,
     setActiveTab,
     activeStep,
@@ -41,6 +42,7 @@ export default function AltarCustomizerView() {
           zoom={zoom}
           onZoomIn={zoomIn}
           onZoomOut={zoomOut}
+          onZoomChange={setZoom}
           activeTab={activeTab}
           onTabChange={setActiveTab}
           onAddItem={addItem}

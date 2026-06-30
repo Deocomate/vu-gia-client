@@ -75,7 +75,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="relative w-full bg-primary z-50">
+    <header className="sticky top-0 w-full bg-primary z-50">
       {/* Container Desktop & Mobile Top Bar */}
       <div className="relative max-w-[1470px] mx-auto w-full h-[70px] lg:h-[84px] px-[20px] lg:px-[30px] flex items-center justify-between">
         {/* Mobile Hamburger Button */}
@@ -153,6 +153,19 @@ export default function Header() {
           </Link>
 
           <CartLink />
+
+          <Link
+            href={ROUTES.ACCOUNT}
+            aria-label="Tài khoản"
+            className="lg:hidden relative w-[20px] h-[20px] flex-shrink-0 hover:opacity-80 transition-opacity"
+          >
+            <Image
+              src="/images/header/user.png"
+              alt="User"
+              fill
+              className="object-contain"
+            />
+          </Link>
         </div>
       </div>
 
@@ -168,9 +181,9 @@ export default function Header() {
           >
             {/* Background Pattern */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
-              <div className="absolute left-1/2 top-[204px] -translate-x-1/2 w-[515px] h-[668px] opacity-20 mix-blend-overlay">
+              <div className="absolute left-[145px] top-[204px] w-[515px] h-[668px] opacity-20">
                 <Image
-                  src="/images/header/bg-pattern-mobile.png"
+                  src="/images/bg-pattern/bg-pattern.svg"
                   alt=""
                   fill
                   className="object-contain"
@@ -180,7 +193,7 @@ export default function Header() {
             </div>
 
             {/* Overlay Top Bar */}
-            <div className="relative z-10 h-[70px] px-[20px] flex items-center justify-between w-full border-b border-white/10">
+            <div className="relative z-10 h-[70px] pl-[29px] pr-[15px] flex items-center justify-between w-full border-b border-white/10">
               <Link
                 href={ROUTES.HOME}
                 className="relative w-[80px] h-[40px] flex-shrink-0"
@@ -194,20 +207,22 @@ export default function Header() {
                 />
               </Link>
 
-              <div className="flex items-center gap-[20px]">
-                <button
-                  aria-label="Tìm kiếm"
-                  className="relative w-[18px] h-[18px] flex-shrink-0 hover:opacity-80 transition-opacity"
-                >
-                  <Image
-                    src="/images/header/search-icon.png"
-                    alt="Search"
-                    fill
-                    className="object-contain"
-                  />
-                </button>
+              <div className="flex items-center gap-[28px]">
+                <div className="flex items-center gap-[20px]">
+                  <button
+                    aria-label="Tìm kiếm"
+                    className="relative w-[18px] h-[18px] flex-shrink-0 hover:opacity-80 transition-opacity"
+                  >
+                    <Image
+                      src="/images/header/search-icon.png"
+                      alt="Search"
+                      fill
+                      className="object-contain"
+                    />
+                  </button>
 
-                <CartLink onClick={closeMobileMenu} />
+                  <CartLink onClick={closeMobileMenu} />
+                </div>
 
                 <button
                   className="relative w-[24px] h-[24px] flex-shrink-0 hover:opacity-80 transition-opacity"

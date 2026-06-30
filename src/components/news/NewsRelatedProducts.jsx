@@ -51,7 +51,7 @@ export default function NewsRelatedProducts() {
   );
 
   return (
-    <section className="w-full bg-white pt-[50px] pb-16">
+    <section className="w-full bg-white pt-[50px] pb-[50px] lg:pb-[100px]">
       <div className="max-w-[1438px] mx-auto px-[30px] xl:px-0">
         {/* Title */}
         <h2 className="font-montserrat font-bold text-[26px] lg:text-[32px] text-[#97400C] mb-[20px] lg:mb-[40px] leading-[40px] tracking-wide">

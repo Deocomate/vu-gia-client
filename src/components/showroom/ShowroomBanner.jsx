@@ -6,7 +6,7 @@ import showroomHeaderBanner from "@/assets/images/showroom/showroom-header-banne
 
 export default function ShowroomBanner() {
   return (
-    <section className="relative w-full h-[150px] md:h-[207px] bg-[#2E2F2A] overflow-hidden flex flex-col justify-center items-center">
+    <section className="relative w-full h-[300px] md:h-[207px] bg-[#2E2F2A] overflow-hidden flex flex-col justify-center items-center">
       {/* Background Image */}
       <Image
         src={showroomHeaderBanner}
@@ -26,7 +26,7 @@ export default function ShowroomBanner() {
         </h1>
 
         {/* Breadcrumbs */}
-        <nav className="flex items-center gap-[7px] text-[13px] md:text-[14px] font-normal leading-normal">
+        <nav className="flex items-center gap-[7px] text-[11px] md:text-[14px] font-normal leading-normal">
           <Link href={ROUTES.HOME} className="hover:underline transition-all opacity-85 hover:opacity-100">
             Trang chủ
           </Link>

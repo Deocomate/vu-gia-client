@@ -33,6 +33,7 @@ export default function AltarCustomizerDesignerPanel({
   zoom,
   onZoomIn,
   onZoomOut,
+  onZoomChange,
   activeTab,
   onTabChange,
   onAddItem,
@@ -59,11 +60,22 @@ export default function AltarCustomizerDesignerPanel({
           </button>
         ))}
         <div className="zoom-control" aria-label="Điều khiển thu phóng">
-          <button type="button" aria-label="Thu nhỏ" onClick={onZoomOut}>
+          <button type="button" aria-label="Thu nhỏ" onClick={onZoomOut} className="zoom-btn zoom-btn-minus">
             −
           </button>
-          <span>{zoom}%</span>
-          <button type="button" aria-label="Phóng to" onClick={onZoomIn}>
+          <div className="zoom-input-wrap">
+            <input
+              type="number"
+              value={zoom}
+              onChange={(e) => onZoomChange(e.target.value)}
+              className="zoom-input"
+              min={50}
+              max={150}
+              aria-label="Phần trăm thu phóng"
+            />
+            <span className="zoom-input-suffix">%</span>
+          </div>
+          <button type="button" aria-label="Phóng to" onClick={onZoomIn} className="zoom-btn zoom-btn-plus">
             +
           </button>
         </div>

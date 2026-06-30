@@ -6,6 +6,7 @@ import ProductDescription from "@/components/product-detail/ProductDescription";
 import ProductDetail from "@/components/product-detail/ProductDetail";
 import ProductSpecifications from "@/components/product-detail/ProductSpecifications";
 import SimilarProducts from "@/components/product-detail/SimilarProducts";
+import FixedActionWidget from "@/components/product-detail/FixedActionWidget";
 
 export default function ProductDetailView({ slug }) {
   return (
@@ -20,6 +21,9 @@ export default function ProductDetailView({ slug }) {
         {/* Premium story layout with chessboard details */}
         <ProductDetail />
       </div>
+
+      {/* Fixed action widget - right side of screen */}
+      <FixedActionWidget />
 
       {/* Structured item specifications list (Slider is full-screen, table is auto-centered) */}
       <ProductSpecifications />

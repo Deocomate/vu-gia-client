@@ -184,28 +184,28 @@ export default function ProductSpecifications() {
       {/* Main Content Container (Title & Table) - Center aligned matching page grid layout */}
       <div className="max-w-[1470px] mx-auto px-[20px] lg:px-[60px] pb-8">
         {/* Title */}
-        <h2 className="font-montserrat text-[#97400C] text-[28px] font-[700] leading-[40px] mb-[40px] uppercase tracking-wide">
+        <h2 className="font-montserrat text-[#97400C] text-[20px] lg:text-[28px] font-[700] leading-[40px] mb-[40px] uppercase tracking-wide">
           Công năng sản phẩm
         </h2>
 
         {/* Responsive Table Container */}
         <div className="w-full overflow-x-auto lg:px-[100px]">
-          <table className="w-full min-w-[1000px] lg:min-w-0 border-collapse bg-white font-montserrat text-[18px] text-[#101010] text-left">
+          <table className="w-full min-w-[900px] lg:min-w-0 border-collapse bg-white font-montserrat text-[14px] lg:text-[18px] text-[#101010] text-left">
             <thead>
               <tr className="bg-[#F2F3F5] border-b border-[#E6E8EC]">
-                <th className="py-[21px] pl-6 pr-2 font-montserrat font-[700] text-[18px] text-[#2E2F2A] uppercase w-[87px] text-center">
+                <th className="py-[21px] pl-6 pr-2 font-montserrat font-[700] text-[14px] lg:text-[18px] text-[#2E2F2A] uppercase w-[87px] text-center">
                   STT
                 </th>
-                <th className="py-[21px] pl-[64px] pr-4 font-montserrat font-[700] text-[18px] text-[#2E2F2A] uppercase w-[297px] text-left">
+                <th className="py-[21px] pl-[64px] pr-4 font-montserrat font-[700] text-[14px] lg:text-[18px] text-[#2E2F2A] uppercase w-[297px] text-left">
                   Tên vật phẩm
                 </th>
-                <th className="py-[21px] px-4 font-montserrat font-[700] text-[18px] text-[#2E2F2A] uppercase w-[188px] text-center">
+                <th className="py-[21px] px-4 font-montserrat font-[700] text-[14px] lg:text-[18px] text-[#2E2F2A] uppercase w-[188px] text-center">
                   Số lượng
                 </th>
-                <th className="py-[21px] px-4 font-montserrat font-[700] text-[18px] text-[#2E2F2A] uppercase w-[197px] text-center">
+                <th className="py-[21px] px-4 font-montserrat font-[700] text-[14px] lg:text-[18px] text-[#2E2F2A] uppercase w-[197px] text-center">
                   ĐVT
                 </th>
-                <th className="py-[21px] pl-[23px] pr-6 font-montserrat font-[700] text-[18px] text-[#2E2F2A] uppercase w-[471px] text-left">
+                <th className="py-[21px] pl-[23px] pr-6 font-montserrat font-[700] text-[14px] lg:text-[18px] text-[#2E2F2A] uppercase w-[471px] text-left">
                   Công dụng
                 </th>
               </tr>
@@ -218,19 +218,19 @@ export default function ProductSpecifications() {
                     idx % 2 === 1 ? "bg-[#F2F3F5]" : "bg-white"
                   }`}
                 >
-                  <td className="py-[21px] pl-6 pr-2 font-[400] text-[18px] text-[#101010] text-center">
+                  <td className="py-[21px] pl-6 pr-2 font-[400] text-[14px] lg:text-[18px] text-[#101010] text-center">
                     {item.hideStt ? "" : item.stt}
                   </td>
-                  <td className="py-[21px] pl-[64px] pr-4 font-[600] text-[18px] text-[#101010] text-left whitespace-pre-line">
+                  <td className="py-[21px] pl-[64px] pr-4 font-[600] text-[14px] lg:text-[18px] text-[#101010] text-left whitespace-pre-line">
                     {item.name}
                   </td>
-                  <td className="py-[21px] px-4 font-[400] text-[18px] text-[#101010] text-center">
+                  <td className="py-[21px] px-4 font-[400] text-[14px] lg:text-[18px] text-[#101010] text-center">
                     {item.quantity}
                   </td>
-                  <td className="py-[21px] px-4 font-[400] text-[18px] text-[#101010] text-center">
+                  <td className="py-[21px] px-4 font-[400] text-[14px] lg:text-[18px] text-[#101010] text-center">
                     {item.unit}
                   </td>
-                  <td className="py-[21px] pl-[23px] pr-6 font-[400] text-[18px] text-[#101010] text-left leading-[25px] whitespace-pre-line text-justify">
+                  <td className="py-[21px] pl-[23px] pr-6 font-[400] text-[14px] lg:text-[18px] text-[#101010] text-left leading-[25px] whitespace-pre-line text-justify">
                     {item.usage}
                   </td>
                 </tr>

@@ -74,12 +74,18 @@ export function useAltarCustomizer(initialItems = []) {
     setZoom((value) => Math.max(50, value - 10));
   }, []);
 
+  const setZoomValue = useCallback((value) => {
+    const clamped = Math.max(50, Math.min(150, Number(value) || 100));
+    setZoom(clamped);
+  }, []);
+
   return {
     items,
     total,
     zoom,
     zoomIn,
     zoomOut,
+    setZoom: setZoomValue,
     activeTab,
     setActiveTab,
     activeStep,
