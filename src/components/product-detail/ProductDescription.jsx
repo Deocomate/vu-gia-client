@@ -2,14 +2,14 @@ import React from "react";
 
 export default function ProductDescription() {
   return (
-    <div className="w-full py-8 border-t border-[#E6E8EC] mt-8">
+    <div className="w-full pt-4 lg:pt-8 border-t border-[#E6E8EC] mt-8">
       {/* Title */}
-      <h2 className="font-montserrat text-[#97400C] text-[28px] font-[700] leading-[40px] mb-8 uppercase tracking-wide">
+      <h2 className="font-montserrat text-[#97400C] text-[20px] lg:text-[28px] font-[700] leading-[40px] tracking-wide">
         Mô tả sản phẩm
       </h2>
 
       {/* Narrative paragraphs */}
-      <div className="max-w-[1200px] mx-auto font-montserrat text-[16px] lg:text-[18px] text-[#383838] leading-[30px] flex flex-col gap-6 text-justify">
+      <div className="hidden max-w-[1200px] mx-auto font-montserrat text-[16px] lg:text-[18px] text-[#383838] leading-[30px] flex flex-col gap-6 text-justify">
         <p>
           Đồ thờ cúng Bát Tràng vẽ sen men rạn cổ là sự kết hợp hài hòa giữa nét
           vẽ tay mộc mạc và sắc men rạn truyền thống độc bản. Họa tiết hoa sen

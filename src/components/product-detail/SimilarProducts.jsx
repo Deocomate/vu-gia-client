@@ -5,7 +5,7 @@ import productCardImage2 from "@/assets/images/product-detail/product-card-image
 import productCardImage3 from "@/assets/images/product-detail/product-card-image-3.png";
 import productDetailThumbnail from "@/assets/images/product-detail/product-detail-thumbnail.png";
 
-export default function SimilarProducts() {
+export default function SimilarProducts({ hideBorder }) {
   const similarList = [
     {
       id: 1,
@@ -50,14 +50,14 @@ export default function SimilarProducts() {
   );
 
   return (
-    <div className="w-full lg:pt-[50px] lg:pb-[40px] lg:border-t border-[#E6E8EC] mt-8">
+    <div className={`w-full lg:pt-[50px] lg:pb-[40px] mt-8 ${hideBorder ? "" : "lg:border-t border-[#E6E8EC]"}`}>
       {/* Title */}
       <h2 className="font-montserrat text-[#97400C] text-[20px] lg:text-[32px] font-[700] leading-[40px] mb-4 lg:mb-8 tracking-wide">
         Sản phẩm tương tự
       </h2>
 
       {/* Mobile swipe / Desktop grid */}
-      <div className="flex lg:grid lg:grid-cols-4 gap-[14px] lg:gap-[26px] overflow-x-auto lg:overflow-x-visible no-scrollbar pb-4 lg:pb-0 scroll-smooth snap-x snap-mandatory w-[calc(100%+60px)] mx-[-30px] px-[30px] scroll-px-[30px] lg:w-auto lg:mx-0 lg:px-0">
+      <div className="flex lg:grid lg:grid-cols-4 gap-[14px] lg:gap-[26px] overflow-x-auto lg:overflow-x-visible no-scrollbar pb-4 lg:pb-0 scroll-smooth snap-x snap-mandatory w-[calc(100%+40px)] mx-[-20px] px-[20px] scroll-px-[20px] lg:w-auto lg:mx-0 lg:px-0">
         {similarList.map((product) => (
           <div key={product.id} className="flex-shrink-0 w-[175px] lg:w-auto snap-start">
             <ProductCard

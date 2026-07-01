@@ -12,6 +12,10 @@ import productCardImage3 from "@/assets/images/product-detail/product-card-image
 
 export default function ProductSpecifications() {
   const [currentIdx, setCurrentIdx] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+
+  const minSwipeDistance = 50;
 
   const sliderImages = [
     productDetailBigThumb,
@@ -27,6 +31,27 @@ export default function ProductSpecifications() {
 
   const handleNext = () => {
     setCurrentIdx((prev) => (prev === sliderImages.length - 1 ? 0 : prev + 1));
+  };
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    if (isLeftSwipe) {
+      handleNext();
+    } else if (isRightSwipe) {
+      handlePrev();
+    }
   };
 
   const specs = [
@@ -136,9 +161,14 @@ export default function ProductSpecifications() {
   ];
 
   return (
-    <div className="w-full mt-8">
+    <div className="w-full mt-5 lg:mt-8">
       {/* Full-width Image Slider - height 1280px on desktop, naturally spans full screen width, no borders, no rounding */}
-      <div className="w-full relative h-[300px] md:h-[600px] lg:h-[1280px] overflow-hidden bg-gray-100 mb-12 group">
+      <div 
+        className="w-full relative h-[300px] md:h-[600px] lg:h-[1280px] overflow-hidden bg-gray-100 mb-10 lg:mb-12 group"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
         <div className="relative w-full h-full">
           <Image
             src={sliderImages[currentIdx]}
@@ -184,8 +214,11 @@ export default function ProductSpecifications() {
       {/* Main Content Container (Title & Table) - Center aligned matching page grid layout */}
       <div className="max-w-[1470px] mx-auto px-[20px] lg:px-[60px] pb-8">
         {/* Title */}
-        <h2 className="font-montserrat text-[#97400C] text-[20px] lg:text-[28px] font-[700] leading-[40px] mb-[40px] uppercase tracking-wide">
+        <h2 className="hidden lg:block font-montserrat text-[#97400C] text-[20px] lg:text-[28px] font-[700] leading-[40px] mb-[30px] lg:mb-[40px] tracking-wide">
           Công năng sản phẩm
+        </h2>
+        <h2 className="block lg:hidden font-montserrat text-[#97400C] text-[20px] lg:text-[28px] font-[700] leading-[40px] mb-[30px] lg:mb-[40px] tracking-wide">
+          Thông số
         </h2>
 
         {/* Responsive Table Container */}
@@ -193,19 +226,19 @@ export default function ProductSpecifications() {
           <table className="w-full min-w-[900px] lg:min-w-0 border-collapse bg-white font-montserrat text-[14px] lg:text-[18px] text-[#101010] text-left">
             <thead>
               <tr className="bg-[#F2F3F5] border-b border-[#E6E8EC]">
-                <th className="py-[21px] pl-6 pr-2 font-montserrat font-[700] text-[14px] lg:text-[18px] text-[#2E2F2A] uppercase w-[87px] text-center">
+                <th className="py-[21px] pl-6 pr-2 font-montserrat font-[700] text-[14px] lg:text-[18px] text-[#2E2F2A] uppercase w-[30px] lg:w-[87px] text-center">
                   STT
                 </th>
-                <th className="py-[21px] pl-[64px] pr-4 font-montserrat font-[700] text-[14px] lg:text-[18px] text-[#2E2F2A] uppercase w-[297px] text-left">
+                <th className="py-[21px] pl-[64px] pr-4 font-montserrat font-[700] text-[14px] lg:text-[18px] text-[#2E2F2A] uppercase w-[200px] lg:w-[297px] text-left">
                   Tên vật phẩm
                 </th>
-                <th className="py-[21px] px-4 font-montserrat font-[700] text-[14px] lg:text-[18px] text-[#2E2F2A] uppercase w-[188px] text-center">
+                <th className="py-[21px] px-4 font-montserrat font-[700] text-[14px] lg:text-[18px] text-[#2E2F2A] uppercase w-[100px] lg:w-[188px] text-center">
                   Số lượng
                 </th>
-                <th className="py-[21px] px-4 font-montserrat font-[700] text-[14px] lg:text-[18px] text-[#2E2F2A] uppercase w-[197px] text-center">
+                <th className="py-[21px] px-4 font-montserrat font-[700] text-[14px] lg:text-[18px] text-[#2E2F2A] uppercase w-[100px] lg:w-[197px] text-center">
                   ĐVT
                 </th>
-                <th className="py-[21px] pl-[23px] pr-6 font-montserrat font-[700] text-[14px] lg:text-[18px] text-[#2E2F2A] uppercase w-[471px] text-left">
+                <th className="py-[21px] pl-[23px] pr-6 font-montserrat font-[700] text-[14px] lg:text-[18px] text-[#2E2F2A] uppercase w-[300px] lg:w-[471px] text-left">
                   Công dụng
                 </th>
               </tr>

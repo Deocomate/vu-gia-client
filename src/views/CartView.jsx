@@ -209,7 +209,7 @@ export default function CartView() {
             Có thể bạn quan tâm
           </h2>
 
-          <div className="flex lg:grid lg:grid-cols-4 gap-[14px] lg:gap-[26px] overflow-x-auto lg:overflow-x-visible no-scrollbar pb-4 lg:pb-0 scroll-smooth snap-x snap-mandatory w-[calc(100%+60px)] mx-[-30px] px-[30px] scroll-px-[30px] lg:w-auto lg:mx-0 lg:px-0">
+          <div className="flex lg:grid lg:grid-cols-4 gap-[14px] lg:gap-[26px] overflow-x-auto lg:overflow-x-visible no-scrollbar pb-4 lg:pb-0 scroll-smooth snap-x snap-mandatory w-[calc(100%+32px)] mx-[-16px] px-[16px] scroll-px-[16px] md:w-[calc(100%+120px)] md:mx-[-60px] md:px-[60px] md:scroll-px-[60px] lg:w-auto lg:mx-0 lg:px-0">
             {relatedProducts.map((product) => (
               <div key={product.id} className="flex-shrink-0 w-[175px] lg:w-auto snap-start">
                 <ProductCard

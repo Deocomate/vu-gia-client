@@ -12,8 +12,10 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function ProductDetailPage({ params }) {
+export default async function ProductDetailPage({ params, searchParams }) {
   const { slug } = await params;
+  const sParams = await searchParams;
+  const type = sParams?.type || null;
 
-  return <ProductDetailView slug={slug} />;
+  return <ProductDetailView slug={slug} type={type} />;
 }
