@@ -27,7 +27,7 @@ export default function ShowroomIntro() {
   return (
     <section className="w-full pt-[42px] lg:pt-[130px] pb-0 font-archivo flex flex-col lg:flex-row items-stretch lg:items-start">
       {/* Left Column: Info & Actions (Standard Container Left margin + 50px extra padding, 58px top offset to align with image, width 503px) */}
-      <div className="w-full lg:w-[503px] flex-shrink-0 px-[20px] lg:ml-[80px] xl:ml-[calc((100%-1470px)/2+80px)] lg:mr-0 lg:px-0 flex flex-col justify-start pt-0 lg:pt-[58px] pb-4 lg:pb-0">
+      <div className="w-full lg:w-[503px] flex-shrink-0 px-[30px] lg:ml-[80px] xl:ml-[calc((100%-1470px)/2+80px)] lg:mr-0 lg:px-0 flex flex-col justify-start pt-0 lg:pt-[58px] pb-4 lg:pb-0">
         {/* Title */}
         <h2 className="font-arima text-[#2E2F2A] text-[30px] lg:text-[48px] font-[500] leading-tight mb-[18.5px] tracking-wide">
           Showroom Bát Tràng
@@ -102,14 +102,14 @@ export default function ShowroomIntro() {
       </div>
 
       {/* Right Column: Carousel (137px desktop gap from Left text, overflowing right edge of screen) */}
-      <div className="flex-grow w-full lg:w-auto ml-[20px] lg:ml-[137px] overflow-hidden flex flex-col">
+      <div className="flex-grow w-full lg:w-auto ml-[30px] lg:ml-[137px] overflow-hidden flex flex-col">
         {/* Carousel Viewport */}
         <div className="embla overflow-hidden w-full" ref={emblaRef}>
-          <div className="embla__container flex -ml-[20px] lg:-ml-[50px]">
+          <div className="embla__container flex -ml-[30px] lg:-ml-[50px]">
             {INTRO_IMAGES.map((item, index) => (
               <div
                 key={index}
-                className="embla__slide pl-[20px] lg:pl-[50px] w-[325px] lg:w-[525px] shrink-0"
+                className="embla__slide pl-[30px] lg:pl-[50px] w-[325px] lg:w-[525px] shrink-0"
               >
                 <div className="relative w-full h-[400px] lg:h-[600px] bg-neutral-100 overflow-hidden shadow-sm">
                   <Image

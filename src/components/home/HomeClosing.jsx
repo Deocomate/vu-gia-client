@@ -20,7 +20,7 @@ export default function HomeClosing() {
       </div>
 
       {/* Content Container */}
-      <div className="max-w-[1470px] mx-auto w-full px-[20px] lg:px-[30px] flex flex-col items-center">
+      <div className="max-w-[1470px] mx-auto w-full px-[30px] flex flex-col items-center">
         {/* Title */}
         <h2 className="mt-[40px] lg:mt-[60px] text-center text-primary text-[40px] lg:text-[60px] font-amplify font-[400] leading-[1.2] lg:leading-[40px]">
           Khi lò gốm cổ xưa khởi sắc giữa nhịp sống đương đại

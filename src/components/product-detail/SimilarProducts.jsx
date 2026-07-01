@@ -57,7 +57,7 @@ export default function SimilarProducts({ hideBorder }) {
       </h2>
 
       {/* Mobile swipe / Desktop grid */}
-      <div className="flex lg:grid lg:grid-cols-4 gap-[14px] lg:gap-[26px] overflow-x-auto lg:overflow-x-visible no-scrollbar pb-4 lg:pb-0 scroll-smooth snap-x snap-mandatory w-[calc(100%+40px)] mx-[-20px] px-[20px] scroll-px-[20px] lg:w-auto lg:mx-0 lg:px-0">
+      <div className="flex lg:grid lg:grid-cols-4 gap-[14px] lg:gap-[26px] overflow-x-auto lg:overflow-x-visible no-scrollbar pb-4 lg:pb-0 scroll-smooth snap-x snap-mandatory w-[calc(100%+60px)] mx-[-30px] px-[30px] scroll-px-[30px] lg:w-auto lg:mx-0 lg:px-0">
         {similarList.map((product) => (
           <div key={product.id} className="flex-shrink-0 w-[175px] lg:w-auto snap-start">
             <ProductCard

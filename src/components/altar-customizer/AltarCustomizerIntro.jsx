@@ -6,7 +6,7 @@ export default function AltarCustomizerIntro() {
   const router = useRouter();
 
   return (
-    <section className="relative md:min-h-[206px] text-center px-5 md:px-0">
+    <section className="relative md:min-h-[206px] text-center px-[30px] md:px-0">
       <button
         type="button"
         onClick={() => router.back()}

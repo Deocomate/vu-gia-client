@@ -1027,7 +1027,7 @@
   .altar-customizer .customizer-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    width: min(100% - 32px, 860px);
+    width: min(100% - 60px, 860px);
     margin: 0 auto;
     gap: 16px;
   }
@@ -1131,8 +1131,8 @@
 
   .altar-customizer .product-tabs {
     margin-top: 5px;
-    left: 14px;
-    right: 14px;
+    left: 30px;
+    right: 30px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     justify-content: flex-start;
@@ -1187,8 +1187,8 @@
 
   .altar-customizer .custom-products {
     top: 290px;
-    left: 14px;
-    right: 14px;
+    left: 30px;
+    right: 30px;
     width: auto;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -1197,13 +1197,13 @@
 
   .altar-customizer .accessory-title {
     top: 630px;
-    left: 14px;
+    left: 30px;
   }
 
   .altar-customizer .accessory-list {
     top: 660px;
-    left: 14px;
-    right: 14px;
+    left: 30px;
+    right: 30px;
     width: auto;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -1289,7 +1289,7 @@
 
 @media (max-width: 720px) {
   .altar-customizer .customizer-grid {
-    width: min(100% - 28px, 560px);
+    width: min(100% - 60px, 560px);
   }
 
   .altar-customizer .selector-card {

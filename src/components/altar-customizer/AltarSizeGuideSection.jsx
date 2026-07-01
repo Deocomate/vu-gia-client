@@ -2,8 +2,8 @@ import { SIZE_GUIDE_ROWS } from "./data/altarCustomizerData";
 
 export default function AltarSizeGuideSection() {
   return (
-    <section className="mt-10 text-center px-4 md:px-0">
-      <h2 className="m-0 mb-[30px] lg:mb-10 text-primary text-[16px] lg:text-[22px] leading-10 font-semibold tracking-[-0.22px] px-16">
+    <section className="mt-10 text-center px-[30px] md:px-0">
+      <h2 className="m-0 mb-[30px] lg:mb-10 text-primary text-[16px] lg:text-[22px] leading-10 font-semibold tracking-[-0.22px] px-12">
         Bảng gợi ý kích thước vật phẩm đồ thờ theo kích thước ban thờ
       </h2>
       <div className="w-full max-w-[1422px] mx-auto overflow-x-auto">

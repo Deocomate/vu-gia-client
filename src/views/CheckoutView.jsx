@@ -98,7 +98,7 @@ export default function CheckoutView() {
   };
 
   return (
-    <div className="w-full bg-white min-h-screen pt-[40px] pb-[50px] lg:pb-[100px] px-4 md:px-[60px] lg:px-[80px]">
+    <div className="w-full bg-white min-h-screen pt-[40px] pb-[50px] lg:pb-[100px] px-[30px] md:px-[60px] lg:px-[80px]">
       <div className="max-w-[1440px] mx-auto flex flex-col">
         {/* Breadcrumb Trail */}
         <Breadcrumb

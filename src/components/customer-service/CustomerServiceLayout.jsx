@@ -7,7 +7,7 @@ import CustomerServiceSidebar from "./CustomerServiceSidebar";
 export default function CustomerServiceLayout({ children, breadcrumbs = [] }) {
   return (
     <div className="w-full bg-[#FAF7F7] min-h-screen pt-[25px] pb-[60px] md:pb-[80px] font-montserrat">
-      <div className="max-w-[1470px] mx-auto px-[20px] md:px-[60px] lg:px-[80px]">
+      <div className="max-w-[1470px] mx-auto px-[30px] md:px-[60px] lg:px-[80px]">
         {/* ================= BREADCRUMBS ================= */}
         {breadcrumbs && breadcrumbs.length > 0 && (
           <nav className="hidden md:block mb-[25px]" aria-label="Breadcrumb">

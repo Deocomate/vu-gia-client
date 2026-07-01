@@ -35,7 +35,7 @@ export default function FactoryShowcase() {
     <section className="w-full pt-[60px] lg:pt-[104px] pb-[60px] lg:pb-[99px] font-montserrat">
       {/* Slider Viewport - Left aligned with container, bleeding right, no buttons */}
       <div
-        className="embla overflow-hidden ml-[20px] lg:ml-[30px] xl:ml-[calc((100%-1470px)/2+30px)]"
+        className="embla overflow-hidden ml-[30px] lg:ml-[30px] xl:ml-[calc((100%-1470px)/2+30px)]"
         ref={emblaRef}
       >
         <div className="embla__container flex -ml-[21px]">

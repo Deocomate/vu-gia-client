@@ -14,7 +14,7 @@ export default function FactoryView() {
       <FactoryBanner />
 
       {/* Intro & Quote - Container Constrained */}
-      <div className="max-w-[1470px] mx-auto px-[20px] lg:px-[30px] w-full">
+      <div className="max-w-[1470px] mx-auto px-[30px] w-full">
         <FactoryIntro />
         <FactoryQuote />
       </div>
@@ -23,12 +23,12 @@ export default function FactoryView() {
       <FactorySlider />
 
       {/* Process - Container Constrained */}
-      <div className="max-w-[1470px] mx-auto px-[20px] lg:px-[30px] w-full">
+      <div className="max-w-[1470px] mx-auto px-[30px] w-full">
         <FactoryProcess />
       </div>
 
       {/* Detail Image - Container Constrained on both sides */}
-      <div className="max-w-[1470px] mx-auto px-[20px] lg:px-[30px] w-full">
+      <div className="max-w-[1470px] mx-auto px-[30px] w-full">
         <FactoryDetailImage />
       </div>
 

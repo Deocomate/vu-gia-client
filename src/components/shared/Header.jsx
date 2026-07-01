@@ -77,7 +77,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 w-full bg-primary z-50">
       {/* Container Desktop & Mobile Top Bar */}
-      <div className="relative max-w-[1470px] mx-auto w-full h-[70px] lg:h-[84px] px-[20px] lg:px-[30px] flex items-center justify-between">
+      <div className="relative max-w-[1470px] mx-auto w-full h-[70px] lg:h-[84px] px-[30px] flex items-center justify-between">
         {/* Mobile Hamburger Button */}
         <button
           className="lg:hidden w-[24px] h-[24px] relative flex-shrink-0"

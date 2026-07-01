@@ -39,7 +39,7 @@ function ProductGallery({ galleryImages, mainImage, setMainImage }) {
   return (
     <div className="w-full">
       {/* Mobile swipe gallery: aspect ratio 430/323 matching figma exactly, full-bleed to screen edges */}
-      <div className="md:hidden w-[calc(100%+40px)] mx-[-20px] overflow-x-auto snap-x snap-mandatory flex scrollbar-none gap-0">
+      <div className="md:hidden w-[calc(100%+60px)] mx-[-30px] overflow-x-auto snap-x snap-mandatory flex scrollbar-none gap-0">
         {galleryImages.map((img, idx) => (
           <div 
             key={idx} 

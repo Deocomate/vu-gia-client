@@ -26,7 +26,7 @@ export default function NewsTabs({ tabs, activeTab, onTabChange }) {
   return (
     <div className="w-full bg-white pt-[30px] lg:pt-[50px] select-none">
       {/* Mobile Dropdown View */}
-      <div className="lg:hidden w-full px-[20px] flex justify-center" ref={dropdownRef}>
+      <div className="lg:hidden w-full px-[30px] flex justify-center" ref={dropdownRef}>
         <div className="relative w-[266px] h-[48px]">
           <button
             type="button"

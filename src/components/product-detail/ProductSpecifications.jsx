@@ -212,7 +212,7 @@ export default function ProductSpecifications() {
       </div>
 
       {/* Main Content Container (Title & Table) - Center aligned matching page grid layout */}
-      <div className="max-w-[1470px] mx-auto px-[20px] lg:px-[60px] pb-8">
+      <div className="max-w-[1470px] mx-auto px-[30px] lg:px-[60px] pb-8">
         {/* Title */}
         <h2 className="hidden lg:block font-montserrat text-[#97400C] text-[20px] lg:text-[28px] font-[700] leading-[40px] mb-[30px] lg:mb-[40px] tracking-wide">
           Công năng sản phẩm

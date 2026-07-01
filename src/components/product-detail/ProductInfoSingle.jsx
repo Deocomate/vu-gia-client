@@ -39,7 +39,7 @@ function ProductGallery({ galleryImages, mainImage, setMainImage }) {
   return (
     <div className="w-full">
       {/* Mobile swipe gallery: aspect ratio 1:1 matching figma exactly, full-bleed to screen edges */}
-      <div className="md:hidden w-[calc(100%+40px)] mx-[-20px] overflow-x-auto snap-x snap-mandatory flex scrollbar-none gap-0">
+      <div className="md:hidden w-[calc(100%+60px)] mx-[-30px] overflow-x-auto snap-x snap-mandatory flex scrollbar-none gap-0">
         {galleryImages.map((img, idx) => (
           <div 
             key={idx} 
@@ -407,7 +407,7 @@ function ProductPurchasePanel({
       </div>
 
       {/* 3. Mobile-only full-bleed Bottom Checkout Bar */}
-      <div className="flex lg:hidden items-center justify-between w-[calc(100%+40px)] mx-[-20px] h-[89px] bg-[#97400C] text-white shrink-0">
+      <div className="flex lg:hidden items-center justify-between w-[calc(100%+60px)] mx-[-30px] h-[89px] bg-[#97400C] text-white shrink-0">
         {/* Thêm vào giỏ hàng button */}
         <button
           onClick={onAddToCart}

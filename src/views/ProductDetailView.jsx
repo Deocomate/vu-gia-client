@@ -15,7 +15,7 @@ export default function ProductDetailView({ slug, type }) {
   if (isSingleProduct) {
     return (
       <div className="w-full bg-white pb-16">
-        <div className="max-w-[1470px] mx-auto px-[20px] lg:px-[60px]">
+        <div className="max-w-[1470px] mx-auto px-[30px] lg:px-[60px]">
           {/* Gallery and Purchase panel for single product */}
           <ProductInfoSingle />
 
@@ -32,7 +32,7 @@ export default function ProductDetailView({ slug, type }) {
   // Worship set view (default)
   return (
     <div className="w-full bg-white pb-16">
-      <div className="max-w-[1470px] mx-auto px-[20px] lg:px-[60px]">
+      <div className="max-w-[1470px] mx-auto px-[30px] lg:px-[60px]">
         {/* Gallery, Info and Sub-items list selection */}
         <ProductInfo />
 
@@ -46,7 +46,7 @@ export default function ProductDetailView({ slug, type }) {
       {/* Structured item specifications list (Slider is full-screen, table is auto-centered) */}
       <ProductSpecifications />
 
-      <div className="max-w-[1470px] mx-auto px-[20px] lg:px-[60px]">
+      <div className="max-w-[1470px] mx-auto px-[30px] lg:px-[60px]">
         {/* Related/similar items grid */}
         <SimilarProducts />
       </div>
