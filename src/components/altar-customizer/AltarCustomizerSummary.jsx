@@ -4,20 +4,17 @@ import {
   Bookmark,
   Clock,
   Download,
-  FileText,
-  Headphones,
-  Headset,
   Phone,
   Trash2,
-  Truck,
 } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/utils/routes";
 
 const TRUST_ITEMS = [
-  { Icon: Headphones, lines: ["Tư vấn", "miễn phí"] },
-  { Icon: FileText, lines: ["Báo giá", "minh mạch"] },
-  { Icon: Truck, lines: ["Giao hàng", "toàn quốc"] },
+  { src: "/icons/trust-1.png", lines: ["Tư vấn", "miễn phí"] },
+  { src: "/icons/trust-2.png", lines: ["Báo giá", "minh mạch"] },
+  { src: "/icons/trust-3.png", lines: ["Giao hàng", "toàn quốc"] },
 ];
 
 export default function AltarCustomizerSummary({
@@ -63,7 +60,7 @@ export default function AltarCustomizerSummary({
             Mua ngay
           </button>
           <a className="icon-action phone-action" href="tel:0394123981" aria-label="Gọi tư vấn">
-            <Phone aria-hidden="true" />
+            <Phone aria-hidden="true" fill="currentColor" />
           </a>
           <button className="secondary-action" type="button" onClick={goToCart}>
             Thêm vào giỏ hàng
@@ -96,9 +93,16 @@ export default function AltarCustomizerSummary({
           chuẩn kích thước và đúng nhu cầu
         </p>
         <div className="trust-icons">
-          {TRUST_ITEMS.map(({ Icon, lines }) => (
+          {TRUST_ITEMS.map(({ src, lines }) => (
             <span key={lines.join("-")}>
-              <Icon className="trust-icon" aria-hidden="true" />
+              <Image
+                src={src}
+                alt=""
+                width={50}
+                height={51}
+                className="trust-icon"
+                aria-hidden="true"
+              />
               {lines[0]}
               <br />
               {lines[1]}
@@ -109,7 +113,7 @@ export default function AltarCustomizerSummary({
 
       <div className="support-card lg:hidden">
         <h3>
-          <Headset className="rail-icon support-icon" aria-hidden="true" />
+          <Image src="/icons/support.svg" width={19} height={22} className="rail-icon support-icon" alt="" />
           Cần hỗ trợ
         </h3>
         <p>Đội ngũ Gốm Vũ Gia luôn sẵn sàng hỗ trợ và tư vấn cho bạn</p>

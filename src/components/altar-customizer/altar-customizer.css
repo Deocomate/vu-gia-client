@@ -19,6 +19,7 @@
   width: min(100%, var(--page-width));
   margin: 0 auto;
   position: relative;
+  overflow: hidden;
   color: var(--primary-dark);
   -webkit-font-smoothing: antialiased;
 }
@@ -375,6 +376,7 @@
   line-height: 19px;
   font-weight: 500;
   flex-shrink: 0;
+  padding-right: 4px;
 }
 
 .altar-customizer .zoom-control .zoom-input::-webkit-outer-spin-button,
@@ -832,12 +834,14 @@
 
 .altar-customizer .summary-actions .icon-action {
   width: 39px;
+  height: 39px;
   padding: 0;
   display: grid;
   place-items: center;
   border: 1px solid var(--line);
   background: #fff;
   color: var(--primary-dark);
+  border-radius: 8px;
 }
 
 .altar-customizer .summary-actions .phone-action {
@@ -950,6 +954,12 @@
 .altar-customizer .tool-bar::-webkit-scrollbar-thumb {
   border-radius: 999px;
   background: rgba(46, 47, 42, 0.3);
+}
+
+@media (min-width: 1181px) {
+  .altar-customizer .designer-panel {
+    overflow-x: hidden;
+  }
 }
 
 .altar-customizer .summary-card {

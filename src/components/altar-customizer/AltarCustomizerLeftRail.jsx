@@ -1,10 +1,5 @@
-import {
-  ChevronRight,
-  Clock,
-  Headset,
-  Phone,
-  Users,
-} from "lucide-react";
+import { ChevronRight, Clock, Phone } from "lucide-react";
+import Image from "next/image";
 import { SELECTOR_STEPS } from "./data/altarCustomizerData";
 
 export default function AltarCustomizerLeftRail({ activeStep, onStepChange }) {
@@ -30,7 +25,7 @@ export default function AltarCustomizerLeftRail({ activeStep, onStepChange }) {
 
       <div className="guide-card">
         <h3>
-          <Users className="rail-icon guide-icon" aria-hidden="true" />
+          <Image src="/icons/guide.svg" width={26} height={24} className="rail-icon guide-icon" alt="" />
           Hướng dẫn sử dụng
         </h3>
         <p>
@@ -40,7 +35,7 @@ export default function AltarCustomizerLeftRail({ activeStep, onStepChange }) {
 
       <div className="support-card hidden lg:block">
         <h3>
-          <Headset className="rail-icon support-icon" aria-hidden="true" />
+          <Image src="/icons/support.svg" width={19} height={22} className="rail-icon support-icon" alt="" />
           Cần hỗ trợ
         </h3>
         <p>Đội ngũ Gốm Vũ Gia luôn sẵn sàng hỗ trợ và tư vấn cho bạn</p>

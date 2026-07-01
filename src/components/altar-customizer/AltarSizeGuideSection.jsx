@@ -13,7 +13,7 @@ export default function AltarSizeGuideSection() {
               <th className="h-16 w-[50px] lg:w-[87px] px-4 text-center text-[#2e2f2a] text-[12px] lg:text-[18px] leading-[25px] font-bold uppercase bg-[#f2f3f5]">
                 STT
               </th>
-              <th className="h-16 w-[120px] lg:w-[269px] px-4 text-center text-[#2e2f2a] text-[12px] lg:text-[18px] leading-[25px] font-bold uppercase bg-[#f2f3f5]">
+              <th className="h-16 w-[120px] lg:w-[250px] px-4 text-center text-[#2e2f2a] text-[12px] lg:text-[18px] leading-[25px] font-bold uppercase bg-[#f2f3f5]">
                 Kích thước <span className="hidden lg:block">bàn thờ</span>
               </th>
               <th className="h-16 w-[140px] lg:w-[216px] px-4 text-center text-[#2e2f2a] text-[12px] lg:text-[18px] leading-[25px] font-bold uppercase bg-[#f2f3f5]">
