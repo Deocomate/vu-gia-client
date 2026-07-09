@@ -2,11 +2,24 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { ChevronDown, ChevronUp, ChevronRight, Search } from "lucide-react";
 import productDetailThumbnail from "@/assets/images/product-detail/product-detail-thumbnail.png";
 import productCardImage1 from "@/assets/images/product-detail/product-card-image-1.png";
 import productCardImage2 from "@/assets/images/product-detail/product-card-image-2.png";
 import productCardImage3 from "@/assets/images/product-detail/product-card-image-3.png";
+import { ROUTES } from "@/utils/routes";
+import { useCartStore } from "@/stores/cartStore";
+
+const DEMO_PRODUCT = {
+  id: "dt026",
+  title: "Bộ đồ thờ Phật vẽ hoa sen men rạn cổ đơn giản DT026",
+  sku: "MSP: VG001",
+  price: 2000000,
+  classification: "Men rạn",
+  packSize: 1,
+  image: productDetailThumbnail,
+};
 
 // ==========================================
 // 1. PRODUCT GALLERY COMPONENT
@@ -501,6 +514,8 @@ function ProductSubItemsAccordion({
 // MAIN PRODUCT INFO COMPONENT
 // ==========================================
 export default function ProductInfo() {
+  const router = useRouter();
+  const addItem = useCartStore((s) => s.addItem);
   const [mainImage, setMainImage] = useState(productDetailThumbnail);
   const [isInfoExpanded, setIsInfoExpanded] = useState(true);
   const [mainQuantity, setMainQuantity] = useState(1);
@@ -555,11 +570,14 @@ export default function ProductInfo() {
   };
 
   const handleBuyNow = () => {
-    console.log("Buy now pressed");
+    addItem({ ...DEMO_PRODUCT, image: mainImage }, mainQuantity);
+    router.push(ROUTES.CHECKOUT);
   };
 
   const handleAddToCart = () => {
-    console.log("Add to cart pressed");
+    addItem({ ...DEMO_PRODUCT, image: mainImage }, mainQuantity);
+    alert("Đã thêm sản phẩm vào giỏ hàng!");
+    router.push(ROUTES.CART);
   };
 
   return (

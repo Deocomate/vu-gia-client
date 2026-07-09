@@ -1,4 +1,4 @@
-# vu-gia-client | Structure | 2026-06-23 05:27:02
+# vu-gia-client | Structure | 2026-07-09 13:02:50
 
 .
 ├── docs/
@@ -6,11 +6,6 @@
 │       └── fonts/
 │           ├── font-desktop.md
 │           └── font-mobile.md
-├── plans/
-│   ├── phase-01-01-research.md
-│   ├── phase-02-02-implement.md
-│   ├── phase-03-03-test.md
-│   └── plan.md
 ├── public/
 │   ├── fonts/
 │   │   ├── circularStd_book/
@@ -19,6 +14,8 @@
 │   │       ├── ReadMe.txt
 │   │       └── UVF-Amplify.otf
 │   ├── icons/
+│   │   ├── cart-2.svg
+│   │   ├── guide.svg
 │   │   ├── icon-copy-link.png
 │   │   ├── icon-facebook.png
 │   │   ├── icon-linkedin.png
@@ -28,10 +25,17 @@
 │   │   ├── pagination-left-arrow.png
 │   │   ├── pagination-left-arrow.svg
 │   │   ├── pagination-right-arrow.png
+│   │   ├── phone.svg
 │   │   ├── product-toolbar-down-arrow.png
 │   │   ├── product-toolbar-search-icon.png
 │   │   ├── showroom-mail-icon.png
-│   │   └── showroom-way-icon.png
+│   │   ├── showroom-way-icon.png
+│   │   ├── support.svg
+│   │   ├── trust-1.png
+│   │   ├── trust-2.png
+│   │   ├── trust-3.png
+│   │   ├── wallet.svg
+│   │   └── zalo-1.svg
 │   └── images/
 │       ├── about/
 │       │   └── hero-logo.png
@@ -86,6 +90,52 @@
 │           └── video-play-button.png
 ├── src/
 │   ├── app/
+│   │   ├── (admin)/
+│   │   │   └── admin/
+│   │   │       ├── (protected)/
+│   │   │       │   ├── banners/
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── categories/
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── contact-leads/
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── coupons/
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── faq/
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── gallery/
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── media/
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── news/
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── newsletter/
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── orders/
+│   │   │       │   │   ├── [id]/
+│   │   │       │   │   │   └── page.jsx
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── pages/
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── products/
+│   │   │       │   │   ├── [id]/
+│   │   │       │   │   │   └── page.jsx
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── redirects/
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── reviews/
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── settings/
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── showrooms/
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── users/
+│   │   │       │   │   └── page.jsx
+│   │   │       │   ├── layout.js
+│   │   │       │   └── page.jsx
+│   │   │       ├── login/
+│   │   │       │   └── page.jsx
+│   │   │       └── layout.js
 │   │   ├── (main)/
 │   │   │   ├── lien-he/
 │   │   │   │   └── page.jsx
@@ -107,6 +157,7 @@
 │   │   │   │   └── page.jsx
 │   │   │   ├── ve-chung-toi/
 │   │   │   │   └── page.jsx
+│   │   │   ├── layout.js
 │   │   │   └── page.jsx
 │   │   ├── (policies)/
 │   │   │   ├── bao-mat-thong-tin/
@@ -115,27 +166,30 @@
 │   │   │   │   └── page.jsx
 │   │   │   ├── chinh-sach-doi-tra/
 │   │   │   │   └── page.jsx
-│   │   │   └── chinh-sach-van-chuyen/
-│   │   │       └── page.jsx
+│   │   │   ├── chinh-sach-van-chuyen/
+│   │   │   │   └── page.jsx
+│   │   │   └── layout.js
 │   │   ├── (shop)/
 │   │   │   ├── gio-hang/
 │   │   │   │   └── page.jsx
-│   │   │   └── thanh-toan/
-│   │   │       └── page.jsx
+│   │   │   ├── thanh-toan/
+│   │   │   │   └── page.jsx
+│   │   │   └── layout.js
 │   │   ├── (user)/
-│   │   │   └── tai-khoan/
-│   │   │       ├── don-hang/
-│   │   │       │   └── page.jsx
-│   │   │       └── page.jsx
+│   │   │   ├── tai-khoan/
+│   │   │   │   ├── don-hang/
+│   │   │   │   │   └── page.jsx
+│   │   │   │   └── page.jsx
+│   │   │   └── layout.js
 │   │   ├── globals.css
 │   │   └── layout.js
 │   ├── assets/
 │   │   └── images/
 │   │       ├── about/
-│   │       │   ├── about-image-1.png
-│   │       │   ├── about-image-2.png
-│   │       │   ├── about-image-3.png
-│   │       │   └── hero-bg.png
+│   │       │   ├── about-image-1.jpg
+│   │       │   ├── about-image-2.jpg
+│   │       │   ├── about-image-3.jpg
+│   │       │   └── hero-bg.jpg
 │   │       ├── altar-customizer/
 │   │       │   ├── accessories-sprite.png
 │   │       │   ├── altar-preview.png
@@ -149,15 +203,25 @@
 │   │       │   ├── similar-product-2.jpg
 │   │       │   └── similar-product-3.jpg
 │   │       ├── customer-services/
+│   │       │   ├── chinh-sach-doi-tra-last.png
+│   │       │   ├── chinh-sach-doi-tra-mobile.png
 │   │       │   ├── chinh-sach-doi-tra.png
 │   │       │   └── chinh-sach-doi-tra.svg
 │   │       ├── don-hang/
 │   │       │   ├── don-hang-1.png
 │   │       │   └── don-hang-2.png
+│   │       ├── gallery/
+│   │       │   ├── gallery-1.jpg
+│   │       │   ├── gallery-2.jpg
+│   │       │   ├── gallery-3.jpg
+│   │       │   ├── gallery-4.jpg
+│   │       │   ├── gallery-5.jpg
+│   │       │   └── hero-bg.jpg
 │   │       ├── home/
 │   │       │   ├── categories-banner-image-1.png
 │   │       │   ├── categories-banner-image-2.png
 │   │       │   ├── categories-banner-image-3.png
+│   │       │   ├── closing-thumb-mobile.png
 │   │       │   ├── closing-thumb.png
 │   │       │   ├── hero-image-1-top.png
 │   │       │   ├── hero-image-2-left.png
@@ -208,6 +272,18 @@
 │   │   │   ├── AboutHeritage.jsx
 │   │   │   ├── AboutHero.jsx
 │   │   │   └── AboutProcessStats.jsx
+│   │   ├── admin/
+│   │   │   ├── AdminShell.jsx
+│   │   │   ├── AdminSidebar.jsx
+│   │   │   ├── AdminTopbar.jsx
+│   │   │   ├── ConfirmDialog.jsx
+│   │   │   ├── DataTable.jsx
+│   │   │   ├── EmptyState.jsx
+│   │   │   ├── FormField.jsx
+│   │   │   ├── MediaPicker.jsx
+│   │   │   ├── Pagination.jsx
+│   │   │   ├── SeoFields.jsx
+│   │   │   └── StatusBadge.jsx
 │   │   ├── altar-customizer/
 │   │   │   ├── data/
 │   │   │   │   └── altarCustomizerData.js
@@ -262,9 +338,11 @@
 │   │   │   ├── OrderPagination.jsx
 │   │   │   └── OrderStatusTabs.jsx
 │   │   ├── product-detail/
+│   │   │   ├── FixedActionWidget.jsx
 │   │   │   ├── ProductDescription.jsx
 │   │   │   ├── ProductDetail.jsx
 │   │   │   ├── ProductInfo.jsx
+│   │   │   ├── ProductInfoSingle.jsx
 │   │   │   ├── ProductSpecifications.jsx
 │   │   │   └── SimilarProducts.jsx
 │   │   ├── products/
@@ -282,6 +360,7 @@
 │   │   │   ├── NewsCard.jsx
 │   │   │   ├── Pagination.jsx
 │   │   │   ├── ProductCard.jsx
+│   │   │   ├── PublicLayout.jsx
 │   │   │   ├── SearchBar.jsx
 │   │   │   └── SectionTitle.jsx
 │   │   └── showroom/
@@ -289,9 +368,24 @@
 │   │       ├── ShowroomGallery.jsx
 │   │       ├── ShowroomIntro.jsx
 │   │       └── ShowroomMap.jsx
+│   ├── features/
+│   │   └── admin/
+│   │       ├── AdminDashboard.jsx
+│   │       ├── AdminMediaPage.jsx
+│   │       ├── AdminOrderDetailPage.jsx
+│   │       ├── AdminProductDetailPage.jsx
+│   │       ├── AdminResourceManager.jsx
+│   │       ├── AdminResourcePage.jsx
+│   │       ├── adminResources.js
+│   │       ├── AdminSettingsPage.jsx
+│   │       └── ComingSoonPage.jsx
 │   ├── hooks/
+│   ├── lib/
+│   │   └── adminApi.js
 │   ├── services/
 │   ├── store/
+│   ├── stores/
+│   │   └── adminAuthStore.js
 │   ├── utils/
 │   │   └── routes.js
 │   └── views/
@@ -315,24 +409,6 @@
 │       ├── ReturnPolicyView.jsx
 │       ├── ShippingPolicyView.jsx
 │       └── ShowroomView.jsx
-├── templates/
-│   └── tuy-chinh-bo-do-tho-implementation/
-│       ├── assets/
-│       │   ├── accessories-sprite.png
-│       │   ├── altar-preview.png
-│       │   ├── bat-huong-1.png
-│       │   ├── bat-huong-2.png
-│       │   ├── bat-huong-3.png
-│       │   ├── bo-cong-thuong-badge.png
-│       │   ├── brand-logo.svg
-│       │   ├── footer-logo.svg
-│       │   ├── similar-product-1.jpg
-│       │   ├── similar-product-2.jpg
-│       │   └── similar-product-3.jpg
-│       ├── index.html
-│       ├── README.md
-│       ├── script.js
-│       └── styles.css
 ├── .dockerignore
 ├── .gitignore
 ├── docker-compose.yml
@@ -340,7 +416,6 @@
 ├── eslint.config.mjs
 ├── jsconfig.json
 ├── next.config.mjs
-├── package-lock.json
 ├── package.json
 ├── postcss.config.mjs
 └── README.md

@@ -1,15 +1,13 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import Breadcrumb from "@/components/shared/Breadcrumb";
 import CartItemList from "@/components/cart/CartItemList";
 import CartSummary from "@/components/cart/CartSummary";
 import ProductCard from "@/components/shared/ProductCard";
 import { ROUTES } from "@/utils/routes";
-
-// Import order images for cart items
-import imgDonHang1 from "@/assets/images/don-hang/don-hang-1.png";
-import imgDonHang2 from "@/assets/images/don-hang/don-hang-2.png";
+import { useCartStore } from "@/stores/cartStore";
 
 import imgRelated1 from "@/assets/images/product-detail/product-card-image-1.png";
 import imgRelated2 from "@/assets/images/product-detail/product-card-image-2.png";
@@ -17,47 +15,27 @@ import imgRelated3 from "@/assets/images/product-detail/product-card-image-3.png
 import imgRelated4 from "@/assets/images/product-detail/product-detail-thumbnail.png";
 
 export default function CartView() {
+  const router = useRouter();
+  const cartItems = useCartStore((s) => s.items);
+  const updateQuantity = useCartStore((s) => s.updateQuantity);
+  const removeItem = useCartStore((s) => s.removeItem);
+
   const breadcrumbItems = [
     { name: "Trang chủ", href: ROUTES.HOME },
     { name: "Giỏ hàng", href: null },
   ];
 
-  // Initial cart items based on Figma coordinates
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      title: "Ngói âm dương nâu đen",
-      sku: "46345",
-      classification: "Nâu đen",
-      packSize: 100,
-      quantity: 1,
-      price: 70000,
-      image: imgDonHang1,
-    },
-    {
-      id: 2,
-      title: "Ngói âm dương nâu đen",
-      sku: "46345",
-      classification: "Nâu đen",
-      packSize: 100,
-      quantity: 20,
-      price: 70000,
-      image: imgDonHang2,
-    },
-  ]);
-
   const [promoApplied, setPromoApplied] = useState(false);
   const [discountAmount, setDiscountAmount] = useState(0);
 
-  // Calculate pricing values
   const subtotal = useMemo(() => {
-    return cartItems.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 0), 0);
+    return cartItems.reduce(
+      (sum, item) => sum + (item.price || 0) * (Number(item.quantity) || 0),
+      0,
+    );
   }, [cartItems]);
 
-  const tax = useMemo(() => {
-    // 0 in Figma context, but can be scaled
-    return 0;
-  }, []);
+  const tax = 0;
 
   const total = useMemo(() => {
     return subtotal - discountAmount + tax;
@@ -103,14 +81,12 @@ export default function CartView() {
   ];
 
   const handleQuantityChange = (id, newQty) => {
-    setCartItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, quantity: newQty } : item))
-    );
+    updateQuantity(id, newQty);
   };
 
   const handleRemoveItem = (id) => {
     if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")) {
-      setCartItems((prev) => prev.filter((item) => item.id !== id));
+      removeItem(id);
     }
   };
 
@@ -124,7 +100,7 @@ export default function CartView() {
         alert("Mã ưu đãi này đã được áp dụng trước đó.");
         return;
       }
-      const calculatedDiscount = Math.round(subtotal * 0.1); // 10% discount
+      const calculatedDiscount = Math.round(subtotal * 0.1);
       setDiscountAmount(calculatedDiscount);
       setPromoApplied(true);
       alert("Áp dụng mã giảm giá VUGIA10 thành công! Bạn được giảm 10% tổng đơn.");
@@ -140,8 +116,7 @@ export default function CartView() {
       alert("Giỏ hàng của bạn đang trống!");
       return;
     }
-    alert("Bắt đầu chuyển hướng tới trang thanh toán...");
-    window.location.href = ROUTES.CHECKOUT;
+    router.push(ROUTES.CHECKOUT);
   };
 
   return (
@@ -213,6 +188,7 @@ export default function CartView() {
             {relatedProducts.map((product) => (
               <div key={product.id} className="flex-shrink-0 w-[175px] lg:w-auto snap-start">
                 <ProductCard
+                  id={product.id}
                   image={product.image}
                   name={product.name}
                   sku={product.sku}

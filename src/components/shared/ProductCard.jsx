@@ -1,7 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
+import { ROUTES } from "@/utils/routes";
 import productImageThumb from "@/assets/images/products/product-image-thumb.png";
 
 export default function ProductCard({
+  id,
+  slug,
   image = productImageThumb,
   name = "Bình hút lộc\nMã đáo thành công",
   sku = "MSP: VG001",
@@ -10,8 +14,16 @@ export default function ProductCard({
   soldCount = 12,
   hasTwoLineTitle = false,
 }) {
+  // Prefer real slug; fall back to sp-{id} for current mock data.
+  const productUrl = slug
+    ? `${ROUTES.PRODUCTS}/${slug}`
+    : `${ROUTES.PRODUCTS}/sp-${id ?? "1"}`;
+
   return (
-    <div className="flex flex-col group cursor-pointer border border-[#E6E8EC] rounded-[8px] bg-white overflow-hidden hover:shadow-lg transition-all duration-300 h-full w-full">
+    <Link
+      href={productUrl}
+      className="flex flex-col group cursor-pointer border border-[#E6E8EC] rounded-[8px] bg-white overflow-hidden hover:shadow-lg transition-all duration-300 h-full w-full"
+    >
       {/* Container Ảnh */}
       <div className="relative w-full aspect-[340/255] bg-[#F4F5F6] overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
@@ -87,6 +99,6 @@ export default function ProductCard({
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

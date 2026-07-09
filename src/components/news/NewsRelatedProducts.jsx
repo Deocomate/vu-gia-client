@@ -63,6 +63,7 @@ export default function NewsRelatedProducts() {
           {RECOMMEND_PRODUCTS.map((prod) => (
             <div key={prod.id} className="flex-shrink-0 w-[175px] lg:w-auto snap-start">
               <ProductCard
+                id={prod.id}
                 image={prod.image}
                 name={prod.name}
                 sku={prod.sku}

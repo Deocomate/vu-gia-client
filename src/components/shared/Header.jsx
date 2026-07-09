@@ -7,6 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ROUTES } from "@/utils/routes";
+import { useCartStore } from "@/stores/cartStore";
 
 const NAV_LINKS = [
   { name: "Trang chủ", href: ROUTES.HOME },
@@ -18,6 +19,15 @@ const NAV_LINKS = [
 ];
 
 function CartLink({ className = "", onClick }) {
+  const [mounted, setMounted] = useState(false);
+  const totalCount = useCartStore((s) => s.totalCount());
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const count = mounted ? totalCount : 0;
+
   return (
     <Link
       href={ROUTES.CART}
@@ -31,11 +41,13 @@ function CartLink({ className = "", onClick }) {
         fill
         className="object-contain"
       />
-      <div className="absolute top-[-4px] right-[-6px] min-w-[14px] h-[14px] bg-[#FFE600] rounded-full flex items-center justify-center px-[3px]">
-        <span className="text-[#AD5036] font-circular font-[700] text-[8px] leading-none text-center">
-          12
-        </span>
-      </div>
+      {count > 0 && (
+        <div className="absolute top-[-4px] right-[-6px] min-w-[14px] h-[14px] bg-[#FFE600] rounded-full flex items-center justify-center px-[3px]">
+          <span className="text-[#AD5036] font-circular font-[700] text-[8px] leading-none text-center">
+            {count}
+          </span>
+        </div>
+      )}
     </Link>
   );
 }

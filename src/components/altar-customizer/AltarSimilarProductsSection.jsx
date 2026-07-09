@@ -18,6 +18,7 @@ export default function AltarSimilarProductsSection() {
           {SIMILAR_PRODUCTS.map((product) => (
             <div key={product.id} className="flex-shrink-0 w-[175px] lg:w-auto snap-start">
               <ProductCard
+                id={product.id}
                 image={product.image}
                 name={product.name}
                 sku={product.sku}

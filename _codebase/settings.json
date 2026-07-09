@@ -1,15 +1,15 @@
 {
-  "schema_version": 14,
+  "schema_version": 15,
   "included_paths": [
     "package.json",
-    ".agents/rules"
+    ".agents/rules",
+    "src"
   ],
   "excluded_paths": [
     "eslint.config.mjs",
     "package-lock.json",
     "public",
     "docs",
-    "src/assets",
     "skills-lock.json",
     ".agents",
     "Dockerfile",
@@ -19,12 +19,7 @@
     ".gitignore",
     "plans",
     "templates",
-    "src/hooks",
-    "src/services",
-    "src/store",
-    "src/utils",
-    "src/views",
-    "src/components"
+    "src/assets"
   ],
   "priority_roots": [
     "package.json",
@@ -173,11 +168,7 @@
     "src/assets/",
     "public/"
   ],
-  "attention_patterns": [
-    "src/views/HomeView.jsx",
-    "src/components/home/HomeHero.jsx",
-    "src/components/home/HomeFeatures.jsx"
-  ],
+  "attention_patterns": [],
   "split_config": {
     "enabled": false,
     "split_count": 5,
@@ -193,6 +184,9 @@
   },
   "instructions": {
     "enabled": false
+  },
+  "smart_ignore": {
+    "enabled": true
   },
   "description": "Cấu hình gom mã nguồn dự án."
 }

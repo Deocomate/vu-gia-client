@@ -177,6 +177,7 @@ export default function HomeProductList({ title, tabs = [], products = [] }) {
         {displayProducts.map((product) => (
           <ProductCard
             key={product.id}
+            id={product.id}
             name={product.name}
             sku={product.sku}
             salePrice={product.salePrice}
