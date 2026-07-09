@@ -15,18 +15,18 @@ dependencies: [4]
 ## Overview
 
 Wire the purchase-flow buttons to real client-side navigation:
-Buy Now → checkout, Add to Cart → alert + cart, Cart → checkout,
-Checkout success → alert (chờ phản hồi) + orders page. Replaces current
+Buy Now → checkout, Add to Cart → toast + cart, Cart → checkout,
+Checkout success → toast (chờ phản hồi) + orders page. Replaces current
 `console.log` / `window.location` / view-only alert handlers.
 
 ## Requirements
 
 - Functional:
   - `ProductInfo` + `ProductInfoSingle`: "Mua ngay" → `ROUTES.CHECKOUT`;
-    "Thêm vào giỏ" → alert("Đã thêm sản phẩm vào giỏ hàng!") then `ROUTES.CART`.
+    "Thêm vào giỏ" → `toast.success("Đã thêm sản phẩm vào giỏ hàng!")` then `ROUTES.CART`.
   - `CartView` "Thanh toán" → `router.push(ROUTES.CHECKOUT)` (no reload).
-  - `CheckoutView` success → keep order-summary alert, append "Vui lòng đợi
-    phản hồi từ Gốm Vũ Gia." then `router.push(ROUTES.ORDERS)`.
+  - `CheckoutView` success → `toast.success` with short title + description ("Vui lòng đợi
+    phản hồi từ Gốm Vũ Gia.") then `router.push(ROUTES.ORDERS)`.
 - Non-functional: All via `useRouter` from `next/navigation`; components already
   `"use client"`. No `window.location`.
 
@@ -38,9 +38,9 @@ Checkout success → alert (chờ phản hồi) + orders page. Replaces current
 - `CartView.handleCheckout` currently uses `window.location.href` — swap for
   `router.push`.
 - **Checkout redirect belongs in `CheckoutView`, not `CheckoutForm`**:
-  `CheckoutView.handleCheckoutSubmit` (passed as `onSubmit`) already alerts a full
-  order summary and clears items. Adding alert+push in `CheckoutForm` (per spec's
-  literal sample) would double-alert. So edit `CheckoutView` and leave
+  `CheckoutView.handleCheckoutSubmit` (passed as `onSubmit`) already toasts success.
+  Adding toast+push in `CheckoutForm` (per spec's
+  literal sample) would double-toast. So edit `CheckoutView` and leave
   `CheckoutForm` untouched. This respects README "logic ở views/".
 
 ## Related Code Files
@@ -131,9 +131,9 @@ Checkout success → alert (chờ phản hồi) + orders page. Replaces current
 
 ## Success Criteria
 
-- [ ] Product detail (both variants): "Mua ngay" → `/thanh-toan`; "Thêm vào giỏ" → alert then `/gio-hang`.
-- [ ] Cart "Thanh toán" → `/thanh-toan` client-side (no white flash); empty cart still alerts.
-- [ ] Checkout "Hoàn tất" → single success alert (with "chờ phản hồi") → `/tai-khoan/don-hang`.
+- [ ] Product detail (both variants): "Mua ngay" → `/thanh-toan`; "Thêm vào giỏ" → toast then `/gio-hang`.
+- [ ] Cart "Thanh toán" → `/thanh-toan` client-side (no white flash); empty cart still shows error toast.
+- [ ] Checkout "Hoàn tất" → single success toast (with "chờ phản hồi") → `/tai-khoan/don-hang`.
 - [ ] No `window.location` / `console.log` navigation left in these files.
 - [ ] Build/lint pass.
 

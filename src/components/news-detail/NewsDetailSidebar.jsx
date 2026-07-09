@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, ArrowRight, Loader2, CheckCircle } from "lucide-react";
+import { toast } from "@/utils/feedback";
 
 // Image imports for Featured Products
 import productCardImage1 from "@/assets/images/product-detail/product-card-image-1.png";
@@ -28,14 +29,14 @@ export default function NewsDetailSidebar({ showWidgets = true, showForm = true 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      alert(`Đang tìm kiếm bài viết: "${searchQuery}"`);
+      toast.info(`Đang tìm kiếm bài viết: "${searchQuery}"`);
     }
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (!fullName.trim() || !email.trim()) {
-      alert("Vui lòng điền đầy đủ họ tên và email.");
+      toast.error("Vui lòng điền đầy đủ họ tên và email.");
       return;
     }
     setFormStatus("submitting");

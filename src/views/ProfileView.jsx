@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import CustomerServiceLayout from "@/components/customer-service/CustomerServiceLayout";
 import { ROUTES } from "@/utils/routes";
+import { toast } from "@/utils/feedback";
 
 export default function ProfileView() {
   const breadcrumbs = [
@@ -19,7 +20,7 @@ export default function ProfileView() {
 
   const handleSave = (e) => {
     e.preventDefault();
-    alert("Lưu thay đổi hồ sơ cá nhân thành công!");
+    toast.success("Lưu thay đổi hồ sơ cá nhân thành công!");
   };
 
   return (

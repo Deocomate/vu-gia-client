@@ -6,6 +6,7 @@ import OrderStatusTabs from "@/components/orders/OrderStatusTabs";
 import OrderCard from "@/components/orders/OrderCard";
 import OrderPagination from "@/components/orders/OrderPagination";
 import { ROUTES } from "@/utils/routes";
+import { confirm, toast } from "@/utils/feedback";
 
 // Import order images from local assets
 import imgDonHang1 from "@/assets/images/don-hang/don-hang-1.png";
@@ -287,19 +288,25 @@ export default function OrdersView() {
     setCurrentPage(1); // reset to first page when changing tabs
   };
 
-  const handleCancelOrder = (orderId) => {
-    if (confirm(`Bạn có chắc chắn muốn hủy đơn hàng #${orderId} không?`)) {
-      setOrders((prev) =>
-        prev.map((o) =>
-          o.id === orderId ? { ...o, status: "cancelled" } : o
-        )
-      );
-      alert(`Đã gửi yêu cầu hủy đơn hàng #${orderId} thành công.`);
-    }
+  const handleCancelOrder = async (orderId) => {
+    const ok = await confirm({
+      title: "Hủy đơn hàng",
+      description: `Bạn có chắc chắn muốn hủy đơn hàng #${orderId} không?`,
+      confirmLabel: "Hủy đơn",
+      cancelLabel: "Không",
+      destructive: true,
+    });
+    if (!ok) return;
+    setOrders((prev) =>
+      prev.map((o) =>
+        o.id === orderId ? { ...o, status: "cancelled" } : o
+      )
+    );
+    toast.success(`Đã gửi yêu cầu hủy đơn hàng #${orderId} thành công.`);
   };
 
   const handleContactSupport = (orderId) => {
-    alert(`Kết nối với bộ phận chăm sóc khách hàng cho đơn hàng #${orderId}.`);
+    toast.info(`Kết nối với bộ phận chăm sóc khách hàng cho đơn hàng #${orderId}.`);
   };
 
   return (

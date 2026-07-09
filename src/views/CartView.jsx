@@ -8,6 +8,7 @@ import CartSummary from "@/components/cart/CartSummary";
 import ProductCard from "@/components/shared/ProductCard";
 import { ROUTES } from "@/utils/routes";
 import { useCartStore } from "@/stores/cartStore";
+import { confirm, toast } from "@/utils/feedback";
 
 import imgRelated1 from "@/assets/images/product-detail/product-card-image-1.png";
 import imgRelated2 from "@/assets/images/product-detail/product-card-image-2.png";
@@ -84,36 +85,42 @@ export default function CartView() {
     updateQuantity(id, newQty);
   };
 
-  const handleRemoveItem = (id) => {
-    if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")) {
-      removeItem(id);
-    }
+  const handleRemoveItem = async (id) => {
+    const ok = await confirm({
+      title: "Xóa sản phẩm",
+      description: "Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?",
+      confirmLabel: "Xóa",
+      cancelLabel: "Hủy",
+      destructive: true,
+    });
+    if (!ok) return;
+    removeItem(id);
   };
 
   const handleEditItem = (id) => {
-    alert(`Chỉnh sửa tùy chọn cho sản phẩm #${id}`);
+    toast.info(`Chỉnh sửa tùy chọn cho sản phẩm #${id}`);
   };
 
   const handleApplyPromoCode = (code) => {
     if (code.trim().toUpperCase() === "VUGIA10") {
       if (promoApplied) {
-        alert("Mã ưu đãi này đã được áp dụng trước đó.");
+        toast.error("Mã ưu đãi này đã được áp dụng trước đó.");
         return;
       }
       const calculatedDiscount = Math.round(subtotal * 0.1);
       setDiscountAmount(calculatedDiscount);
       setPromoApplied(true);
-      alert("Áp dụng mã giảm giá VUGIA10 thành công! Bạn được giảm 10% tổng đơn.");
+      toast.success("Áp dụng mã giảm giá VUGIA10 thành công! Bạn được giảm 10% tổng đơn.");
     } else if (code.trim() === "") {
-      alert("Vui lòng nhập mã ưu đãi.");
+      toast.error("Vui lòng nhập mã ưu đãi.");
     } else {
-      alert("Mã ưu đãi không hợp lệ.");
+      toast.error("Mã ưu đãi không hợp lệ.");
     }
   };
 
   const handleCheckout = () => {
     if (cartItems.length === 0) {
-      alert("Giỏ hàng của bạn đang trống!");
+      toast.error("Giỏ hàng của bạn đang trống!");
       return;
     }
     router.push(ROUTES.CHECKOUT);

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { toast } from "@/utils/feedback";
 
 export default function CheckoutForm({ onSubmit = () => {} }) {
   const [formData, setFormData] = useState({
@@ -19,19 +20,19 @@ export default function CheckoutForm({ onSubmit = () => {} }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.fullName.trim()) {
-      alert("Vui lòng nhập tên khách hàng.");
+      toast.error("Vui lòng nhập tên khách hàng.");
       return;
     }
     if (!formData.address.trim()) {
-      alert("Vui lòng chọn hoặc nhập địa chỉ giao hàng.");
+      toast.error("Vui lòng chọn hoặc nhập địa chỉ giao hàng.");
       return;
     }
     if (!formData.city.trim()) {
-      alert("Vui lòng nhập thành phố.");
+      toast.error("Vui lòng nhập thành phố.");
       return;
     }
     if (!formData.phone.trim()) {
-      alert("Vui lòng nhập số điện thoại.");
+      toast.error("Vui lòng nhập số điện thoại.");
       return;
     }
     onSubmit(formData);

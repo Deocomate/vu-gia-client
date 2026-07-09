@@ -10,6 +10,7 @@ import productCardImage2 from "@/assets/images/product-detail/product-card-image
 import productCardImage3 from "@/assets/images/product-detail/product-card-image-3.png";
 import { ROUTES } from "@/utils/routes";
 import { useCartStore } from "@/stores/cartStore";
+import { toast } from "@/utils/feedback";
 
 const DEMO_PRODUCT = {
   id: "dt026",
@@ -576,8 +577,8 @@ export default function ProductInfo() {
 
   const handleAddToCart = () => {
     addItem({ ...DEMO_PRODUCT, image: mainImage }, mainQuantity);
-    alert("Đã thêm sản phẩm vào giỏ hàng!");
-    router.push(ROUTES.CART);
+    toast.success("Đã thêm sản phẩm vào giỏ hàng!");
+    setTimeout(() => router.push(ROUTES.CART), 150);
   };
 
   return (

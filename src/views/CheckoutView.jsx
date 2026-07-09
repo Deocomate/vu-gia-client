@@ -8,6 +8,7 @@ import CheckoutForm from "@/components/checkout/CheckoutForm";
 import CheckoutOrderSummary from "@/components/checkout/CheckoutOrderSummary";
 import { ROUTES } from "@/utils/routes";
 import { useCartStore } from "@/stores/cartStore";
+import { confirm, toast } from "@/utils/feedback";
 
 export default function CheckoutView() {
   const router = useRouter();
@@ -39,48 +40,51 @@ export default function CheckoutView() {
   const handleApplyPromo = (code) => {
     if (code.trim().toUpperCase() === "VUGIA10") {
       if (promoApplied) {
-        alert("Mã ưu đãi này đã được áp dụng trước đó.");
+        toast.error("Mã ưu đãi này đã được áp dụng trước đó.");
         return;
       }
       const calculatedDiscount = Math.round(subtotal * 0.1);
       setDiscountAmount(calculatedDiscount);
       setPromoApplied(true);
-      alert(
+      toast.success(
         `Áp dụng mã giảm giá VUGIA10 thành công! Bạn được giảm ${calculatedDiscount.toLocaleString()} ₫.`,
       );
     } else if (code.trim() === "") {
-      alert("Vui lòng nhập mã ưu đãi.");
+      toast.error("Vui lòng nhập mã ưu đãi.");
     } else {
-      alert("Mã ưu đãi không hợp lệ.");
+      toast.error("Mã ưu đãi không hợp lệ.");
     }
   };
 
-  const handleRemoveItem = (id) => {
-    if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi đơn hàng?")) {
-      removeItem(id);
-      if (checkoutItems.length <= 1) {
-        setDiscountAmount(0);
-        setPromoApplied(false);
-      }
+  const handleRemoveItem = async (id) => {
+    const ok = await confirm({
+      title: "Xóa sản phẩm",
+      description: "Bạn có chắc chắn muốn xóa sản phẩm này khỏi đơn hàng?",
+      confirmLabel: "Xóa",
+      cancelLabel: "Hủy",
+      destructive: true,
+    });
+    if (!ok) return;
+    removeItem(id);
+    if (checkoutItems.length <= 1) {
+      setDiscountAmount(0);
+      setPromoApplied(false);
     }
   };
 
   const handleEditItem = (id) => {
-    alert(`Chỉnh sửa tùy chọn cho sản phẩm #${id}`);
+    toast.info(`Chỉnh sửa tùy chọn cho sản phẩm #${id}`);
   };
 
   const handleCheckoutSubmit = (formData) => {
-    alert(
-      `Đặt hàng thành công!\n\nKhách hàng: ${formData.fullName}\nĐịa chỉ: ${formData.address}, ${formData.city}\nĐiện thoại: ${formData.phone}\nPhương thức vận chuyển: ${
-        formData.shippingMethod === "express" ? "Giao hàng hỏa tốc" : "Giao hàng nhanh"
-      }\nPhương thức thanh toán: ${
-        formData.paymentMethod === "online" ? "Chuyển khoản / QR" : "Thanh toán khi nhận hàng (COD)"
-      }\nTổng tiền: ${total.toLocaleString()} ₫\n\nVui lòng đợi phản hồi từ Gốm Vũ Gia.`,
-    );
+    toast.success("Đặt hàng thành công!", {
+      description: "Vui lòng đợi phản hồi từ Gốm Vũ Gia.",
+      duration: 5000,
+    });
     clearCart();
     setDiscountAmount(0);
     setPromoApplied(false);
-    router.push(ROUTES.ORDERS);
+    setTimeout(() => router.push(ROUTES.ORDERS), 150);
   };
 
   return (

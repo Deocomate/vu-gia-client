@@ -34,11 +34,11 @@ News flow already works (`NewsCard` links with slug) — no change needed.
 
 - **Widget**: Remove old `FixedActionWidget` from `ProductDetailView`; use the new
   global `GlobalAltarWidget` everywhere. (Q1)
-- **Checkout success**: alert "mua hàng thành công, chờ phản hồi" → redirect to
+- **Checkout success**: `toast.success` "mua hàng thành công, chờ phản hồi" → redirect to
   `ROUTES.ORDERS` (`/tai-khoan/don-hang`). (Q2)
 - **Checkout redirect location**: implemented in `CheckoutView.handleCheckoutSubmit`
   (the view/orchestrator), NOT in `CheckoutForm` — the spec's sample code would
-  double-alert since `CheckoutView` already alerts. Aligns with README "logic ở views/".
+  double-toast since `CheckoutView` already toasts. Aligns with README "logic ở views/".
 
 ### Validation Session 1 decisions
 - **Widget breakpoint**: `hidden md:flex` (≥768px, desktop + tablet). Confirmed.
@@ -67,9 +67,9 @@ Phase 3. Suggested order: 4 → 3, with 1 & 2 anytime (parallel-safe).
 
 - [ ] Clicking any `ProductCard` navigates to `/san-pham/<slug|sp-{id}>` (client-side, no full reload).
 - [ ] `GlobalAltarWidget` shows on Home/Products/News/About etc., is hidden on `/thanh-toan`, `/gio-hang`, `/tuy-chinh-bo-do-tho`, and does NOT double up with the old widget on product detail.
-- [ ] Product detail "Mua ngay" → `/thanh-toan`; "Thêm vào giỏ" → alert then `/gio-hang` (both `ProductInfo` and `ProductInfoSingle`).
+- [ ] Product detail "Mua ngay" → `/thanh-toan`; "Thêm vào giỏ" → `toast.success` then `/gio-hang` (both `ProductInfo` and `ProductInfoSingle`).
 - [ ] Cart "Thanh toán" → `/thanh-toan` via `router.push` (no page flash).
-- [ ] Checkout "Hoàn tất" → success alert (chờ phản hồi) → `/tai-khoan/don-hang`.
+- [ ] Checkout "Hoàn tất" → success toast (chờ phản hồi) → `/tai-khoan/don-hang`.
 - [ ] Add-to-cart persists to Zustand store; Header badge reflects real item count; cart/checkout read store; checkout success clears cart.
 - [ ] `npm run lint` and `npm run build` pass.
 
