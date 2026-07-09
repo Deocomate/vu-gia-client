@@ -7,8 +7,6 @@ import {
   Aref_Ruqaa,
 } from "next/font/google";
 import localFont from "next/font/local";
-import Footer from "@/components/shared/Footer";
-import Header from "@/components/shared/Header";
 import "./globals.css";
 
 // --- GOOGLE FONTS ---
@@ -90,9 +88,7 @@ export default function RootLayout({ children }) {
           font-montserrat antialiased text-text-main
         `}
       >
-        <Header />
-        <main className="overflow-x-hidden">{children}</main>
-        <Footer />
+        {children}
       </body>
     </html>
   );
