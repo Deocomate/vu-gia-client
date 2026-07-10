@@ -12,7 +12,21 @@ import { useCartStore } from "@/stores/cartStore";
 const NAV_LINKS = [
   { name: "Trang chủ", href: ROUTES.HOME },
   { name: "Về chúng tôi", href: ROUTES.ABOUT },
-  { name: "Sản phẩm", href: ROUTES.PRODUCTS },
+  {
+    name: "Sản phẩm",
+    href: ROUTES.PRODUCTS,
+    children: [
+      { name: "Danh sách sản phẩm", href: ROUTES.PRODUCTS },
+      {
+        name: "Sản phẩm chi tiết (Bộ đồ thờ)",
+        href: `${ROUTES.PRODUCTS}/mau-demo`,
+      },
+      {
+        name: "Sản phẩm chi tiết (Thường)",
+        href: `${ROUTES.PRODUCTS}/mau-demo?type=single`,
+      },
+    ],
+  },
   { name: "Thưởng lãm", href: ROUTES.GALLERY },
   { name: "Tin tức", href: ROUTES.NEWS },
   { name: "Liên hệ", href: ROUTES.CONTACT },
@@ -123,6 +137,37 @@ export default function Header() {
         <nav className="hidden lg:flex items-center gap-[30px] xl:gap-[60px]">
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href;
+
+            if (link.children) {
+              return (
+                <div key={link.href} className="relative group py-[10px]">
+                  <Link
+                    href={link.href}
+                    className={`text-white text-[17px] font-montserrat font-[700] uppercase leading-[24px] transition-colors hover:text-[#EABA96] ${
+                      isActive ? "text-[#EABA96]" : ""
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+
+                  {/* Dropdown */}
+                  <div className="absolute left-0 top-full pt-[10px] opacity-0 invisible translate-y-[8px] transition-all duration-200 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 z-50">
+                    <div className="min-w-[260px] bg-white rounded-[8px] shadow-lg overflow-hidden border border-[#E6E8EC]">
+                      {link.children.map((child) => (
+                        <Link
+                          key={child.name}
+                          href={child.href}
+                          className="block px-[20px] py-[12px] text-[#333] text-[14px] font-montserrat font-[600] hover:bg-[#F4F5F6] hover:text-[#AD5036] transition-colors"
+                        >
+                          {child.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
             return (
               <Link
                 key={link.href}
@@ -255,6 +300,35 @@ export default function Header() {
             <nav className="relative z-10 flex flex-col gap-[30px] pt-[76px] px-[29px]">
               {NAV_LINKS.map((link) => {
                 const isActive = pathname === link.href;
+
+                if (link.children) {
+                  return (
+                    <div key={link.href} className="flex flex-col gap-[16px]">
+                      <Link
+                        href={link.href}
+                        onClick={closeMobileMenu}
+                        className={`text-[16px] font-montserrat font-semibold uppercase transition-colors ${
+                          isActive ? "text-[#EABA96]" : "text-white hover:text-[#EABA96]"
+                        }`}
+                      >
+                        {link.name}
+                      </Link>
+                      <div className="flex flex-col gap-[14px] pl-[16px] border-l border-white/20">
+                        {link.children.map((child) => (
+                          <Link
+                            key={child.name}
+                            href={child.href}
+                            onClick={closeMobileMenu}
+                            className="text-[14px] font-montserrat font-medium text-white/80 hover:text-[#EABA96] transition-colors"
+                          >
+                            {child.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                }
+
                 return (
                   <Link
                     key={link.href}
