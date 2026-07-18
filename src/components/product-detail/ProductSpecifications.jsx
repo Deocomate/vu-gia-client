@@ -174,8 +174,8 @@ export default function ProductSpecifications() {
             src={sliderImages[currentIdx]}
             alt={`Slide ${currentIdx + 1}`}
             fill
-            priority
             className="object-cover transition-all duration-700 ease-in-out"
+            sizes="100vw"
           />
 
           {/* Left Arrow - Premium Glassmorphism */}

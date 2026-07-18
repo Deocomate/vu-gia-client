@@ -38,7 +38,7 @@ export default function AdminShell({ children }) {
         <div className="max-w-md border border-zinc-200 bg-white p-8 text-center shadow-sm">
           <h1 className="text-xl font-semibold text-zinc-950">Không có quyền truy cập</h1>
           <p className="mt-3 text-sm leading-6 text-zinc-600">
-            {error || "Tài khoản hiện tại không thuộc nhóm STAFF, ADMIN hoặc SUPERADMIN."}
+            {error || "Tài khoản hiện tại không thuộc nhóm ADMIN hoặc SUPERADMIN."}
           </p>
           <button
             type="button"

@@ -1,0 +1,31 @@
+# ============================================================================
+# Local full-stack test overlay — NOT used by Coolify/production (only applied
+# when explicitly passed with -f, see docs/DEPLOYMENT_GUIDE.md).
+#
+# Publishes the app directly to the host (no reverse proxy needed for local
+# testing) and points server-side fetches at the backend container published
+# on the host via Docker Desktop's host.docker.internal DNS name.
+#
+# Usage: docker compose -f docker-compose.yml -f docker-compose.local.yml up --build
+# ============================================================================
+services:
+  vu-gia-client:
+    build:
+      args:
+        NEXT_PUBLIC_API_BASE_URL: http://localhost:8080/api
+        NEXT_PUBLIC_IMAGE_BASE_URL: http://localhost:8080
+        NEXT_PUBLIC_SITE_URL: http://localhost:3000
+        # Next's built-in image optimizer runs inside this container and would
+        # otherwise try to fetch "http://localhost:8080/files/..." from inside
+        # itself (which is this container, not the backend) — skip it locally
+        # so the browser fetches images directly from the host-published
+        # backend port instead. See next.config.mjs.
+        NEXT_IMAGE_UNOPTIMIZED: "1"
+    ports:
+      - "3000:3000"
+    environment:
+      - INTERNAL_API_BASE_URL=http://host.docker.internal:8080/api
+    extra_hosts:
+      # host.docker.internal is automatic on Docker Desktop (Win/Mac); this
+      # line makes the same compose file also work on Linux Docker Engine.
+      - "host.docker.internal:host-gateway"

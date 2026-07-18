@@ -1,127 +1,58 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { ROUTES } from "@/utils/routes";
 
-const FAQ_DATA = [
-  {
-    id: "san-pham",
-    title: "Sản phẩm",
-    items: [
-      {
-        question: "Gốm sứ xây dựng Vũ Gia có phải là hàng thủ công không?",
-        answer: "Đúng vậy. Chúng tôi tự hào duy trì quy trình sản xuất thủ công truyền thống. Từ khâu chọn đất, tạo hình, đến tráng men và nung lò. Mỗi sản phẩm đều mang dấu ấn bàn tay khéo léo của các nghệ nhân. Điều này tạo nên vẻ đẹp độc bản mà các loại gạch ngói công nghiệp sản xuất hàng loạt không thể có được."
-      },
-      {
-        question: "Tôi có thể mua hàng như thế nào?",
-        answer: "Bạn có thể mua hàng trực tiếp tại showroom, qua Hotline hoặc các kênh mạng xã hội của chúng tôi."
-      },
-      {
-        question: "Tôi có thể lấy mẫu thử không?",
-        answer: "Chúng tôi sẵn sàng gửi mẫu thử cho khách hàng ở xa. Vui lòng liên hệ để được hỗ trợ."
-      },
-      {
-        question: "Các sản phẩm của gốm sứ Vũ Gia có bền khi sử dụng ngoài trời hay không?",
-        answer: "Tất cả sản phẩm của chúng tôi đều được nung ở nhiệt độ cao (1200°C), đảm bảo độ bền tuyệt đối khi sử dụng ngoài trời. Chất liệu đất sét Bát Tràng kết hợp men hỏa biến giúp sản phẩm chống thấm nước, chống rêu mốc vĩnh viễn."
-      },
-      {
-        question: "Màu men có bị phai dưới ánh nắng mặt trời không?",
-        answer: "Lớp men gốm được nung hỏa biến ở nhiệt độ 1200°C, cam kết không bao giờ phai màu dưới tác động của thời tiết. Màu men hòa quyện vào xương gốm trong quá trình nung, tạo nên độ bền màu vĩnh cửu."
-      }
-    ]
-  },
-  {
-    id: "bao-gia",
-    title: "Báo giá",
-    items: [
-      {
-        question: "Giá sản phẩm được tính như thế nào?",
-        answer: "Giá gốm sứ xây dựng thường được tính theo mét vuông (m²), mét dài (md) hoặc theo viên/cặp đối với các dòng gạch, ngói và tính theo đơn vị đôi/chiếc đối với các sản phẩm đơn lẻ. Giá phụ thuộc vào kích thước, loại men, và độ phức tạp của hình dáng sản phẩm."
-      },
-      {
-        question: "Đặt hàng số lượng lớn có được chiết khấu không?",
-        answer: "Chúng tôi luôn có chính sách chiết khấu linh hoạt và cạnh tranh cho các đơn hàng số lượng lớn, đặc biệt là các dự án công trình trọng điểm. Vui lòng liên hệ trực tiếp để nhận báo giá ưu đãi nhất."
-      },
-      {
-        question: "Có yêu cầu số lượng đặt hàng tối thiểu không?",
-        answer: "Chúng tôi tiếp nhận mọi đơn hàng, từ một sản phẩm đơn lẻ đến các đơn hàng lớn cho công trình quy mô hàng nghìn mét vuông."
-      },
-      {
-        question: "Màu sắc có ảnh hưởng đến giá sản phẩm không?",
-        answer: "Một số màu men hỏa biến đặc biệt hoặc yêu cầu pha chế màu riêng theo thiết kế có thể có sự chênh lệch nhẹ về giá so với các màu men tiêu chuẩn."
-      },
-      {
-        question: "Tại sao các kích thước nhỏ lại đắt hơn nhiều so với các kích thước lớn?",
-        answer: "Kích thước nhỏ đòi hỏi sự tỉ mỉ cao hơn trong khâu tạo hình và hoàn thiện thủ công. Công sức cho mỗi cm² sản phẩm nhỏ lớn hơn đáng kể, đồng thời tỷ lệ hao hụt trong quá trình nung cũng cao hơn."
-      }
-    ]
-  },
-  {
-    id: "van-chuyen",
-    title: "Vận chuyển & thời gian giao hàng",
-    items: [
-      {
-        question: "Thời gian sản xuất và giao hàng là bao lâu?",
-        answer: "Đối với hàng có sẵn: Chúng tôi có thể giao hàng trong vòng 2-5 ngày làm việc.<br/>Đối với hàng đặt sản xuất: Thường mất từ 3-6 tuần tùy vào quy mô đơn hàng và điều kiện thời tiết (ảnh hưởng đến quá trình phơi gốm mộc)."
-      },
-      {
-        question: "Các bạn có giao hàng toàn quốc không?",
-        answer: "Chúng tôi vận chuyển toàn quốc bằng xe tải chuyên dụng hoặc đối tác logistic uy tín. Hàng hóa được đóng gói cẩn thận, đảm bảo an toàn trong suốt quá trình vận chuyển."
-      },
-      {
-        question: "Tôi nên lưu ý gì khi lắp đặt gốm thủ công?",
-        answer: "Nên sử dụng thợ có tay nghề và am hiểu đặc tính gốm nung thủ công. Chúng tôi luôn cung cấp tài liệu hướng dẫn lắp đặt chi tiết kèm theo mỗi đơn hàng."
-      },
-      {
-        question: "Các bạn có vận chuyển quốc tế không?",
-        answer: "Có. Chúng tôi hỗ trợ đóng gói kiện gỗ xuất khẩu đạt chuẩn và làm thủ tục hải quan cần thiết cho các đơn hàng quốc tế."
-      },
-      {
-        question: "Tôi có thể tự đến lấy hàng trực tiếp không?",
-        answer: "Quý khách có thể nhận hàng trực tiếp tại xưởng sản xuất hoặc showroom của chúng tôi. Vui lòng liên hệ trước để chúng tôi chuẩn bị hàng sẵn sàng."
-      }
-    ]
-  },
-  {
-    id: "bao-hanh",
-    title: "Chính sách bảo hành",
-    items: [
-      {
-        question: "Gốm sứ xây dựng Vũ Gia có chính sách bảo hành như thế nào?",
-        answer: "Chúng tôi bảo hành độ bền màu men trọn đời đối với tất cả các dòng sản phẩm gốm sứ xây dựng và trang trí. Đối với độ bền xương gốm, cam kết bảo hành 10 năm trong điều kiện thời tiết tự nhiên thông thường."
-      },
-      {
-        question: "Làm thế nào để yêu cầu xử lý bảo hành?",
-        answer: "Quý khách chỉ cần liên hệ Hotline chăm sóc khách hàng, cung cấp số điện thoại đặt hàng hoặc mã hóa đơn. Đội ngũ kỹ thuật của Vũ Gia sẽ phản hồi và tiến hành xác minh thực tế trong vòng 48h."
-      }
-    ]
-  },
-  {
-    id: "doi-tra",
-    title: "Đổi trả",
-    items: [
-      {
-        question: "Chính sách đổi trả sản phẩm như thế nào?",
-        answer: "Khách hàng được quyền đổi trả sản phẩm trong vòng 7 ngày kể từ khi nhận hàng đối với các trường hợp: sản phẩm bị nứt vỡ do lỗi vận chuyển, lỗi tráng men nghiêm trọng hoặc giao sai mẫu mã so với hợp đồng đã ký kết."
-      },
-      {
-        question: "Đơn hàng đặt riêng (sản xuất theo yêu cầu) có được đổi trả không?",
-        answer: "Đối với các đơn hàng đặt riêng theo yêu cầu thiết kế đặc biệt của khách hàng, chúng tôi chỉ áp dụng chính sách đổi trả/thay thế đối với sản phẩm bị lỗi kỹ thuật trong khâu sản xuất hoặc nứt vỡ do vận chuyển."
-      }
-    ]
-  }
-];
+// Turns a (possibly Vietnamese-diacritic) category label into a stable,
+// URL-safe anchor id, e.g. "Vận chuyển & thời gian giao hàng" -> "van-chuyen-thoi-gian-giao-hang".
+function slugifyCategory(text) {
+  return text
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
-export default function FaqView() {
+// Groups the flat `Faq` entity list (already sorted by `sortOrder` from the
+// server) into `{ id, title, items }` sections by `category`, preserving
+// first-seen category order.
+function groupFaqsByCategory(faqs) {
+  const order = [];
+  const byCategory = new Map();
+
+  faqs.forEach((faq) => {
+    const title = faq.category || "Khác";
+    if (!byCategory.has(title)) {
+      byCategory.set(title, []);
+      order.push(title);
+    }
+    byCategory.get(title).push({ question: faq.question, answer: faq.answer });
+  });
+
+  return order.map((title) => ({
+    id: slugifyCategory(title),
+    title,
+    items: byCategory.get(title),
+  }));
+}
+
+export default function FaqView({ faqs = [] }) {
+  const FAQ_DATA = useMemo(() => groupFaqsByCategory(faqs), [faqs]);
+
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeSection, setActiveSection] = useState("san-pham");
-  const [openItems, setOpenItems] = useState({
-    "san-pham-0": true,
-    "bao-gia-0": true,
-    "van-chuyen-0": true,
-    "bao-hanh-0": true,
-    "doi-tra-0": true,
+  const [activeSection, setActiveSection] = useState(FAQ_DATA[0]?.id ?? "");
+  const [openItems, setOpenItems] = useState(() => {
+    // Default-open the first item of every section, mirroring the previous
+    // mock's always-one-expanded UX.
+    const initial = {};
+    FAQ_DATA.forEach((section) => {
+      initial[`${section.id}-0`] = true;
+    });
+    return initial;
   });
 
   useEffect(() => {
@@ -142,7 +73,7 @@ export default function FaqView() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [FAQ_DATA]);
 
   const toggleItem = (key) => {
     setOpenItems((prev) => ({

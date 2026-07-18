@@ -12,8 +12,20 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Define build-time environment variables here when needed, for example:
-# ENV NEXT_PUBLIC_API_URL=https://api.vugia.vn
+# NEXT_PUBLIC_* vars are inlined into the JS bundle at build time, so they must
+# be passed as build args (docker build --build-arg / compose build.args), not
+# just container env vars at runtime (those would arrive too late).
+ARG NEXT_PUBLIC_API_BASE_URL=http://localhost:8080/api
+ARG NEXT_PUBLIC_IMAGE_BASE_URL=http://localhost:8080
+ARG NEXT_PUBLIC_SITE_URL=http://localhost:3000
+ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
+ENV NEXT_PUBLIC_IMAGE_BASE_URL=$NEXT_PUBLIC_IMAGE_BASE_URL
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+
+# output:"standalone" bakes next.config.mjs's resolved values (incl. images.*)
+# into the build, so this also needs to be a build arg, not just a runtime env.
+ARG NEXT_IMAGE_UNOPTIMIZED=""
+ENV NEXT_IMAGE_UNOPTIMIZED=$NEXT_IMAGE_UNOPTIMIZED
 
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build

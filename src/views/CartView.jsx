@@ -9,11 +9,9 @@ import ProductCard from "@/components/shared/ProductCard";
 import { ROUTES } from "@/utils/routes";
 import { useCartStore } from "@/stores/cartStore";
 import { confirm, toast } from "@/utils/feedback";
+import { useFeaturedProductCards } from "@/hooks/useFeaturedProductCards";
 
-import imgRelated1 from "@/assets/images/product-detail/product-card-image-1.png";
-import imgRelated2 from "@/assets/images/product-detail/product-card-image-2.png";
-import imgRelated3 from "@/assets/images/product-detail/product-card-image-3.png";
-import imgRelated4 from "@/assets/images/product-detail/product-detail-thumbnail.png";
+const RELATED_PRODUCTS_LIMIT = 4;
 
 export default function CartView() {
   const router = useRouter();
@@ -42,44 +40,7 @@ export default function CartView() {
     return subtotal - discountAmount + tax;
   }, [subtotal, discountAmount, tax]);
 
-  const relatedProducts = [
-    {
-      id: 101,
-      name: "Bình hút lộc\nMã đáo thành công",
-      sku: "MSP: VG001",
-      originalPrice: "2.500.000đ",
-      salePrice: "2.000.000đ",
-      soldCount: 12,
-      image: imgRelated1,
-    },
-    {
-      id: 102,
-      name: "Bình hút lộc\nMã đáo thành công",
-      sku: "MSP: VG001",
-      originalPrice: "2.500.000đ",
-      salePrice: "2.000.000đ",
-      soldCount: 12,
-      image: imgRelated2,
-    },
-    {
-      id: 103,
-      name: "Bình hút lộc\nMã đáo thành công",
-      sku: "MSP: VG001",
-      originalPrice: "2.500.000đ",
-      salePrice: "2.000.000đ",
-      soldCount: 12,
-      image: imgRelated3,
-    },
-    {
-      id: 104,
-      name: "Bình hút lộc\nMã đáo thành công",
-      sku: "MSP: VG001",
-      originalPrice: "2.500.000đ",
-      salePrice: "2.000.000đ",
-      soldCount: 12,
-      image: imgRelated4,
-    },
-  ];
+  const relatedProducts = useFeaturedProductCards(RELATED_PRODUCTS_LIMIT);
 
   const handleQuantityChange = (id, newQty) => {
     updateQuantity(id, newQty);
@@ -186,28 +147,21 @@ export default function CartView() {
         </div>
 
         {/* Related Products Section */}
-        <div className="mt-[50px] w-full flex flex-col">
-          <h2 className="text-[#97400C] text-[26px] lg:text-[32px] font-[700] leading-[40px] mb-6 font-montserrat">
-            Có thể bạn quan tâm
-          </h2>
+        {relatedProducts.length > 0 && (
+          <div className="mt-[50px] w-full flex flex-col">
+            <h2 className="text-[#97400C] text-[26px] lg:text-[32px] font-[700] leading-[40px] mb-6 font-montserrat">
+              Có thể bạn quan tâm
+            </h2>
 
-          <div className="flex lg:grid lg:grid-cols-4 gap-[14px] lg:gap-[26px] overflow-x-auto lg:overflow-x-visible no-scrollbar pb-4 lg:pb-0 scroll-smooth snap-x snap-mandatory w-[calc(100%+32px)] mx-[-16px] px-[16px] scroll-px-[16px] md:w-[calc(100%+120px)] md:mx-[-60px] md:px-[60px] md:scroll-px-[60px] lg:w-auto lg:mx-0 lg:px-0">
-            {relatedProducts.map((product) => (
-              <div key={product.id} className="flex-shrink-0 w-[175px] lg:w-auto snap-start">
-                <ProductCard
-                  id={product.id}
-                  image={product.image}
-                  name={product.name}
-                  sku={product.sku}
-                  originalPrice={product.originalPrice}
-                  salePrice={product.salePrice}
-                  soldCount={product.soldCount}
-                  hasTwoLineTitle={true}
-                />
-              </div>
-            ))}
+            <div className="flex lg:grid lg:grid-cols-4 gap-[14px] lg:gap-[26px] overflow-x-auto lg:overflow-x-visible no-scrollbar pb-4 lg:pb-0 scroll-smooth snap-x snap-mandatory w-[calc(100%+32px)] mx-[-16px] px-[16px] scroll-px-[16px] md:w-[calc(100%+120px)] md:mx-[-60px] md:px-[60px] md:scroll-px-[60px] lg:w-auto lg:mx-0 lg:px-0">
+              {relatedProducts.map((product) => (
+                <div key={product.id} className="flex-shrink-0 w-[175px] lg:w-auto snap-start">
+                  <ProductCard {...product} hasTwoLineTitle={true} />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

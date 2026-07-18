@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
+import SafeImage from "@/components/shared/SafeImage";
 import productCategoryThumb from "@/assets/images/products/product-category-thumb.png";
 
 export default function CategoryNavigation({
@@ -62,11 +62,12 @@ export default function CategoryNavigation({
             >
               {/* Circular image container */}
               <div className="relative w-[84.53px] h-[84.53px] lg:w-[152px] lg:h-[152px] rounded-full overflow-hidden mx-auto bg-[#D9D9D9]">
-                <Image
+                <SafeImage
                   src={cat.image}
                   alt={cat.name}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  sizes="(max-width: 1024px) 85px, 152px"
                 />
               </div>
 

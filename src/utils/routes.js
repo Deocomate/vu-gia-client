@@ -32,7 +32,5 @@ export const ROUTES = {
   ADMIN_CONTACT_LEADS: "/admin/contact-leads",
   ADMIN_NEWSLETTER: "/admin/newsletter",
   ADMIN_REDIRECTS: "/admin/redirects",
-  ADMIN_SETTINGS: "/admin/settings",
   ADMIN_USERS: "/admin/users",
-  ADMIN_REVIEWS: "/admin/reviews",
 };

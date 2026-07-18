@@ -8,7 +8,7 @@ import ProductDetail from "@/components/product-detail/ProductDetail";
 import ProductSpecifications from "@/components/product-detail/ProductSpecifications";
 import SimilarProducts from "@/components/product-detail/SimilarProducts";
 
-export default function ProductDetailView({ slug, type }) {
+export default function ProductDetailView({ slug, type, description }) {
   const isSingleProduct = type === "single";
 
   if (isSingleProduct) {
@@ -36,7 +36,7 @@ export default function ProductDetailView({ slug, type }) {
         <ProductInfo />
 
         {/* Narrative details and main banner */}
-        <ProductDescription />
+        <ProductDescription description={description} />
       </div>
 
       {/* Structured item specifications list (Slider is full-screen, table is auto-centered) */}

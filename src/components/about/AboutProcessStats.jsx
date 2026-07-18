@@ -13,7 +13,6 @@ export default function AboutProcessStats() {
           fill
           className="object-cover"
           sizes="100vw"
-          priority
         />
 
         {/* Dark Overlay (40% as per Figma context) */}

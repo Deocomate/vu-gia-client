@@ -1,14 +1,48 @@
 import ReturnPolicyView from "@/views/ReturnPolicyView";
-import { ROUTES } from "@/utils/routes";
+import JsonLd from "@/components/seo/JsonLd";
+import { getPageByKey } from "@/lib/seo/pageByKey";
+import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/lib/seo/siteConfig";
+import { buildBreadcrumbSchema } from "@/lib/seo/schemas";
+import { formatImageUrl } from "@/lib/media";
 
-export const metadata = {
-  title: "Chính sách đổi trả",
-  description: "Chính sách đổi trả sản phẩm của Gốm Sứ Vũ Gia.",
-  alternates: {
-    canonical: ROUTES.RETURN_POLICY,
-  },
-};
+export async function generateMetadata() {
+  const page = await getPageByKey("return-policy");
+  const title = page?.seoTitle || "Chính sách đổi trả";
+  const description = page?.seoDescription || "Chính sách đổi trả sản phẩm của Gốm Sứ Vũ Gia.";
+  const image = page?.seoImage ? formatImageUrl(page.seoImage) : DEFAULT_OG_IMAGE;
+  const canonical = absoluteUrl("/chinh-sach-doi-tra");
 
-export default function ReturnPolicyPage() {
-  return <ReturnPolicyView />;
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      images: [image],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
+  };
+}
+
+const breadcrumb = buildBreadcrumbSchema([
+  { name: "Trang chủ", url: "/" },
+  { name: "Chính sách đổi trả", url: "/chinh-sach-doi-tra" },
+]);
+
+export default async function ReturnPolicyPage() {
+  const page = await getPageByKey("return-policy");
+
+  return (
+    <>
+      <JsonLd data={breadcrumb} />
+      <ReturnPolicyView page={page} />
+    </>
+  );
 }

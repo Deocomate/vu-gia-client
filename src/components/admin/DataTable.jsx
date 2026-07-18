@@ -1,9 +1,10 @@
 "use client";
 
-import { Eye, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, Eye, ImageIcon, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import EmptyState from "@/components/admin/EmptyState";
 import StatusBadge from "@/components/admin/StatusBadge";
 import { formatVnd, getValueByPath } from "@/lib/adminApi";
+import { formatImageUrl } from "@/lib/media";
 
 const renderCell = (row, column) => {
   const value =
@@ -13,6 +14,17 @@ const renderCell = (row, column) => {
 
   if (column.render) {
     return column.render(value, row);
+  }
+
+  if (column.type === "image") {
+    return value ? (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={formatImageUrl(value)} alt="" className="h-10 w-10 object-cover" loading="lazy" />
+    ) : (
+      <div className="flex h-10 w-10 items-center justify-center bg-zinc-100 text-zinc-300">
+        <ImageIcon className="h-4 w-4" aria-hidden="true" />
+      </div>
+    );
   }
 
   if (column.type === "status") {
@@ -38,6 +50,10 @@ export default function DataTable({
   columns,
   rows,
   getRowId = (row) => row.id,
+  sortable,
+  sortBy,
+  sortDirection,
+  onSort,
   onView,
   onEdit,
   onDelete,
@@ -52,15 +68,33 @@ export default function DataTable({
       <table className="min-w-full divide-y divide-zinc-200 text-left text-sm">
         <thead className="bg-zinc-50">
           <tr>
-            {columns.map((column) => (
-              <th
-                key={column.key || column.accessor || column.label}
-                scope="col"
-                className="whitespace-nowrap px-4 py-3 text-xs font-semibold uppercase tracking-wide text-zinc-500"
-              >
-                {column.label}
-              </th>
-            ))}
+            {columns.map((column) => {
+              const columnKey = column.key || column.accessor;
+              const isSortable = sortable?.includes(columnKey);
+              const isActive = sortBy === columnKey;
+              const SortIcon = isActive ? (sortDirection === "asc" ? ArrowUp : ArrowDown) : ArrowUpDown;
+
+              return (
+                <th
+                  key={columnKey || column.label}
+                  scope="col"
+                  className="whitespace-nowrap px-4 py-3 text-xs font-semibold uppercase tracking-wide text-zinc-500"
+                >
+                  {isSortable ? (
+                    <button
+                      type="button"
+                      onClick={() => onSort(columnKey)}
+                      className={`inline-flex items-center gap-1 hover:text-zinc-900 ${isActive ? "text-zinc-900" : ""}`}
+                    >
+                      {column.label}
+                      <SortIcon className="h-3.5 w-3.5" aria-hidden="true" />
+                    </button>
+                  ) : (
+                    column.label
+                  )}
+                </th>
+              );
+            })}
             {(onView || onEdit || onDelete || actions?.length) && (
               <th scope="col" className="w-12 px-4 py-3">
                 <MoreHorizontal className="h-4 w-4 text-zinc-400" aria-hidden="true" />

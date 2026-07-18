@@ -10,25 +10,25 @@ function AdminLoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const next = searchParams.get("next") || ROUTES.ADMIN;
-  const { status, error, signIn, loadCurrentUser, isAdmin } = useAdminAuthStore();
-  const [form, setForm] = useState({ email: "", password: "" });
+  const { status, error, login, isAdmin } = useAdminAuthStore();
+  const [form, setForm] = useState({ usernameOrEmail: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    loadCurrentUser().then(() => {
-      if (isAdmin()) {
-        router.replace(next);
-      }
-    });
-  }, [isAdmin, loadCurrentUser, next, router]);
+    if (isAdmin()) {
+      router.replace(next);
+    }
+  }, [isAdmin, next, router]);
 
   const submit = async (event) => {
     event.preventDefault();
     setSubmitting(true);
     try {
-      await signIn(form.email, form.password);
+      await login(form.usernameOrEmail, form.password);
       router.replace(next);
+    } catch {
+      // error is surfaced via the store's `error` state below
     } finally {
       setSubmitting(false);
     }
@@ -46,7 +46,7 @@ function AdminLoginForm() {
           </p>
           <h1 className="mt-2 text-2xl font-semibold text-zinc-950">Đăng nhập quản trị</h1>
           <p className="mt-2 text-sm leading-6 text-zinc-500">
-            Chỉ tài khoản STAFF, ADMIN hoặc SUPERADMIN được truy cập khu vực này.
+            Chỉ tài khoản ADMIN hoặc SUPERADMIN được truy cập khu vực này.
           </p>
         </div>
 
@@ -57,13 +57,17 @@ function AdminLoginForm() {
         )}
 
         <label className="mb-4 block">
-          <span className="mb-1.5 block text-sm font-semibold text-zinc-800">Email</span>
+          <span className="mb-1.5 block text-sm font-semibold text-zinc-800">
+            Tên đăng nhập hoặc email
+          </span>
           <input
-            type="email"
-            value={form.email}
-            onChange={(event) => setForm((current) => ({ ...current, email: event.target.value }))}
+            type="text"
+            value={form.usernameOrEmail}
+            onChange={(event) =>
+              setForm((current) => ({ ...current, usernameOrEmail: event.target.value }))
+            }
             className="h-11 w-full border border-zinc-300 px-3 text-sm outline-none focus:border-zinc-950"
-            autoComplete="email"
+            autoComplete="username"
             required
           />
         </label>

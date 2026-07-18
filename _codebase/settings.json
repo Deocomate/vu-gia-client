@@ -19,7 +19,9 @@
     ".gitignore",
     "plans",
     "templates",
-    "src/assets"
+    "src/assets",
+    "src/app/(admin)",
+    "src/components/admin"
   ],
   "priority_roots": [
     "package.json",

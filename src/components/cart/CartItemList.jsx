@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import { PLACEHOLDER_IMAGE } from "@/lib/media";
 
 export default function CartItemList({
   items = [],
@@ -55,10 +56,11 @@ export default function CartItemList({
                         alt={item.title}
                         fill
                         className="object-cover"
+                        sizes="80px"
                       />
                     ) : (
                       <img
-                        src={item.image || "/images/products/product-image-thumb.png"}
+                        src={item.image || PLACEHOLDER_IMAGE.src}
                         alt={item.title}
                         className="w-full h-full object-cover"
                       />
@@ -169,10 +171,11 @@ export default function CartItemList({
                         alt={item.title}
                         fill
                         className="object-cover"
+                        sizes="91px"
                       />
                     ) : (
                       <img
-                        src={item.image || "/images/products/product-image-thumb.png"}
+                        src={item.image || PLACEHOLDER_IMAGE.src}
                         alt={item.title}
                         className="w-full h-full object-cover"
                       />

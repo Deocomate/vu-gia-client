@@ -25,7 +25,7 @@ export default function AboutHero() {
           alt="Gốm Sứ Vũ Gia Logo"
           fill
           className="object-contain"
-          priority
+          sizes="(max-width: 768px) 163px, (max-width: 1024px) 300px, 370px"
         />
       </div>
     </section>

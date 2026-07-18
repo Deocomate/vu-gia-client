@@ -1,7 +1,7 @@
 ---
 phase: 1
 title: "Global Altar Widget"
-status: pending
+status: completed
 effort: "S"
 ---
 

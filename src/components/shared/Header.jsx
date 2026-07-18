@@ -9,28 +9,28 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ROUTES } from "@/utils/routes";
 import { useCartStore } from "@/stores/cartStore";
 
-const NAV_LINKS = [
-  { name: "Trang chủ", href: ROUTES.HOME },
-  { name: "Về chúng tôi", href: ROUTES.ABOUT },
-  {
-    name: "Sản phẩm",
-    href: ROUTES.PRODUCTS,
-    children: [
-      { name: "Danh sách sản phẩm", href: ROUTES.PRODUCTS },
-      {
-        name: "Sản phẩm chi tiết (Bộ đồ thờ)",
-        href: `${ROUTES.PRODUCTS}/mau-demo`,
-      },
-      {
-        name: "Sản phẩm chi tiết (Thường)",
-        href: `${ROUTES.PRODUCTS}/mau-demo?type=single`,
-      },
-    ],
-  },
-  { name: "Thưởng lãm", href: ROUTES.GALLERY },
-  { name: "Tin tức", href: ROUTES.NEWS },
-  { name: "Liên hệ", href: ROUTES.CONTACT },
-];
+/**
+ * Builds nav links, wiring the "Sản phẩm" submenu to real `ProductCategory`
+ * rows (fetched server-side in `layout.js` and passed down as a prop, since
+ * this component is a client component and cannot fetch itself).
+ */
+function buildNavLinks(categories) {
+  const productChildren = categories.length
+    ? categories.map((category) => ({
+        name: category.name,
+        href: `${ROUTES.PRODUCTS}?category=${category.slug}`,
+      }))
+    : [{ name: "Danh sách sản phẩm", href: ROUTES.PRODUCTS }];
+
+  return [
+    { name: "Trang chủ", href: ROUTES.HOME },
+    { name: "Về chúng tôi", href: ROUTES.ABOUT },
+    { name: "Sản phẩm", href: ROUTES.PRODUCTS, children: productChildren },
+    { name: "Thưởng lãm", href: ROUTES.GALLERY },
+    { name: "Tin tức", href: ROUTES.NEWS },
+    { name: "Liên hệ", href: ROUTES.CONTACT },
+  ];
+}
 
 function CartLink({ className = "", onClick }) {
   const [mounted, setMounted] = useState(false);
@@ -54,6 +54,7 @@ function CartLink({ className = "", onClick }) {
         alt="Cart"
         fill
         className="object-contain"
+        sizes="24px"
       />
       {count > 0 && (
         <div className="absolute top-[-4px] right-[-6px] min-w-[14px] h-[14px] bg-[#FFE600] rounded-full flex items-center justify-center px-[3px]">
@@ -66,9 +67,10 @@ function CartLink({ className = "", onClick }) {
   );
 }
 
-export default function Header() {
+export default function Header({ categories = [] }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const navLinks = buildNavLinks(categories);
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
@@ -116,6 +118,7 @@ export default function Header() {
             alt="Menu"
             fill
             className="object-contain"
+            sizes="24px"
           />
         </button>
 
@@ -129,13 +132,14 @@ export default function Header() {
             alt="Gốm Sứ Vũ Gia"
             fill
             className="object-contain object-center lg:object-left"
+            sizes="(max-width: 1024px) 80px, 120px"
             priority
           />
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-[30px] xl:gap-[60px]">
-          {NAV_LINKS.map((link) => {
+          {navLinks.map((link) => {
             const isActive = pathname === link.href;
 
             if (link.children) {
@@ -193,6 +197,7 @@ export default function Header() {
               alt="Search"
               fill
               className="object-contain"
+              sizes="19px"
             />
           </button>
 
@@ -206,6 +211,7 @@ export default function Header() {
               alt="User"
               fill
               className="object-contain"
+              sizes="20px"
             />
           </Link>
 
@@ -221,6 +227,7 @@ export default function Header() {
               alt="User"
               fill
               className="object-contain"
+              sizes="20px"
             />
           </Link>
         </div>
@@ -244,6 +251,7 @@ export default function Header() {
                   alt=""
                   fill
                   className="object-contain"
+                  sizes="515px"
                   aria-hidden
                 />
               </div>
@@ -261,6 +269,7 @@ export default function Header() {
                   alt="Gốm Sứ Vũ Gia"
                   fill
                   className="object-contain object-left"
+                  sizes="80px"
                 />
               </Link>
 
@@ -275,6 +284,7 @@ export default function Header() {
                       alt="Search"
                       fill
                       className="object-contain"
+                      sizes="18px"
                     />
                   </button>
 
@@ -291,6 +301,7 @@ export default function Header() {
                     alt="Close"
                     fill
                     className="object-contain"
+                    sizes="24px"
                   />
                 </button>
               </div>
@@ -298,7 +309,7 @@ export default function Header() {
 
             {/* Navigation Links */}
             <nav className="relative z-10 flex flex-col gap-[30px] pt-[76px] px-[29px]">
-              {NAV_LINKS.map((link) => {
+              {navLinks.map((link) => {
                 const isActive = pathname === link.href;
 
                 if (link.children) {

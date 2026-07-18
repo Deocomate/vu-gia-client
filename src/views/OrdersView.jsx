@@ -11,6 +11,7 @@ import { confirm, toast } from "@/utils/feedback";
 // Import order images from local assets
 import imgDonHang1 from "@/assets/images/don-hang/don-hang-1.png";
 import imgDonHang2 from "@/assets/images/don-hang/don-hang-2.png";
+import { PLACEHOLDER_IMAGE } from "@/lib/media";
 
 export default function OrdersView() {
   const breadcrumbs = [
@@ -201,7 +202,7 @@ export default function OrdersView() {
           quantity: 50,
           price: 100000,
           originalPrice: 120000,
-          image: "/images/products/product-image-thumb.png",
+          image: PLACEHOLDER_IMAGE.src,
         },
       ],
     },

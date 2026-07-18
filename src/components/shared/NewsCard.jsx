@@ -1,5 +1,5 @@
 // src/components/shared/NewsCard.jsx
-import Image from "next/image";
+import SafeImage from "@/components/shared/SafeImage";
 import Link from "next/link";
 import { ROUTES } from "@/utils/routes";
 
@@ -19,7 +19,7 @@ export default function NewsCard({
     >
       {/* Thumbnail */}
       <div className="w-full aspect-[587/397] rounded-[8.03px] overflow-hidden relative">
-        <Image
+        <SafeImage
           src={image}
           alt={title}
           fill

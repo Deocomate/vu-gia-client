@@ -8,7 +8,7 @@ import returnPolicyPng from "@/assets/images/customer-services/chinh-sach-doi-tr
 import returnPolicyMobilePng from "@/assets/images/customer-services/chinh-sach-doi-tra-mobile.png";
 import returnPolicyLastPng from "@/assets/images/customer-services/chinh-sach-doi-tra-last.png";
 
-export default function ReturnPolicyView() {
+export default function ReturnPolicyView({ page } = {}) {
   const breadcrumbs = [
     { name: "Trang chủ", href: ROUTES.HOME },
     { name: "Dịch vụ khách hàng", href: null },
@@ -17,10 +17,18 @@ export default function ReturnPolicyView() {
 
   return (
     <CustomerServiceLayout breadcrumbs={breadcrumbs}>
-      {/* Title */}
+      {/* Title (heroTitle from `Page` key "return-policy" overrides the
+          static default when the admin sets one; body PNG content below
+          stays static) */}
       <h1 className="font-arima text-[#2E2F2A] text-[28px] md:text-[36px] font-[400] leading-[40px] md:leading-[48px] mb-6">
-        Chính sách đổi trả
+        {page?.heroTitle || "Chính sách đổi trả"}
       </h1>
+
+      {page?.heroDes && (
+        <p className="font-montserrat text-[#97400C] text-[16px] font-[500] leading-[26px] mb-5">
+          {page.heroDes}
+        </p>
+      )}
 
       {/* PNG Unified Content */}
       <div className="w-full mt-4">
@@ -50,7 +58,6 @@ export default function ReturnPolicyView() {
               alt="Bảng chính sách đổi trả"
               height={300}
               className="w-auto h-[260px] max-w-none object-contain"
-              priority
             />
           </div>
         </div>

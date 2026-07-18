@@ -1,4 +1,4 @@
-# codebase | 167 files | 2026-07-09 13:02:50
+# codebase | 140 files | 2026-07-10 12:32:38
 
 // package.json
 {
@@ -21,6 +21,7 @@
     "postcss": "^8.5.15",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0",
     "zustand": "^5.0.14"
   },
@@ -2202,6 +2203,148 @@ export const useAdminAuthStore = create((set, get) => ({
 }));
 
 
+// src/stores/cartStore.js
+"use client";
+
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+
+export const useCartStore = create(
+  persist(
+    (set, get) => ({
+      items: [], // { id, title, sku, classification, packSize, price, image, quantity }
+
+      addItem(product, qty = 1) {
+        const quantity = Math.max(1, Number(qty) || 1);
+        set((state) => {
+          const existing = state.items.find((it) => it.id === product.id);
+          if (existing) {
+            return {
+              items: state.items.map((it) =>
+                it.id === product.id
+                  ? { ...it, quantity: (Number(it.quantity) || 0) + quantity }
+                  : it,
+              ),
+            };
+          }
+          return {
+            items: [
+              ...state.items,
+              {
+                classification: "Mặc định",
+                packSize: 1,
+                ...product,
+                quantity,
+              },
+            ],
+          };
+        });
+      },
+
+      updateQuantity(id, quantity) {
+        set((state) => ({
+          items: state.items.map((it) => {
+            if (it.id !== id) return it;
+            // Allow empty string while the user is editing the input.
+            if (quantity === "" || quantity === null) {
+              return { ...it, quantity: "" };
+            }
+            const n = Number(quantity);
+            if (Number.isNaN(n)) return it;
+            return { ...it, quantity: Math.max(1, n) };
+          }),
+        }));
+      },
+
+      removeItem(id) {
+        set((state) => ({ items: state.items.filter((it) => it.id !== id) }));
+      },
+
+      clearCart() {
+        set({ items: [] });
+      },
+
+      totalCount() {
+        return get().items.reduce((n, it) => n + (Number(it.quantity) || 0), 0);
+      },
+
+      subtotal() {
+        return get().items.reduce(
+          (sum, it) => sum + (it.price || 0) * (Number(it.quantity) || 0),
+          0,
+        );
+      },
+    }),
+    { name: "vugia-cart" },
+  ),
+);
+
+
+// src/stores/confirmStore.js
+"use client";
+
+import { create } from "zustand";
+
+const DEFAULT_OPTIONS = {
+  title: "",
+  description: "",
+  confirmLabel: "Xác nhận",
+  cancelLabel: "Hủy",
+  destructive: false,
+};
+
+export const useConfirmStore = create((set, get) => ({
+  open: false,
+  title: "",
+  description: "",
+  confirmLabel: "Xác nhận",
+  cancelLabel: "Hủy",
+  destructive: false,
+  resolve: null,
+
+  close(result) {
+    const { resolve } = get();
+    if (resolve) {
+      resolve(result);
+    }
+    set({
+      open: false,
+      resolve: null,
+      ...DEFAULT_OPTIONS,
+    });
+  },
+
+  openConfirm(options) {
+    const { open, resolve: prevResolve } = get();
+
+    if (open && prevResolve) {
+      prevResolve(false);
+    }
+
+    return new Promise((resolve) => {
+      set({
+        open: true,
+        title: options.title ?? "",
+        description: options.description ?? "",
+        confirmLabel: options.confirmLabel ?? "Xác nhận",
+        cancelLabel: options.cancelLabel ?? "Hủy",
+        destructive: options.destructive ?? false,
+        resolve,
+      });
+    });
+  },
+}));
+
+export function confirm(options) {
+  return useConfirmStore.getState().openConfirm(options);
+}
+
+
+// src/utils/feedback.js
+export { toast } from "sonner";
+export { confirm } from "@/stores/confirmStore";
+
+
 // src/utils/routes.js
 export const ROUTES = {
   HOME: "/",
@@ -2241,308 +2384,6 @@ export const ROUTES = {
   ADMIN_USERS: "/admin/users",
   ADMIN_REVIEWS: "/admin/reviews",
 };
-
-
-// src/app/(admin)/admin/(protected)/banners/page.jsx
-import AdminResourcePage from "@/features/admin/AdminResourcePage";
-
-export default function AdminBannersPage() {
-  return <AdminResourcePage resourceKey="banners" />;
-}
-
-
-// src/app/(admin)/admin/(protected)/categories/page.jsx
-import AdminResourcePage from "@/features/admin/AdminResourcePage";
-
-export default function AdminCategoriesPage() {
-  return <AdminResourcePage resourceKey="categories" />;
-}
-
-
-// src/app/(admin)/admin/(protected)/contact-leads/page.jsx
-import AdminResourcePage from "@/features/admin/AdminResourcePage";
-
-export default function AdminContactLeadsPage() {
-  return <AdminResourcePage resourceKey="contactLeads" />;
-}
-
-
-// src/app/(admin)/admin/(protected)/coupons/page.jsx
-import AdminResourcePage from "@/features/admin/AdminResourcePage";
-
-export default function AdminCouponsPage() {
-  return <AdminResourcePage resourceKey="coupons" />;
-}
-
-
-// src/app/(admin)/admin/(protected)/faq/page.jsx
-import AdminResourcePage from "@/features/admin/AdminResourcePage";
-
-export default function AdminFaqPage() {
-  return <AdminResourcePage resourceKey="faq" />;
-}
-
-
-// src/app/(admin)/admin/(protected)/gallery/page.jsx
-import AdminResourcePage from "@/features/admin/AdminResourcePage";
-
-export default function AdminGalleryPage() {
-  return <AdminResourcePage resourceKey="gallery" />;
-}
-
-
-// src/app/(admin)/admin/(protected)/layout.js
-import AdminShell from "@/components/admin/AdminShell";
-
-export default function ProtectedAdminLayout({ children }) {
-  return <AdminShell>{children}</AdminShell>;
-}
-
-
-// src/app/(admin)/admin/(protected)/media/page.jsx
-import AdminMediaPage from "@/features/admin/AdminMediaPage";
-
-export default function AdminMediaRoute() {
-  return <AdminMediaPage />;
-}
-
-
-// src/app/(admin)/admin/(protected)/news/page.jsx
-import AdminResourcePage from "@/features/admin/AdminResourcePage";
-
-export default function AdminNewsPage() {
-  return <AdminResourcePage resourceKey="news" />;
-}
-
-
-// src/app/(admin)/admin/(protected)/newsletter/page.jsx
-import AdminResourcePage from "@/features/admin/AdminResourcePage";
-
-export default function AdminNewsletterPage() {
-  return <AdminResourcePage resourceKey="newsletter" />;
-}
-
-
-// src/app/(admin)/admin/(protected)/orders/[id]/page.jsx
-import AdminOrderDetailPage from "@/features/admin/AdminOrderDetailPage";
-
-export default async function AdminOrderDetailRoute({ params }) {
-  const { id } = await params;
-  return <AdminOrderDetailPage orderId={id} />;
-}
-
-
-// src/app/(admin)/admin/(protected)/orders/page.jsx
-import AdminResourcePage from "@/features/admin/AdminResourcePage";
-
-export default function AdminOrdersPage() {
-  return <AdminResourcePage resourceKey="orders" />;
-}
-
-
-// src/app/(admin)/admin/(protected)/page.jsx
-import AdminDashboard from "@/features/admin/AdminDashboard";
-
-export default function AdminPage() {
-  return <AdminDashboard />;
-}
-
-
-// src/app/(admin)/admin/(protected)/pages/page.jsx
-import AdminResourcePage from "@/features/admin/AdminResourcePage";
-
-export default function AdminPagesPage() {
-  return <AdminResourcePage resourceKey="pages" />;
-}
-
-
-// src/app/(admin)/admin/(protected)/products/[id]/page.jsx
-import AdminProductDetailPage from "@/features/admin/AdminProductDetailPage";
-
-export default async function AdminProductDetailRoute({ params }) {
-  const { id } = await params;
-  return <AdminProductDetailPage productId={id} />;
-}
-
-
-// src/app/(admin)/admin/(protected)/products/page.jsx
-import AdminResourcePage from "@/features/admin/AdminResourcePage";
-
-export default function AdminProductsPage() {
-  return <AdminResourcePage resourceKey="products" />;
-}
-
-
-// src/app/(admin)/admin/(protected)/redirects/page.jsx
-import AdminResourcePage from "@/features/admin/AdminResourcePage";
-
-export default function AdminRedirectsPage() {
-  return <AdminResourcePage resourceKey="redirects" />;
-}
-
-
-// src/app/(admin)/admin/(protected)/reviews/page.jsx
-import ComingSoonPage from "@/features/admin/ComingSoonPage";
-
-export default function AdminReviewsPage() {
-  return <ComingSoonPage title="Moderation reviews" />;
-}
-
-
-// src/app/(admin)/admin/(protected)/settings/page.jsx
-import AdminSettingsPage from "@/features/admin/AdminSettingsPage";
-
-export default function AdminSettingsRoute() {
-  return <AdminSettingsPage />;
-}
-
-
-// src/app/(admin)/admin/(protected)/showrooms/page.jsx
-import AdminResourcePage from "@/features/admin/AdminResourcePage";
-
-export default function AdminShowroomsPage() {
-  return <AdminResourcePage resourceKey="showrooms" />;
-}
-
-
-// src/app/(admin)/admin/(protected)/users/page.jsx
-import ComingSoonPage from "@/features/admin/ComingSoonPage";
-
-export default function AdminUsersPage() {
-  return <ComingSoonPage title="Quản lý users" />;
-}
-
-
-// src/app/(admin)/admin/layout.js
-export const metadata = {
-  title: "Admin CMS | Gốm Sứ Vũ Gia",
-};
-
-export default function AdminRootLayout({ children }) {
-  return children;
-}
-
-
-// src/app/(admin)/admin/login/page.jsx
-"use client";
-
-import { Suspense, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Eye, LockKeyhole } from "lucide-react";
-import { useAdminAuthStore } from "@/stores/adminAuthStore";
-import { ROUTES } from "@/utils/routes";
-
-function AdminLoginForm() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const next = searchParams.get("next") || ROUTES.ADMIN;
-  const { status, error, signIn, loadCurrentUser, isAdmin } = useAdminAuthStore();
-  const [form, setForm] = useState({ email: "", password: "" });
-  const [showPassword, setShowPassword] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-
-  useEffect(() => {
-    loadCurrentUser().then(() => {
-      if (isAdmin()) {
-        router.replace(next);
-      }
-    });
-  }, [isAdmin, loadCurrentUser, next, router]);
-
-  const submit = async (event) => {
-    event.preventDefault();
-    setSubmitting(true);
-    try {
-      await signIn(form.email, form.password);
-      router.replace(next);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  return (
-    <main className="flex min-h-screen items-center justify-center bg-zinc-950 px-4 py-10">
-      <form onSubmit={submit} className="w-full max-w-md border border-white/10 bg-white p-6 shadow-2xl">
-        <div className="mb-6">
-          <div className="mb-4 inline-flex h-12 w-12 items-center justify-center bg-zinc-950 text-white">
-            <LockKeyhole className="h-5 w-5" aria-hidden="true" />
-          </div>
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">
-            Vũ Gia CMS
-          </p>
-          <h1 className="mt-2 text-2xl font-semibold text-zinc-950">Đăng nhập quản trị</h1>
-          <p className="mt-2 text-sm leading-6 text-zinc-500">
-            Chỉ tài khoản STAFF, ADMIN hoặc SUPERADMIN được truy cập khu vực này.
-          </p>
-        </div>
-
-        {error && status !== "authenticated" && (
-          <div className="mb-4 border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-700">
-            {error}
-          </div>
-        )}
-
-        <label className="mb-4 block">
-          <span className="mb-1.5 block text-sm font-semibold text-zinc-800">Email</span>
-          <input
-            type="email"
-            value={form.email}
-            onChange={(event) => setForm((current) => ({ ...current, email: event.target.value }))}
-            className="h-11 w-full border border-zinc-300 px-3 text-sm outline-none focus:border-zinc-950"
-            autoComplete="email"
-            required
-          />
-        </label>
-
-        <label className="mb-5 block">
-          <span className="mb-1.5 block text-sm font-semibold text-zinc-800">Mật khẩu</span>
-          <div className="flex border border-zinc-300 focus-within:border-zinc-950">
-            <input
-              type={showPassword ? "text" : "password"}
-              value={form.password}
-              onChange={(event) =>
-                setForm((current) => ({ ...current, password: event.target.value }))
-              }
-              className="h-11 min-w-0 flex-1 px-3 text-sm outline-none"
-              autoComplete="current-password"
-              required
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword((current) => !current)}
-              className="inline-flex h-11 w-11 items-center justify-center text-zinc-500 hover:text-zinc-950"
-              aria-label="Hiện mật khẩu"
-            >
-              <Eye className="h-4 w-4" aria-hidden="true" />
-            </button>
-          </div>
-        </label>
-
-        <button
-          type="submit"
-          disabled={submitting || status === "loading"}
-          className="h-11 w-full bg-zinc-950 px-4 text-sm font-semibold text-white hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {submitting || status === "loading" ? "Đang đăng nhập..." : "Đăng nhập"}
-        </button>
-      </form>
-    </main>
-  );
-}
-
-export default function AdminLoginPage() {
-  return (
-    <Suspense
-      fallback={
-        <main className="flex min-h-screen items-center justify-center bg-zinc-950 px-4 text-sm font-semibold text-white">
-          Đang tải trang đăng nhập...
-        </main>
-      }
-    >
-      <AdminLoginForm />
-    </Suspense>
-  );
-}
 
 
 // src/app/globals.css
@@ -3177,15 +3018,14 @@ export default function AboutView() {
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import Breadcrumb from "@/components/shared/Breadcrumb";
 import CartItemList from "@/components/cart/CartItemList";
 import CartSummary from "@/components/cart/CartSummary";
 import ProductCard from "@/components/shared/ProductCard";
 import { ROUTES } from "@/utils/routes";
-
-// Import order images for cart items
-import imgDonHang1 from "@/assets/images/don-hang/don-hang-1.png";
-import imgDonHang2 from "@/assets/images/don-hang/don-hang-2.png";
+import { useCartStore } from "@/stores/cartStore";
+import { confirm, toast } from "@/utils/feedback";
 
 import imgRelated1 from "@/assets/images/product-detail/product-card-image-1.png";
 import imgRelated2 from "@/assets/images/product-detail/product-card-image-2.png";
@@ -3193,47 +3033,27 @@ import imgRelated3 from "@/assets/images/product-detail/product-card-image-3.png
 import imgRelated4 from "@/assets/images/product-detail/product-detail-thumbnail.png";
 
 export default function CartView() {
+  const router = useRouter();
+  const cartItems = useCartStore((s) => s.items);
+  const updateQuantity = useCartStore((s) => s.updateQuantity);
+  const removeItem = useCartStore((s) => s.removeItem);
+
   const breadcrumbItems = [
     { name: "Trang chủ", href: ROUTES.HOME },
     { name: "Giỏ hàng", href: null },
   ];
 
-  // Initial cart items based on Figma coordinates
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      title: "Ngói âm dương nâu đen",
-      sku: "46345",
-      classification: "Nâu đen",
-      packSize: 100,
-      quantity: 1,
-      price: 70000,
-      image: imgDonHang1,
-    },
-    {
-      id: 2,
-      title: "Ngói âm dương nâu đen",
-      sku: "46345",
-      classification: "Nâu đen",
-      packSize: 100,
-      quantity: 20,
-      price: 70000,
-      image: imgDonHang2,
-    },
-  ]);
-
   const [promoApplied, setPromoApplied] = useState(false);
   const [discountAmount, setDiscountAmount] = useState(0);
 
-  // Calculate pricing values
   const subtotal = useMemo(() => {
-    return cartItems.reduce((sum, item) => sum + (item.price || 0) * (item.quantity || 0), 0);
+    return cartItems.reduce(
+      (sum, item) => sum + (item.price || 0) * (Number(item.quantity) || 0),
+      0,
+    );
   }, [cartItems]);
 
-  const tax = useMemo(() => {
-    // 0 in Figma context, but can be scaled
-    return 0;
-  }, []);
+  const tax = 0;
 
   const total = useMemo(() => {
     return subtotal - discountAmount + tax;
@@ -3279,45 +3099,48 @@ export default function CartView() {
   ];
 
   const handleQuantityChange = (id, newQty) => {
-    setCartItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, quantity: newQty } : item))
-    );
+    updateQuantity(id, newQty);
   };
 
-  const handleRemoveItem = (id) => {
-    if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")) {
-      setCartItems((prev) => prev.filter((item) => item.id !== id));
-    }
+  const handleRemoveItem = async (id) => {
+    const ok = await confirm({
+      title: "Xóa sản phẩm",
+      description: "Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?",
+      confirmLabel: "Xóa",
+      cancelLabel: "Hủy",
+      destructive: true,
+    });
+    if (!ok) return;
+    removeItem(id);
   };
 
   const handleEditItem = (id) => {
-    alert(`Chỉnh sửa tùy chọn cho sản phẩm #${id}`);
+    toast.info(`Chỉnh sửa tùy chọn cho sản phẩm #${id}`);
   };
 
   const handleApplyPromoCode = (code) => {
     if (code.trim().toUpperCase() === "VUGIA10") {
       if (promoApplied) {
-        alert("Mã ưu đãi này đã được áp dụng trước đó.");
+        toast.error("Mã ưu đãi này đã được áp dụng trước đó.");
         return;
       }
-      const calculatedDiscount = Math.round(subtotal * 0.1); // 10% discount
+      const calculatedDiscount = Math.round(subtotal * 0.1);
       setDiscountAmount(calculatedDiscount);
       setPromoApplied(true);
-      alert("Áp dụng mã giảm giá VUGIA10 thành công! Bạn được giảm 10% tổng đơn.");
+      toast.success("Áp dụng mã giảm giá VUGIA10 thành công! Bạn được giảm 10% tổng đơn.");
     } else if (code.trim() === "") {
-      alert("Vui lòng nhập mã ưu đãi.");
+      toast.error("Vui lòng nhập mã ưu đãi.");
     } else {
-      alert("Mã ưu đãi không hợp lệ.");
+      toast.error("Mã ưu đãi không hợp lệ.");
     }
   };
 
   const handleCheckout = () => {
     if (cartItems.length === 0) {
-      alert("Giỏ hàng của bạn đang trống!");
+      toast.error("Giỏ hàng của bạn đang trống!");
       return;
     }
-    alert("Bắt đầu chuyển hướng tới trang thanh toán...");
-    window.location.href = ROUTES.CHECKOUT;
+    router.push(ROUTES.CHECKOUT);
   };
 
   return (
@@ -3389,6 +3212,7 @@ export default function CartView() {
             {relatedProducts.map((product) => (
               <div key={product.id} className="flex-shrink-0 w-[175px] lg:w-auto snap-start">
                 <ProductCard
+                  id={product.id}
                   image={product.image}
                   name={product.name}
                   sku={product.sku}
@@ -3411,52 +3235,33 @@ export default function CartView() {
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Breadcrumb from "@/components/shared/Breadcrumb";
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import CheckoutOrderSummary from "@/components/checkout/CheckoutOrderSummary";
 import { ROUTES } from "@/utils/routes";
-
-// Import order images
-import imgDonHang1 from "@/assets/images/don-hang/don-hang-1.png";
-import imgDonHang2 from "@/assets/images/don-hang/don-hang-2.png";
+import { useCartStore } from "@/stores/cartStore";
+import { confirm, toast } from "@/utils/feedback";
 
 export default function CheckoutView() {
+  const router = useRouter();
+  const checkoutItems = useCartStore((s) => s.items);
+  const clearCart = useCartStore((s) => s.clearCart);
+  const removeItem = useCartStore((s) => s.removeItem);
+
   const breadcrumbs = [
     { name: "Trang chủ", href: ROUTES.HOME },
     { name: "Thanh toán", href: null },
   ];
 
-  // Initial cart items initialized to match Figma total pricing
-  const [checkoutItems, setCheckoutItems] = useState([
-    {
-      id: 1,
-      title: "Ngói âm dương nâu đen",
-      sku: "46345",
-      classification: "Nâu đen",
-      packSize: 100,
-      quantity: 20,
-      price: 500000, // 500,000 * 20 = 10,000,000
-      image: imgDonHang1,
-    },
-    {
-      id: 2,
-      title: "Ngói âm dương nâu đen",
-      sku: "46345",
-      classification: "Nâu đen",
-      packSize: 20,
-      quantity: 50,
-      price: 240000, // 240,000 * 50 = 12,000,000
-      image: imgDonHang2,
-    },
-  ]);
-
-  const [promoApplied, setPromoApplied] = useState(true); // Pre-applied to match mockup's -2,000,000 đ discount
-  const [discountAmount, setDiscountAmount] = useState(2000000);
+  const [promoApplied, setPromoApplied] = useState(false);
+  const [discountAmount, setDiscountAmount] = useState(0);
 
   const subtotal = useMemo(() => {
     return checkoutItems.reduce(
-      (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
-      0
+      (sum, item) => sum + (item.price || 0) * (Number(item.quantity) || 0),
+      0,
     );
   }, [checkoutItems]);
 
@@ -3468,43 +3273,52 @@ export default function CheckoutView() {
 
   const handleApplyPromo = (code) => {
     if (code.trim().toUpperCase() === "VUGIA10") {
+      if (promoApplied) {
+        toast.error("Mã ưu đãi này đã được áp dụng trước đó.");
+        return;
+      }
       const calculatedDiscount = Math.round(subtotal * 0.1);
       setDiscountAmount(calculatedDiscount);
       setPromoApplied(true);
-      alert(`Áp dụng mã giảm giá VUGIA10 thành công! Bạn được giảm ${calculatedDiscount.toLocaleString()} ₫.`);
+      toast.success(
+        `Áp dụng mã giảm giá VUGIA10 thành công! Bạn được giảm ${calculatedDiscount.toLocaleString()} ₫.`,
+      );
     } else if (code.trim() === "") {
-      alert("Vui lòng nhập mã ưu đãi.");
+      toast.error("Vui lòng nhập mã ưu đãi.");
     } else {
-      alert("Mã ưu đãi không hợp lệ.");
+      toast.error("Mã ưu đãi không hợp lệ.");
     }
   };
 
-  const handleRemoveItem = (id) => {
-    if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi đơn hàng?")) {
-      setCheckoutItems((prev) => {
-        const updated = prev.filter((item) => item.id !== id);
-        if (updated.length === 0) {
-          setDiscountAmount(0);
-        }
-        return updated;
-      });
+  const handleRemoveItem = async (id) => {
+    const ok = await confirm({
+      title: "Xóa sản phẩm",
+      description: "Bạn có chắc chắn muốn xóa sản phẩm này khỏi đơn hàng?",
+      confirmLabel: "Xóa",
+      cancelLabel: "Hủy",
+      destructive: true,
+    });
+    if (!ok) return;
+    removeItem(id);
+    if (checkoutItems.length <= 1) {
+      setDiscountAmount(0);
+      setPromoApplied(false);
     }
   };
 
   const handleEditItem = (id) => {
-    alert(`Chỉnh sửa tùy chọn cho sản phẩm #${id}`);
+    toast.info(`Chỉnh sửa tùy chọn cho sản phẩm #${id}`);
   };
 
   const handleCheckoutSubmit = (formData) => {
-    alert(
-      `Đặt hàng thành công!\n\nKhách hàng: ${formData.fullName}\nĐịa chỉ: ${formData.address}, ${formData.city}\nĐiện thoại: ${formData.phone}\nPhương thức vận chuyển: ${
-        formData.shippingMethod === "express" ? "Giao hàng hỏa tốc" : "Giao hàng nhanh"
-      }\nPhương thức thanh toán: ${
-        formData.paymentMethod === "online" ? "Chuyển khoản / QR" : "Thanh toán khi nhận hàng (COD)"
-      }\nTổng tiền: ${total.toLocaleString()} ₫`
-    );
-    setCheckoutItems([]);
+    toast.success("Đặt hàng thành công!", {
+      description: "Vui lòng đợi phản hồi từ Gốm Vũ Gia.",
+      duration: 5000,
+    });
+    clearCart();
     setDiscountAmount(0);
+    setPromoApplied(false);
+    setTimeout(() => router.push(ROUTES.ORDERS), 150);
   };
 
   return (
@@ -3532,12 +3346,12 @@ export default function CheckoutView() {
                 <p className="text-[#909090] text-[16px] font-[500]">
                   Đơn hàng của bạn đã được gửi hoặc trống. Quay về cửa hàng để tiếp tục mua sắm.
                 </p>
-                <a
-                  href={ROUTES.SAN_PHAM}
+                <Link
+                  href={ROUTES.PRODUCTS}
                   className="mt-6 inline-block bg-[#C76E00] text-white px-6 py-2.5 rounded-[3px] font-[600] text-[14px] hover:bg-[#AD5036] transition-colors duration-300 cursor-pointer"
                 >
                   Tiếp tục mua hàng
-                </a>
+                </Link>
               </div>
             )}
           </div>
@@ -4986,6 +4800,7 @@ import OrderStatusTabs from "@/components/orders/OrderStatusTabs";
 import OrderCard from "@/components/orders/OrderCard";
 import OrderPagination from "@/components/orders/OrderPagination";
 import { ROUTES } from "@/utils/routes";
+import { confirm, toast } from "@/utils/feedback";
 
 // Import order images from local assets
 import imgDonHang1 from "@/assets/images/don-hang/don-hang-1.png";
@@ -5267,19 +5082,25 @@ export default function OrdersView() {
     setCurrentPage(1); // reset to first page when changing tabs
   };
 
-  const handleCancelOrder = (orderId) => {
-    if (confirm(`Bạn có chắc chắn muốn hủy đơn hàng #${orderId} không?`)) {
-      setOrders((prev) =>
-        prev.map((o) =>
-          o.id === orderId ? { ...o, status: "cancelled" } : o
-        )
-      );
-      alert(`Đã gửi yêu cầu hủy đơn hàng #${orderId} thành công.`);
-    }
+  const handleCancelOrder = async (orderId) => {
+    const ok = await confirm({
+      title: "Hủy đơn hàng",
+      description: `Bạn có chắc chắn muốn hủy đơn hàng #${orderId} không?`,
+      confirmLabel: "Hủy đơn",
+      cancelLabel: "Không",
+      destructive: true,
+    });
+    if (!ok) return;
+    setOrders((prev) =>
+      prev.map((o) =>
+        o.id === orderId ? { ...o, status: "cancelled" } : o
+      )
+    );
+    toast.success(`Đã gửi yêu cầu hủy đơn hàng #${orderId} thành công.`);
   };
 
   const handleContactSupport = (orderId) => {
-    alert(`Kết nối với bộ phận chăm sóc khách hàng cho đơn hàng #${orderId}.`);
+    toast.info(`Kết nối với bộ phận chăm sóc khách hàng cho đơn hàng #${orderId}.`);
   };
 
   return (
@@ -5534,7 +5355,6 @@ import ProductDescription from "@/components/product-detail/ProductDescription";
 import ProductDetail from "@/components/product-detail/ProductDetail";
 import ProductSpecifications from "@/components/product-detail/ProductSpecifications";
 import SimilarProducts from "@/components/product-detail/SimilarProducts";
-import FixedActionWidget from "@/components/product-detail/FixedActionWidget";
 
 export default function ProductDetailView({ slug, type }) {
   const isSingleProduct = type === "single";
@@ -5566,9 +5386,6 @@ export default function ProductDetailView({ slug, type }) {
         {/* Narrative details and main banner */}
         <ProductDescription />
       </div>
-
-      {/* Fixed action widget - right side of screen */}
-      <FixedActionWidget />
 
       {/* Structured item specifications list (Slider is full-screen, table is auto-centered) */}
       <ProductSpecifications />
@@ -5842,6 +5659,7 @@ export default function ProductsView() {
 import React, { useState } from "react";
 import CustomerServiceLayout from "@/components/customer-service/CustomerServiceLayout";
 import { ROUTES } from "@/utils/routes";
+import { toast } from "@/utils/feedback";
 
 export default function ProfileView() {
   const breadcrumbs = [
@@ -5858,7 +5676,7 @@ export default function ProfileView() {
 
   const handleSave = (e) => {
     e.preventDefault();
-    alert("Lưu thay đổi hồ sơ cá nhân thành công!");
+    toast.success("Lưu thay đổi hồ sơ cá nhân thành công!");
   };
 
   return (
@@ -6514,833 +6332,6 @@ export default function AboutProcessStats() {
         <div className="absolute inset-0 bg-black/40 pointer-events-none"></div>
       </div>
     </section>
-  );
-}
-
-
-// src/components/admin/AdminShell.jsx
-"use client";
-
-import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import AdminSidebar from "@/components/admin/AdminSidebar";
-import AdminTopbar from "@/components/admin/AdminTopbar";
-import { useAdminAuthStore } from "@/stores/adminAuthStore";
-import { ROUTES } from "@/utils/routes";
-
-export default function AdminShell({ children }) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { status, error, loadCurrentUser } = useAdminAuthStore();
-
-  useEffect(() => {
-    loadCurrentUser();
-  }, [loadCurrentUser]);
-
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.replace(`${ROUTES.ADMIN_LOGIN}?next=${encodeURIComponent(pathname)}`);
-    }
-  }, [pathname, router, status]);
-
-  if (status === "idle" || status === "loading") {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-100 text-sm font-semibold text-zinc-600">
-        Đang kiểm tra phiên quản trị...
-      </div>
-    );
-  }
-
-  if (status === "forbidden") {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-100 px-4">
-        <div className="max-w-md border border-zinc-200 bg-white p-8 text-center shadow-sm">
-          <h1 className="text-xl font-semibold text-zinc-950">Không có quyền truy cập</h1>
-          <p className="mt-3 text-sm leading-6 text-zinc-600">
-            {error || "Tài khoản hiện tại không thuộc nhóm STAFF, ADMIN hoặc SUPERADMIN."}
-          </p>
-          <button
-            type="button"
-            onClick={() => router.replace(ROUTES.HOME)}
-            className="mt-6 h-11 bg-zinc-950 px-5 text-sm font-semibold text-white hover:bg-zinc-800"
-          >
-            Về trang chủ
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-zinc-100 text-zinc-900">
-      <div className="lg:flex">
-        <AdminSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-        <div className="min-w-0 flex-1">
-          <AdminTopbar onMenuClick={() => setSidebarOpen(true)} />
-          <main className="mx-auto max-w-[1600px] px-4 py-6 lg:px-6">{children}</main>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
-// src/components/admin/AdminSidebar.jsx
-"use client";
-
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import {
-  BadgePercent,
-  Boxes,
-  FileText,
-  Gauge,
-  ImageIcon,
-  Inbox,
-  Layout,
-  MapPin,
-  MessageSquare,
-  Newspaper,
-  Package,
-  PanelTop,
-  RefreshCcw,
-  Settings,
-  ShoppingCart,
-  Star,
-  Tags,
-  Users,
-} from "lucide-react";
-import { ROUTES } from "@/utils/routes";
-
-export const ADMIN_NAV = [
-  { label: "Tổng quan", href: ROUTES.ADMIN, icon: Gauge },
-  { label: "Sản phẩm", href: ROUTES.ADMIN_PRODUCTS, icon: Package },
-  { label: "Danh mục", href: ROUTES.ADMIN_CATEGORIES, icon: Tags },
-  { label: "Media", href: ROUTES.ADMIN_MEDIA, icon: ImageIcon },
-  { label: "Đơn hàng", href: ROUTES.ADMIN_ORDERS, icon: ShoppingCart },
-  { label: "Coupon", href: ROUTES.ADMIN_COUPONS, icon: BadgePercent },
-  { label: "Tin tức", href: ROUTES.ADMIN_NEWS, icon: Newspaper },
-  { label: "Trang CMS", href: ROUTES.ADMIN_PAGES, icon: FileText },
-  { label: "FAQ", href: ROUTES.ADMIN_FAQ, icon: MessageSquare },
-  { label: "Thư viện", href: ROUTES.ADMIN_GALLERY, icon: Boxes },
-  { label: "Showroom", href: ROUTES.ADMIN_SHOWROOMS, icon: MapPin },
-  { label: "Banner", href: ROUTES.ADMIN_BANNERS, icon: PanelTop },
-  { label: "Liên hệ", href: ROUTES.ADMIN_CONTACT_LEADS, icon: Inbox },
-  { label: "Newsletter", href: ROUTES.ADMIN_NEWSLETTER, icon: Layout },
-  { label: "Redirect", href: ROUTES.ADMIN_REDIRECTS, icon: RefreshCcw },
-  { label: "Cài đặt", href: ROUTES.ADMIN_SETTINGS, icon: Settings },
-  { label: "Users", href: ROUTES.ADMIN_USERS, icon: Users },
-  { label: "Reviews", href: ROUTES.ADMIN_REVIEWS, icon: Star },
-];
-
-export default function AdminSidebar({ open, onClose }) {
-  const pathname = usePathname();
-
-  return (
-    <>
-      <div
-        className={`fixed inset-0 z-30 bg-zinc-950/40 lg:hidden ${open ? "block" : "hidden"}`}
-        onClick={onClose}
-        role="presentation"
-      />
-      <aside
-        className={`fixed inset-y-0 left-0 z-40 w-[280px] border-r border-zinc-200 bg-zinc-950 text-white transition-transform lg:static lg:translate-x-0 ${
-          open ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <div className="flex h-16 items-center border-b border-white/10 px-5">
-          <Link href={ROUTES.ADMIN} className="block">
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-amber-200">
-              Vũ Gia
-            </p>
-            <p className="text-lg font-bold text-white">Admin CMS</p>
-          </Link>
-        </div>
-        <nav className="h-[calc(100vh-4rem)] overflow-y-auto px-3 py-4">
-          {ADMIN_NAV.map((item) => {
-            const Icon = item.icon;
-            const active =
-              pathname === item.href ||
-              (item.href !== ROUTES.ADMIN && pathname.startsWith(`${item.href}/`));
-
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={onClose}
-                className={`mb-1 flex h-10 items-center gap-3 px-3 text-sm font-semibold transition ${
-                  active
-                    ? "bg-white text-zinc-950"
-                    : "text-zinc-300 hover:bg-white/10 hover:text-white"
-                }`}
-              >
-                <Icon className="h-4 w-4" aria-hidden="true" />
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-      </aside>
-    </>
-  );
-}
-
-
-// src/components/admin/AdminTopbar.jsx
-"use client";
-
-import { LogOut, Menu, ShieldCheck } from "lucide-react";
-import { useAdminAuthStore } from "@/stores/adminAuthStore";
-
-export default function AdminTopbar({ onMenuClick }) {
-  const { user, signOut } = useAdminAuthStore();
-
-  return (
-    <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-zinc-200 bg-white px-4 lg:px-6">
-      <div className="flex items-center gap-3">
-        <button
-          type="button"
-          onClick={onMenuClick}
-          className="inline-flex h-10 w-10 items-center justify-center border border-zinc-300 text-zinc-700 lg:hidden"
-          aria-label="Mở menu"
-        >
-          <Menu className="h-5 w-5" aria-hidden="true" />
-        </button>
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
-            Quản trị nội dung
-          </p>
-          <h1 className="text-base font-semibold text-zinc-950">Gốm Sứ Vũ Gia</h1>
-        </div>
-      </div>
-      <div className="flex items-center gap-3">
-        <div className="hidden items-center gap-2 border border-zinc-200 px-3 py-2 text-sm text-zinc-700 sm:flex">
-          <ShieldCheck className="h-4 w-4 text-emerald-600" aria-hidden="true" />
-          <span className="font-semibold">{user?.role || "ADMIN"}</span>
-          <span className="text-zinc-400">{user?.email}</span>
-        </div>
-        <button
-          type="button"
-          onClick={signOut}
-          className="inline-flex h-10 items-center gap-2 border border-zinc-300 px-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
-        >
-          <LogOut className="h-4 w-4" aria-hidden="true" />
-          <span className="hidden sm:inline">Đăng xuất</span>
-        </button>
-      </div>
-    </header>
-  );
-}
-
-
-// src/components/admin/ConfirmDialog.jsx
-"use client";
-
-import { X } from "lucide-react";
-
-export default function ConfirmDialog({
-  open,
-  title,
-  description,
-  confirmLabel = "Xác nhận",
-  cancelLabel = "Hủy",
-  destructive = false,
-  onCancel,
-  onConfirm,
-}) {
-  if (!open) {
-    return null;
-  }
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/50 px-4">
-      <div className="w-full max-w-md border border-zinc-200 bg-white shadow-xl">
-        <div className="flex items-center justify-between border-b border-zinc-200 px-5 py-4">
-          <h2 className="text-base font-semibold text-zinc-950">{title}</h2>
-          <button
-            type="button"
-            onClick={onCancel}
-            className="inline-flex h-8 w-8 items-center justify-center text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900"
-            aria-label="Đóng"
-          >
-            <X className="h-4 w-4" aria-hidden="true" />
-          </button>
-        </div>
-        <p className="px-5 py-5 text-sm leading-6 text-zinc-600">{description}</p>
-        <div className="flex justify-end gap-2 border-t border-zinc-200 px-5 py-4">
-          <button
-            type="button"
-            onClick={onCancel}
-            className="h-10 border border-zinc-300 px-4 text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
-          >
-            {cancelLabel}
-          </button>
-          <button
-            type="button"
-            onClick={onConfirm}
-            className={`h-10 px-4 text-sm font-semibold text-white ${
-              destructive ? "bg-rose-600 hover:bg-rose-700" : "bg-zinc-950 hover:bg-zinc-800"
-            }`}
-          >
-            {confirmLabel}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
-// src/components/admin/DataTable.jsx
-"use client";
-
-import { Eye, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
-import EmptyState from "@/components/admin/EmptyState";
-import StatusBadge from "@/components/admin/StatusBadge";
-import { formatVnd, getValueByPath } from "@/lib/adminApi";
-
-const renderCell = (row, column) => {
-  const value =
-    typeof column.accessor === "function"
-      ? column.accessor(row)
-      : getValueByPath(row, column.accessor || column.key);
-
-  if (column.render) {
-    return column.render(value, row);
-  }
-
-  if (column.type === "status") {
-    return <StatusBadge value={value} />;
-  }
-
-  if (column.type === "money") {
-    return <span className="font-semibold text-zinc-900">{formatVnd(value)}</span>;
-  }
-
-  if (column.type === "boolean") {
-    return value ? "Có" : "Không";
-  }
-
-  if (column.type === "date") {
-    return value ? new Date(value).toLocaleString("vi-VN") : "-";
-  }
-
-  return value === undefined || value === null || value === "" ? "-" : String(value);
-};
-
-export default function DataTable({
-  columns,
-  rows,
-  getRowId = (row) => row.id,
-  onView,
-  onEdit,
-  onDelete,
-  actions,
-}) {
-  if (!rows?.length) {
-    return <EmptyState />;
-  }
-
-  return (
-    <div className="overflow-x-auto border border-zinc-200 bg-white">
-      <table className="min-w-full divide-y divide-zinc-200 text-left text-sm">
-        <thead className="bg-zinc-50">
-          <tr>
-            {columns.map((column) => (
-              <th
-                key={column.key || column.accessor || column.label}
-                scope="col"
-                className="whitespace-nowrap px-4 py-3 text-xs font-semibold uppercase tracking-wide text-zinc-500"
-              >
-                {column.label}
-              </th>
-            ))}
-            {(onView || onEdit || onDelete || actions?.length) && (
-              <th scope="col" className="w-12 px-4 py-3">
-                <MoreHorizontal className="h-4 w-4 text-zinc-400" aria-hidden="true" />
-              </th>
-            )}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-zinc-100 bg-white">
-          {rows.map((row) => (
-            <tr key={getRowId(row)} className="hover:bg-zinc-50">
-              {columns.map((column) => (
-                <td
-                  key={column.key || column.accessor || column.label}
-                  className="max-w-[260px] truncate px-4 py-3 text-zinc-700"
-                  title={typeof renderCell(row, column) === "string" ? renderCell(row, column) : undefined}
-                >
-                  {renderCell(row, column)}
-                </td>
-              ))}
-              {(onView || onEdit || onDelete || actions?.length) && (
-                <td className="px-4 py-3">
-                  <div className="flex items-center justify-end gap-1">
-                    {onView && (
-                      <button
-                        type="button"
-                        onClick={() => onView(row)}
-                        className="inline-flex h-8 w-8 items-center justify-center text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950"
-                        aria-label="Xem"
-                      >
-                        <Eye className="h-4 w-4" aria-hidden="true" />
-                      </button>
-                    )}
-                    {onEdit && (
-                      <button
-                        type="button"
-                        onClick={() => onEdit(row)}
-                        className="inline-flex h-8 w-8 items-center justify-center text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950"
-                        aria-label="Sửa"
-                      >
-                        <Pencil className="h-4 w-4" aria-hidden="true" />
-                      </button>
-                    )}
-                    {actions?.map((action) => (
-                      <button
-                        key={action.label}
-                        type="button"
-                        onClick={() => action.onClick(row)}
-                        className="h-8 whitespace-nowrap border border-zinc-200 px-2 text-xs font-semibold text-zinc-700 hover:bg-zinc-100"
-                      >
-                        {action.label}
-                      </button>
-                    ))}
-                    {onDelete && (
-                      <button
-                        type="button"
-                        onClick={() => onDelete(row)}
-                        className="inline-flex h-8 w-8 items-center justify-center text-rose-500 hover:bg-rose-50 hover:text-rose-700"
-                        aria-label="Xóa"
-                      >
-                        <Trash2 className="h-4 w-4" aria-hidden="true" />
-                      </button>
-                    )}
-                  </div>
-                </td>
-              )}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-
-// src/components/admin/EmptyState.jsx
-import { Inbox } from "lucide-react";
-
-export default function EmptyState({
-  title = "Chưa có dữ liệu",
-  description = "Dữ liệu sẽ xuất hiện tại đây sau khi được tạo.",
-}) {
-  return (
-    <div className="flex min-h-[220px] flex-col items-center justify-center border border-dashed border-zinc-300 bg-white p-8 text-center">
-      <Inbox className="h-10 w-10 text-zinc-400" aria-hidden="true" />
-      <h3 className="mt-4 text-base font-semibold text-zinc-900">{title}</h3>
-      <p className="mt-2 max-w-md text-sm leading-6 text-zinc-500">{description}</p>
-    </div>
-  );
-}
-
-
-// src/components/admin/FormField.jsx
-"use client";
-
-import { useMemo } from "react";
-import MediaPicker from "@/components/admin/MediaPicker";
-
-const inputClass =
-  "h-11 w-full border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-950";
-const textareaClass =
-  "min-h-[120px] w-full border border-zinc-300 bg-white px-3 py-2 text-sm leading-6 text-zinc-900 outline-none transition focus:border-zinc-950";
-
-export default function FormField({ field, value, onChange }) {
-  const id = `field-${field.name}`;
-
-  const options = useMemo(() => field.options || [], [field.options]);
-
-  if (field.type === "hidden") {
-    return null;
-  }
-
-  return (
-    <label className={field.fullWidth ? "block md:col-span-2" : "block"} htmlFor={id}>
-      <span className="mb-1.5 block text-sm font-semibold text-zinc-800">
-        {field.label}
-        {field.required && <span className="text-rose-600"> *</span>}
-      </span>
-
-      {field.type === "textarea" && (
-        <textarea
-          id={id}
-          value={value ?? ""}
-          onChange={(event) => onChange(field.name, event.target.value)}
-          placeholder={field.placeholder}
-          className={textareaClass}
-          required={field.required}
-          rows={field.rows || 5}
-        />
-      )}
-
-      {field.type === "json" && (
-        <textarea
-          id={id}
-          value={
-            typeof value === "string"
-              ? value
-              : value
-                ? JSON.stringify(value, null, 2)
-                : field.defaultJson || "{}"
-          }
-          onChange={(event) => onChange(field.name, event.target.value)}
-          placeholder={field.placeholder || '{"type":"content"}'}
-          className={`${textareaClass} font-mono`}
-          rows={field.rows || 8}
-        />
-      )}
-
-      {field.type === "select" && (
-        <select
-          id={id}
-          value={value ?? ""}
-          onChange={(event) => onChange(field.name, event.target.value)}
-          className={inputClass}
-          required={field.required}
-        >
-          <option value="">Chọn...</option>
-          {options.map((option) => (
-            <option key={option.value ?? option} value={option.value ?? option}>
-              {option.label ?? option}
-            </option>
-          ))}
-        </select>
-      )}
-
-      {field.type === "boolean" && (
-        <div className="flex h-11 items-center border border-zinc-300 px-3">
-          <input
-            id={id}
-            type="checkbox"
-            checked={Boolean(value)}
-            onChange={(event) => onChange(field.name, event.target.checked)}
-            className="h-4 w-4 accent-zinc-950"
-          />
-          <span className="ml-2 text-sm text-zinc-700">{field.helper || "Bật"}</span>
-        </div>
-      )}
-
-      {field.type === "media" && (
-        <MediaPicker value={value} onChange={(mediaId) => onChange(field.name, mediaId)} />
-      )}
-
-      {field.type === "date" && (
-        <input
-          id={id}
-          type="datetime-local"
-          value={value ? String(value).slice(0, 16) : ""}
-          onChange={(event) => onChange(field.name, event.target.value)}
-          className={inputClass}
-        />
-      )}
-
-      {(!field.type || ["text", "number", "money", "email", "url"].includes(field.type)) && (
-        <input
-          id={id}
-          type={field.type === "number" || field.type === "money" ? "number" : field.type || "text"}
-          value={value ?? ""}
-          onChange={(event) => {
-            const nextValue =
-              field.type === "number" || field.type === "money"
-                ? event.target.value === ""
-                  ? ""
-                  : Number(event.target.value)
-                : event.target.value;
-            onChange(field.name, nextValue);
-          }}
-          placeholder={field.placeholder}
-          className={inputClass}
-          required={field.required}
-          min={field.min}
-        />
-      )}
-
-      {field.description && (
-        <span className="mt-1.5 block text-xs leading-5 text-zinc-500">{field.description}</span>
-      )}
-    </label>
-  );
-}
-
-
-// src/components/admin/MediaPicker.jsx
-"use client";
-
-import { useEffect, useMemo, useState } from "react";
-import { ImageIcon, Search, X } from "lucide-react";
-import { adminApi, normalizeCollection } from "@/lib/adminApi";
-
-export default function MediaPicker({ value, onChange }) {
-  const [open, setOpen] = useState(false);
-  const [items, setItems] = useState([]);
-  const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    let active = true;
-    setLoading(true);
-    adminApi
-      .get("/admin/media", { search })
-      .then((payload) => {
-        if (active) {
-          setItems(normalizeCollection(payload).items);
-        }
-      })
-      .catch(() => {
-        if (active) {
-          setItems([]);
-        }
-      })
-      .finally(() => {
-        if (active) {
-          setLoading(false);
-        }
-      });
-
-    return () => {
-      active = false;
-    };
-  }, [open, search]);
-
-  const selected = useMemo(
-    () => items.find((item) => item.id === value) || null,
-    [items, value],
-  );
-
-  return (
-    <div>
-      <div className="flex items-center gap-2">
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          className="inline-flex h-11 items-center gap-2 border border-zinc-300 px-3 text-sm font-semibold text-zinc-800 hover:bg-zinc-50"
-        >
-          <ImageIcon className="h-4 w-4" aria-hidden="true" />
-          {value ? "Đổi ảnh" : "Chọn ảnh"}
-        </button>
-        {value && (
-          <button
-            type="button"
-            onClick={() => onChange("")}
-            className="inline-flex h-11 items-center gap-2 border border-zinc-300 px-3 text-sm text-zinc-600 hover:bg-zinc-50"
-          >
-            <X className="h-4 w-4" aria-hidden="true" />
-            Bỏ chọn
-          </button>
-        )}
-      </div>
-      <p className="mt-2 text-xs text-zinc-500">
-        {selected?.title || selected?.alt || value || "Chưa chọn media"}
-      </p>
-
-      {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/50 px-4">
-          <div className="flex max-h-[85vh] w-full max-w-4xl flex-col border border-zinc-200 bg-white shadow-xl">
-            <div className="flex items-center justify-between border-b border-zinc-200 px-5 py-4">
-              <div>
-                <h2 className="text-base font-semibold text-zinc-950">Chọn media</h2>
-                <p className="text-sm text-zinc-500">Dùng ảnh đã upload trong thư viện.</p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="inline-flex h-9 w-9 items-center justify-center hover:bg-zinc-100"
-                aria-label="Đóng"
-              >
-                <X className="h-4 w-4" aria-hidden="true" />
-              </button>
-            </div>
-            <div className="border-b border-zinc-200 p-4">
-              <label className="relative block">
-                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
-                <input
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-                  placeholder="Tìm theo tên, alt, folder"
-                  className="h-11 w-full border border-zinc-300 pl-10 pr-3 text-sm outline-none focus:border-zinc-950"
-                />
-              </label>
-            </div>
-            <div className="grid flex-1 gap-3 overflow-y-auto p-4 sm:grid-cols-2 lg:grid-cols-4">
-              {loading && <p className="text-sm text-zinc-500">Đang tải...</p>}
-              {!loading &&
-                items.map((item) => (
-                  <button
-                    type="button"
-                    key={item.id}
-                    onClick={() => {
-                      onChange(item.id);
-                      setOpen(false);
-                    }}
-                    className={`border p-2 text-left hover:border-zinc-950 ${
-                      value === item.id ? "border-zinc-950" : "border-zinc-200"
-                    }`}
-                  >
-                    <div className="aspect-square bg-zinc-100">
-                      {item.url ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={item.url}
-                          alt={item.alt || item.title || ""}
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <div className="flex h-full items-center justify-center">
-                          <ImageIcon className="h-8 w-8 text-zinc-400" aria-hidden="true" />
-                        </div>
-                      )}
-                    </div>
-                    <p className="mt-2 truncate text-xs font-semibold text-zinc-800">
-                      {item.title || item.alt || item.id}
-                    </p>
-                    <p className="truncate text-xs text-zinc-500">{item.folder || item.mimeType}</p>
-                  </button>
-                ))}
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-
-// src/components/admin/Pagination.jsx
-import { ChevronLeft, ChevronRight } from "lucide-react";
-
-export default function Pagination({ page, pageSize, total, onPageChange }) {
-  const pageCount = Math.max(1, Math.ceil((total || 0) / pageSize));
-
-  return (
-    <div className="flex items-center justify-between border-t border-zinc-200 bg-white px-4 py-3">
-      <p className="text-sm text-zinc-500">
-        Trang <span className="font-semibold text-zinc-900">{page}</span> / {pageCount}
-      </p>
-      <div className="flex items-center gap-2">
-        <button
-          type="button"
-          onClick={() => onPageChange(Math.max(1, page - 1))}
-          disabled={page <= 1}
-          className="inline-flex h-9 w-9 items-center justify-center border border-zinc-300 text-zinc-700 disabled:cursor-not-allowed disabled:opacity-40"
-          aria-label="Trang trước"
-        >
-          <ChevronLeft className="h-4 w-4" aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          onClick={() => onPageChange(Math.min(pageCount, page + 1))}
-          disabled={page >= pageCount}
-          className="inline-flex h-9 w-9 items-center justify-center border border-zinc-300 text-zinc-700 disabled:cursor-not-allowed disabled:opacity-40"
-          aria-label="Trang sau"
-        >
-          <ChevronRight className="h-4 w-4" aria-hidden="true" />
-        </button>
-      </div>
-    </div>
-  );
-}
-
-
-// src/components/admin/SeoFields.jsx
-"use client";
-
-import FormField from "@/components/admin/FormField";
-
-const SEO_FIELDS = [
-  { name: "metaTitle", label: "Meta title", fullWidth: true },
-  {
-    name: "metaDescription",
-    label: "Meta description",
-    type: "textarea",
-    rows: 3,
-    fullWidth: true,
-  },
-  { name: "canonicalUrl", label: "Canonical URL", type: "url", fullWidth: true },
-  { name: "ogTitle", label: "OG title" },
-  { name: "ogDescription", label: "OG description", type: "textarea", rows: 3 },
-  { name: "ogImageId", label: "OG image", type: "media", fullWidth: true },
-  { name: "noIndex", label: "No index", type: "boolean", helper: "Không cho index" },
-  { name: "noFollow", label: "No follow", type: "boolean", helper: "Không follow link" },
-];
-
-export default function SeoFields({ values, onChange }) {
-  return (
-    <section className="border border-zinc-200 bg-zinc-50 p-4 md:col-span-2">
-      <div className="mb-4">
-        <h3 className="text-sm font-semibold uppercase tracking-wide text-zinc-950">SEO</h3>
-        <p className="mt-1 text-xs text-zinc-500">
-          Metadata dùng chung cho Product, Category, NewsArticle và Page.
-        </p>
-      </div>
-      <div className="grid gap-4 md:grid-cols-2">
-        {SEO_FIELDS.map((field) => (
-          <FormField
-            key={field.name}
-            field={field}
-            value={values[field.name]}
-            onChange={onChange}
-          />
-        ))}
-      </div>
-    </section>
-  );
-}
-
-
-// src/components/admin/StatusBadge.jsx
-const STATUS_STYLES = {
-  PUBLISHED: "border-emerald-200 bg-emerald-50 text-emerald-700",
-  DRAFT: "border-zinc-200 bg-zinc-50 text-zinc-700",
-  ARCHIVED: "border-zinc-300 bg-zinc-100 text-zinc-600",
-  ACTIVE: "border-emerald-200 bg-emerald-50 text-emerald-700",
-  INACTIVE: "border-zinc-200 bg-zinc-50 text-zinc-600",
-  UNPAID: "border-amber-200 bg-amber-50 text-amber-700",
-  PROCESSING: "border-blue-200 bg-blue-50 text-blue-700",
-  SHIPPING: "border-indigo-200 bg-indigo-50 text-indigo-700",
-  COMPLETED: "border-emerald-200 bg-emerald-50 text-emerald-700",
-  CANCELLED: "border-rose-200 bg-rose-50 text-rose-700",
-  RETURNED: "border-orange-200 bg-orange-50 text-orange-700",
-  PAID: "border-emerald-200 bg-emerald-50 text-emerald-700",
-  PENDING: "border-amber-200 bg-amber-50 text-amber-700",
-  FAILED: "border-rose-200 bg-rose-50 text-rose-700",
-  REFUNDED: "border-purple-200 bg-purple-50 text-purple-700",
-  NEW: "border-blue-200 bg-blue-50 text-blue-700",
-  HANDLED: "border-emerald-200 bg-emerald-50 text-emerald-700",
-  CLOSED: "border-zinc-200 bg-zinc-50 text-zinc-600",
-};
-
-export default function StatusBadge({ value }) {
-  if (value === undefined || value === null || value === "") {
-    return <span className="text-sm text-zinc-400">-</span>;
-  }
-
-  const normalized = String(value).toUpperCase();
-  const className =
-    STATUS_STYLES[normalized] || "border-zinc-200 bg-zinc-50 text-zinc-700";
-
-  return (
-    <span
-      className={`inline-flex h-7 items-center border px-2.5 text-xs font-semibold tracking-wide ${className}`}
-    >
-      {String(value)}
-    </span>
   );
 }
 
@@ -9107,6 +8098,7 @@ export default function AltarSimilarProductsSection() {
           {SIMILAR_PRODUCTS.map((product) => (
             <div key={product.id} className="flex-shrink-0 w-[175px] lg:w-auto snap-start">
               <ProductCard
+                id={product.id}
                 image={product.image}
                 name={product.name}
                 sku={product.sku}
@@ -9839,6 +8831,7 @@ export default function CartSummary({
 "use client";
 
 import React, { useState } from "react";
+import { toast } from "@/utils/feedback";
 
 export default function CheckoutForm({ onSubmit = () => {} }) {
   const [formData, setFormData] = useState({
@@ -9857,19 +8850,19 @@ export default function CheckoutForm({ onSubmit = () => {} }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.fullName.trim()) {
-      alert("Vui lòng nhập tên khách hàng.");
+      toast.error("Vui lòng nhập tên khách hàng.");
       return;
     }
     if (!formData.address.trim()) {
-      alert("Vui lòng chọn hoặc nhập địa chỉ giao hàng.");
+      toast.error("Vui lòng chọn hoặc nhập địa chỉ giao hàng.");
       return;
     }
     if (!formData.city.trim()) {
-      alert("Vui lòng nhập thành phố.");
+      toast.error("Vui lòng nhập thành phố.");
       return;
     }
     if (!formData.phone.trim()) {
-      alert("Vui lòng nhập số điện thoại.");
+      toast.error("Vui lòng nhập số điện thoại.");
       return;
     }
     onSubmit(formData);
@@ -11068,6 +10061,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, ArrowRight, Loader2, CheckCircle } from "lucide-react";
+import { toast } from "@/utils/feedback";
 
 // Image imports for Featured Products
 import productCardImage1 from "@/assets/images/product-detail/product-card-image-1.png";
@@ -11093,14 +10087,14 @@ export default function NewsDetailSidebar({ showWidgets = true, showForm = true 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      alert(`Đang tìm kiếm bài viết: "${searchQuery}"`);
+      toast.info(`Đang tìm kiếm bài viết: "${searchQuery}"`);
     }
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (!fullName.trim() || !email.trim()) {
-      alert("Vui lòng điền đầy đủ họ tên và email.");
+      toast.error("Vui lòng điền đầy đủ họ tên và email.");
       return;
     }
     setFormStatus("submitting");
@@ -11477,6 +10471,7 @@ export default function NewsRelatedProducts() {
           {RECOMMEND_PRODUCTS.map((prod) => (
             <div key={prod.id} className="flex-shrink-0 w-[175px] lg:w-auto snap-start">
               <ProductCard
+                id={prod.id}
                 image={prod.image}
                 name={prod.name}
                 sku={prod.sku}
@@ -13252,6 +12247,7 @@ export default function HomeProductList({ title, tabs = [], products = [] }) {
         {displayProducts.map((product) => (
           <ProductCard
             key={product.id}
+            id={product.id}
             name={product.name}
             sku={product.sku}
             salePrice={product.salePrice}
@@ -13335,9 +12331,309 @@ const HomeVideoProcess = () => {
 export default HomeVideoProcess;
 
 
+// src/components/shared/AppToaster.jsx
+"use client";
+
+import { Toaster } from "sonner";
+import "sonner/dist/styles.css";
+
+export default function AppToaster() {
+  return (
+    <Toaster
+      position="top-center"
+      richColors={false}
+      closeButton
+      duration={3500}
+      toastOptions={{
+        classNames: {
+          toast:
+            "font-montserrat text-[14px] border shadow-[0px_4px_4px_rgba(0,0,0,0.15)] rounded-[6px]",
+          title: "font-semibold text-[#2E2F2A]",
+          description: "text-[#777E90]",
+          success: "bg-white border-success/30 text-[#2E2F2A]",
+          error: "bg-white border-sale/40 text-[#2E2F2A]",
+          info: "bg-white border-primary/30 text-[#2E2F2A]",
+          warning: "bg-white border-[#C76E00]/40 text-[#2E2F2A]",
+          closeButton:
+            "border-[#E1DEDE] bg-white text-[#909090] hover:bg-[#FAF7F7]",
+        },
+      }}
+      style={{ zIndex: 100 }}
+    />
+  );
+}
+
+
+// src/components/shared/BaseConfirmDialog.jsx
+"use client";
+
+import { useCallback, useEffect, useId, useRef } from "react";
+import { X } from "lucide-react";
+
+const THEME_STYLES = {
+  brand: {
+    overlay: "bg-black/40",
+    panel: "rounded-[6px] border border-[#E1DEDE] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]",
+    header: "border-b border-[#E1DEDE]",
+    title: "font-montserrat text-[#2E2F2A]",
+    closeBtn: "text-[#909090] hover:bg-[#FAF7F7] hover:text-[#2E2F2A]",
+    description: "font-montserrat text-[#777E90]",
+    footer: "border-t border-[#E1DEDE]",
+    cancelBtn:
+      "border border-[#909090] font-montserrat text-[#2E2F2A] hover:bg-[#FAF7F7]",
+    confirmBtn: "font-montserrat text-white bg-primary hover:bg-sale",
+    confirmDestructive: "font-montserrat text-white bg-sale hover:bg-[#97400C]",
+  },
+  admin: {
+    overlay: "bg-zinc-950/50",
+    panel: "border border-zinc-200 shadow-xl",
+    header: "border-b border-zinc-200",
+    title: "text-zinc-950",
+    closeBtn: "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900",
+    description: "text-zinc-600",
+    footer: "border-t border-zinc-200",
+    cancelBtn: "border border-zinc-300 text-zinc-700 hover:bg-zinc-50",
+    confirmBtn: "text-white bg-zinc-950 hover:bg-zinc-800",
+    confirmDestructive: "text-white bg-rose-600 hover:bg-rose-700",
+  },
+};
+
+const FOCUSABLE_SELECTOR =
+  'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+export default function BaseConfirmDialog({
+  open,
+  title,
+  description,
+  confirmLabel = "Xác nhận",
+  cancelLabel = "Hủy",
+  destructive = false,
+  theme = "brand",
+  onCancel,
+  onConfirm,
+}) {
+  const titleId = useId();
+  const descriptionId = useId();
+  const panelRef = useRef(null);
+  const cancelRef = useRef(null);
+  const previousFocusRef = useRef(null);
+  const styles = THEME_STYLES[theme] ?? THEME_STYLES.brand;
+
+  const handleCancel = useCallback(() => {
+    onCancel?.();
+  }, [onCancel]);
+
+  const handleConfirm = useCallback(() => {
+    onConfirm?.();
+  }, [onConfirm]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    previousFocusRef.current = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const focusTimer = requestAnimationFrame(() => {
+      cancelRef.current?.focus();
+    });
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        handleCancel();
+        return;
+      }
+
+      if (event.key !== "Tab" || !panelRef.current) return;
+
+      const focusable = Array.from(
+        panelRef.current.querySelectorAll(FOCUSABLE_SELECTOR),
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      cancelAnimationFrame(focusTimer);
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+
+      const previous = previousFocusRef.current;
+      if (previous && typeof previous.focus === "function") {
+        previous.focus();
+      }
+    };
+  }, [open, handleCancel]);
+
+  if (!open) {
+    return null;
+  }
+
+  return (
+    <div
+      className={`fixed inset-0 z-[200] flex items-center justify-center px-4 ${styles.overlay}`}
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) {
+          handleCancel();
+        }
+      }}
+    >
+      <div
+        ref={panelRef}
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={description ? descriptionId : undefined}
+        className={`w-full max-w-md bg-white ${styles.panel}`}
+      >
+        <div className={`flex items-center justify-between px-5 py-4 ${styles.header}`}>
+          <h2 id={titleId} className={`text-base font-semibold ${styles.title}`}>
+            {title}
+          </h2>
+          <button
+            type="button"
+            onClick={handleCancel}
+            className={`inline-flex h-8 w-8 items-center justify-center ${styles.closeBtn}`}
+            aria-label="Đóng"
+          >
+            <X className="h-4 w-4" aria-hidden="true" />
+          </button>
+        </div>
+        {description ? (
+          <p id={descriptionId} className={`px-5 py-5 text-sm leading-6 ${styles.description}`}>
+            {description}
+          </p>
+        ) : null}
+        <div className={`flex justify-end gap-2 px-5 py-4 ${styles.footer}`}>
+          <button
+            ref={cancelRef}
+            type="button"
+            onClick={handleCancel}
+            className={`h-10 px-4 text-sm font-semibold ${styles.cancelBtn}`}
+          >
+            {cancelLabel}
+          </button>
+          <button
+            type="button"
+            onClick={handleConfirm}
+            className={`h-10 px-4 text-sm font-semibold ${
+              destructive ? styles.confirmDestructive : styles.confirmBtn
+            }`}
+          >
+            {confirmLabel}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+// src/components/shared/ConfirmDialog.jsx
+"use client";
+
+import BaseConfirmDialog from "@/components/shared/BaseConfirmDialog";
+
+export default function ConfirmDialog(props) {
+  return <BaseConfirmDialog theme="brand" {...props} />;
+}
+
+
+// src/components/shared/ConfirmDialogHost.jsx
+"use client";
+
+import { useEffect } from "react";
+import ConfirmDialog from "@/components/shared/ConfirmDialog";
+import { useConfirmStore } from "@/stores/confirmStore";
+
+export default function ConfirmDialogHost() {
+  const open = useConfirmStore((s) => s.open);
+  const title = useConfirmStore((s) => s.title);
+  const description = useConfirmStore((s) => s.description);
+  const confirmLabel = useConfirmStore((s) => s.confirmLabel);
+  const cancelLabel = useConfirmStore((s) => s.cancelLabel);
+  const destructive = useConfirmStore((s) => s.destructive);
+  const close = useConfirmStore((s) => s.close);
+
+  useEffect(() => {
+    return () => {
+      if (useConfirmStore.getState().open) {
+        useConfirmStore.getState().close(false);
+      }
+    };
+  }, []);
+
+  return (
+    <ConfirmDialog
+      open={open}
+      title={title}
+      description={description}
+      confirmLabel={confirmLabel}
+      cancelLabel={cancelLabel}
+      destructive={destructive}
+      onCancel={() => close(false)}
+      onConfirm={() => close(true)}
+    />
+  );
+}
+
+
+// src/components/shared/GlobalAltarWidget.jsx
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Paintbrush } from "lucide-react";
+import { ROUTES } from "@/utils/routes";
+
+// Pages where the widget must stay hidden to keep purchase focus.
+const HIDDEN_PATHS = [ROUTES.CHECKOUT, ROUTES.CART, ROUTES.ALTAR_CUSTOMIZER];
+
+export default function GlobalAltarWidget() {
+  const pathname = usePathname();
+  if (HIDDEN_PATHS.includes(pathname)) return null;
+
+  return (
+    <div className="fixed right-0 top-1/2 -translate-y-1/2 z-[100] hidden md:flex flex-col items-end group">
+      <Link
+        href={ROUTES.ALTAR_CUSTOMIZER}
+        aria-label="Tự tạo bộ đồ thờ"
+        className="flex items-center gap-3 bg-primary text-white py-3 pl-4 pr-3 rounded-l-xl shadow-[-4px_4px_15px_rgba(0,0,0,0.15)] transition-transform duration-300 translate-x-[130px] hover:translate-x-0 focus-visible:translate-x-0"
+      >
+        <Paintbrush className="w-6 h-6 flex-shrink-0" />
+        <div className="flex flex-col whitespace-nowrap">
+          <span className="text-[12px] font-montserrat font-medium text-white/80 leading-tight">
+            Chưa tìm thấy mẫu ưng ý?
+          </span>
+          <span className="text-[14px] font-montserrat font-bold leading-tight">
+            Tự tạo bộ đồ thờ
+          </span>
+        </div>
+      </Link>
+    </div>
+  );
+}
+
+
 // src/components/shared/PublicLayout.jsx
 import Footer from "@/components/shared/Footer";
 import Header from "@/components/shared/Header";
+import GlobalAltarWidget from "@/components/shared/GlobalAltarWidget";
+import AppToaster from "@/components/shared/AppToaster";
+import ConfirmDialogHost from "@/components/shared/ConfirmDialogHost";
 
 export default function PublicLayout({ children }) {
   return (
@@ -13345,6 +12641,9 @@ export default function PublicLayout({ children }) {
       <Header />
       <main className="overflow-x-hidden">{children}</main>
       <Footer />
+      <GlobalAltarWidget />
+      <AppToaster />
+      <ConfirmDialogHost />
     </>
   );
 }
@@ -13716,9 +13015,13 @@ export default function NewsCard({
 
 // src/components/shared/ProductCard.jsx
 import Image from "next/image";
+import Link from "next/link";
+import { ROUTES } from "@/utils/routes";
 import productImageThumb from "@/assets/images/products/product-image-thumb.png";
 
 export default function ProductCard({
+  id,
+  slug,
   image = productImageThumb,
   name = "Bình hút lộc\nMã đáo thành công",
   sku = "MSP: VG001",
@@ -13727,8 +13030,16 @@ export default function ProductCard({
   soldCount = 12,
   hasTwoLineTitle = false,
 }) {
+  // Prefer real slug; fall back to sp-{id} for current mock data.
+  const productUrl = slug
+    ? `${ROUTES.PRODUCTS}/${slug}`
+    : `${ROUTES.PRODUCTS}/sp-${id ?? "1"}`;
+
   return (
-    <div className="flex flex-col group cursor-pointer border border-[#E6E8EC] rounded-[8px] bg-white overflow-hidden hover:shadow-lg transition-all duration-300 h-full w-full">
+    <Link
+      href={productUrl}
+      className="flex flex-col group cursor-pointer border border-[#E6E8EC] rounded-[8px] bg-white overflow-hidden hover:shadow-lg transition-all duration-300 h-full w-full"
+    >
       {/* Container Ảnh */}
       <div className="relative w-full aspect-[340/255] bg-[#F4F5F6] overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
@@ -13804,7 +13115,7 @@ export default function ProductCard({
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -13988,17 +13299,41 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ROUTES } from "@/utils/routes";
+import { useCartStore } from "@/stores/cartStore";
 
 const NAV_LINKS = [
   { name: "Trang chủ", href: ROUTES.HOME },
   { name: "Về chúng tôi", href: ROUTES.ABOUT },
-  { name: "Sản phẩm", href: ROUTES.PRODUCTS },
+  {
+    name: "Sản phẩm",
+    href: ROUTES.PRODUCTS,
+    children: [
+      { name: "Danh sách sản phẩm", href: ROUTES.PRODUCTS },
+      {
+        name: "Sản phẩm chi tiết (Bộ đồ thờ)",
+        href: `${ROUTES.PRODUCTS}/mau-demo`,
+      },
+      {
+        name: "Sản phẩm chi tiết (Thường)",
+        href: `${ROUTES.PRODUCTS}/mau-demo?type=single`,
+      },
+    ],
+  },
   { name: "Thưởng lãm", href: ROUTES.GALLERY },
   { name: "Tin tức", href: ROUTES.NEWS },
   { name: "Liên hệ", href: ROUTES.CONTACT },
 ];
 
 function CartLink({ className = "", onClick }) {
+  const [mounted, setMounted] = useState(false);
+  const totalCount = useCartStore((s) => s.totalCount());
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const count = mounted ? totalCount : 0;
+
   return (
     <Link
       href={ROUTES.CART}
@@ -14012,11 +13347,13 @@ function CartLink({ className = "", onClick }) {
         fill
         className="object-contain"
       />
-      <div className="absolute top-[-4px] right-[-6px] min-w-[14px] h-[14px] bg-[#FFE600] rounded-full flex items-center justify-center px-[3px]">
-        <span className="text-[#AD5036] font-circular font-[700] text-[8px] leading-none text-center">
-          12
-        </span>
-      </div>
+      {count > 0 && (
+        <div className="absolute top-[-4px] right-[-6px] min-w-[14px] h-[14px] bg-[#FFE600] rounded-full flex items-center justify-center px-[3px]">
+          <span className="text-[#AD5036] font-circular font-[700] text-[8px] leading-none text-center">
+            {count}
+          </span>
+        </div>
+      )}
     </Link>
   );
 }
@@ -14092,6 +13429,37 @@ export default function Header() {
         <nav className="hidden lg:flex items-center gap-[30px] xl:gap-[60px]">
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href;
+
+            if (link.children) {
+              return (
+                <div key={link.href} className="relative group py-[10px]">
+                  <Link
+                    href={link.href}
+                    className={`text-white text-[17px] font-montserrat font-[700] uppercase leading-[24px] transition-colors hover:text-[#EABA96] ${
+                      isActive ? "text-[#EABA96]" : ""
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+
+                  {/* Dropdown */}
+                  <div className="absolute left-0 top-full pt-[10px] opacity-0 invisible translate-y-[8px] transition-all duration-200 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 z-50">
+                    <div className="min-w-[260px] bg-white rounded-[8px] shadow-lg overflow-hidden border border-[#E6E8EC]">
+                      {link.children.map((child) => (
+                        <Link
+                          key={child.name}
+                          href={child.href}
+                          className="block px-[20px] py-[12px] text-[#333] text-[14px] font-montserrat font-[600] hover:bg-[#F4F5F6] hover:text-[#AD5036] transition-colors"
+                        >
+                          {child.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
             return (
               <Link
                 key={link.href}
@@ -14224,6 +13592,35 @@ export default function Header() {
             <nav className="relative z-10 flex flex-col gap-[30px] pt-[76px] px-[29px]">
               {NAV_LINKS.map((link) => {
                 const isActive = pathname === link.href;
+
+                if (link.children) {
+                  return (
+                    <div key={link.href} className="flex flex-col gap-[16px]">
+                      <Link
+                        href={link.href}
+                        onClick={closeMobileMenu}
+                        className={`text-[16px] font-montserrat font-semibold uppercase transition-colors ${
+                          isActive ? "text-[#EABA96]" : "text-white hover:text-[#EABA96]"
+                        }`}
+                      >
+                        {link.name}
+                      </Link>
+                      <div className="flex flex-col gap-[14px] pl-[16px] border-l border-white/20">
+                        {link.children.map((child) => (
+                          <Link
+                            key={child.name}
+                            href={child.href}
+                            onClick={closeMobileMenu}
+                            className="text-[14px] font-montserrat font-medium text-white/80 hover:text-[#EABA96] transition-colors"
+                          >
+                            {child.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                }
+
                 return (
                   <Link
                     key={link.href}
@@ -14365,56 +13762,30 @@ export default function Pagination({
 }
 
 
-// src/components/product-detail/FixedActionWidget.jsx
-"use client";
-
-import Link from "next/link";
-import { ROUTES } from "@/utils/routes";
-
-export default function FixedActionWidget() {
-  return (
-    <div className="fixed right-0 top-[368px] z-50 hidden lg:block">
-      <div className="w-[186px] h-[167px] bg-white rounded-l-[20px] shadow-[0_4px_12px_rgba(0,0,0,0.1)] pl-[25px] pr-[14px] pt-[23px] pb-[18px]">
-        <p className="text-[13px] font-montserrat font-[700] text-black leading-[18px]">
-          Chưa tìm thấy mẫu đồ thờ mong muốn ?
-        </p>
-        <p className="text-[12px] font-montserrat font-[400] text-[#606060] leading-[16px] mt-[10px]">
-          Tự tay tạo mẫu đồ thờ phù hợp với yêu cầu của bạn
-        </p>
-        <Link
-          href={ROUTES.ALTAR_CUSTOMIZER}
-          className="flex items-center justify-center gap-[8px] bg-[#97400C] rounded-[10px] w-[114px] h-[19px] mt-[10px] mx-auto">
-          <span className="text-white text-[12px] font-montserrat font-[600] leading-[12px]">
-            Tạo bàn thờ
-          </span>
-          <svg
-            width="9"
-            height="9"
-            viewBox="0 0 9 9"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="shrink-0"
-          >
-            <line x1="0" y1="4.5" x2="6" y2="4.5" stroke="white" strokeWidth="1.03" />
-            <path d="M3.5 1L6.5 4.5L3.5 8" stroke="white" strokeWidth="1.03" fill="none" />
-          </svg>
-        </Link>
-      </div>
-    </div>
-  );
-}
-
-
 // src/components/product-detail/ProductInfoSingle.jsx
 "use client";
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { ChevronRight, Search, ChevronDown, ChevronUp } from "lucide-react";
 import productDetailThumbnail from "@/assets/images/product-detail/product-detail-thumbnail.png";
 import productCardImage1 from "@/assets/images/product-detail/product-card-image-1.png";
 import productCardImage2 from "@/assets/images/product-detail/product-card-image-2.png";
 import productCardImage3 from "@/assets/images/product-detail/product-card-image-3.png";
+import { ROUTES } from "@/utils/routes";
+import { useCartStore } from "@/stores/cartStore";
+import { toast } from "@/utils/feedback";
+
+const DEMO_PRODUCT = {
+  id: "dt026",
+  title: "Bộ đồ thờ Phật vẽ hoa sen men rạn cổ đơn giản DT026",
+  sku: "MSP: VG001",
+  price: 2000000,
+  classification: "Men rạn",
+  packSize: 1,
+  image: productDetailThumbnail,
+};
 
 // ==========================================
 // 1. PRODUCT GALLERY COMPONENT
@@ -14879,6 +14250,8 @@ function ProductPurchasePanel({
 // MAIN PRODUCT INFO COMPONENT FOR SINGLE PRODUCT
 // ==========================================
 export default function ProductInfoSingle() {
+  const router = useRouter();
+  const addItem = useCartStore((s) => s.addItem);
   const [mainImage, setMainImage] = useState(productDetailThumbnail);
   const [mainQuantity, setMainQuantity] = useState(1);
 
@@ -14895,11 +14268,14 @@ export default function ProductInfoSingle() {
   ];
 
   const handleBuyNow = () => {
-    console.log("Buy now pressed");
+    addItem({ ...DEMO_PRODUCT, image: mainImage }, mainQuantity);
+    router.push(ROUTES.CHECKOUT);
   };
 
   const handleAddToCart = () => {
-    console.log("Add to cart pressed");
+    addItem({ ...DEMO_PRODUCT, image: mainImage }, mainQuantity);
+    toast.success("Đã thêm sản phẩm vào giỏ hàng!");
+    setTimeout(() => router.push(ROUTES.CART), 150);
   };
 
   return (
@@ -15096,11 +14472,25 @@ export default function ProductDetail() {
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { ChevronDown, ChevronUp, ChevronRight, Search } from "lucide-react";
 import productDetailThumbnail from "@/assets/images/product-detail/product-detail-thumbnail.png";
 import productCardImage1 from "@/assets/images/product-detail/product-card-image-1.png";
 import productCardImage2 from "@/assets/images/product-detail/product-card-image-2.png";
 import productCardImage3 from "@/assets/images/product-detail/product-card-image-3.png";
+import { ROUTES } from "@/utils/routes";
+import { useCartStore } from "@/stores/cartStore";
+import { toast } from "@/utils/feedback";
+
+const DEMO_PRODUCT = {
+  id: "dt026",
+  title: "Bộ đồ thờ Phật vẽ hoa sen men rạn cổ đơn giản DT026",
+  sku: "MSP: VG001",
+  price: 2000000,
+  classification: "Men rạn",
+  packSize: 1,
+  image: productDetailThumbnail,
+};
 
 // ==========================================
 // 1. PRODUCT GALLERY COMPONENT
@@ -15595,6 +14985,8 @@ function ProductSubItemsAccordion({
 // MAIN PRODUCT INFO COMPONENT
 // ==========================================
 export default function ProductInfo() {
+  const router = useRouter();
+  const addItem = useCartStore((s) => s.addItem);
   const [mainImage, setMainImage] = useState(productDetailThumbnail);
   const [isInfoExpanded, setIsInfoExpanded] = useState(true);
   const [mainQuantity, setMainQuantity] = useState(1);
@@ -15649,11 +15041,14 @@ export default function ProductInfo() {
   };
 
   const handleBuyNow = () => {
-    console.log("Buy now pressed");
+    addItem({ ...DEMO_PRODUCT, image: mainImage }, mainQuantity);
+    router.push(ROUTES.CHECKOUT);
   };
 
   const handleAddToCart = () => {
-    console.log("Add to cart pressed");
+    addItem({ ...DEMO_PRODUCT, image: mainImage }, mainQuantity);
+    toast.success("Đã thêm sản phẩm vào giỏ hàng!");
+    setTimeout(() => router.push(ROUTES.CART), 150);
   };
 
   return (
@@ -16052,6 +15447,7 @@ export default function SimilarProducts({ hideBorder }) {
         {similarList.map((product) => (
           <div key={product.id} className="flex-shrink-0 w-[175px] lg:w-auto snap-start">
             <ProductCard
+              id={product.id}
               image={product.image}
               name={product.name}
               sku={product.sku}
@@ -16453,6 +15849,7 @@ export default function ProductGrid({ products }) {
       {list.map((product) => (
         <ProductCard
           key={product.id}
+          id={product.id}
           image={product.image}
           name={product.name}
           sku={product.sku}

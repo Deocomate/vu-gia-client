@@ -14,6 +14,7 @@ export default function NewsHero({ activeCategoryName }) {
         alt="Gốm sứ Vũ Gia"
         fill
         className="object-cover z-0"
+        sizes="100vw"
         priority
       />
       <div className="absolute inset-0 bg-black/49 z-10" />

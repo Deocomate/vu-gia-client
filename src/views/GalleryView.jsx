@@ -2,35 +2,22 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import SafeImage from "@/components/shared/SafeImage";
 import Link from "next/link";
 import { ROUTES } from "@/utils/routes";
+import { formatImageUrl } from "@/lib/media";
 
 // Import local assets
 import heroBg from "@/assets/images/gallery/hero-bg.jpg";
-import image1 from "@/assets/images/gallery/gallery-1.jpg";
-import image2 from "@/assets/images/gallery/gallery-2.jpg";
-import image3 from "@/assets/images/gallery/gallery-3.jpg";
-import image4 from "@/assets/images/gallery/gallery-4.jpg";
-import image5 from "@/assets/images/gallery/gallery-5.jpg";
 
-const GALLERY_IMAGES = [
-  { src: image1, alt: "Kệ phơi sản phẩm gốm mộc tại xưởng chế tác" },
-  {
-    src: image2,
-    alt: "Các chi tiết ấm chén trà được nghệ nhân tạo hình hoàn thiện",
-  },
-  {
-    src: image3,
-    alt: "Nghệ nhân gốm khéo léo tạo dáng bình trên bàn xoay truyền thống",
-  },
-  { src: image4, alt: "Hàng gốm mộc xếp đều tăm tắp chờ công đoạn tráng men" },
-  {
-    src: image5,
-    alt: "Các tác phẩm bình phong thủy men rạn độc bản hoàn thiện",
-  },
-];
+export default function GalleryView({ images = [] }) {
+  // Normalize the real `GalleryImage` entity shape ({ imageUrl, title }) into
+  // the local `{ src, alt }` shape the slider/lightbox UI already expects.
+  const GALLERY_IMAGES = images.map((image) => ({
+    src: formatImageUrl(image.imageUrl),
+    alt: image.title || "Hình ảnh của khách hàng",
+  }));
 
-export default function GalleryView() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [thumbnailStartIndex, setThumbnailStartIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(4);
@@ -101,7 +88,8 @@ export default function GalleryView() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isLightboxOpen]);
 
-  const currentImage = GALLERY_IMAGES[activeIndex];
+  const hasImages = GALLERY_IMAGES.length > 0;
+  const currentImage = GALLERY_IMAGES[activeIndex] ?? null;
 
   return (
     <div className="w-full min-h-[400px] lg:min-h-screen bg-[#FAF7F7] overflow-hidden">
@@ -143,13 +131,19 @@ export default function GalleryView() {
             Hình ảnh của khách hàng
           </h2>
 
+          {!hasImages ? (
+            <div className="w-full py-24 text-center text-neutral-500 font-montserrat">
+              Chưa có hình ảnh nào được đăng tải.
+            </div>
+          ) : (
+          <>
           {/* Large Main Display Image */}
           <div
             className="relative w-full aspect-[16/9] overflow-hidden group cursor-pointer bg-neutral-100 shadow-sm border border-neutral-200 rounded-[2px]"
             onClick={() => setIsLightboxOpen(true)}
           >
             {/* The Active Image */}
-            <Image
+            <SafeImage
               src={currentImage.src}
               alt={currentImage.alt}
               fill
@@ -235,7 +229,7 @@ export default function GalleryView() {
                       }}
                       onClick={() => setActiveIndex(idx)}
                     >
-                      <Image
+                      <SafeImage
                         src={img.src}
                         alt={img.alt}
                         fill
@@ -278,11 +272,13 @@ export default function GalleryView() {
               </svg>
             </button>
           </div>
+          </>
+          )}
         </div>
       </section>
 
       {/* ================= LIGHTBOX MODAL ================= */}
-      {isLightboxOpen && (
+      {hasImages && isLightboxOpen && currentImage && (
         <div className="fixed inset-0 bg-black/95 z-[9999] flex flex-col items-center justify-center select-none animate-fade-in">
           {/* Close Backdrop Click Area */}
           <div
@@ -337,7 +333,7 @@ export default function GalleryView() {
 
           {/* Active Image container */}
           <div className="relative max-w-[90%] max-h-[80vh] aspect-[16/9] w-full md:w-[80vw] z-10 flex items-center justify-center">
-            <Image
+            <SafeImage
               src={currentImage.src}
               alt={currentImage.alt}
               fill

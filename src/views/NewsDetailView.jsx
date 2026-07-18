@@ -4,7 +4,7 @@ import NewsDetailHeader from "@/components/news-detail/NewsDetailHeader";
 import NewsDetailContent from "@/components/news-detail/NewsDetailContent";
 import NewsDetailSidebar from "@/components/news-detail/NewsDetailSidebar";
 
-export default function NewsDetailView({ slug }) {
+export default function NewsDetailView({ slug, des }) {
   // Mock metadata based on slug for dynamic title display
   const article = useMemo(() => {
     return {
@@ -29,7 +29,7 @@ export default function NewsDetailView({ slug }) {
         {/* 3. Grid Columns (Main Content: 75%, Sidebar: 25%) */}
         <div className="grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-[40px] lg:gap-[70px] items-start">
           {/* Main article rich-text body */}
-          <NewsDetailContent article={article} showTop={true} showBottom={true} />
+          <NewsDetailContent article={article} des={des} />
 
           {/* Right sidebar navigation and contact modules - Hidden on Mobile */}
           <div className="hidden lg:block">

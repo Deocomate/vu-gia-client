@@ -47,6 +47,7 @@ export default function CategorySEOContent() {
               alt="Ấm bạc đun nước"
               fill
               className="object-cover"
+              sizes="(max-width: 800px) 100vw, 800px"
             />
           </div>
 

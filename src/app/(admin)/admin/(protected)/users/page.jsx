@@ -1,5 +1,5 @@
-import ComingSoonPage from "@/features/admin/ComingSoonPage";
+import UsersAdminPage from "@/features/admin/users/UsersAdminPage";
 
 export default function AdminUsersPage() {
-  return <ComingSoonPage title="Quản lý users" />;
+  return <UsersAdminPage />;
 }

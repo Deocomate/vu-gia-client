@@ -4,7 +4,7 @@ import React from "react";
 import CustomerServiceLayout from "@/components/customer-service/CustomerServiceLayout";
 import { ROUTES } from "@/utils/routes";
 
-export default function PrivacyPolicyView() {
+export default function PrivacyPolicyView({ page } = {}) {
   const breadcrumbs = [
     { name: "Trang chủ", href: ROUTES.HOME },
     { name: "Dịch vụ khách hàng", href: null },
@@ -13,10 +13,18 @@ export default function PrivacyPolicyView() {
 
   return (
     <CustomerServiceLayout breadcrumbs={breadcrumbs}>
-      {/* Title */}
+      {/* Title (heroTitle from `Page` key "privacy-policy" overrides the
+          static default when the admin sets one; legal body below stays
+          static JSX either way) */}
       <h1 className="font-arima text-[#2E2F2A] text-[28px] md:text-[36px] font-[500] leading-[36px] md:leading-[48px] mb-6">
-        Chính sách bảo mật thông tin
+        {page?.heroTitle || "Chính sách bảo mật thông tin"}
       </h1>
+
+      {page?.heroDes && (
+        <p className="font-montserrat text-[#97400C] text-[16px] font-[500] leading-[26px] mb-5">
+          {page.heroDes}
+        </p>
+      )}
 
       {/* Intro */}
       <p className="font-montserrat text-[#2E2F2A] text-[16px] font-[400] leading-[26px] mb-5">

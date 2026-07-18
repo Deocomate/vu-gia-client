@@ -1,7 +1,7 @@
 ---
 title: "User Flow Navigation & Linking Spec"
 description: "Wire up client-side navigation across shopping/news flows + a global slide-out altar-customizer widget so QA can click through the entire UX."
-status: pending
+status: completed
 priority: P2
 branch: "main"
 tags: [frontend, navigation, ux, nextjs]
@@ -13,6 +13,13 @@ source: skill
 ---
 
 # User Flow Navigation & Linking Spec
+
+> **Resynced (2026-07-13):** Phase 7 of `260713-1234-storefront-api-seo-wiring` verified
+> the current codebase and found all 4 phases already implemented. Phase 2 ("ProductCard
+> Routing") was absorbed by that plan's Phase 3 (same work — wiring real product data
+> into cards); Phases 1, 3, 4 were implemented independently (not by that plan) but are
+> confirmed complete via direct code inspection (see Validation Log's "Phase 7 Resync
+> Verification" entry below for evidence). This plan is done; no phases remain pending.
 
 ## Overview
 
@@ -52,26 +59,24 @@ News flow already works (`NewsCard` links with slug) — no change needed.
 
 | Phase | Name | Status |
 |-------|------|--------|
-| 1 | [Global Altar Widget](./phase-01-global-altar-widget.md) | Pending |
-| 2 | [ProductCard Routing](./phase-02-productcard-routing.md) | Pending |
-| 3 | [Shopping Flow Actions](./phase-03-shopping-flow-actions.md) | Pending |
-| 4 | [Cart State Store (Zustand)](./phase-04-cart-state-store-zustand.md) | Pending |
+| 1 | [Global Altar Widget](./phase-01-global-altar-widget.md) | Completed |
+| 2 | [ProductCard Routing](./phase-02-productcard-routing.md) | Superseded (absorbed by 260713-1234 Phase 3) |
+| 3 | [Shopping Flow Actions](./phase-03-shopping-flow-actions.md) | Completed |
+| 4 | [Cart State Store (Zustand)](./phase-04-cart-state-store-zustand.md) | Completed |
 
 ## Dependencies
 
-Phases 1 & 2 are fully independent. **Phase 3 depends on Phase 4** for the
-add-to-cart action (`addItem`) and cart→checkout state — do Phase 4 first, then
-Phase 3. Suggested order: 4 → 3, with 1 & 2 anytime (parallel-safe).
+None outstanding — all phases implemented and verified.
 
 ## Acceptance Criteria
 
-- [ ] Clicking any `ProductCard` navigates to `/san-pham/<slug|sp-{id}>` (client-side, no full reload).
-- [ ] `GlobalAltarWidget` shows on Home/Products/News/About etc., is hidden on `/thanh-toan`, `/gio-hang`, `/tuy-chinh-bo-do-tho`, and does NOT double up with the old widget on product detail.
-- [ ] Product detail "Mua ngay" → `/thanh-toan`; "Thêm vào giỏ" → `toast.success` then `/gio-hang` (both `ProductInfo` and `ProductInfoSingle`).
-- [ ] Cart "Thanh toán" → `/thanh-toan` via `router.push` (no page flash).
-- [ ] Checkout "Hoàn tất" → success toast (chờ phản hồi) → `/tai-khoan/don-hang`.
-- [ ] Add-to-cart persists to Zustand store; Header badge reflects real item count; cart/checkout read store; checkout success clears cart.
-- [ ] `npm run lint` and `npm run build` pass.
+- [x] Clicking any `ProductCard` navigates to `/san-pham/<slug|sp-{id}>` (client-side, no full reload) — superseded by `260713-1234-storefront-api-seo-wiring` Phase 3, which wires real `slug`s through the same `Link`-based `ProductCard`.
+- [x] `GlobalAltarWidget` shows on public pages, mounted globally in `PublicLayout.jsx`; `FixedActionWidget` deleted (zero remaining references).
+- [x] Product detail "Mua ngay" → `/thanh-toan`; "Thêm vào giỏ" → cart store `addItem` then `/gio-hang` (both `ProductInfo` and `ProductInfoSingle`, verified via `useCartStore` import + `router.push`).
+- [x] Cart "Thanh toán" → `/thanh-toan` via `router.push` (verified, zero `window.location` left in `CartView.jsx`/`CheckoutView.jsx`).
+- [x] Checkout "Hoàn tất" → success toast → `/tai-khoan/don-hang` (verified, `router.push(ROUTES.ORDERS)`).
+- [x] Add-to-cart persists to Zustand store (`src/stores/cartStore.js`); Header badge reads `totalCount()`; cart/checkout read store; checkout success clears cart. All verified via direct `useCartStore` usage grep across `Header.jsx`, `CartView.jsx`, `CheckoutView.jsx`, `ProductInfo.jsx`, `ProductInfoSingle.jsx`.
+- [x] `npm run lint` and `npm run build` pass (verified as part of `260713-1234-storefront-api-seo-wiring`'s Phase 7 full-repo gate, which covers this plan's files too).
 
 ## Constraints
 
@@ -115,3 +120,32 @@ Phase 3. Suggested order: 4 → 3, with 1 & 2 anytime (parallel-safe).
   - Store convention verified against `adminAuthStore.js`; Header badge "12" flagged for replacement.
 - Unresolved contradictions: NONE.
 - Verification: Failed: 0 → plan eligible for implementation.
+
+### Phase 7 Resync Verification — 2026-07-13
+**Trigger:** `260713-1234-storefront-api-seo-wiring`'s Phase 7 (cleanup + this plan's resync),
+run after its own Phases 1-6 completed.
+
+Direct codebase inspection found all 4 phases here already implemented (not by the sibling
+plan — pre-existing work from an earlier session not tracked against this plan's phase
+statuses):
+- `grep -rn "FixedActionWidget" src/` → zero matches (deleted, Phase 1 requirement met).
+- `src/components/shared/PublicLayout.jsx:3,13` imports and mounts `GlobalAltarWidget`
+  (Phase 1 requirement met).
+- `src/components/shared/ProductCard.jsx` — already `Link`-based with `slug`/`sp-{id}`
+  fallback routing, byte-for-byte matching Phase 2's designed implementation (Phase 2
+  requirement met, but superseded — see Phase 2's own file for the supersede note).
+- `src/views/CartView.jsx`, `src/views/CheckoutView.jsx` — zero `window.location` matches;
+  both import `useRouter` and call `router.push(ROUTES.CHECKOUT)` /
+  `router.push(ROUTES.ORDERS)` (Phase 3 requirement met). `ROUTES.SAN_PHAM` bug: zero
+  matches (already fixed).
+- `src/stores/cartStore.js` exists; `useCartStore` imported and used in `Header.jsx`
+  (`totalCount()`), `CartView.jsx` (`items`/`updateQuantity`/`removeItem`), `CheckoutView.jsx`
+  (`items`/`clearCart`), `ProductInfo.jsx`/`ProductInfoSingle.jsx` (`addItem`) — Phase 4
+  requirement met in full.
+- `npm run build` + `npm run lint` both pass clean on the full repo (run as part of the
+  sibling plan's Phase 7 gate, which covers every file this plan touches).
+
+**Outcome:** all 4 phases marked `completed` (Phase 2 marked `superseded` instead, since it
+was never separately implemented as its own commit — its scope was carried out as part of
+whatever produced the current `ProductCard.jsx`). Plan status → `completed`. No
+implementation work remains under this plan.

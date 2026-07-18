@@ -4,7 +4,7 @@ import React from "react";
 import CustomerServiceLayout from "@/components/customer-service/CustomerServiceLayout";
 import { ROUTES } from "@/utils/routes";
 
-export default function ShippingPolicyView() {
+export default function ShippingPolicyView({ page } = {}) {
   const breadcrumbs = [
     { name: "Trang chủ", href: ROUTES.HOME },
     { name: "Dịch vụ khách hàng", href: null },
@@ -13,14 +13,17 @@ export default function ShippingPolicyView() {
 
   return (
     <CustomerServiceLayout breadcrumbs={breadcrumbs}>
-      {/* Title */}
+      {/* Title (heroTitle from `Page` key "shipping-policy" overrides the
+          static default when the admin sets one; body tables below stay
+          static) */}
       <h1 className="font-arima text-[#2E2F2A] text-[28px] md:text-[36px] font-[400] leading-[40px] md:leading-[48px] mb-6">
-        Chính sách vận chuyển - đóng gói - kiểm hàng
+        {page?.heroTitle || "Chính sách vận chuyển - đóng gói - kiểm hàng"}
       </h1>
 
       {/* Intro */}
       <p className="font-montserrat text-[#101010] text-[16px] font-[400] leading-[25px] mb-5">
-        Tại Gốm Vũ Gia, chúng tôi hiểu rằng hàng gốm sứ rất dễ vỡ. Vì vậy, quy trình vận chuyển được chúng tôi thiết lập chuyên nghiệp để đảm bảo sản phẩm đến tay khách hàng an toàn với chi phí tối ưu nhất.
+        {page?.heroDes ||
+          "Tại Gốm Vũ Gia, chúng tôi hiểu rằng hàng gốm sứ rất dễ vỡ. Vì vậy, quy trình vận chuyển được chúng tôi thiết lập chuyên nghiệp để đảm bảo sản phẩm đến tay khách hàng an toàn với chi phí tối ưu nhất."}
       </p>
 
       {/* Section 1 */}

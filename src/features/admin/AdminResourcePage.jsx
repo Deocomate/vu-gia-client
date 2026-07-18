@@ -1,3 +1,5 @@
+"use client";
+
 import AdminResourceManager from "@/features/admin/AdminResourceManager";
 import { resources } from "@/features/admin/adminResources";
 

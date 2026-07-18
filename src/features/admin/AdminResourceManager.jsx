@@ -1,15 +1,31 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Plus, RefreshCw, Search, X } from "lucide-react";
 import ConfirmDialog from "@/components/admin/ConfirmDialog";
 import DataTable from "@/components/admin/DataTable";
 import FormField from "@/components/admin/FormField";
 import Pagination from "@/components/admin/Pagination";
 import SeoFields from "@/components/admin/SeoFields";
-import { adminApi, normalizeCollection } from "@/lib/adminApi";
+import { adminApi, AdminApiError } from "@/lib/adminApi";
+import { useAdminAuthStore } from "@/stores/adminAuthStore";
+import { toast } from "@/utils/feedback";
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 20;
+
+const SEO_FIELD_NAMES = [
+  "seoTitle",
+  "seoDescription",
+  "seoImage",
+  "metaTitle",
+  "metaDescription",
+  "canonicalUrl",
+  "ogTitle",
+  "ogDescription",
+  "ogImageId",
+  "noIndex",
+  "noFollow",
+];
 
 const makeInitialForm = (resource, row = null) => {
   const form = { ...(resource.defaults || {}), ...(row || {}) };
@@ -17,8 +33,8 @@ const makeInitialForm = (resource, row = null) => {
     if (form[field.name] === undefined || form[field.name] === null) {
       if (field.type === "boolean") {
         form[field.name] = false;
-      } else if (field.type === "json") {
-        form[field.name] = field.defaultJson || "{}";
+      } else if (field.type === "json-string") {
+        form[field.name] = field.defaultJson || "";
       } else {
         form[field.name] = "";
       }
@@ -30,16 +46,7 @@ const makeInitialForm = (resource, row = null) => {
 const toPayload = (resource, form, mode) => {
   const fieldNames = new Set((resource.fields || []).map((field) => field.name));
   if (resource.seo) {
-    [
-      "metaTitle",
-      "metaDescription",
-      "canonicalUrl",
-      "ogTitle",
-      "ogDescription",
-      "ogImageId",
-      "noIndex",
-      "noFollow",
-    ].forEach((name) => fieldNames.add(name));
+    SEO_FIELD_NAMES.forEach((name) => fieldNames.add(name));
   }
 
   const payload = {};
@@ -56,20 +63,7 @@ const toPayload = (resource, form, mode) => {
       return;
     }
 
-    if (field?.type === "json") {
-      if (typeof value === "string") {
-        payload[name] = value.trim() ? JSON.parse(value) : {};
-      } else {
-        payload[name] = value || {};
-      }
-      return;
-    }
-
-    if (field?.type === "date") {
-      payload[name] = value ? new Date(value).toISOString() : undefined;
-      return;
-    }
-
+    // RT-F1: json-string / block-content fields are already strings — send verbatim.
     payload[name] = value;
   });
 
@@ -77,40 +71,46 @@ const toPayload = (resource, form, mode) => {
 };
 
 export default function AdminResourceManager({ resource, compact = false }) {
+  const currentUser = useAdminAuthStore((state) => state.user);
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({});
+  const [sortBy, setSortBy] = useState(resource.defaultSort?.field || null);
+  const [sortDirection, setSortDirection] = useState(resource.defaultSort?.direction || "desc");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
   const [editorOpen, setEditorOpen] = useState(false);
   const [editingRow, setEditingRow] = useState(null);
   const [form, setForm] = useState(() => makeInitialForm(resource));
   const [confirmRow, setConfirmRow] = useState(null);
 
-  const pagedRows = useMemo(() => {
-    if (total > PAGE_SIZE || rows.length <= PAGE_SIZE) {
-      return rows;
-    }
-    const start = (page - 1) * PAGE_SIZE;
-    return rows.slice(start, start + PAGE_SIZE);
-  }, [page, rows, total]);
+  const updateMode = resource.updateMode || "full";
+  const canCreate = !resource.readOnlyCreate && (!resource.createRoles || resource.createRoles.includes(currentUser?.role));
+  const canEdit = !resource.noEdit;
 
   const loadRows = useCallback(async () => {
     setLoading(true);
     setError("");
     try {
-      const payload = await adminApi.get(resource.endpoint, {
-        search: resource.searchable ? search : undefined,
-        page,
-        limit: PAGE_SIZE,
-        ...filters,
+      const query = { page, size: PAGE_SIZE };
+      if (sortBy) {
+        query.sortBy = sortBy;
+        query.sortDirection = sortDirection;
+      }
+      if (resource.searchable && search) {
+        query[resource.searchParam || "name"] = search;
+      }
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value === "" || value === undefined) return;
+        query[key] = value;
       });
-      const collection = normalizeCollection(payload);
-      setRows(collection.items);
-      setTotal(collection.total || collection.items.length);
+
+      const data = await adminApi.get(resource.endpoint, query);
+      setRows(data?.content || []);
+      setTotal(data?.totalElements ?? (data?.content || []).length);
     } catch (requestError) {
       setError(requestError.message || "Không thể tải dữ liệu.");
       setRows([]);
@@ -118,82 +118,103 @@ export default function AdminResourceManager({ resource, compact = false }) {
     } finally {
       setLoading(false);
     }
-  }, [filters, page, resource.endpoint, resource.searchable, search]);
+  }, [filters, page, resource, search, sortBy, sortDirection]);
 
   useEffect(() => {
     loadRows();
   }, [loadRows]);
 
+  const handleSort = (columnKey) => {
+    if (!resource.sortable?.includes(columnKey)) return;
+    if (sortBy === columnKey) {
+      setSortDirection((current) => (current === "asc" ? "desc" : "asc"));
+    } else {
+      setSortBy(columnKey);
+      setSortDirection("asc");
+    }
+  };
+
   const openCreate = () => {
     setEditingRow(null);
     setForm(makeInitialForm(resource));
     setEditorOpen(true);
-    setNotice("");
     setError("");
+    setFieldErrors({});
   };
 
   const openEdit = (row) => {
+    if (!canEdit) return;
     setEditingRow(row);
     setForm(makeInitialForm(resource, row));
     setEditorOpen(true);
-    setNotice("");
     setError("");
+    setFieldErrors({});
+  };
+
+  const applyRequestError = (requestError) => {
+    if (requestError instanceof AdminApiError && requestError.code === 4001 && requestError.data) {
+      setFieldErrors(requestError.data);
+    }
+    setError(requestError.message || "Không thể lưu dữ liệu.");
   };
 
   const save = async (event) => {
     event.preventDefault();
     setError("");
-    setNotice("");
+    setFieldErrors({});
 
     try {
-      const payload = toPayload(resource, form, editingRow ? "update" : "create");
-      if (editingRow) {
-        await adminApi.patch(`${resource.endpoint}/${editingRow.id}`, payload);
+      if (updateMode === "status" || updateMode === "isActive") {
+        const key = updateMode === "status" ? "status" : "isActive";
+        await adminApi.put(`${resource.endpoint}/${editingRow[resource.idField || "id"]}`, {
+          [key]: form[key],
+        });
       } else {
-        await adminApi.post(resource.endpoint, payload);
+        const payload = toPayload(resource, form, editingRow ? "update" : "create");
+        if (editingRow) {
+          await adminApi.put(`${resource.endpoint}/${editingRow[resource.idField || "id"]}`, payload);
+        } else {
+          await adminApi.post(resource.endpoint, payload);
+        }
       }
       setEditorOpen(false);
-      setNotice(editingRow ? "Đã cập nhật." : "Đã tạo mới.");
+      toast.success(editingRow ? "Đã cập nhật." : "Đã tạo mới.");
       await loadRows();
     } catch (requestError) {
-      const message =
-        requestError instanceof SyntaxError
-          ? "JSON không hợp lệ. Vui lòng kiểm tra lại nội dung."
-          : requestError.message;
-      setError(message || "Không thể lưu dữ liệu.");
+      applyRequestError(requestError);
     }
   };
 
   const remove = async () => {
-    if (!confirmRow) {
-      return;
-    }
+    if (!confirmRow) return;
     setError("");
     try {
-      await adminApi.delete(`${resource.endpoint}/${confirmRow.id}`);
+      await adminApi.delete(`${resource.endpoint}/${confirmRow[resource.idField || "id"]}`);
       setConfirmRow(null);
-      setNotice("Đã xóa.");
+      toast.success("Đã xóa.");
       await loadRows();
     } catch (requestError) {
-      setError(requestError.message || "Không thể xóa dữ liệu.");
+      setConfirmRow(null);
+      toast.error(requestError.message || "Không thể xóa dữ liệu.");
     }
   };
 
-  const publish = async (row) => {
-    setError("");
-    setNotice("");
-    try {
-      await adminApi.post(`${resource.endpoint}/${row.id}/publish`, {});
-      setNotice("Đã publish.");
-      await loadRows();
-    } catch (requestError) {
-      setError(requestError.message || "Không thể publish.");
-    }
-  };
+  const rowActions = (resource.rowActions || []).map((action) => ({
+    label: action.label,
+    onClick: (row) => action.onClick(row, { reload: loadRows, currentUser }),
+    visible: action.visible,
+  }));
 
-  const actions = resource.publishable
-    ? [{ label: "Publish", onClick: publish }]
-    : resource.actions || [];
+  const visibleRowActions = rowActions.filter(
+    (action) => !action.visible || action.visible(currentUser),
+  );
+
+  const editableFields =
+    updateMode === "status"
+      ? resource.fields.filter((field) => field.name === "status")
+      : updateMode === "isActive"
+        ? resource.fields.filter((field) => field.name === "isActive")
+        : resource.fields;
 
   return (
     <section className={compact ? "mt-6" : ""}>
@@ -213,7 +234,7 @@ export default function AdminResourceManager({ resource, compact = false }) {
             <RefreshCw className="h-4 w-4" aria-hidden="true" />
             Tải lại
           </button>
-          {!resource.readOnlyCreate && (
+          {canCreate && (
             <button
               type="button"
               onClick={openCreate}
@@ -244,15 +265,25 @@ export default function AdminResourceManager({ resource, compact = false }) {
           )}
           {resource.filters?.map((filter) => (
             <label key={filter.name} className="block">
-              {filter.options ? (
+              {filter.type === "boolean" ? (
+                <select
+                  value={filters[filter.name] ?? ""}
+                  onChange={(event) => {
+                    setPage(1);
+                    setFilters((current) => ({ ...current, [filter.name]: event.target.value }));
+                  }}
+                  className="h-11 w-full border border-zinc-300 px-3 text-sm outline-none focus:border-zinc-950"
+                >
+                  <option value="">{filter.label} (tất cả)</option>
+                  <option value="true">Có</option>
+                  <option value="false">Không</option>
+                </select>
+              ) : filter.options ? (
                 <select
                   value={filters[filter.name] || ""}
                   onChange={(event) => {
                     setPage(1);
-                    setFilters((current) => ({
-                      ...current,
-                      [filter.name]: event.target.value,
-                    }));
+                    setFilters((current) => ({ ...current, [filter.name]: event.target.value }));
                   }}
                   className="h-11 w-full border border-zinc-300 px-3 text-sm outline-none focus:border-zinc-950"
                 >
@@ -268,10 +299,7 @@ export default function AdminResourceManager({ resource, compact = false }) {
                   value={filters[filter.name] || ""}
                   onChange={(event) => {
                     setPage(1);
-                    setFilters((current) => ({
-                      ...current,
-                      [filter.name]: event.target.value,
-                    }));
+                    setFilters((current) => ({ ...current, [filter.name]: event.target.value }));
                   }}
                   placeholder={filter.label}
                   className="h-11 w-full border border-zinc-300 px-3 text-sm outline-none focus:border-zinc-950"
@@ -282,11 +310,6 @@ export default function AdminResourceManager({ resource, compact = false }) {
         </div>
       )}
 
-      {notice && (
-        <div className="mb-4 border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">
-          {notice}
-        </div>
-      )}
       {error && (
         <div className="mb-4 border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700">
           {error}
@@ -301,11 +324,16 @@ export default function AdminResourceManager({ resource, compact = false }) {
         <>
           <DataTable
             columns={resource.columns}
-            rows={pagedRows}
-            onView={resource.detailPath ? (row) => window.location.assign(`${resource.detailPath}/${row.id}`) : undefined}
-            onEdit={openEdit}
+            rows={rows}
+            getRowId={(row) => row[resource.idField || "id"]}
+            sortable={resource.sortable}
+            sortBy={sortBy}
+            sortDirection={sortDirection}
+            onSort={handleSort}
+            onView={resource.detailPath ? (row) => window.location.assign(`${resource.detailPath}/${row[resource.idField || "id"]}`) : undefined}
+            onEdit={canEdit ? openEdit : undefined}
             onDelete={resource.noDelete ? undefined : setConfirmRow}
-            actions={actions}
+            actions={visibleRowActions}
           />
           <Pagination page={page} pageSize={PAGE_SIZE} total={total} onPageChange={setPage} />
         </>
@@ -334,17 +362,18 @@ export default function AdminResourceManager({ resource, compact = false }) {
             </div>
             <form onSubmit={save} className="p-5">
               <div className="grid gap-4 md:grid-cols-2">
-                {resource.fields.map((field) => (
+                {editableFields.map((field) => (
                   <FormField
                     key={field.name}
                     field={field}
                     value={form[field.name]}
+                    error={fieldErrors[field.name]}
                     onChange={(name, value) =>
                       setForm((current) => ({ ...current, [name]: value }))
                     }
                   />
                 ))}
-                {resource.seo && (
+                {resource.seo && updateMode === "full" && (
                   <SeoFields
                     values={form}
                     onChange={(name, value) =>
@@ -376,7 +405,7 @@ export default function AdminResourceManager({ resource, compact = false }) {
       <ConfirmDialog
         open={Boolean(confirmRow)}
         title="Xóa dữ liệu"
-        description="Thao tác này sẽ xóa hoặc soft-delete dữ liệu tùy theo backend. Bạn muốn tiếp tục?"
+        description="Thao tác này sẽ xóa dữ liệu vĩnh viễn. Bạn muốn tiếp tục?"
         destructive
         onCancel={() => setConfirmRow(null)}
         onConfirm={remove}

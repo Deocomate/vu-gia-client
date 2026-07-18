@@ -1,53 +1,18 @@
 "use client";
+
 import React from "react";
 import ProductCard from "@/components/shared/ProductCard";
-import productCardImage1 from "@/assets/images/product-detail/product-card-image-1.png";
-import productCardImage2 from "@/assets/images/product-detail/product-card-image-2.png";
-import productCardImage3 from "@/assets/images/product-detail/product-card-image-3.png";
-import productDetailThumbnail from "@/assets/images/product-detail/product-detail-thumbnail.png";
+import { useFeaturedProductCards } from "@/hooks/useFeaturedProductCards";
 
-const RECOMMEND_PRODUCTS = [
-  {
-    id: 1,
-    name: "Bình hút lộc\nMã đáo thành công",
-    sku: "MSP: VG001",
-    salePrice: "2.000.000đ",
-    originalPrice: "2.500.000đ",
-    soldCount: 12,
-    image: productCardImage1,
-  },
-  {
-    id: 2,
-    name: "Bình hút lộc\nMã đáo thành công",
-    sku: "MSP: VG001",
-    salePrice: "2.000.000đ",
-    originalPrice: "2.500.000đ",
-    soldCount: 12,
-    image: productCardImage2,
-  },
-  {
-    id: 3,
-    name: "Bình hút lộc\nMã đáo thành công",
-    sku: "MSP: VG001",
-    salePrice: "2.000.000đ",
-    originalPrice: "2.500.000đ",
-    soldCount: 12,
-    image: productCardImage3,
-  },
-  {
-    id: 4,
-    name: "Bình hút lộc\nMã đáo thành công",
-    sku: "MSP: VG001",
-    salePrice: "2.000.000đ",
-    originalPrice: "2.500.000đ",
-    soldCount: 12,
-    image: productDetailThumbnail,
-  },
-];
+const RELATED_LIMIT = 4;
 
 export default function NewsRelatedProducts() {
-  const hasTwoLineTitle = RECOMMEND_PRODUCTS.some(
-    (prod) => prod.name && (prod.name.includes("\n") || prod.name.length > 22)
+  const products = useFeaturedProductCards(RELATED_LIMIT);
+
+  if (products.length === 0) return null;
+
+  const hasTwoLineTitle = products.some(
+    (product) => product.name && (product.name.includes("\n") || product.name.length > 22)
   );
 
   return (
@@ -60,18 +25,9 @@ export default function NewsRelatedProducts() {
 
         {/* Product Grid / Swipe List on Mobile */}
         <div className="flex lg:grid lg:grid-cols-4 gap-[14px] lg:gap-[26px] overflow-x-auto lg:overflow-x-visible no-scrollbar pb-4 lg:pb-0 scroll-smooth snap-x snap-mandatory w-[calc(100%+60px)] mx-[-30px] px-[30px] scroll-px-[30px] lg:w-auto lg:mx-0 lg:px-0">
-          {RECOMMEND_PRODUCTS.map((prod) => (
-            <div key={prod.id} className="flex-shrink-0 w-[175px] lg:w-auto snap-start">
-              <ProductCard
-                id={prod.id}
-                image={prod.image}
-                name={prod.name}
-                sku={prod.sku}
-                salePrice={prod.salePrice}
-                originalPrice={prod.originalPrice}
-                soldCount={prod.soldCount}
-                hasTwoLineTitle={hasTwoLineTitle}
-              />
+          {products.map((product) => (
+            <div key={product.id} className="flex-shrink-0 w-[175px] lg:w-auto snap-start">
+              <ProductCard {...product} hasTwoLineTitle={hasTwoLineTitle} />
             </div>
           ))}
         </div>

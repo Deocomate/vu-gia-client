@@ -155,6 +155,7 @@ export default function NewsDetailSidebar({ showWidgets = true, showForm = true 
                       alt={prod.name}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 1024px) 50vw, 160px"
                     />
                   </div>
 
@@ -191,6 +192,7 @@ export default function NewsDetailSidebar({ showWidgets = true, showForm = true 
                       alt={post.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="124px"
                     />
                   </div>
 

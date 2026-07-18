@@ -8,6 +8,9 @@ import {
 } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+import JsonLd from "@/components/seo/JsonLd";
+import { buildOrganizationSchema } from "@/lib/seo/schemas";
+import { SITE_URL } from "@/lib/seo/siteConfig";
 
 // --- GOOGLE FONTS ---
 const montserrat = Montserrat({
@@ -68,7 +71,7 @@ export const metadata = {
   },
   description:
     "Gốm Sứ Vũ Gia - gốm sứ Bát Tràng chính hãng cho gia đình, doanh nghiệp và không gian thờ cúng.",
-  metadataBase: new URL("https://gomvugia.vn"),
+  metadataBase: new URL(SITE_URL),
 };
 
 export default function RootLayout({ children }) {
@@ -88,6 +91,7 @@ export default function RootLayout({ children }) {
           font-montserrat antialiased text-text-main
         `}
       >
+        <JsonLd data={buildOrganizationSchema()} />
         {children}
       </body>
     </html>

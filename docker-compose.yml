@@ -3,6 +3,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      # NEXT_PUBLIC_* are inlined into the browser bundle at build time — set
+      # these to the PUBLIC backend URL (e.g. https://api.gomvugia.vn/api),
+      # never an internal/Docker-network-only address.
+      args:
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8080/api}
+        NEXT_PUBLIC_IMAGE_BASE_URL: ${NEXT_PUBLIC_IMAGE_BASE_URL:-http://localhost:8080}
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+        # Never set in production — see next.config.mjs.
+        NEXT_IMAGE_UNOPTIMIZED: ${NEXT_IMAGE_UNOPTIMIZED:-}
     expose:
       - "3000"
     restart: unless-stopped
@@ -10,3 +19,9 @@ services:
       - PORT=3000
       - HOSTNAME=0.0.0.0
       - NODE_ENV=production
+      # Server-side-only override for SSR/generateMetadata fetches (runs inside
+      # this container, so it needs a Docker-network-reachable backend address —
+      # NOT the public NEXT_PUBLIC_API_BASE_URL above). Leave unset to fall back
+      # to NEXT_PUBLIC_API_BASE_URL (fine when the public URL is reachable from
+      # inside the container too, e.g. a real public domain via a reverse proxy).
+      - INTERNAL_API_BASE_URL=${INTERNAL_API_BASE_URL:-}

@@ -1,7 +1,7 @@
 ---
 phase: 4
 title: "Cart State Store (Zustand)"
-status: pending
+status: completed
 effort: "L"
 ---
 

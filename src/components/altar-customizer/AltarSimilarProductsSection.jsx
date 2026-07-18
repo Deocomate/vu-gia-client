@@ -1,10 +1,17 @@
 "use client";
+
 import ProductCard from "@/components/shared/ProductCard";
-import { SIMILAR_PRODUCTS } from "./data/altarCustomizerData";
+import { useFeaturedProductCards } from "@/hooks/useFeaturedProductCards";
+
+const RELATED_LIMIT = 4;
 
 export default function AltarSimilarProductsSection() {
-  const hasTwoLineTitle = SIMILAR_PRODUCTS.some(
-    (prod) => prod.name && (prod.name.includes("\n") || prod.name.length > 22)
+  const products = useFeaturedProductCards(RELATED_LIMIT);
+
+  if (products.length === 0) return null;
+
+  const hasTwoLineTitle = products.some(
+    (product) => product.name && (product.name.includes("\n") || product.name.length > 22)
   );
 
   return (
@@ -15,18 +22,9 @@ export default function AltarSimilarProductsSection() {
         </h2>
 
         <div className="flex lg:grid lg:grid-cols-4 gap-[14px] lg:gap-[26px] overflow-x-auto lg:overflow-x-visible no-scrollbar pb-4 lg:pb-0 scroll-smooth snap-x snap-mandatory w-[calc(100%+60px)] mx-[-30px] px-[30px] scroll-px-[30px] lg:w-auto lg:mx-0 lg:px-0">
-          {SIMILAR_PRODUCTS.map((product) => (
+          {products.map((product) => (
             <div key={product.id} className="flex-shrink-0 w-[175px] lg:w-auto snap-start">
-              <ProductCard
-                id={product.id}
-                image={product.image}
-                name={product.name}
-                sku={product.sku}
-                originalPrice={product.originalPrice}
-                salePrice={product.salePrice}
-                soldCount={product.soldCount}
-                hasTwoLineTitle={hasTwoLineTitle}
-              />
+              <ProductCard {...product} hasTwoLineTitle={hasTwoLineTitle} />
             </div>
           ))}
         </div>

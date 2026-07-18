@@ -1,49 +1,54 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import ProductCard from "@/components/shared/ProductCard";
-import productCardImage1 from "@/assets/images/product-detail/product-card-image-1.png";
-import productCardImage2 from "@/assets/images/product-detail/product-card-image-2.png";
-import productCardImage3 from "@/assets/images/product-detail/product-card-image-3.png";
-import productDetailThumbnail from "@/assets/images/product-detail/product-detail-thumbnail.png";
+import { publicGet, PublicApiError } from "@/lib/publicApi";
+import { mapProductToCardProps } from "@/lib/productCard";
+
+const RELATED_LIMIT = 4;
 
 export default function SimilarProducts({ hideBorder }) {
-  const similarList = [
-    {
-      id: 1,
-      name: "Bình hút lộc\nMã đáo thành công",
-      sku: "MSP: VG001",
-      salePrice: "2.000.000đ",
-      originalPrice: "2.500.000đ",
-      soldCount: 12,
-      image: productCardImage1,
-    },
-    {
-      id: 2,
-      name: "Bình hút lộc\nMã đáo thành công",
-      sku: "MSP: VG001",
-      salePrice: "2.000.000đ",
-      originalPrice: "2.500.000đ",
-      soldCount: 12,
-      image: productCardImage2,
-    },
-    {
-      id: 3,
-      name: "Bình hút lộc\nMã đáo thành công",
-      sku: "MSP: VG001",
-      salePrice: "2.000.000đ",
-      originalPrice: "2.500.000đ",
-      soldCount: 12,
-      image: productCardImage3,
-    },
-    {
-      id: 4,
-      name: "Bình hút lộc\nMã đáo thành công",
-      sku: "MSP: VG001",
-      salePrice: "2.000.000đ",
-      originalPrice: "2.500.000đ",
-      soldCount: 12,
-      image: productDetailThumbnail,
-    },
-  ];
+  const params = useParams();
+  const slug = params?.slug;
+  const [similarList, setSimilarList] = useState([]);
+
+  useEffect(() => {
+    if (!slug) return undefined;
+    let cancelled = false;
+
+    async function loadSimilar() {
+      try {
+        const current = await publicGet(`/products/slug/${slug}`);
+        const categoryId = current?.category?.id;
+        const data = await publicGet("/products", {
+          status: "PUBLISHED",
+          productCategoryId: categoryId,
+          size: RELATED_LIMIT + 1,
+        });
+        if (cancelled) return;
+        const items = (data?.content || [])
+          .filter((item) => item.id !== current?.id)
+          .slice(0, RELATED_LIMIT)
+          .map(mapProductToCardProps);
+        setSimilarList(items);
+      } catch (error) {
+        if (cancelled) return;
+        if (!(error instanceof PublicApiError)) {
+          // Non-API failure (network/parse) on a secondary widget — log, don't crash the page.
+          console.error("Failed to load similar products", error);
+        }
+        setSimilarList([]);
+      }
+    }
+
+    loadSimilar();
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
+
+  if (similarList.length === 0) return null;
 
   const hasTwoLineTitle = similarList.some(
     (product) => product.name && (product.name.includes("\n") || product.name.length > 22)
@@ -60,16 +65,7 @@ export default function SimilarProducts({ hideBorder }) {
       <div className="flex lg:grid lg:grid-cols-4 gap-[14px] lg:gap-[26px] overflow-x-auto lg:overflow-x-visible no-scrollbar pb-4 lg:pb-0 scroll-smooth snap-x snap-mandatory w-[calc(100%+60px)] mx-[-30px] px-[30px] scroll-px-[30px] lg:w-auto lg:mx-0 lg:px-0">
         {similarList.map((product) => (
           <div key={product.id} className="flex-shrink-0 w-[175px] lg:w-auto snap-start">
-            <ProductCard
-              id={product.id}
-              image={product.image}
-              name={product.name}
-              sku={product.sku}
-              salePrice={product.salePrice}
-              originalPrice={product.originalPrice}
-              soldCount={product.soldCount}
-              hasTwoLineTitle={hasTwoLineTitle}
-            />
+            <ProductCard {...product} hasTwoLineTitle={hasTwoLineTitle} />
           </div>
         ))}
       </div>

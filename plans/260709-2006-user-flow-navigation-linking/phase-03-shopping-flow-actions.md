@@ -1,7 +1,7 @@
 ---
 phase: 3
 title: "Shopping Flow Actions"
-status: pending
+status: completed
 effort: "M"
 dependencies: [4]
 ---

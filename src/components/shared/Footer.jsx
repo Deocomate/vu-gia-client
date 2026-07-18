@@ -1,9 +1,41 @@
 // src/components/shared/Footer.jsx
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ROUTES } from "@/utils/routes";
+import { publicPost, PublicApiError } from "@/lib/publicApi";
+import { toast } from "@/utils/feedback";
 
-export default function Footer() {
+export default function Footer({ categories = [] }) {
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleNewsletterSubmit = async (event) => {
+    event.preventDefault();
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) {
+      toast.error("Vui lòng nhập email.");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      await publicPost("/newsletter-subscribers", { email: trimmedEmail });
+      toast.success("Đăng ký nhận tin thành công!");
+      setEmail("");
+    } catch (error) {
+      const message =
+        error instanceof PublicApiError
+          ? error.message
+          : "Không thể đăng ký. Vui lòng thử lại sau.";
+      toast.error(message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <footer className="relative bg-primary overflow-hidden w-full pt-[32px] lg:pt-[36px] font-montserrat z-10 mt-auto">
       {/* Background Patterns (Desktop only) */}
@@ -13,6 +45,7 @@ export default function Footer() {
           alt=""
           fill
           className="object-contain object-left-top"
+          sizes="400px"
         />
       </div>
       <div className="absolute right-[-160px] top-[165px] w-[300px] lg:w-[400px] h-full pointer-events-none z-[-1] hidden lg:block opacity-70">
@@ -21,6 +54,7 @@ export default function Footer() {
           alt=""
           fill
           className="object-contain object-right-bottom"
+          sizes="400px"
         />
       </div>
 
@@ -31,6 +65,7 @@ export default function Footer() {
           alt=""
           fill
           className="object-contain object-right-bottom"
+          sizes="270px"
         />
       </div>
 
@@ -116,16 +151,27 @@ export default function Footer() {
                   Để lại thông tin tư vấn
                 </h3>
 
-                <div className="flex items-center gap-[7px] w-full justify-center lg:justify-start mb-[30px] lg:mb-[20px]">
+                <form
+                  onSubmit={handleNewsletterSubmit}
+                  className="flex items-center gap-[7px] w-full justify-center lg:justify-start mb-[30px] lg:mb-[20px]"
+                >
                   <input
                     type="email"
+                    required
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    disabled={submitting}
                     placeholder="Email của bạn"
-                    className="w-[282px] h-[37px] lg:h-[54px] bg-[#EABA96]/60 rounded-[60px] px-[20px] text-[#97400C] placeholder:text-[#97400C]/70 placeholder:italic lg:placeholder:not-italic outline-none text-[14px] lg:text-[16px] font-normal"
+                    className="w-[282px] h-[37px] lg:h-[54px] bg-[#EABA96]/60 rounded-[60px] px-[20px] text-[#97400C] placeholder:text-[#97400C]/70 placeholder:italic lg:placeholder:not-italic outline-none text-[14px] lg:text-[16px] font-normal disabled:opacity-60"
                   />
-                  <button className="flex-shrink-0 w-[70px] h-[37px] lg:h-[54px] bg-white/60 rounded-[60px] text-[#97400C] font-[600] text-[16px] lg:text-[20px] flex items-center justify-center hover:bg-white/80 transition-colors">
-                    Gửi
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="flex-shrink-0 w-[70px] h-[37px] lg:h-[54px] bg-white/60 rounded-[60px] text-[#97400C] font-[600] text-[16px] lg:text-[20px] flex items-center justify-center hover:bg-white/80 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    {submitting ? "..." : "Gửi"}
                   </button>
-                </div>
+                </form>
 
                 {/* Badge Bộ Công Thương (PC) */}
                 <div className="hidden lg:block">
@@ -226,26 +272,24 @@ export default function Footer() {
                     Sản phẩm
                   </h3>
                   <ul className="flex flex-col">
-                    <li>
-                      <Link href={ROUTES.PRODUCTS} className="text-[#EAECF0] text-[16px] font-[400] leading-[34px] hover:text-white transition-colors">
-                        Bộ đồ thờ
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href={ROUTES.PRODUCTS} className="text-[#EAECF0] text-[16px] font-[400] leading-[34px] hover:text-white transition-colors">
-                        Bình phong thủy
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href={ROUTES.PRODUCTS} className="text-[#EAECF0] text-[16px] font-[400] leading-[34px] hover:text-white transition-colors">
-                        Lục bình gốm sứ
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href={ROUTES.PRODUCTS} className="text-[#EAECF0] text-[16px] font-[400] leading-[34px] hover:text-white transition-colors">
-                        Khác
-                      </Link>
-                    </li>
+                    {categories.length ? (
+                      categories.slice(0, 4).map((category) => (
+                        <li key={category.id}>
+                          <Link
+                            href={`${ROUTES.PRODUCTS}?category=${category.slug}`}
+                            className="text-[#EAECF0] text-[16px] font-[400] leading-[34px] hover:text-white transition-colors"
+                          >
+                            {category.name}
+                          </Link>
+                        </li>
+                      ))
+                    ) : (
+                      <li>
+                        <Link href={ROUTES.PRODUCTS} className="text-[#EAECF0] text-[16px] font-[400] leading-[34px] hover:text-white transition-colors">
+                          Danh sách sản phẩm
+                        </Link>
+                      </li>
+                    )}
                   </ul>
                 </div>
               </div>

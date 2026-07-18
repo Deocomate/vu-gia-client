@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import { PLACEHOLDER_IMAGE } from "@/lib/media";
 
 export default function OrderItemRow({ item }) {
   if (!item) return null;
@@ -25,10 +26,11 @@ export default function OrderItemRow({ item }) {
               alt={item.title}
               fill
               className="object-cover"
+              sizes="(max-width: 768px) 80px, 91px"
             />
           ) : (
             <img
-              src={item.image || "/images/products/product-image-thumb.png"}
+              src={item.image || PLACEHOLDER_IMAGE.src}
               alt={item.title}
               className="w-[62px] h-[62px] md:w-full md:h-full object-cover"
             />

@@ -96,6 +96,7 @@ function ProductGallery({ galleryImages, mainImage, setMainImage }) {
                   alt={`Thumbnail ${idx + 1}`}
                   fill
                   className="object-cover"
+                  sizes="87px"
                 />
               </button>
             ))}
@@ -252,6 +253,7 @@ function ProductPurchasePanel({
               alt="Check"
               fill
               className="object-contain"
+              sizes="16px"
             />
           </div>
           <span className="text-[#67A865] text-[18px] font-[700] leading-[12px]">
@@ -280,6 +282,7 @@ function ProductPurchasePanel({
               alt="Check"
               fill
               className="object-contain"
+              sizes="16px"
             />
           </div>
           <span className="text-[#67A865] text-[14px] font-[700] leading-[12px]">
@@ -433,6 +436,7 @@ function ProductPurchasePanel({
               alt="Cart"
               fill
               className="object-contain"
+              sizes="24px"
             />
           </div>
           <span className="text-[16px] font-[700] leading-[16px] text-white">Thêm vào giỏ hàng</span>
@@ -452,6 +456,7 @@ function ProductPurchasePanel({
               alt="Wallet"
               fill
               className="object-contain"
+              sizes="24px"
             />
           </div>
           <span className="text-[16px] font-[700] leading-[16px] text-white">Mua ngay</span>

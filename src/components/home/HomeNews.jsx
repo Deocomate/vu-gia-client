@@ -1,45 +1,24 @@
 // src/components/home/HomeNews.jsx
 import React from "react";
 import NewsCard from "@/components/shared/NewsCard";
-import newsImg1 from "@/assets/images/home/home-new-1.png";
-import newsImg2 from "@/assets/images/home/home-new-2.png";
-import newsImg3 from "@/assets/images/home/home-new-3.png";
+import { formatImageUrl } from "@/lib/media";
 
-const newsData = [
-  {
-    id: 1,
-    image: newsImg1,
-    category: "Cẩm nang làng nghề",
-    title: "Ý nghĩa chữ Thọ tròn mà bạn cần nên biết",
-    description:
-      "How do you create compelling presentations that wow your colleagues and impress your managers?",
-    slug: "y-nghia-chu-tho-tron-ma-ban-can-nen-biet",
-  },
-  {
-    id: 2,
-    image: newsImg2,
-    category: "Kiến thức sản phẩm",
-    title: "Giải phóng miền Nam 30/4/1975 – Lịch sử, ý nghĩa",
-    description:
-      "How do you create compelling presentations that wow your colleagues and impress your managers?",
-    slug: "giai-phong-mien-nam-30-4-1975",
-  },
-  {
-    id: 3,
-    image: newsImg3,
-    category: "Kiến thức sản phẩm",
-    title: "Giải phóng miền Nam 30/4/1975 – Lịch sử, ý nghĩa",
-    description:
-      "How do you create compelling presentations that wow your colleagues and impress your managers?",
-    slug: "giai-phong-mien-nam-30-4-1975-2",
-  },
-];
+export default function HomeNews({ news = [] }) {
+  // Real `News` entities (status=PUBLISHED, sorted by publishedAt desc).
+  const items = news.map((item) => ({
+    id: item.id,
+    image: formatImageUrl(item.thumb),
+    category: item.category?.name || "Tin tức",
+    title: item.title,
+    description: item.shortContent,
+    slug: item.slug,
+  }));
 
-const HomeNews = () => {
-  // Check if any title in the news data is 2 lines (contains \n or length > 30)
-  const hasTwoLineTitle = newsData.some(
-    (news) => news.title && (news.title.includes("\n") || news.title.length > 30)
+  const hasTwoLineTitle = items.some(
+    (item) => item.title && (item.title.includes("\n") || item.title.length > 30),
   );
+
+  if (items.length === 0) return null;
 
   return (
     <section className="w-full py-[35px] lg:py-[70px] bg-white overflow-hidden">
@@ -52,7 +31,7 @@ const HomeNews = () => {
 
         {/* Desktop Layout (Danh sách bài viết 3 cột) */}
         <div className="hidden lg:grid grid-cols-3 gap-[20px]">
-          {newsData.map((news) => (
+          {items.map((news) => (
             <NewsCard
               key={news.id}
               image={news.image}
@@ -67,7 +46,7 @@ const HomeNews = () => {
 
         {/* Mobile Layout (Vuốt ngang) */}
         <div className="lg:hidden w-[calc(100%+62px)] mx-[-31px] px-[31px] overflow-x-auto no-scrollbar flex flex-row gap-[22px] scroll-px-[31px] snap-x snap-mandatory pb-[10px]">
-          {newsData.map((news) => (
+          {items.map((news) => (
             <NewsCard
               key={news.id}
               image={news.image}
@@ -83,6 +62,4 @@ const HomeNews = () => {
       </div>
     </section>
   );
-};
-
-export default HomeNews;
+}

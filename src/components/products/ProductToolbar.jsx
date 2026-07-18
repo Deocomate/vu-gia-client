@@ -13,15 +13,27 @@ export default function ProductToolbar({
   onSortChange = () => {},
   breadcrumbItems,
   selectedCategory: propSelectedCategory = "all",
+  selectedSort: propSelectedSort = "newest",
+  searchTerm: propSearchTerm = "",
+  categories: realCategories = [],
 }) {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(propSearchTerm);
   const [selectedCategory, setSelectedCategory] = useState(propSelectedCategory);
-  const [sortBy, setSortBy] = useState("newest");
+  const [sortBy, setSortBy] = useState(propSelectedSort);
 
-  // Sync external category changes to local state
+  // Sync external URL-driven state (category/sort/search) to local state, so
+  // a bookmarked/reloaded filtered URL reflects correctly in the toolbar UI.
   useEffect(() => {
     setSelectedCategory(propSelectedCategory);
   }, [propSelectedCategory]);
+
+  useEffect(() => {
+    setSortBy(propSelectedSort);
+  }, [propSelectedSort]);
+
+  useEffect(() => {
+    setSearchTerm(propSearchTerm);
+  }, [propSearchTerm]);
 
   // Custom dropdown states
   const [categoryOpen, setCategoryOpen] = useState(false);
@@ -30,14 +42,10 @@ export default function ProductToolbar({
   const categoryRef = useRef(null);
   const sortRef = useRef(null);
 
-  // Categories list
+  // Real ProductCategory rows (same source as CategoryNavigation), plus "all".
   const categories = [
     { value: "all", label: "Tất cả danh mục" },
-    { value: "men-lam", label: "Men lam" },
-    { value: "men-ran", label: "Men rạn" },
-    { value: "men-lam-ve-vang", label: "Men lam vẽ vàng" },
-    { value: "men-ran-dat-vang", label: "Men rạn dát vàng" },
-    { value: "men-mau-theo-menh", label: "Men màu theo mệnh" },
+    ...realCategories.map((category) => ({ value: category.slug, label: category.name })),
   ];
 
   // Sorting options list

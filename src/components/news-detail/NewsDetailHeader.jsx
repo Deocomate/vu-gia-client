@@ -37,6 +37,7 @@ export default function NewsDetailHeader({
           fill
           priority
           className="object-cover"
+          sizes="100vw"
         />
       </div>
     </div>

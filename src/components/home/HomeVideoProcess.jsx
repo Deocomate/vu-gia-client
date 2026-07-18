@@ -21,7 +21,6 @@ const HomeVideoProcess = () => {
           fill // Tự động lấp đầy container cha có position relative
           className="object-cover"
           sizes="(max-width: 1470px) 100vw, 1470px" // Giúp Next.js tối ưu việc load ảnh theo màn hình
-          priority // Vì đây là ảnh to, thêm priority để Nextjs ưu tiên tải ngay không lazy-load
         />
 
         {/* Lớp phủ màu đen 40% (Tương đương với linear-gradient trong HTML) */}
@@ -39,6 +38,7 @@ const HomeVideoProcess = () => {
               alt="Play icon"
               fill
               className="object-contain"
+              sizes="(max-width: 1024px) 52px, 108px"
             />
           </div>
         </button>

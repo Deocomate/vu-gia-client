@@ -1,4 +1,4 @@
-# vu-gia-client | Structure | 2026-07-09 13:02:50
+# vu-gia-client | Structure | 2026-07-10 12:32:38
 
 .
 ├── docs/
@@ -6,6 +6,22 @@
 │       └── fonts/
 │           ├── font-desktop.md
 │           └── font-mobile.md
+├── plans/
+│   ├── 260709-2006-user-flow-navigation-linking/
+│   │   ├── phase-01-global-altar-widget.md
+│   │   ├── phase-02-productcard-routing.md
+│   │   ├── phase-03-shopping-flow-actions.md
+│   │   ├── phase-04-cart-state-store-zustand.md
+│   │   └── plan.md
+│   ├── 260709-2040-custom-feedback-popups/
+│   │   ├── phase-01-feedback-system-core.md
+│   │   ├── phase-02-replace-public-alerts.md
+│   │   ├── phase-03-confirm-dialogs-a11y.md
+│   │   ├── phase-04-admin-unification-stretch.md
+│   │   └── plan.md
+│   └── reports/
+│       ├── research-toast-dialog-libs.md
+│       └── scout-alert-call-sites.md
 ├── public/
 │   ├── fonts/
 │   │   ├── circularStd_book/
@@ -338,7 +354,6 @@
 │   │   │   ├── OrderPagination.jsx
 │   │   │   └── OrderStatusTabs.jsx
 │   │   ├── product-detail/
-│   │   │   ├── FixedActionWidget.jsx
 │   │   │   ├── ProductDescription.jsx
 │   │   │   ├── ProductDetail.jsx
 │   │   │   ├── ProductInfo.jsx
@@ -354,8 +369,13 @@
 │   │   │   └── ProductToolbar.jsx
 │   │   ├── shared/
 │   │   │   ├── AboutUsSection.jsx
+│   │   │   ├── AppToaster.jsx
+│   │   │   ├── BaseConfirmDialog.jsx
 │   │   │   ├── Breadcrumb.jsx
+│   │   │   ├── ConfirmDialog.jsx
+│   │   │   ├── ConfirmDialogHost.jsx
 │   │   │   ├── Footer.jsx
+│   │   │   ├── GlobalAltarWidget.jsx
 │   │   │   ├── Header.jsx
 │   │   │   ├── NewsCard.jsx
 │   │   │   ├── Pagination.jsx
@@ -385,8 +405,11 @@
 │   ├── services/
 │   ├── store/
 │   ├── stores/
-│   │   └── adminAuthStore.js
+│   │   ├── adminAuthStore.js
+│   │   ├── cartStore.js
+│   │   └── confirmStore.js
 │   ├── utils/
+│   │   ├── feedback.js
 │   │   └── routes.js
 │   └── views/
 │       ├── AboutView.jsx

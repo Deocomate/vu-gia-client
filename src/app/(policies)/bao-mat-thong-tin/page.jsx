@@ -1,14 +1,49 @@
 import PrivacyPolicyView from "@/views/PrivacyPolicyView";
-import { ROUTES } from "@/utils/routes";
+import JsonLd from "@/components/seo/JsonLd";
+import { getPageByKey } from "@/lib/seo/pageByKey";
+import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/lib/seo/siteConfig";
+import { buildBreadcrumbSchema } from "@/lib/seo/schemas";
+import { formatImageUrl } from "@/lib/media";
 
-export const metadata = {
-  title: "Bảo mật thông tin",
-  description: "Chính sách bảo mật thông tin khách hàng của Gốm Sứ Vũ Gia.",
-  alternates: {
-    canonical: ROUTES.PRIVACY_POLICY,
-  },
-};
+export async function generateMetadata() {
+  const page = await getPageByKey("privacy-policy");
+  const title = page?.seoTitle || "Bảo mật thông tin";
+  const description =
+    page?.seoDescription || "Chính sách bảo mật thông tin khách hàng của Gốm Sứ Vũ Gia.";
+  const image = page?.seoImage ? formatImageUrl(page.seoImage) : DEFAULT_OG_IMAGE;
+  const canonical = absoluteUrl("/bao-mat-thong-tin");
 
-export default function PrivacyPolicyPage() {
-  return <PrivacyPolicyView />;
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      images: [image],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
+  };
+}
+
+const breadcrumb = buildBreadcrumbSchema([
+  { name: "Trang chủ", url: "/" },
+  { name: "Bảo mật thông tin", url: "/bao-mat-thong-tin" },
+]);
+
+export default async function PrivacyPolicyPage() {
+  const page = await getPageByKey("privacy-policy");
+
+  return (
+    <>
+      <JsonLd data={breadcrumb} />
+      <PrivacyPolicyView page={page} />
+    </>
+  );
 }

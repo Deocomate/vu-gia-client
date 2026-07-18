@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ROUTES } from "@/utils/routes";
+import { publicPost, PublicApiError } from "@/lib/publicApi";
+import { toast } from "@/utils/feedback";
 
 import heroBg from "@/assets/images/gallery/hero-bg.jpg";
 import vaseImage from "@/assets/images/lien-he/lien-he-main-thumbnail.png";
@@ -20,20 +22,19 @@ export default function ContactView() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  // `name` and `content` (mapped from local `message` field) are required by
+  // the backend contract; `email`/`phone` are optional, so only validate
+  // their format client-side when the user actually filled them in.
   const validate = () => {
     const newErrors = {};
     if (!formData.name.trim()) {
       newErrors.name = "Họ tên không được để trống";
     }
-    if (!formData.email.trim()) {
-      newErrors.email = "Email không được để trống";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    if (formData.email.trim() && !/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Email không hợp lệ";
     }
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Số điện thoại không được để trống";
-    } else if (!/^\d{10,11}$/.test(formData.phone.trim())) {
-      newErrors.phone = "Số điện thoại phải gồm 10-11 chữ số";
+    if (formData.phone.trim() && !/^\d{9,11}$/.test(formData.phone.trim())) {
+      newErrors.phone = "Số điện thoại phải gồm 9-11 chữ số";
     }
     if (!formData.message.trim()) {
       newErrors.message = "Nội dung liên hệ không được để trống";
@@ -49,7 +50,7 @@ export default function ContactView() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
@@ -58,14 +59,30 @@ export default function ContactView() {
     }
 
     setIsSubmitting(true);
-    // Simulate API request
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      // Backend contract expects `content`, not the local `message` field
+      // name — explicit rename, not a bare pass-through.
+      await publicPost("/contact-requests", {
+        name: formData.name.trim(),
+        email: formData.email.trim() || undefined,
+        phone: formData.phone.trim() || undefined,
+        content: formData.message.trim(),
+      });
+
       setIsSubmitted(true);
       setFormData({ name: "", email: "", phone: "", message: "" });
-      // Reset success message after 5 seconds
+      setErrors({});
+      toast.success("Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất.");
       setTimeout(() => setIsSubmitted(false), 5000);
-    }, 1200);
+    } catch (error) {
+      const message =
+        error instanceof PublicApiError
+          ? error.message
+          : "Không thể gửi liên hệ. Vui lòng thử lại sau.";
+      toast.error(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

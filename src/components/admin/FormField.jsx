@@ -1,16 +1,18 @@
 "use client";
 
 import { useMemo } from "react";
-import MediaPicker from "@/components/admin/MediaPicker";
+import { ImageField } from "@/components/admin/inputs/ImageUploader";
+import SearchableSelect from "@/components/admin/inputs/SearchableSelect";
+import DatePicker from "@/components/admin/inputs/DatePicker";
+import BlockBuilder from "@/components/admin/inputs/BlockBuilder";
 
 const inputClass =
   "h-11 w-full border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-950";
 const textareaClass =
   "min-h-[120px] w-full border border-zinc-300 bg-white px-3 py-2 text-sm leading-6 text-zinc-900 outline-none transition focus:border-zinc-950";
 
-export default function FormField({ field, value, onChange }) {
+export default function FormField({ field, value, onChange, error }) {
   const id = `field-${field.name}`;
-
   const options = useMemo(() => field.options || [], [field.options]);
 
   if (field.type === "hidden") {
@@ -36,20 +38,22 @@ export default function FormField({ field, value, onChange }) {
         />
       )}
 
-      {field.type === "json" && (
+      {field.type === "json-string" && (
         <textarea
           id={id}
-          value={
-            typeof value === "string"
-              ? value
-              : value
-                ? JSON.stringify(value, null, 2)
-                : field.defaultJson || "{}"
-          }
+          value={typeof value === "string" ? value : (field.defaultJson ?? "")}
           onChange={(event) => onChange(field.name, event.target.value)}
-          placeholder={field.placeholder || '{"type":"content"}'}
+          placeholder={field.placeholder || '{"blocks":[]}'}
           className={`${textareaClass} font-mono`}
           rows={field.rows || 8}
+        />
+      )}
+
+      {field.type === "block-content" && (
+        <BlockBuilder
+          value={value}
+          onChange={(json) => onChange(field.name, json)}
+          folder={field.folder}
         />
       )}
 
@@ -70,6 +74,16 @@ export default function FormField({ field, value, onChange }) {
         </select>
       )}
 
+      {field.type === "searchable-select" && (
+        <SearchableSelect
+          value={value}
+          onChange={(next) => onChange(field.name, next)}
+          options={field.options}
+          loadOptions={field.loadOptions}
+          placeholder={field.placeholder}
+        />
+      )}
+
       {field.type === "boolean" && (
         <div className="flex h-11 items-center border border-zinc-300 px-3">
           <input
@@ -84,16 +98,18 @@ export default function FormField({ field, value, onChange }) {
       )}
 
       {field.type === "media" && (
-        <MediaPicker value={value} onChange={(mediaId) => onChange(field.name, mediaId)} />
+        <ImageField
+          value={value}
+          onChange={(url) => onChange(field.name, url)}
+          folder={field.folder}
+        />
       )}
 
-      {field.type === "date" && (
-        <input
-          id={id}
-          type="datetime-local"
-          value={value ? String(value).slice(0, 16) : ""}
-          onChange={(event) => onChange(field.name, event.target.value)}
-          className={inputClass}
+      {(field.type === "date" || field.type === "datetime") && (
+        <DatePicker
+          value={value}
+          onChange={(next) => onChange(field.name, next)}
+          variant={field.type}
         />
       )}
 
@@ -115,12 +131,14 @@ export default function FormField({ field, value, onChange }) {
           className={inputClass}
           required={field.required}
           min={field.min}
+          disabled={field.readOnly}
         />
       )}
 
       {field.description && (
         <span className="mt-1.5 block text-xs leading-5 text-zinc-500">{field.description}</span>
       )}
+      {error && <span className="mt-1.5 block text-xs font-semibold text-rose-600">{error}</span>}
     </label>
   );
 }

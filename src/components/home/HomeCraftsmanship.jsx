@@ -14,6 +14,7 @@ const HomeCraftsmanship = () => {
           alt=""
           fill
           className="object-contain object-left opacity-80"
+          sizes="530px"
         />
       </div>
 
@@ -24,6 +25,7 @@ const HomeCraftsmanship = () => {
           alt=""
           fill
           className="object-contain object-right opacity-80"
+          sizes="530px"
         />
       </div>
 
@@ -92,6 +94,7 @@ const HomeCraftsmanship = () => {
                 alt="Icon trích dẫn"
                 fill
                 className="object-contain"
+                sizes="70px"
               />
             </div>
           </div>

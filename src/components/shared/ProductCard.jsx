@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ROUTES } from "@/utils/routes";
+import SafeImage from "@/components/shared/SafeImage";
 import productImageThumb from "@/assets/images/products/product-image-thumb.png";
 
 export default function ProductCard({
@@ -27,11 +28,12 @@ export default function ProductCard({
       {/* Container Ảnh */}
       <div className="relative w-full aspect-[340/255] bg-[#F4F5F6] overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
-          <Image 
-            src={image} 
+          <SafeImage
+            src={image}
             alt={name.replace('\n', ' ')}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
         </div>
       </div>

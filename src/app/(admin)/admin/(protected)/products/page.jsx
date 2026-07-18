@@ -1,5 +1,5 @@
-import AdminResourcePage from "@/features/admin/AdminResourcePage";
+import ProductsAdminList from "@/features/admin/products/ProductsAdminList";
 
 export default function AdminProductsPage() {
-  return <AdminResourcePage resourceKey="products" />;
+  return <ProductsAdminList />;
 }

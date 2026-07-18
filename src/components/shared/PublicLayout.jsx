@@ -4,12 +4,12 @@ import GlobalAltarWidget from "@/components/shared/GlobalAltarWidget";
 import AppToaster from "@/components/shared/AppToaster";
 import ConfirmDialogHost from "@/components/shared/ConfirmDialogHost";
 
-export default function PublicLayout({ children }) {
+export default function PublicLayout({ children, categories = [] }) {
   return (
     <>
-      <Header />
+      <Header categories={categories} />
       <main className="overflow-x-hidden">{children}</main>
-      <Footer />
+      <Footer categories={categories} />
       <GlobalAltarWidget />
       <AppToaster />
       <ConfirmDialogHost />

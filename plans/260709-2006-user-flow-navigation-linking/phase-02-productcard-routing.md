@@ -1,11 +1,17 @@
 ---
 phase: 2
 title: "ProductCard Routing"
-status: pending
+status: superseded
 effort: "M"
 ---
 
 # Phase 2: ProductCard Routing
+
+> **Superseded (2026-07-13):** absorbed by `260713-1234-storefront-api-seo-wiring`'s
+> Phase 3 ("Product Listing & Card Routing"), which wired real product data into all 6
+> `ProductCard` consumers. `ProductCard.jsx` is confirmed already `Link`-based with
+> `slug`/`id`-driven routing, matching this phase's design exactly — no separate
+> implementation needed. Kept here for history, not implemented as a standalone phase.
 
 ## Overview
 

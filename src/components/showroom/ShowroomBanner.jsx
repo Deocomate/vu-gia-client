@@ -13,6 +13,7 @@ export default function ShowroomBanner() {
         alt="Showroom Gốm Sứ Vũ Gia"
         fill
         className="object-cover z-0"
+        sizes="100vw"
         priority
       />
       {/* Overlay to ensure text readability */}
