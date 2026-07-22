@@ -113,6 +113,32 @@ function writeMergeMutex(userId, value) {
   }
 }
 
+/**
+ * Real cross-TAB mutual exclusion for the merge critical section.
+ *
+ * The `localStorage` flag above records merge *outcome* ("running"/"done")
+ * durably across reloads, but a plain read-then-write on it is NOT atomic
+ * between two tabs: both can read "unset" before either writes "running".
+ * Since `POST /api/cart/items` is additive server-side, two tabs racing
+ * through the same absolute-target computation would each `POST`/`PUT` it,
+ * landing as a doubled quantity — exactly what the mutex exists to prevent.
+ *
+ * The Web Locks API (`navigator.locks`) provides a real origin-scoped,
+ * cross-tab exclusive lock: a second tab requesting the same lock name
+ * queues and waits for the first to finish, rather than racing it. Wrapping
+ * the whole read-flag→merge→write-flag sequence in one means the second
+ * tab only ever observes the flag AFTER the first tab's merge completed and
+ * wrote "done" — so it takes the cheap resync branch instead of re-merging.
+ * Falls back to running unlocked (single-tab-safe only, pre-fix behavior)
+ * on browsers without Web Locks support (Safari < 15.4, very old Firefox).
+ */
+async function withMergeLock(userId, fn) {
+  if (typeof navigator !== "undefined" && navigator.locks?.request) {
+    return navigator.locks.request(`vugia-cart-merge-lock:${userId}`, fn);
+  }
+  return fn();
+}
+
 export const useCartStore = create(
   persist(
     (set, get) => ({
@@ -319,25 +345,32 @@ export const useCartStore = create(
 
       /**
        * Converges the local guest cart into the server cart on login
-       * (RT-B/RT-C). Idempotent + cross-tab-safe via a persisted mutex
-       * (`vugia-cart-merge:<userId>` in `localStorage`):
-       *
-       * - `"running"` → another call/tab is actively merging right now, bail.
-       * - `"done"` → already converged before; just resync (cheap GET, safe
-       *   to repeat on every reload/tab — never re-sends guest lines).
-       * - unset → first time for this user: set `"running"`, compute each
-       *   guest product's ABSOLUTE target quantity (existing server qty +
-       *   guest qty) once, `POST` new lines / `PUT` existing lines to that
-       *   target, clearing each guest line right after its OWN success (a
-       *   crash partway through leaves only the unsynced remainder — a retry
-       *   only touches what's left). Marks `"done"` on completion.
+       * (RT-B/RT-C). Idempotent + cross-tab-safe: `withMergeLock` (Web
+       * Locks API) serializes concurrent callers from different tabs so
+       * only one ever runs `_runGuardedMerge` at a time — a second tab's
+       * call queues until the first's merge finishes, then re-reads the
+       * `localStorage` flag (now "done") and just resyncs instead of
+       * re-merging. See `_runGuardedMerge` for the flag/merge logic itself.
        */
       async mergeGuestCartToServer(userId) {
         if (userId == null) return;
 
+        return withMergeLock(userId, () => get()._runGuardedMerge(userId));
+      },
+
+      /**
+       * The actual merge body — always invoked from inside `withMergeLock`
+       * so at most one tab executes this at a time; a second tab's call
+       * queues until the first's lock releases, then re-reads the
+       * `localStorage` flag (now "done") and takes the cheap resync branch.
+       */
+      async _runGuardedMerge(userId) {
         const flag = readMergeMutex(userId);
 
         if (flag === "running") {
+          // Should be unreachable now that the lock serializes callers, but
+          // kept as a defensive no-op (e.g. a prior tab crashed mid-merge
+          // without releasing the OS-level lock in some exotic environment).
           return;
         }
 
@@ -357,10 +390,9 @@ export const useCartStore = create(
           // RT-A: legacy pre-Phase-3 guest lines may still carry a mock
           // string id (e.g. "dt026") instead of a real numeric productId —
           // drop them rather than sending them to the API.
-          const guestItems = get().items.filter((it) => {
-            const n = Number(it?.id);
-            return Number.isFinite(n) && String(it.id).trim() !== "";
-          });
+          const guestItems = get().items.filter(
+            (it) => typeof it?.id === "number" || /^\d+$/.test(String(it?.id ?? "")),
+          );
           const droppedCount = get().items.length - guestItems.length;
           if (droppedCount > 0) {
             set((state) => ({ items: state.items.filter((it) => guestItems.includes(it)) }));
