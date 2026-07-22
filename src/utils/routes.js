@@ -13,6 +13,8 @@ export const ROUTES = {
   FAQ: "/cau-hoi-thuong-gap",
   CART: "/gio-hang",
   CHECKOUT: "/thanh-toan",
+  LOGIN: "/dang-nhap",
+  REGISTER: "/dang-ky",
   ACCOUNT: "/tai-khoan",
   ORDERS: "/tai-khoan/don-hang",
   ALTAR_CUSTOMIZER: "/tuy-chinh-bo-do-tho",

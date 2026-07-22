@@ -1,4 +1,5 @@
 import CheckoutView from "@/views/CheckoutView";
+import RequireCustomerAuth from "@/features/auth/RequireCustomerAuth";
 import { ROUTES } from "@/utils/routes";
 
 export const metadata = {
@@ -14,5 +15,9 @@ export const metadata = {
 };
 
 export default function CheckoutPage() {
-  return <CheckoutView />;
+  return (
+    <RequireCustomerAuth>
+      <CheckoutView />
+    </RequireCustomerAuth>
+  );
 }

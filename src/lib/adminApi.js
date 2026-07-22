@@ -1,18 +1,25 @@
-// NEXT_PUBLIC_API_BASE_URL is inlined at build time and reaches the browser —
-// it must be the public-facing backend URL. Server Components/route handlers
-// (SSR, generateMetadata) run inside this app's own container though, so a
-// browser-facing "localhost:8080" resolves to the container itself, not the
-// backend. INTERNAL_API_BASE_URL is a plain (non-NEXT_PUBLIC_) runtime env var
-// read only on the server, for reaching the backend over the Docker network
-// (e.g. "http://app:8080/api") — never sent to the client bundle.
-export const API_BASE_URL =
-  (typeof window === "undefined" && process.env.INTERNAL_API_BASE_URL) ||
-  process.env.NEXT_PUBLIC_API_BASE_URL ||
-  "http://localhost:8080/api";
+// Thin binding of the shared session-aware HTTP client (`@/shared/api/api-client`)
+// to the admin CMS session. Kept at this exact path/export surface — 17 admin
+// feature files import from here (`grep -rl "@/lib/adminApi" src`), 2 of them
+// check `instanceof AdminApiError`/`.name === "AdminApiError"` — so the export
+// set (`adminApi`, `adminRequest`, `AdminApiError`, `API_BASE_URL`, `formatVnd`,
+// `parseVnd`, `getValueByPath`) and the `AdminApiError` name must not change.
+//
+// Deliberately NOT marked "use client" (the original file wasn't either): this
+// module is imported transitively by Server Components too (`publicApi.js` ->
+// this file, for `API_BASE_URL`, from every storefront page/layout/sitemap
+// route). Adding a client-boundary directive here forced Next.js to create a
+// client reference for every one of those Server Component call sites, which
+// blew up static-generation time enough to trip the 60s-per-page watchdog
+// during `next build` (reproduced: builds reliably hung/timed out with the
+// directive present, and reliably succeeded once removed).
+import { apiRequest, ApiError, API_BASE_URL } from "@/shared/api/api-client";
+
+export { API_BASE_URL };
 
 export class AdminApiError extends Error {
-  constructor(message, { status, code, data } = {}) {
-    super(message);
+  constructor(message, { status, code, data, cause } = {}) {
+    super(message, cause ? { cause } : undefined);
     this.name = "AdminApiError";
     this.status = status;
     this.code = code;
@@ -20,132 +27,29 @@ export class AdminApiError extends Error {
   }
 }
 
-const buildUrl = (path, query) => {
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  const url = new URL(`${API_BASE_URL}${normalizedPath}`);
-
-  Object.entries(query || {}).forEach(([key, value]) => {
-    if (value !== undefined && value !== null && value !== "") {
-      url.searchParams.set(key, value);
-    }
-  });
-
-  return url.toString();
-};
-
-const parseResponse = async (response) => {
-  if (response.status === 204) {
-    return null;
-  }
-
-  const contentType = response.headers.get("content-type") || "";
-  if (contentType.includes("application/json")) {
-    return response.json();
-  }
-
-  return response.text();
-};
-
-// Single-flight refresh: concurrent 401s share one refresh promise.
-let refreshPromise = null;
-
-function getAuthStore() {
-  // Lazy require to avoid a circular import (adminAuthStore -> adminApi).
+// Lazy require (not a top-level import): `publicApi.js` imports `API_BASE_URL`
+// from this module for every storefront page, and eagerly importing the admin
+// zustand/persist store there would load the whole admin-session module graph
+// into every public page's render just to read a URL constant. `adminRequest`
+// is the only thing that actually needs the store, and only at call time.
+function getAdminAuthStore() {
   return require("@/stores/adminAuthStore").useAdminAuthStore;
 }
 
-async function performRefresh() {
-  const store = getAuthStore();
-  const refreshToken = store.getState().refreshToken;
-  if (!refreshToken) {
-    throw new AdminApiError("Không có phiên đăng nhập.", { status: 401 });
-  }
-
-  const response = await fetch(buildUrl("/auth/refresh"), {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ refreshToken }),
-  });
-  const envelope = await parseResponse(response);
-
-  if (!response.ok || envelope?.code !== 1000) {
-    throw new AdminApiError(envelope?.message || "Phiên đăng nhập đã hết hạn.", {
-      status: response.status,
-      code: envelope?.code,
-    });
-  }
-
-  const { accessToken, refreshToken: nextRefreshToken } = envelope.data || {};
-  store.getState().setTokens({ accessToken, refreshToken: nextRefreshToken });
-  return accessToken;
-}
-
-async function refreshAccessToken() {
-  if (!refreshPromise) {
-    refreshPromise = performRefresh().finally(() => {
-      refreshPromise = null;
-    });
-  }
-  return refreshPromise;
-}
-
-async function rawRequest(path, options) {
-  const { query, body, headers, ...init } = options;
-  const isFormData = body instanceof FormData;
-  const store = getAuthStore();
-  const accessToken = store.getState().accessToken;
-
-  let response;
-  let envelope;
+export async function adminRequest(path, options = {}) {
   try {
-    response = await fetch(buildUrl(path, query), {
-      ...init,
-      headers: {
-        ...(isFormData ? {} : { "Content-Type": "application/json" }),
-        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-        ...headers,
-      },
-      body: body === undefined ? undefined : isFormData ? body : JSON.stringify(body),
-    });
-    envelope = await parseResponse(response);
+    return await apiRequest(getAdminAuthStore(), path, options);
   } catch (error) {
-    if (path.includes("banner") || path.includes("ad")) {
-      throw new AdminApiError(
-        "Yêu cầu API bị lỗi hoặc bị chặn. Nếu bạn đang bật trình chặn quảng cáo (Adblocker), vui lòng tắt nó trên localhost (Lỗi có thể là ERR_BLOCKED_BY_CLIENT).",
-        { status: 0 }
-      );
+    if (error instanceof ApiError) {
+      throw new AdminApiError(error.message, {
+        status: error.status,
+        code: error.code,
+        data: error.data,
+        cause: error.cause,
+      });
     }
     throw error;
   }
-
-  return { response, envelope };
-}
-
-export async function adminRequest(path, options = {}) {
-  const isAuthCall = path.startsWith("/auth/");
-  let { response, envelope } = await rawRequest(path, options);
-
-  if (response.status === 401 && !isAuthCall) {
-    try {
-      await refreshAccessToken();
-      ({ response, envelope } = await rawRequest(path, options));
-    } catch (refreshError) {
-      getAuthStore().getState().logout();
-      throw new AdminApiError("Phiên đăng nhập đã hết hạn.", { status: 401 });
-    }
-  }
-
-  if (!response.ok || (envelope && typeof envelope === "object" && envelope.code !== undefined && envelope.code !== 1000)) {
-    const message = envelope?.message || "Không thể hoàn tất yêu cầu.";
-    throw new AdminApiError(message, {
-      status: response.status,
-      code: envelope?.code,
-      data: envelope?.data,
-    });
-  }
-
-  // Envelope responses carry the payload in `data`; plain 204/text bodies pass through.
-  return envelope && typeof envelope === "object" && "data" in envelope ? envelope.data : envelope;
 }
 
 export const adminApi = {

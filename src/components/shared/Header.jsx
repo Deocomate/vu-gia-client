@@ -4,10 +4,11 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ROUTES } from "@/utils/routes";
 import { useCartStore } from "@/stores/cartStore";
+import { useCustomerAuthStore } from "@/shared/stores/customer-auth-store";
 
 /**
  * Builds nav links, wiring the "Sản phẩm" submenu to real `ProductCategory`
@@ -64,6 +65,100 @@ function CartLink({ className = "", onClick }) {
         </div>
       )}
     </Link>
+  );
+}
+
+/**
+ * Auth-aware account entry: links to login when logged out, or shows the
+ * account link + a small logout dropdown when a customer session is active.
+ * Bootstraps `loadCurrentUser()` once on mount (mirrors `RequireCustomerAuth`)
+ * so the header reflects an existing session on page load without forcing
+ * every public page to redirect through a guard.
+ */
+function AccountMenu({ className = "" }) {
+  const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const status = useCustomerAuthStore((s) => s.status);
+  const user = useCustomerAuthStore((s) => s.user);
+  const loadCurrentUser = useCustomerAuthStore((s) => s.loadCurrentUser);
+  const logout = useCustomerAuthStore((s) => s.logout);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted && status === "idle") {
+      loadCurrentUser();
+    }
+  }, [mounted, status, loadCurrentUser]);
+
+  const isLoggedIn = mounted && status === "authenticated" && !!user;
+
+  const handleLogout = async () => {
+    setMenuOpen(false);
+    await logout();
+    router.push(ROUTES.HOME);
+  };
+
+  if (!isLoggedIn) {
+    return (
+      <Link
+        href={ROUTES.LOGIN}
+        aria-label="Đăng nhập"
+        className={`relative w-[20px] h-[20px] shrink-0 hover:opacity-80 transition-opacity ${className}`}
+      >
+        <Image src="/images/header/user.png" alt="User" fill className="object-contain" sizes="20px" />
+      </Link>
+    );
+  }
+
+  return (
+    <div className={`relative ${className}`}>
+      <button
+        type="button"
+        onClick={() => setMenuOpen((value) => !value)}
+        aria-label="Tài khoản"
+        aria-expanded={menuOpen}
+        className="relative w-[20px] h-[20px] shrink-0 hover:opacity-80 transition-opacity"
+      >
+        <Image src="/images/header/user.png" alt="User" fill className="object-contain" sizes="20px" />
+      </button>
+
+      {menuOpen && (
+        <>
+          {/* Click-away backdrop */}
+          <button
+            type="button"
+            aria-hidden="true"
+            tabIndex={-1}
+            className="fixed inset-0 z-40 cursor-default"
+            onClick={() => setMenuOpen(false)}
+          />
+          <div className="absolute right-0 top-full mt-2 min-w-[200px] rounded-[8px] border border-[#E6E8EC] bg-white shadow-lg overflow-hidden z-50">
+            <p className="px-4 py-3 text-[13px] font-montserrat font-semibold text-[#383838] border-b border-[#E6E8EC] truncate">
+              {user.name || user.username}
+            </p>
+            <Link
+              href={ROUTES.ACCOUNT}
+              onClick={() => setMenuOpen(false)}
+              className="block px-4 py-2.5 text-[14px] font-montserrat text-[#383838] hover:bg-[#F4F5F6] hover:text-[#97400C] transition-colors"
+            >
+              Tài khoản của tôi
+            </Link>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="w-full text-left px-4 py-2.5 text-[14px] font-montserrat text-[#383838] hover:bg-[#F4F5F6] hover:text-[#97400C] transition-colors"
+            >
+              Đăng xuất
+            </button>
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 
@@ -201,35 +296,11 @@ export default function Header({ categories = [] }) {
             />
           </button>
 
-          <Link
-            href={ROUTES.ACCOUNT}
-            aria-label="Tài khoản"
-            className="hidden lg:block relative w-[20px] h-[20px] flex-shrink-0 hover:opacity-80 transition-opacity"
-          >
-            <Image
-              src="/images/header/user.png"
-              alt="User"
-              fill
-              className="object-contain"
-              sizes="20px"
-            />
-          </Link>
+          <AccountMenu className="hidden lg:block" />
 
           <CartLink />
 
-          <Link
-            href={ROUTES.ACCOUNT}
-            aria-label="Tài khoản"
-            className="lg:hidden relative w-[20px] h-[20px] flex-shrink-0 hover:opacity-80 transition-opacity"
-          >
-            <Image
-              src="/images/header/user.png"
-              alt="User"
-              fill
-              className="object-contain"
-              sizes="20px"
-            />
-          </Link>
+          <AccountMenu className="lg:hidden" />
         </div>
       </div>
 

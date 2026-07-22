@@ -2,15 +2,18 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { adminRequest } from "@/lib/adminApi";
+import { apiRequest } from "@/shared/api/api-client";
 import { ADMIN_ROLES } from "@/lib/apiEnums";
 
+// Calls the shared api-client directly (not `adminRequest` from `@/lib/adminApi`)
+// so this store never imports `@/lib/adminApi` — avoids a circular import,
+// since `@/lib/adminApi` imports THIS store to bind its own requests. Both
+// modules independently bind `@/shared/api/api-client` to `useAdminAuthStore`.
 export const useAdminAuthStore = create(
   persist(
     (set, get) => ({
       user: null,
       accessToken: null,
-      refreshToken: null,
       status: "idle",
       error: "",
 
@@ -18,8 +21,14 @@ export const useAdminAuthStore = create(
         return ADMIN_ROLES.includes(get().user?.role);
       },
 
-      setTokens({ accessToken, refreshToken }) {
-        set({ accessToken, refreshToken });
+      /** Called by the shared api-client after a successful token refresh. */
+      setAccessToken(accessToken) {
+        set({ accessToken });
+      },
+
+      /** Local-only session clear (no network call) — used when a refresh fails. */
+      clearSession() {
+        set({ user: null, accessToken: null, status: "unauthenticated", error: "" });
       },
 
       async loadCurrentUser() {
@@ -31,7 +40,7 @@ export const useAdminAuthStore = create(
         set({ status: "loading", error: "" });
 
         try {
-          const user = await adminRequest("/auth/me", { method: "GET" });
+          const user = await apiRequest(useAdminAuthStore, "/auth/me", { method: "GET" });
 
           if (!ADMIN_ROLES.includes(user?.role)) {
             set({ user, status: "forbidden", error: "Tài khoản không có quyền truy cập CMS." });
@@ -44,7 +53,6 @@ export const useAdminAuthStore = create(
           set({
             user: null,
             accessToken: null,
-            refreshToken: null,
             status: error.status === 403 ? "forbidden" : "unauthenticated",
             error: error.message || "Không thể kiểm tra phiên đăng nhập.",
           });
@@ -56,32 +64,30 @@ export const useAdminAuthStore = create(
         set({ status: "loading", error: "" });
 
         try {
-          const data = await adminRequest("/auth/login", {
+          const data = await apiRequest(useAdminAuthStore, "/auth/login", {
             method: "POST",
             // Backend DTO field is literally `username` even though it accepts email too.
             body: { username: usernameOrEmail, password },
           });
 
-          const { accessToken, refreshToken, user } = data || {};
+          const { accessToken, user } = data || {};
 
           if (!ADMIN_ROLES.includes(user?.role)) {
             set({
               user: null,
               accessToken: null,
-              refreshToken: null,
               status: "unauthenticated",
               error: "Tài khoản không có quyền truy cập CMS.",
             });
             throw new Error("Tài khoản không có quyền truy cập CMS.");
           }
 
-          set({ user, accessToken, refreshToken, status: "authenticated", error: "" });
+          set({ user, accessToken, status: "authenticated", error: "" });
           return user;
         } catch (error) {
           set({
             user: null,
             accessToken: null,
-            refreshToken: null,
             status: "unauthenticated",
             error: error.message || "Đăng nhập không thành công.",
           });
@@ -90,23 +96,24 @@ export const useAdminAuthStore = create(
       },
 
       async logout() {
-        const refreshToken = get().refreshToken;
-        set({ user: null, accessToken: null, refreshToken: null, status: "unauthenticated", error: "" });
+        // Refresh token now lives only in the httpOnly cookie — the backend
+        // reads it server-side, no body needed (see docs/AUTH_USER_API.md §3.5).
+        set({ user: null, accessToken: null, status: "unauthenticated", error: "" });
 
-        if (refreshToken) {
-          try {
-            await adminRequest("/auth/logout", { method: "POST", body: { refreshToken } });
-          } catch {
-            // Best-effort revoke; local session is already cleared.
-          }
+        try {
+          await apiRequest(useAdminAuthStore, "/auth/logout", { method: "POST" });
+        } catch {
+          // Best-effort revoke; local session is already cleared.
         }
       },
     }),
     {
       name: "admin-auth",
+      // Only the short-lived access token + user are persisted (bootstraps a
+      // silent refresh attempt on reload); the refresh token is no longer
+      // client-visible at all (httpOnly cookie, BE-1).
       partialize: (state) => ({
         accessToken: state.accessToken,
-        refreshToken: state.refreshToken,
         user: state.user,
       }),
     },
