@@ -4,13 +4,13 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCustomerAuthStore } from "@/shared/stores/customer-auth-store";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES, sanitizeNextPath } from "@/utils/routes";
 import GoogleLoginButton from "./GoogleLoginButton";
 
 export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") || ROUTES.ACCOUNT;
+  const next = sanitizeNextPath(searchParams.get("next"), ROUTES.ACCOUNT);
 
   const login = useCustomerAuthStore((state) => state.login);
   const storeError = useCustomerAuthStore((state) => state.error);

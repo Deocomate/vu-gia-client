@@ -36,3 +36,21 @@ export const ROUTES = {
   ADMIN_REDIRECTS: "/admin/redirects",
   ADMIN_USERS: "/admin/users",
 };
+
+/**
+ * Guards `?next=` redirect targets against open-redirect: only a single
+ * same-origin relative path is allowed (must start with exactly one "/",
+ * never a protocol-relative "//" or backslash variant an attacker could use
+ * to redirect off-site after a legitimate login).
+ */
+export function sanitizeNextPath(next, fallback = ROUTES.HOME) {
+  if (
+    typeof next !== "string" ||
+    !next.startsWith("/") ||
+    next.startsWith("//") ||
+    next.startsWith("/\\")
+  ) {
+    return fallback;
+  }
+  return next;
+}

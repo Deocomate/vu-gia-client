@@ -4,12 +4,12 @@ import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, LockKeyhole } from "lucide-react";
 import { useAdminAuthStore } from "@/stores/adminAuthStore";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES, sanitizeNextPath } from "@/utils/routes";
 
 function AdminLoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") || ROUTES.ADMIN;
+  const next = sanitizeNextPath(searchParams.get("next"), ROUTES.ADMIN);
   const { status, error, login, isAdmin } = useAdminAuthStore();
   const [form, setForm] = useState({ usernameOrEmail: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);

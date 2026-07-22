@@ -35,6 +35,7 @@
     "@tailwindcss/postcss": "^4.3.0",
     "eslint": "^9",
     "eslint-config-next": "15.5.18",
+    "playwright": "^1.61.1",
     "tailwindcss": "^4.3.0"
   }
 }
