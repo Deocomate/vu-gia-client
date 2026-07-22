@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
-import { PLACEHOLDER_IMAGE } from "@/lib/media";
+import SafeImage from "@/components/shared/SafeImage";
 
 export default function CartItemList({
   items = [],
+  pendingIds = [],
   onQuantityChange = () => {},
   onRemoveItem = () => {},
   onEditItem = () => {},
@@ -22,10 +22,7 @@ export default function CartItemList({
   };
 
   const totalQuantity = items.reduce((sum, item) => sum + (item.quantity || 0), 0);
-  const totalAmount = items.reduce(
-    (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
-    0
-  );
+  const totalAmount = items.reduce((sum, item) => sum + (item.lineTotal || 0), 0);
 
   return (
     <div 
@@ -43,28 +40,21 @@ export default function CartItemList({
       {/* Cart Items List */}
       <div className="flex flex-col gap-[30px]">
         {items.map((item) => {
-          const rowTotal = (item.price || 0) * (item.quantity || 0);
+          const rowTotal = item.lineTotal || 0;
+          const isPending = pendingIds.includes(item.id);
           return (
-            <div key={item.id}>
+            <div key={item.id} className={isPending ? "opacity-60 pointer-events-none" : ""}>
               {/* MOBILE LAYOUT */}
               <div className="block md:hidden">
                 <div className="flex gap-[15px]">
                   <div className="w-[80px] h-[80px] shrink-0 rounded-[6px] overflow-hidden relative border border-[#D1D5DB]">
-                    {item.image && typeof item.image === "object" ? (
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        className="object-cover"
-                        sizes="80px"
-                      />
-                    ) : (
-                      <img
-                        src={item.image || PLACEHOLDER_IMAGE.src}
-                        alt={item.title}
-                        className="w-full h-full object-cover"
-                      />
-                    )}
+                    <SafeImage
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover"
+                      sizes="80px"
+                    />
                   </div>
 
                   <div className="flex-1 min-w-0">
@@ -165,21 +155,13 @@ export default function CartItemList({
                 <div className="col-span-1 md:col-span-6 flex gap-[15px] items-start">
                   {/* Image Container */}
                   <div className="w-[91px] h-[91px] shrink-0 border-[0.5px] border-[#909090] rounded-[5px] bg-white flex items-center justify-center overflow-hidden relative">
-                    {item.image && typeof item.image === "object" ? (
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        className="object-cover"
-                        sizes="91px"
-                      />
-                    ) : (
-                      <img
-                        src={item.image || PLACEHOLDER_IMAGE.src}
-                        alt={item.title}
-                        className="w-full h-full object-cover"
-                      />
-                    )}
+                    <SafeImage
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover"
+                      sizes="91px"
+                    />
                   </div>
 
                   {/* Text Details */}

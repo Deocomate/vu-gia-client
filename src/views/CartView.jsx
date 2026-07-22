@@ -8,6 +8,7 @@ import CartSummary from "@/components/cart/CartSummary";
 import ProductCard from "@/components/shared/ProductCard";
 import { ROUTES } from "@/utils/routes";
 import { useCartStore } from "@/stores/cartStore";
+import { toCartLineVMList } from "@/features/cart/cart-view-model";
 import { confirm, toast } from "@/utils/feedback";
 import { useFeaturedProductCards } from "@/hooks/useFeaturedProductCards";
 
@@ -15,9 +16,15 @@ const RELATED_PRODUCTS_LIMIT = 4;
 
 export default function CartView() {
   const router = useRouter();
-  const cartItems = useCartStore((s) => s.items);
-  const updateQuantity = useCartStore((s) => s.updateQuantity);
-  const removeItem = useCartStore((s) => s.removeItem);
+  const mode = useCartStore((s) => s.mode);
+  const rawItems = useCartStore((s) => s.items);
+  const totalAmount = useCartStore((s) => s.totalAmount);
+  const pendingIds = useCartStore((s) => s.pendingIds);
+  const updateLineQuantity = useCartStore((s) => s.updateLineQuantity);
+  const removeLine = useCartStore((s) => s.removeLine);
+
+  const cartItems = useMemo(() => toCartLineVMList(rawItems, mode), [rawItems, mode]);
+  const isMutating = pendingIds.length > 0;
 
   const breadcrumbItems = [
     { name: "Trang chủ", href: ROUTES.HOME },
@@ -27,12 +34,13 @@ export default function CartView() {
   const [promoApplied, setPromoApplied] = useState(false);
   const [discountAmount, setDiscountAmount] = useState(0);
 
+  // Server mode trusts `totalAmount` from the Cart API (unitPrice is always
+  // the current server price); guest mode keeps the local display-only
+  // estimate summed from each line's `lineTotal`.
   const subtotal = useMemo(() => {
-    return cartItems.reduce(
-      (sum, item) => sum + (item.price || 0) * (Number(item.quantity) || 0),
-      0,
-    );
-  }, [cartItems]);
+    if (mode === "server") return totalAmount;
+    return cartItems.reduce((sum, item) => sum + item.lineTotal, 0);
+  }, [mode, totalAmount, cartItems]);
 
   const tax = 0;
 
@@ -43,7 +51,8 @@ export default function CartView() {
   const relatedProducts = useFeaturedProductCards(RELATED_PRODUCTS_LIMIT);
 
   const handleQuantityChange = (id, newQty) => {
-    updateQuantity(id, newQty);
+    if (newQty === "" || newQty === null) return;
+    updateLineQuantity(id, newQty);
   };
 
   const handleRemoveItem = async (id) => {
@@ -55,7 +64,7 @@ export default function CartView() {
       destructive: true,
     });
     if (!ok) return;
-    removeItem(id);
+    removeLine(id);
   };
 
   const handleEditItem = (id) => {
@@ -108,6 +117,7 @@ export default function CartView() {
             {cartItems.length > 0 ? (
               <CartItemList
                 items={cartItems}
+                pendingIds={pendingIds}
                 onQuantityChange={handleQuantityChange}
                 onRemoveItem={handleRemoveItem}
                 onEditItem={handleEditItem}
@@ -140,6 +150,7 @@ export default function CartView() {
               discount={discountAmount}
               tax={tax}
               total={total}
+              disabled={isMutating}
               onApplyPromoCode={handleApplyPromoCode}
               onCheckout={handleCheckout}
             />

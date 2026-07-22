@@ -7,6 +7,7 @@ export default function CartSummary({
   discount = 0,
   tax = 0,
   total = 0,
+  disabled = false,
   onApplyPromoCode = () => {},
   onCheckout = () => {},
 }) {
@@ -95,7 +96,8 @@ export default function CartSummary({
       {/* Checkout Button */}
       <button
         onClick={onCheckout}
-        className="w-full md:max-w-[276px] h-[52px] md:h-[42px] mx-auto flex items-center justify-center bg-[#C76E00] hover:bg-[#a65c00] text-white font-montserrat md:font-archivo font-[700] text-[16px] md:text-[14px] leading-[20px] tracking-[0.70px] md:tracking-normal transition duration-200 cursor-pointer mt-10 rounded-[3px]"
+        disabled={disabled}
+        className="w-full md:max-w-[276px] h-[52px] md:h-[42px] mx-auto flex items-center justify-center bg-[#C76E00] hover:bg-[#a65c00] text-white font-montserrat md:font-archivo font-[700] text-[16px] md:text-[14px] leading-[20px] tracking-[0.70px] md:tracking-normal transition duration-200 cursor-pointer mt-10 rounded-[3px] disabled:opacity-50 disabled:cursor-not-allowed"
       >
         THANH TOÁN
       </button>

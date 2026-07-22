@@ -1,26 +1,39 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChevronDown, ChevronUp, ChevronRight, Search } from "lucide-react";
-import productDetailThumbnail from "@/assets/images/product-detail/product-detail-thumbnail.png";
-import productCardImage1 from "@/assets/images/product-detail/product-card-image-1.png";
-import productCardImage2 from "@/assets/images/product-detail/product-card-image-2.png";
-import productCardImage3 from "@/assets/images/product-detail/product-card-image-3.png";
+import SafeImage from "@/components/shared/SafeImage";
+import { formatImageUrl } from "@/lib/media";
+import { publicGet, PublicApiError } from "@/lib/publicApi";
 import { ROUTES } from "@/utils/routes";
 import { useCartStore } from "@/stores/cartStore";
 import { toast } from "@/utils/feedback";
 
-const DEMO_PRODUCT = {
-  id: "dt026",
-  title: "Bộ đồ thờ Phật vẽ hoa sen men rạn cổ đơn giản DT026",
-  sku: "MSP: VG001",
-  price: 2000000,
-  classification: "Men rạn",
-  packSize: 1,
-  image: productDetailThumbnail,
-};
+/** Builds the ordered gallery image URL list from a real `ProductResponse` (PRODUCT_API.md §8). */
+function buildGalleryImages(product) {
+  const images = Array.isArray(product?.images) ? product.images : [];
+  if (images.length > 0) {
+    return images.map((img) => formatImageUrl(img.url));
+  }
+  return product?.thumb ? [formatImageUrl(product.thumb)] : [];
+}
+
+/**
+ * `comboProducts` (PRODUCT_API.md §5) is a FE-opaque JSON string of
+ * `{productId, sortOrder}` refs — no name/price/image. Parses it defensively;
+ * malformed/absent JSON just yields no sub-items instead of throwing.
+ */
+function parseComboRefs(comboProducts) {
+  if (!comboProducts) return [];
+  try {
+    const parsed = JSON.parse(comboProducts);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
 
 // ==========================================
 // 1. PRODUCT GALLERY COMPONENT
@@ -50,20 +63,22 @@ function ProductGallery({ galleryImages, mainImage, setMainImage }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isLightboxOpen, activeIndex]);
 
+  if (galleryImages.length === 0) return null;
+
   return (
     <div className="w-full">
       {/* Mobile swipe gallery: aspect ratio 430/323 matching figma exactly, full-bleed to screen edges */}
       <div className="md:hidden w-[calc(100%+60px)] mx-[-30px] overflow-x-auto snap-x snap-mandatory flex scrollbar-none gap-0">
         {galleryImages.map((img, idx) => (
-          <div 
-            key={idx} 
+          <div
+            key={img + idx}
             className="w-full shrink-0 snap-center relative aspect-[430/323] cursor-zoom-in"
             onClick={() => {
               setActiveIndex(idx);
               setIsLightboxOpen(true);
             }}
           >
-            <Image
+            <SafeImage
               src={img}
               alt={`Product Image ${idx + 1}`}
               fill
@@ -83,7 +98,7 @@ function ProductGallery({ galleryImages, mainImage, setMainImage }) {
           <div className="flex md:flex-col gap-[15px] overflow-hidden max-h-[500px]">
             {galleryImages.map((img, idx) => (
               <button
-                key={idx}
+                key={img + idx}
                 onClick={() => setMainImage(img)}
                 className={`relative w-[60px] h-[55px] md:w-[87px] md:h-[79px] overflow-hidden flex-shrink-0 transition-all duration-300 cursor-pointer ${
                   mainImage === img
@@ -91,7 +106,7 @@ function ProductGallery({ galleryImages, mainImage, setMainImage }) {
                     : "opacity-50 hover:opacity-100 scale-100"
                 }`}
               >
-                <Image
+                <SafeImage
                   src={img}
                   alt={`Thumbnail ${idx + 1}`}
                   fill
@@ -104,7 +119,7 @@ function ProductGallery({ galleryImages, mainImage, setMainImage }) {
         </div>
 
         {/* Main Display Image - height 601px, no rounded, no border */}
-        <div 
+        <div
           className="relative w-full aspect-[831/601] lg:h-[601px] lg:aspect-auto overflow-hidden bg-gray-100 flex-1 cursor-zoom-in"
           onClick={() => {
             const idx = galleryImages.indexOf(mainImage);
@@ -112,7 +127,7 @@ function ProductGallery({ galleryImages, mainImage, setMainImage }) {
             setIsLightboxOpen(true);
           }}
         >
-          <Image
+          <SafeImage
             src={mainImage}
             alt="Bộ đồ thờ"
             fill
@@ -179,7 +194,7 @@ function ProductGallery({ galleryImages, mainImage, setMainImage }) {
 
           {/* Active Image container */}
           <div className="relative max-w-[90%] max-h-[80vh] aspect-square w-full md:w-[60vw] z-10 flex items-center justify-center">
-            <Image
+            <SafeImage
               src={galleryImages[activeIndex]}
               alt={`Slide ${activeIndex + 1}`}
               fill
@@ -228,22 +243,28 @@ function ProductGallery({ galleryImages, mainImage, setMainImage }) {
 // 2. PRODUCT PURCHASE PANEL COMPONENT
 // ==========================================
 function ProductPurchasePanel({
+  product,
   mainQuantity,
   setMainQuantity,
   onBuyNow,
   onAddToCart,
 }) {
+  const price = Number(product?.price) || 0;
+  const compareAtPrice = Number(product?.compareAtPrice) || 0;
+  const hasDiscount = compareAtPrice > price;
+  const discountPercent = hasDiscount ? Math.round((1 - price / compareAtPrice) * 100) : 0;
+
   return (
     <div className="flex flex-col font-montserrat">
       {/* Title */}
       <h1 className="text-[#141416] text-[24px] lg:text-[32px] font-[600] leading-[32px] lg:leading-[45px] mb-[10px] lg:mb-[20px] font-montserrat">
-        Bộ đồ thờ Phật vẽ hoa sen men rạn cổ đơn giản DT026
+        {product?.name || "Sản phẩm"}
       </h1>
 
       {/* SKU & Sold Status */}
       <div className="flex items-center justify-between mb-[20px]">
         <span className="text-[#A0A0A0] text-[16px] lg:text-[18px] font-[600] leading-[24px]">
-          MSP: VG001
+          MSP: {product?.sku || "—"}
         </span>
         <div className="flex items-center gap-[6px]">
           <div className="w-[18px] h-[18px] lg:w-[16px] lg:h-[16px] relative">
@@ -256,7 +277,7 @@ function ProductPurchasePanel({
             />
           </div>
           <span className="text-[#67A865] text-[14px] lg:text-[18px] font-[700] leading-[12px]">
-            Đã bán: 12
+            Đã bán: {product?.soldCount ?? 0}
           </span>
         </div>
       </div>
@@ -268,22 +289,26 @@ function ProductPurchasePanel({
       <div className="flex items-center justify-between gap-4 mb-[8px] lg:mb-[15px] w-full">
         <div className="flex flex-col lg:flex-row lg:items-baseline gap-1 lg:gap-4">
           <span className="text-[#97400C] text-[24px] lg:text-[32px] font-[700] leading-[32px] lg:leading-[40px]">
-            2.000.000đ
+            {price.toLocaleString("vi-VN")}đ
           </span>
-          <span className="text-[#838383] text-[16px] lg:text-[18px] font-[400] line-through leading-[24px]">
-            2.500.000đ
-          </span>
+          {hasDiscount && (
+            <span className="text-[#838383] text-[16px] lg:text-[18px] font-[400] line-through leading-[24px]">
+              {compareAtPrice.toLocaleString("vi-VN")}đ
+            </span>
+          )}
         </div>
-        <span className="bg-[#97400C] text-white text-[12px] font-[700] uppercase leading-[12px] px-3 py-2.5 lg:py-3 rounded-[4px] shrink-0">
-          Tiết kiệm 30%
-        </span>
+        {hasDiscount && (
+          <span className="bg-[#97400C] text-white text-[12px] font-[700] uppercase leading-[12px] px-3 py-2.5 lg:py-3 rounded-[4px] shrink-0">
+            Tiết kiệm {discountPercent}%
+          </span>
+        )}
       </div>
 
       {/* Divider */}
       <hr className="border-t border-[#E6E8EC] mb-[21px]" />
 
       {/* Quantity & Actions Layout (Responsive) */}
-      
+
       {/* 1. Mobile-only Quantity selector & Contact social actions */}
       <div className="flex lg:hidden items-center justify-between gap-[15px] mb-[20px] w-full">
         {/* Mobile Quantity selector: outline: 1px #B1B5C3 solid, h-[39px], w-[115px] */}
@@ -343,13 +368,15 @@ function ProductPurchasePanel({
       <div className="flex lg:hidden items-center gap-[12px] mb-[25px] w-full">
         <button
           onClick={onBuyNow}
-          className="flex-1 bg-[#97400C] text-white h-[43px] rounded-[4px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider hover:bg-opacity-95 transition-all duration-300 shadow-md cursor-pointer"
+          disabled={!product}
+          className="flex-1 bg-[#97400C] text-white h-[43px] rounded-[4px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider hover:bg-opacity-95 transition-all duration-300 shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Mua ngay
         </button>
         <button
           onClick={onAddToCart}
-          className="flex-1 border border-[#97400C] text-[#97400C] bg-white h-[43px] rounded-[4px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider hover:bg-[#97400C]/5 transition-all duration-300 cursor-pointer"
+          disabled={!product}
+          className="flex-1 border border-[#97400C] text-[#97400C] bg-white h-[43px] rounded-[4px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider hover:bg-[#97400C]/5 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Thêm vào giỏ
         </button>
@@ -377,13 +404,15 @@ function ProductPurchasePanel({
 
         <button
           onClick={onBuyNow}
-          className="flex-1 bg-[#97400C] text-white border border-[#97400C] rounded-[8px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider py-[15px] hover:bg-opacity-95 transition-all duration-300 shadow-md cursor-pointer min-w-0"
+          disabled={!product}
+          className="flex-1 bg-[#97400C] text-white border border-[#97400C] rounded-[8px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider py-[15px] hover:bg-opacity-95 transition-all duration-300 shadow-md cursor-pointer min-w-0 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Mua ngay
         </button>
         <button
           onClick={onAddToCart}
-          className="flex-1 border border-[#97400C] text-[#97400C] bg-white rounded-[8px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider py-[15px] hover:bg-[#97400C]/5 transition-all duration-300 cursor-pointer min-w-0"
+          disabled={!product}
+          className="flex-1 border border-[#97400C] text-[#97400C] bg-white rounded-[8px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider py-[15px] hover:bg-[#97400C]/5 transition-all duration-300 cursor-pointer min-w-0 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Thêm vào giỏ
         </button>
@@ -399,7 +428,7 @@ function ProductSubItemsAccordion({
   isInfoExpanded,
   setIsInfoExpanded,
   subItems,
-  updateSubItemQuantity,
+  subItemsLoading,
   onBuyNow,
   onAddToCart,
 }) {
@@ -422,6 +451,18 @@ function ProductSubItemsAccordion({
 
       {isInfoExpanded && (
         <div className="flex flex-col">
+          {subItemsLoading && (
+            <p className="py-[25px] font-montserrat text-[14px] text-[#909090]">
+              Đang tải danh sách sản phẩm trong bộ...
+            </p>
+          )}
+
+          {!subItemsLoading && subItems.length === 0 && (
+            <p className="py-[25px] font-montserrat text-[14px] text-[#909090]">
+              Sản phẩm này không có cấu hình bộ chi tiết.
+            </p>
+          )}
+
           {subItems.map((item) => (
             <div
               key={item.id}
@@ -429,7 +470,7 @@ function ProductSubItemsAccordion({
             >
               {/* Item Image - Width 140px, Height 130px, no rounding, no border */}
               <div className="relative w-[140px] h-[130px] overflow-hidden bg-gray-50 flex-shrink-0">
-                <Image
+                <SafeImage
                   src={item.image}
                   alt={item.name}
                   fill
@@ -455,59 +496,46 @@ function ProductSubItemsAccordion({
                     <span className="text-[#97400C] text-[16px] lg:text-[18px] font-[600] lg:font-[700] font-montserrat">
                       {item.salePrice}
                     </span>
-                    <span className="text-[#838383] text-[14px] lg:text-[18px] font-[400] line-through font-montserrat">
-                      {item.originalPrice}
-                    </span>
-                  </div>
-
-                  {/* Sub item quantity selector: 24px gap from Price Row */}
-                  <div className="mt-[20px] lg:mt-[24px] flex items-center border border-[#B1B5C3] lg:border-[#E6E8EC] rounded-[4px] lg:rounded-[8px] overflow-hidden bg-white h-[27px] lg:h-[36px] w-[83px] lg:w-[100px]">
-                    <button
-                      onClick={() => updateSubItemQuantity(item.id, -1)}
-                      className="w-[26px] lg:w-[30px] h-full flex items-center justify-center font-inter font-[700] text-[14px] text-[#353945] bg-[#F9F8F8] border-r border-[#B1B5C3] lg:border-[#E6E8EC] transition-colors cursor-pointer"
-                    >
-                      -
-                    </button>
-                    <span className="flex-1 text-center font-montserrat font-[600] text-[14px] text-[#353945] select-none">
-                      {item.quantity}
-                    </span>
-                    <button
-                      onClick={() => updateSubItemQuantity(item.id, 1)}
-                      className="w-[26px] lg:w-[30px] h-full flex items-center justify-center font-inter font-[700] text-[14px] text-[#353945] bg-[#F9F8F8] border-l border-[#B1B5C3] lg:border-[#E6E8EC] transition-colors cursor-pointer"
-                    >
-                      +
-                    </button>
+                    {item.originalPrice && (
+                      <span className="text-[#838383] text-[14px] lg:text-[18px] font-[400] line-through font-montserrat">
+                        {item.originalPrice}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
           ))}
 
-          {/* Desktop Checkout buttons: 25px space above, 50px space below */}
-          <div className="hidden lg:flex items-center gap-4 mt-[25px] mb-[50px]">
-            <button
-              onClick={onBuyNow}
-              className="flex-1 bg-[#97400C] text-white rounded-[8px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider py-[15px] hover:bg-opacity-95 transition-all duration-300 cursor-pointer"
-            >
-              Mua ngay
-            </button>
-            <button
-              onClick={onAddToCart}
-              className="flex-1 border border-[#97400C] text-[#97400C] rounded-[8px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider py-[15px] hover:bg-[#97400C]/5 transition-all duration-300 cursor-pointer"
-            >
-              Thêm vào giỏ
-            </button>
-          </div>
+          {subItems.length > 0 && (
+            <>
+              {/* Desktop Checkout buttons: 25px space above, 50px space below */}
+              <div className="hidden lg:flex items-center gap-4 mt-[25px] mb-[50px]">
+                <button
+                  onClick={onBuyNow}
+                  className="flex-1 bg-[#97400C] text-white rounded-[8px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider py-[15px] hover:bg-opacity-95 transition-all duration-300 cursor-pointer"
+                >
+                  Mua ngay
+                </button>
+                <button
+                  onClick={onAddToCart}
+                  className="flex-1 border border-[#97400C] text-[#97400C] rounded-[8px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider py-[15px] hover:bg-[#97400C]/5 transition-all duration-300 cursor-pointer"
+                >
+                  Thêm vào giỏ
+                </button>
+              </div>
 
-          {/* Mobile: Xem thêm button */}
-          <div className="flex lg:hidden justify-center mt-5 w-full">
-            <button className="py-[10px] pl-[10px] pr-[2px] w-[154px] h-[34px] bg-[#DDAA70]/20 hover:bg-[#DDAA70]/30 active:bg-[#DDAA70]/40 rounded-[8px] flex items-center justify-center gap-[1px] transition-all duration-300 cursor-pointer">
-              <span className="text-[#97400C] font-montserrat text-[16px] font-[700] leading-[16px]">
-                Xem thêm
-              </span>
-              <ChevronRight className="w-6 h-6 text-[#97400C]" />
-            </button>
-          </div>
+              {/* Mobile: Xem thêm button */}
+              <div className="flex lg:hidden justify-center mt-5 w-full">
+                <button className="py-[10px] pl-[10px] pr-[2px] w-[154px] h-[34px] bg-[#DDAA70]/20 hover:bg-[#DDAA70]/30 active:bg-[#DDAA70]/40 rounded-[8px] flex items-center justify-center gap-[1px] transition-all duration-300 cursor-pointer">
+                  <span className="text-[#97400C] font-montserrat text-[16px] font-[700] leading-[16px]">
+                    Xem thêm
+                  </span>
+                  <ChevronRight className="w-6 h-6 text-[#97400C]" />
+                </button>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>
@@ -517,71 +545,88 @@ function ProductSubItemsAccordion({
 // ==========================================
 // MAIN PRODUCT INFO COMPONENT
 // ==========================================
-export default function ProductInfo() {
+export default function ProductInfo({ product }) {
   const router = useRouter();
-  const addItem = useCartStore((s) => s.addItem);
-  const [mainImage, setMainImage] = useState(productDetailThumbnail);
+  const addToCart = useCartStore((s) => s.addToCart);
   const [isInfoExpanded, setIsInfoExpanded] = useState(true);
   const [mainQuantity, setMainQuantity] = useState(1);
 
-  // Gallery images list
-  const galleryImages = [
-    productDetailThumbnail,
-    productCardImage1,
-    productCardImage2,
-    productCardImage3,
-  ];
+  const galleryImages = useMemo(() => buildGalleryImages(product), [product]);
+  const [mainImage, setMainImage] = useState(galleryImages[0] || "");
 
-  // Sub-items list inside the set
-  const [subItems, setSubItems] = useState([
-    {
-      id: 1,
-      name: "Bát hương rồng phượng men lam",
-      sku: "MSP: VG001",
-      salePrice: "2.000.000đ",
-      originalPrice: "2.500.000đ",
-      quantity: 1,
-      image: productCardImage1,
-    },
-    {
-      id: 2,
-      name: "Bát hương Phúc lộc liên hoa vẽ vàng đẹp",
-      sku: "MSP: VG001",
-      salePrice: "2.000.000đ",
-      originalPrice: "2.500.000đ",
-      quantity: 1,
-      image: productCardImage2,
-    },
-    {
-      id: 3,
-      name: "Bát hương Phúc lộc liên hoa vẽ vàng đẹp",
-      sku: "MSP: VG001",
-      salePrice: "2.000.000đ",
-      originalPrice: "2.500.000đ",
-      quantity: 1,
-      image: productCardImage3,
-    },
-  ]);
+  useEffect(() => {
+    setMainImage(galleryImages[0] || "");
+  }, [galleryImages]);
 
-  const updateSubItemQuantity = (id, delta) => {
-    setSubItems((items) =>
-      items.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-          : item,
+  const categoryName = product?.category?.name || "Sản phẩm";
+
+  // Combo breakdown: `comboProducts` only carries {productId, sortOrder} refs
+  // (PRODUCT_API.md §5) — resolve each ref's real name/price/image via the
+  // public product-detail endpoint so the accordion shows real data instead
+  // of decorative placeholders.
+  const comboRefs = useMemo(() => parseComboRefs(product?.comboProducts), [product]);
+  const [subItems, setSubItems] = useState([]);
+  const [subItemsLoading, setSubItemsLoading] = useState(false);
+
+  useEffect(() => {
+    if (product?.type !== "COMBO" || comboRefs.length === 0) {
+      setSubItems([]);
+      return undefined;
+    }
+
+    let cancelled = false;
+    setSubItemsLoading(true);
+
+    Promise.all(
+      comboRefs.map((ref) =>
+        publicGet(`/products/${ref.productId}`).catch((error) => {
+          if (!(error instanceof PublicApiError)) throw error;
+          return null; // deleted/unpublished combo member — skip it, don't fail the whole panel
+        }),
       ),
-    );
+    )
+      .then((results) => {
+        if (cancelled) return;
+        setSubItems(
+          results
+            .filter(Boolean)
+            .map((p) => {
+              const itemPrice = Number(p.price) || 0;
+              const itemCompareAt = Number(p.compareAtPrice) || 0;
+              return {
+                id: p.id,
+                name: p.name,
+                sku: p.sku ? `MSP: ${p.sku}` : "",
+                salePrice: `${itemPrice.toLocaleString("vi-VN")}đ`,
+                originalPrice:
+                  itemCompareAt > itemPrice ? `${itemCompareAt.toLocaleString("vi-VN")}đ` : null,
+                image: formatImageUrl(p.thumb),
+              };
+            }),
+        );
+      })
+      .finally(() => {
+        if (!cancelled) setSubItemsLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [product, comboRefs]);
+
+  const handleBuyNow = async () => {
+    if (!product) return;
+    const ok = await addToCart(product, mainQuantity);
+    if (ok) router.push(ROUTES.CHECKOUT);
   };
 
-  const handleBuyNow = () => {
-    addItem({ ...DEMO_PRODUCT, image: mainImage }, mainQuantity);
-    router.push(ROUTES.CHECKOUT);
-  };
-
-  const handleAddToCart = () => {
-    addItem({ ...DEMO_PRODUCT, image: mainImage }, mainQuantity);
-    toast.success("Đã thêm sản phẩm vào giỏ hàng!");
-    setTimeout(() => router.push(ROUTES.CART), 150);
+  const handleAddToCart = async () => {
+    if (!product) return;
+    const ok = await addToCart(product, mainQuantity);
+    if (ok) {
+      toast.success("Đã thêm sản phẩm vào giỏ hàng!");
+      setTimeout(() => router.push(ROUTES.CART), 150);
+    }
   };
 
   return (
@@ -600,37 +645,45 @@ export default function ProductInfo() {
 
       {/* Breadcrumb path */}
       <div className="mb-6 font-montserrat text-[16px] font-[700] text-[#2E2F2A] lg:text-[#383838] uppercase leading-[24px] tracking-wide">
-        <span className="hidden lg:inline">Trang chủ / </span>Bộ đồ thờ /{" "}
-        <span className="text-[#97400C]">Bộ hút lộc mạ vàng</span>
+        <span className="hidden lg:inline">Trang chủ / </span>
+        {categoryName} /{" "}
+        <span className="text-[#97400C]">{product?.name || "Sản phẩm"}</span>
       </div>
 
-      {/* Main product wrapper - 62% for left gallery and remainder for right column with 28px gap */}
-      <div className="grid grid-cols-1 lg:grid-cols-[62%_1fr] gap-5 lg:gap-[28px] items-start">
-        {/* Left Column - Gallery */}
-        <ProductGallery
-          galleryImages={galleryImages}
-          mainImage={mainImage}
-          setMainImage={setMainImage}
-        />
+      {!product ? (
+        <p className="font-montserrat text-[15px] text-[#909090] py-16 text-center">
+          Sản phẩm không khả dụng.
+        </p>
+      ) : (
+        // Main product wrapper - 62% for left gallery and remainder for right column with 28px gap
+        <div className="grid grid-cols-1 lg:grid-cols-[62%_1fr] gap-5 lg:gap-[28px] items-start">
+          {/* Left Column - Gallery */}
+          <ProductGallery
+            galleryImages={galleryImages}
+            mainImage={mainImage}
+            setMainImage={setMainImage}
+          />
 
-        {/* Right Column - Purchase Info Section & Sub-items Accordion */}
-        <div className="flex flex-col font-montserrat">
-          <ProductPurchasePanel
-            mainQuantity={mainQuantity}
-            setMainQuantity={setMainQuantity}
-            onBuyNow={handleBuyNow}
-            onAddToCart={handleAddToCart}
-          />
-          <ProductSubItemsAccordion
-            isInfoExpanded={isInfoExpanded}
-            setIsInfoExpanded={setIsInfoExpanded}
-            subItems={subItems}
-            updateSubItemQuantity={updateSubItemQuantity}
-            onBuyNow={handleBuyNow}
-            onAddToCart={handleAddToCart}
-          />
+          {/* Right Column - Purchase Info Section & Sub-items Accordion */}
+          <div className="flex flex-col font-montserrat">
+            <ProductPurchasePanel
+              product={product}
+              mainQuantity={mainQuantity}
+              setMainQuantity={setMainQuantity}
+              onBuyNow={handleBuyNow}
+              onAddToCart={handleAddToCart}
+            />
+            <ProductSubItemsAccordion
+              isInfoExpanded={isInfoExpanded}
+              setIsInfoExpanded={setIsInfoExpanded}
+              subItems={subItems}
+              subItemsLoading={subItemsLoading}
+              onBuyNow={handleBuyNow}
+              onAddToCart={handleAddToCart}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

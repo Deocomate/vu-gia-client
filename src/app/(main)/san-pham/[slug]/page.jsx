@@ -78,7 +78,7 @@ export default async function ProductDetailPage({ params, searchParams }) {
     <>
       <JsonLd data={buildProductSchema(product)} />
       <JsonLd data={breadcrumb} />
-      <ProductDetailView slug={slug} type={type} description={product?.description} />
+      <ProductDetailView slug={slug} type={type} product={product} />
     </>
   );
 }

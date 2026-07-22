@@ -1,26 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ChevronRight, Search, ChevronDown, ChevronUp } from "lucide-react";
-import productDetailThumbnail from "@/assets/images/product-detail/product-detail-thumbnail.png";
-import productCardImage1 from "@/assets/images/product-detail/product-card-image-1.png";
-import productCardImage2 from "@/assets/images/product-detail/product-card-image-2.png";
-import productCardImage3 from "@/assets/images/product-detail/product-card-image-3.png";
+import { Search, ChevronDown, ChevronUp } from "lucide-react";
+import SafeImage from "@/components/shared/SafeImage";
+import { formatImageUrl } from "@/lib/media";
 import { ROUTES } from "@/utils/routes";
 import { useCartStore } from "@/stores/cartStore";
 import { toast } from "@/utils/feedback";
 
-const DEMO_PRODUCT = {
-  id: "dt026",
-  title: "Bộ đồ thờ Phật vẽ hoa sen men rạn cổ đơn giản DT026",
-  sku: "MSP: VG001",
-  price: 2000000,
-  classification: "Men rạn",
-  packSize: 1,
-  image: productDetailThumbnail,
-};
+/** Builds the ordered gallery image URL list from a real `ProductResponse` (PRODUCT_API.md §8). */
+function buildGalleryImages(product) {
+  const images = Array.isArray(product?.images) ? product.images : [];
+  if (images.length > 0) {
+    return images.map((img) => formatImageUrl(img.url));
+  }
+  return product?.thumb ? [formatImageUrl(product.thumb)] : [];
+}
 
 // ==========================================
 // 1. PRODUCT GALLERY COMPONENT
@@ -50,20 +47,22 @@ function ProductGallery({ galleryImages, mainImage, setMainImage }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isLightboxOpen, activeIndex]);
 
+  if (galleryImages.length === 0) return null;
+
   return (
     <div className="w-full">
       {/* Mobile swipe gallery: aspect ratio 1:1 matching figma exactly, full-bleed to screen edges */}
       <div className="md:hidden w-[calc(100%+60px)] mx-[-30px] overflow-x-auto snap-x snap-mandatory flex scrollbar-none gap-0">
         {galleryImages.map((img, idx) => (
-          <div 
-            key={idx} 
+          <div
+            key={img + idx}
             className="w-full shrink-0 snap-center relative aspect-square cursor-zoom-in"
             onClick={() => {
               setActiveIndex(idx);
               setIsLightboxOpen(true);
             }}
           >
-            <Image
+            <SafeImage
               src={img}
               alt={`Product Image ${idx + 1}`}
               fill
@@ -83,7 +82,7 @@ function ProductGallery({ galleryImages, mainImage, setMainImage }) {
           <div className="flex md:flex-col gap-[15px] overflow-hidden max-h-[801px]">
             {galleryImages.map((img, idx) => (
               <button
-                key={idx}
+                key={img + idx}
                 onClick={() => setMainImage(img)}
                 className={`relative w-[87px] h-[87px] overflow-hidden flex-shrink-0 transition-all duration-300 cursor-pointer ${
                   mainImage === img
@@ -91,7 +90,7 @@ function ProductGallery({ galleryImages, mainImage, setMainImage }) {
                     : "opacity-50 hover:opacity-100 scale-100"
                 }`}
               >
-                <Image
+                <SafeImage
                   src={img}
                   alt={`Thumbnail ${idx + 1}`}
                   fill
@@ -104,7 +103,7 @@ function ProductGallery({ galleryImages, mainImage, setMainImage }) {
         </div>
 
         {/* Main Display Image - height 801px, no rounded, no border */}
-        <div 
+        <div
           className="relative w-full h-[801px] aspect-[799/801] lg:aspect-auto overflow-hidden bg-gray-100 flex-1 cursor-zoom-in"
           onClick={() => {
             const idx = galleryImages.indexOf(mainImage);
@@ -112,7 +111,7 @@ function ProductGallery({ galleryImages, mainImage, setMainImage }) {
             setIsLightboxOpen(true);
           }}
         >
-          <Image
+          <SafeImage
             src={mainImage}
             alt="Sản phẩm lẻ"
             fill
@@ -179,7 +178,7 @@ function ProductGallery({ galleryImages, mainImage, setMainImage }) {
 
           {/* Active Image container */}
           <div className="relative max-w-[90%] max-h-[80vh] aspect-square w-full md:w-[60vw] z-10 flex items-center justify-center">
-            <Image
+            <SafeImage
               src={galleryImages[activeIndex]}
               alt={`Slide ${activeIndex + 1}`}
               fill
@@ -228,23 +227,30 @@ function ProductGallery({ galleryImages, mainImage, setMainImage }) {
 // 2. PRODUCT PURCHASE PANEL COMPONENT
 // ==========================================
 function ProductPurchasePanel({
+  product,
   mainQuantity,
   setMainQuantity,
   onBuyNow,
   onAddToCart,
 }) {
   const [isInfoExpanded, setIsInfoExpanded] = useState(true);
+
+  const price = Number(product?.price) || 0;
+  const compareAtPrice = Number(product?.compareAtPrice) || 0;
+  const hasDiscount = compareAtPrice > price;
+  const discountPercent = hasDiscount ? Math.round((1 - price / compareAtPrice) * 100) : 0;
+
   return (
     <div className="flex flex-col font-montserrat">
       {/* Title */}
       <h1 className="text-[#141416] text-[24px] lg:text-[32px] font-[600] leading-[32px] lg:leading-[45px] mb-[10px] lg:mb-[20px] font-montserrat">
-        Bộ đồ thờ Phật vẽ hoa sen men rạn cổ đơn giản DT026
+        {product?.name || "Sản phẩm"}
       </h1>
 
       {/* SKU & Sold Status - Desktop */}
       <div className="hidden lg:flex items-center justify-between mb-[20px]">
         <span className="text-[#A0A0A0] text-[18px] font-[600] leading-[24px]">
-          MSP: VG001
+          MSP: {product?.sku || "—"}
         </span>
         <div className="flex items-center gap-[6px]">
           <div className="w-[16px] h-[16px] relative">
@@ -257,7 +263,7 @@ function ProductPurchasePanel({
             />
           </div>
           <span className="text-[#67A865] text-[18px] font-[700] leading-[12px]">
-            Đã bán: 12
+            Đã bán: {product?.soldCount ?? 0}
           </span>
         </div>
       </div>
@@ -267,11 +273,13 @@ function ProductPurchasePanel({
         {/* SKU & Stock Status */}
         <div className="flex items-center justify-between">
           <span className="text-[#A0A0A0] text-[16px] font-[600] leading-[24px]">
-            MSP: VG001
+            MSP: {product?.sku || "—"}
           </span>
           <div className="flex items-center gap-[4px] text-[16px] font-[600] leading-[24px]">
             <span className="text-[#A0A0A0]">Tình trạng:</span>
-            <span className="text-[#97400C]">Còn hàng</span>
+            <span className="text-[#97400C]">
+              {product?.status === "PUBLISHED" ? "Còn hàng" : "Liên hệ"}
+            </span>
           </div>
         </div>
         {/* Sold Status */}
@@ -286,7 +294,7 @@ function ProductPurchasePanel({
             />
           </div>
           <span className="text-[#67A865] text-[14px] font-[700] leading-[12px]">
-            Đã bán: 12
+            Đã bán: {product?.soldCount ?? 0}
           </span>
         </div>
       </div>
@@ -298,15 +306,19 @@ function ProductPurchasePanel({
       <div className="flex items-center justify-between gap-4 mb-[8px] lg:mb-[15px] w-full">
         <div className="flex flex-col lg:flex-row lg:items-baseline gap-1 lg:gap-4">
           <span className="text-[#97400C] text-[24px] lg:text-[32px] font-[700] leading-[32px] lg:leading-[40px]">
-            2.000.000đ
+            {price.toLocaleString("vi-VN")}đ
           </span>
-          <span className="text-[#838383] text-[16px] lg:text-[18px] font-[400] line-through leading-[24px]">
-            2.500.000đ
-          </span>
+          {hasDiscount && (
+            <span className="text-[#838383] text-[16px] lg:text-[18px] font-[400] line-through leading-[24px]">
+              {compareAtPrice.toLocaleString("vi-VN")}đ
+            </span>
+          )}
         </div>
-        <span className="bg-[#97400C] text-white text-[12px] font-[700] uppercase leading-[12px] px-3 py-2.5 lg:py-3 rounded-[4px] shrink-0">
-          Tiết kiệm 30%
-        </span>
+        {hasDiscount && (
+          <span className="bg-[#97400C] text-white text-[12px] font-[700] uppercase leading-[12px] px-3 py-2.5 lg:py-3 rounded-[4px] shrink-0">
+            Tiết kiệm {discountPercent}%
+          </span>
+        )}
       </div>
 
       {/* Divider */}
@@ -316,16 +328,8 @@ function ProductPurchasePanel({
 
       {/* 1. Mobile-only Specs + Quantity + Social stacked layout */}
       <div className="flex lg:hidden items-stretch justify-between gap-4 mb-[20px] w-full">
-        {/* Left column: Specs info & Quantity selector */}
+        {/* Left column: Quantity selector */}
         <div className="flex-1 flex flex-col gap-[10px]">
-          <div className="flex items-center gap-[7px]">
-            <span className="text-[#383838] text-[16px] font-[600] leading-[24px]">Kích thước:</span>
-            <span className="text-[#97400C] text-[16px] font-[600] leading-[24px]">120x120</span>
-          </div>
-          <div className="flex items-center gap-[7px]">
-            <span className="text-[#383838] text-[16px] font-[600] leading-[24px]">Chất liệu:</span>
-            <span className="text-[#97400C] text-[16px] font-[600] leading-[24px]">Gốm sứ</span>
-          </div>
           <div className="flex flex-col gap-[10px]">
             <span className="text-[#383838] text-[16px] font-[600] leading-[24px]">Chọn số lượng</span>
             {/* Quantity Selector box: h-[48px], outline: 1px #B1B5C3 solid, bg-white */}
@@ -358,13 +362,7 @@ function ProductPurchasePanel({
             rel="noopener noreferrer"
             className="w-[45px] h-[45px] rounded-full border border-[#97400C] bg-white flex items-center justify-center transition-all hover:bg-[#97400C]/5"
           >
-            <Image
-              src="/icons/zalo-1.svg"
-              alt="Zalo"
-              width={20}
-              height={20}
-              className="object-contain"
-            />
+            <Image src="/icons/zalo-1.svg" alt="Zalo" width={20} height={20} className="object-contain" />
           </a>
 
           {/* Call Button (bottom) */}
@@ -372,13 +370,7 @@ function ProductPurchasePanel({
             href="tel:0934213874"
             className="w-[45px] h-[45px] rounded-full border border-[#97400C] bg-white flex items-center justify-center transition-all hover:bg-[#97400C]/5"
           >
-            <Image
-              src="/icons/phone.svg"
-              alt="Call"
-              width={22}
-              height={20}
-              className="object-contain"
-            />
+            <Image src="/icons/phone.svg" alt="Call" width={22} height={20} className="object-contain" />
           </a>
         </div>
       </div>
@@ -400,7 +392,7 @@ function ProductPurchasePanel({
             </span>
             <button
               onClick={() => setMainQuantity((q) => q + 1)}
-              className="px-[11px] h-full flex items-center justify-center font-inter font-[700] text-[16px] text-[#353945] bg-[#F9F8F8] border-l border-[#B1B5C3] transition-colors cursor-pointer"
+              className="w-[35px] h-full flex items-center justify-center font-inter font-[700] text-[16px] text-[#353945] hover:bg-gray-50 border-l border-[#B1B5C3] transition-colors cursor-pointer"
             >
               +
             </button>
@@ -408,7 +400,8 @@ function ProductPurchasePanel({
 
           <button
             onClick={onBuyNow}
-            className="flex-1 bg-[#97400C] text-white border border-[#97400C] rounded-[4px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider h-[48px] hover:bg-opacity-95 transition-all duration-300 cursor-pointer min-w-0"
+            disabled={!product}
+            className="flex-1 bg-[#97400C] text-white border border-[#97400C] rounded-[4px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider h-[48px] hover:bg-opacity-95 transition-all duration-300 cursor-pointer min-w-0 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Mua ngay
           </button>
@@ -417,7 +410,8 @@ function ProductPurchasePanel({
         {/* Row 2: Thêm vào giỏ hàng (Full width 504px) */}
         <button
           onClick={onAddToCart}
-          className="w-full border border-[#97400C] text-[#97400C] bg-white rounded-[4px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider h-[48px] hover:bg-[#97400C]/5 transition-all duration-300 cursor-pointer"
+          disabled={!product}
+          className="w-full border border-[#97400C] text-[#97400C] bg-white rounded-[4px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider h-[48px] hover:bg-[#97400C]/5 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Thêm vào giỏ hàng
         </button>
@@ -428,16 +422,11 @@ function ProductPurchasePanel({
         {/* Thêm vào giỏ hàng button */}
         <button
           onClick={onAddToCart}
-          className="flex-1 flex flex-col items-center justify-center gap-1.5 h-full transition-all hover:bg-black/10 cursor-pointer"
+          disabled={!product}
+          className="flex-1 flex flex-col items-center justify-center gap-1.5 h-full transition-all hover:bg-black/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <div className="w-[24px] h-[24px] relative brightness-0 invert">
-            <Image
-              src="/icons/cart-2.svg"
-              alt="Cart"
-              fill
-              className="object-contain"
-              sizes="24px"
-            />
+            <Image src="/icons/cart-2.svg" alt="Cart" fill className="object-contain" sizes="24px" />
           </div>
           <span className="text-[16px] font-[700] leading-[16px] text-white">Thêm vào giỏ hàng</span>
         </button>
@@ -448,16 +437,11 @@ function ProductPurchasePanel({
         {/* Mua ngay button */}
         <button
           onClick={onBuyNow}
-          className="flex-1 flex flex-col items-center justify-center gap-1.5 h-full transition-all hover:bg-black/10 cursor-pointer"
+          disabled={!product}
+          className="flex-1 flex flex-col items-center justify-center gap-1.5 h-full transition-all hover:bg-black/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <div className="w-[24px] h-[24px] relative brightness-0 invert">
-            <Image
-              src="/icons/wallet.svg"
-              alt="Wallet"
-              fill
-              className="object-contain"
-              sizes="24px"
-            />
+            <Image src="/icons/wallet.svg" alt="Wallet" fill className="object-contain" sizes="24px" />
           </div>
           <span className="text-[16px] font-[700] leading-[16px] text-white">Mua ngay</span>
         </button>
@@ -478,7 +462,9 @@ function ProductPurchasePanel({
         </button>
         {isInfoExpanded && (
           <div className="pb-[20px] font-montserrat text-[15px] text-[#353945] leading-[26px]">
-            Bộ đồ thờ Phật vẽ hoa sen men rạn cổ Bát Tràng được chế tác thủ công tinh xảo, chất men rạn cổ kính trang nghiêm, thích hợp cho không gian thờ cúng gia đình.
+            {product?.category?.name
+              ? `Thuộc danh mục ${product.category.name}, chế tác thủ công tinh xảo, thích hợp cho không gian thờ cúng gia đình.`
+              : "Đang cập nhật thông tin chi tiết cho sản phẩm này."}
           </div>
         )}
       </div>
@@ -489,33 +475,33 @@ function ProductPurchasePanel({
 // ==========================================
 // MAIN PRODUCT INFO COMPONENT FOR SINGLE PRODUCT
 // ==========================================
-export default function ProductInfoSingle() {
+export default function ProductInfoSingle({ product }) {
   const router = useRouter();
-  const addItem = useCartStore((s) => s.addItem);
-  const [mainImage, setMainImage] = useState(productDetailThumbnail);
+  const addToCart = useCartStore((s) => s.addToCart);
   const [mainQuantity, setMainQuantity] = useState(1);
 
-  // Gallery images list (exactly 8 items to fit flush with the main image height of 801px on desktop)
-  const galleryImages = [
-    productDetailThumbnail,
-    productCardImage1,
-    productCardImage2,
-    productCardImage3,
-    productDetailThumbnail,
-    productCardImage1,
-    productCardImage2,
-    productCardImage3,
-  ];
+  const galleryImages = useMemo(() => buildGalleryImages(product), [product]);
+  const [mainImage, setMainImage] = useState(galleryImages[0] || "");
 
-  const handleBuyNow = () => {
-    addItem({ ...DEMO_PRODUCT, image: mainImage }, mainQuantity);
-    router.push(ROUTES.CHECKOUT);
+  React.useEffect(() => {
+    setMainImage(galleryImages[0] || "");
+  }, [galleryImages]);
+
+  const categoryName = product?.category?.name || "Sản phẩm";
+
+  const handleBuyNow = async () => {
+    if (!product) return;
+    const ok = await addToCart(product, mainQuantity);
+    if (ok) router.push(ROUTES.CHECKOUT);
   };
 
-  const handleAddToCart = () => {
-    addItem({ ...DEMO_PRODUCT, image: mainImage }, mainQuantity);
-    toast.success("Đã thêm sản phẩm vào giỏ hàng!");
-    setTimeout(() => router.push(ROUTES.CART), 150);
+  const handleAddToCart = async () => {
+    if (!product) return;
+    const ok = await addToCart(product, mainQuantity);
+    if (ok) {
+      toast.success("Đã thêm sản phẩm vào giỏ hàng!");
+      setTimeout(() => router.push(ROUTES.CART), 150);
+    }
   };
 
   return (
@@ -534,29 +520,36 @@ export default function ProductInfoSingle() {
 
       {/* Breadcrumb path */}
       <div className="mb-6 font-montserrat text-[16px] font-[700] text-[#2E2F2A] lg:text-[#383838] uppercase leading-[24px] tracking-wide">
-        <span className="hidden lg:inline">Trang chủ / </span>Bộ đồ thờ /{" "}
-        <span className="text-[#97400C]">Bộ hút lộc mạ vàng</span>
+        <span className="hidden lg:inline">Trang chủ / </span>
+        {categoryName} /{" "}
+        <span className="text-[#97400C]">{product?.name || "Sản phẩm"}</span>
       </div>
 
-      {/* Main product wrapper - 62% for left gallery and remainder for right column with 28px gap */}
-      <div className="grid grid-cols-1 lg:grid-cols-[62%_1fr] gap-5 lg:gap-[28px] items-start">
-        {/* Left Column - Gallery */}
-        <ProductGallery
-          galleryImages={galleryImages}
-          mainImage={mainImage}
-          setMainImage={setMainImage}
-        />
-
-        {/* Right Column - Purchase Info Section */}
-        <div className="flex flex-col font-montserrat">
-          <ProductPurchasePanel
-            mainQuantity={mainQuantity}
-            setMainQuantity={setMainQuantity}
-            onBuyNow={handleBuyNow}
-            onAddToCart={handleAddToCart}
+      {!product ? (
+        <p className="font-montserrat text-[15px] text-[#909090] py-16 text-center">
+          Sản phẩm không khả dụng.
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-[62%_1fr] gap-5 lg:gap-[28px] items-start">
+          {/* Left Column - Gallery */}
+          <ProductGallery
+            galleryImages={galleryImages}
+            mainImage={mainImage}
+            setMainImage={setMainImage}
           />
+
+          {/* Right Column - Purchase Info Section */}
+          <div className="flex flex-col font-montserrat">
+            <ProductPurchasePanel
+              product={product}
+              mainQuantity={mainQuantity}
+              setMainQuantity={setMainQuantity}
+              onBuyNow={handleBuyNow}
+              onAddToCart={handleAddToCart}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
