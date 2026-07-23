@@ -12,8 +12,13 @@ function Row({ label, value }) {
   );
 }
 
-/** Renders a confirmed order — receiver info, items, and the server-authoritative totals breakdown. */
-export default function OrderResultSummary({ order }) {
+/**
+ * Renders a confirmed order — receiver info, items, and the server-authoritative
+ * totals breakdown. `title` defaults to the post-checkout "success" heading; pass
+ * `null` (order-detail view, Phase 5 — the order may be in any status, not just
+ * freshly placed) to omit it and just show the order-code/status summary below.
+ */
+export default function OrderResultSummary({ order, title = "Đặt hàng thành công!" }) {
   if (!order) return null;
 
   const formatCurrency = (num) => `${(Number(num) || 0).toLocaleString("en-US")} ₫`;
@@ -22,7 +27,7 @@ export default function OrderResultSummary({ order }) {
   return (
     <div className="w-full flex flex-col gap-8 font-montserrat text-[#2E2F2A]">
       <div className="flex flex-col items-center gap-2 text-center">
-        <h2 className="text-[24px] font-[700]">Đặt hàng thành công!</h2>
+        {title ? <h2 className="text-[24px] font-[700]">{title}</h2> : null}
         <p className="text-[14px] text-[#909090]">
           Mã đơn hàng: <span className="font-[600] text-[#2E2F2A]">{order.orderCode}</span>
         </p>

@@ -25,3 +25,14 @@ export function getOrder(id) {
 export function listOrders(params) {
   return customerApi.get("/orders", params);
 }
+
+/**
+ * `POST /api/orders/{id}/cancel` — owner-only cancel (BE-3, Phase 5). No
+ * request body; returns the updated `OrderResponse`. Only allowed while the
+ * order is `PENDING_PAYMENT`/`PROCESSING` (`4107` otherwise); `4059` if the
+ * order doesn't exist or doesn't belong to the caller (existence hidden, not
+ * a 403).
+ */
+export function cancelOrder(id) {
+  return customerApi.post(`/orders/${id}/cancel`);
+}

@@ -18,6 +18,7 @@ export const ROUTES = {
   REGISTER: "/dang-ky",
   ACCOUNT: "/tai-khoan",
   ORDERS: "/tai-khoan/don-hang",
+  ORDER_DETAIL: (orderId) => `/tai-khoan/don-hang/${orderId}`,
   ALTAR_CUSTOMIZER: "/tuy-chinh-bo-do-tho",
   ADMIN: "/admin",
   ADMIN_LOGIN: "/admin/login",

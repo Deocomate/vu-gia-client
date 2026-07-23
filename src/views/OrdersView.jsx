@@ -1,17 +1,43 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import CustomerServiceLayout from "@/components/customer-service/CustomerServiceLayout";
 import OrderStatusTabs from "@/components/orders/OrderStatusTabs";
 import OrderCard from "@/components/orders/OrderCard";
 import OrderPagination from "@/components/orders/OrderPagination";
 import { ROUTES } from "@/utils/routes";
 import { confirm, toast } from "@/utils/feedback";
+import { listOrders, cancelOrder } from "@/features/orders/order-service";
+import { ORDER_STATUS } from "@/lib/apiEnums";
 
-// Import order images from local assets
-import imgDonHang1 from "@/assets/images/don-hang/don-hang-1.png";
-import imgDonHang2 from "@/assets/images/don-hang/don-hang-2.png";
-import { PLACEHOLDER_IMAGE } from "@/lib/media";
+const PAGE_SIZE = 5;
+
+// UI tab ids (kept lowercase — they drive the tab bar + eventually the URL)
+// mapped to the backend's real `ORDER_STATUS` enum values (ORDER_API.md).
+const TAB_STATUS_MAP = {
+  unpaid: "PENDING_PAYMENT",
+  processing: "PROCESSING",
+  shipping: "SHIPPING",
+  completed: "COMPLETED",
+  cancelled: "CANCELLED",
+  returned: "RETURNED",
+};
+const STATUS_TAB_MAP = Object.fromEntries(
+  Object.entries(TAB_STATUS_MAP).map(([tabId, status]) => [status, tabId])
+);
+
+// Backend error codes surfaced inline (ORDER_API.md, BE-3): 4059 not
+// found/not owner (existence hidden), 4107 order not in a cancellable status.
+function describeCancelError(error) {
+  switch (error?.code) {
+    case 4059:
+      return "Không tìm thấy đơn hàng.";
+    case 4107:
+      return "Đơn hàng không còn ở trạng thái có thể hủy.";
+    default:
+      return error?.message || "Hủy đơn hàng không thành công.";
+  }
+}
 
 export default function OrdersView() {
   const breadcrumbs = [
@@ -20,294 +46,94 @@ export default function OrdersView() {
     { name: "Trạng thái đơn hàng", href: null },
   ];
 
-  // Detailed mock orders dataset to fulfill 10 total orders and 3 pages matching the mockup
-  const [orders, setOrders] = useState([
-    {
-      id: "123456789",
-      status: "processing",
-      date: "11/03/2026 - 12:55",
-      totalAmount: 40000000,
-      items: [
-        {
-          id: 1,
-          title: "Ngói âm dương nâu đen",
-          sku: "46345",
-          classification: "Nâu đen",
-          quantity: 100,
-          price: 20000000,
-          originalPrice: 20000000,
-          image: imgDonHang1,
-        },
-        {
-          id: 2,
-          title: "Ngói âm dương nâu đen",
-          sku: "46345",
-          classification: "Nâu đen",
-          quantity: 100,
-          price: 20000000,
-          originalPrice: 20000000,
-          image: imgDonHang2,
-        },
-      ],
-    },
-    {
-      id: "123456780",
-      status: "shipping",
-      date: "11/03/2026 - 12:55",
-      totalAmount: 40000000,
-      items: [
-        {
-          id: 1,
-          title: "Ngói âm dương nâu đen",
-          sku: "46345",
-          classification: "Nâu đen",
-          quantity: 100,
-          price: 20000000,
-          originalPrice: 20000000,
-          image: imgDonHang1,
-        },
-        {
-          id: 2,
-          title: "Ngói âm dương nâu đen",
-          sku: "46345",
-          classification: "Nâu đen",
-          quantity: 100,
-          price: 20000000,
-          originalPrice: 20000000,
-          image: imgDonHang2,
-        },
-      ],
-    },
-    {
-      id: "123456781",
-      status: "completed",
-      date: "11/03/2026 - 12:55",
-      totalAmount: 40000000,
-      items: [
-        {
-          id: 1,
-          title: "Ngói âm dương nâu đen",
-          sku: "46345",
-          classification: "Nâu đen",
-          quantity: 100,
-          price: 20000000,
-          originalPrice: 20000000,
-          image: imgDonHang1,
-        },
-        {
-          id: 2,
-          title: "Ngói âm dương nâu đen",
-          sku: "46345",
-          classification: "Nâu đen",
-          quantity: 100,
-          price: 20000000,
-          originalPrice: 20000000,
-          image: imgDonHang2,
-        },
-      ],
-    },
-    {
-      id: "123456782",
-      status: "completed",
-      date: "10/03/2026 - 15:30",
-      totalAmount: 40000000,
-      items: [
-        {
-          id: 1,
-          title: "Ngói âm dương nâu đen",
-          sku: "46345",
-          classification: "Nâu đen",
-          quantity: 100,
-          price: 20000000,
-          originalPrice: 20000000,
-          image: imgDonHang1,
-        },
-        {
-          id: 2,
-          title: "Ngói âm dương nâu đen",
-          sku: "46345",
-          classification: "Nâu đen",
-          quantity: 100,
-          price: 20000000,
-          originalPrice: 20000000,
-          image: imgDonHang2,
-        },
-      ],
-    },
-    {
-      id: "123456783",
-      status: "completed",
-      date: "09/03/2026 - 09:15",
-      totalAmount: 15000000,
-      items: [
-        {
-          id: 3,
-          title: "Bình phong thủy hoa văn cổ",
-          sku: "88712",
-          classification: "Gốm nung đỏ",
-          quantity: 1,
-          price: 15000000,
-          originalPrice: 16500000,
-          image: "/images/products/product-category-thumb.png",
-        },
-      ],
-    },
-    {
-      id: "123456784",
-      status: "cancelled",
-      date: "08/03/2026 - 14:20",
-      totalAmount: 25000000,
-      items: [
-        {
-          id: 4,
-          title: "Bộ đồ thờ cúng đắp nổi Rồng Chầu",
-          sku: "99120",
-          classification: "Men rạn cổ",
-          quantity: 1,
-          price: 25000000,
-          originalPrice: 25000000,
-          image: "/images/products/product-new-thumb.png",
-        },
-      ],
-    },
-    {
-      id: "123456785",
-      status: "completed",
-      date: "07/03/2026 - 11:10",
-      totalAmount: 36000000,
-      items: [
-        {
-          id: 5,
-          title: "Lục bình gốm sứ hoa mai đắp nổi",
-          sku: "77123",
-          classification: "Men lam",
-          quantity: 2,
-          price: 18000000,
-          originalPrice: 18000000,
-          image: "/images/products/product-content-image-thumb.png",
-        },
-      ],
-    },
-    {
-      id: "123456786",
-      status: "completed",
-      date: "06/03/2026 - 16:45",
-      totalAmount: 5000000,
-      items: [
-        {
-          id: 6,
-          title: "Chén trà men ngọc cao cấp Bát Tràng",
-          sku: "55432",
-          classification: "Men ngọc thanh",
-          quantity: 50,
-          price: 100000,
-          originalPrice: 120000,
-          image: PLACEHOLDER_IMAGE.src,
-        },
-      ],
-    },
-    {
-      id: "123456787",
-      status: "completed",
-      date: "05/03/2026 - 10:00",
-      totalAmount: 8500000,
-      items: [
-        {
-          id: 7,
-          title: "Bình gốm sứ men hỏa biến dáng tỏi",
-          sku: "33214",
-          classification: "Hỏa biến nâu vàng",
-          quantity: 1,
-          price: 8500000,
-          originalPrice: 8500000,
-          image: "/images/products/product-category-thumb.png",
-        },
-      ],
-    },
-    {
-      id: "123456788",
-      status: "returned",
-      date: "04/03/2026 - 08:30",
-      totalAmount: 3000000,
-      items: [
-        {
-          id: 8,
-          title: "Bát đĩa vẽ tay hoa mai xanh Bát Tràng",
-          sku: "22109",
-          classification: "Sứ vẽ tay",
-          quantity: 20,
-          price: 150000,
-          originalPrice: 150000,
-          image: "/images/products/product-new-thumb.png",
-        },
-      ],
-    },
-  ]);
-
   const [activeTab, setActiveTab] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
+  const [orders, setOrders] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  // Per-tab counts (keyed by the lowercase tab ids OrderStatusTabs expects).
+  const [counts, setCounts] = useState({});
 
-  // Calculate dynamic tab badge counts based on entire dataset
-  const calculateCounts = () => {
-    const counts = {
-      all: orders.length,
-      unpaid: 0,
-      processing: 0,
-      shipping: 0,
-      completed: 0,
-      cancelled: 0,
-      returned: 0,
-    };
-
-    orders.forEach((order) => {
-      if (counts[order.status] !== undefined) {
-        counts[order.status]++;
+  const fetchOrders = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const params = {
+        page: currentPage,
+        size: PAGE_SIZE,
+        sortBy: "createdAt",
+        sortDirection: "DESC",
+      };
+      if (activeTab !== "all") {
+        params.status = TAB_STATUS_MAP[activeTab];
       }
-    });
+      const data = await listOrders(params);
+      setOrders(data?.content || []);
+      setTotalPages(data?.totalPages || 1);
+    } catch (err) {
+      setError(err?.message || "Không thể tải danh sách đơn hàng.");
+      setOrders([]);
+      setTotalPages(1);
+    } finally {
+      setLoading(false);
+    }
+  }, [activeTab, currentPage]);
 
-    return counts;
-  };
+  // Tab badge counts: there is no single "counts by status" endpoint, so we
+  // fetch each status bucket with `size=1` (cheap — only `totalElements`
+  // matters) and sum them for "all" instead of firing a 7th unfiltered call.
+  const fetchCounts = useCallback(async () => {
+    try {
+      const results = await Promise.all(
+        ORDER_STATUS.map((status) => listOrders({ status, page: 1, size: 1 }))
+      );
+      const next = { all: 0 };
+      ORDER_STATUS.forEach((status, idx) => {
+        const total = results[idx]?.totalElements || 0;
+        next[STATUS_TAB_MAP[status]] = total;
+        next.all += total;
+      });
+      setCounts(next);
+    } catch {
+      // Non-critical — tabs simply show no counts if this fails.
+    }
+  }, []);
 
-  const counts = calculateCounts();
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
 
-  // Filters orders based on current selected tab
-  const filteredOrders = orders.filter((order) => {
-    if (activeTab === "all") return true;
-    return order.status === activeTab;
-  });
-
-  // Paginates the filtered orders list
-  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
-  const paginatedOrders = filteredOrders.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  useEffect(() => {
+    fetchCounts();
+  }, [fetchCounts]);
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
     setCurrentPage(1); // reset to first page when changing tabs
   };
 
-  const handleCancelOrder = async (orderId) => {
+  const handleCancelOrder = async (order) => {
     const ok = await confirm({
       title: "Hủy đơn hàng",
-      description: `Bạn có chắc chắn muốn hủy đơn hàng #${orderId} không?`,
+      description: `Bạn có chắc chắn muốn hủy đơn hàng #${order.orderCode} không?`,
       confirmLabel: "Hủy đơn",
       cancelLabel: "Không",
       destructive: true,
     });
     if (!ok) return;
-    setOrders((prev) =>
-      prev.map((o) =>
-        o.id === orderId ? { ...o, status: "cancelled" } : o
-      )
-    );
-    toast.success(`Đã gửi yêu cầu hủy đơn hàng #${orderId} thành công.`);
+
+    try {
+      await cancelOrder(order.id);
+      toast.success(`Đã hủy đơn hàng #${order.orderCode} thành công.`);
+      await Promise.all([fetchOrders(), fetchCounts()]);
+    } catch (err) {
+      toast.error(describeCancelError(err));
+    }
   };
 
-  const handleContactSupport = (orderId) => {
-    toast.info(`Kết nối với bộ phận chăm sóc khách hàng cho đơn hàng #${orderId}.`);
+  const handleContactSupport = (order) => {
+    toast.info(`Kết nối với bộ phận chăm sóc khách hàng cho đơn hàng #${order.orderCode}.`);
   };
 
   return (
@@ -331,8 +157,22 @@ export default function OrdersView() {
 
       {/* Order Cards Container */}
       <div className="flex flex-col mt-4 min-h-[300px]">
-        {paginatedOrders.length > 0 ? (
-          paginatedOrders.map((order) => (
+        {loading ? (
+          <div className="flex items-center justify-center py-12 font-montserrat text-[#8C8C8C] text-[15px]">
+            Đang tải đơn hàng...
+          </div>
+        ) : error ? (
+          <div className="flex flex-col items-center justify-center py-12 text-center font-montserrat gap-4">
+            <p className="text-[#D92D20] text-[15px]">{error}</p>
+            <button
+              onClick={fetchOrders}
+              className="px-5 py-2 bg-[#C76E00] hover:bg-[#a65c00] text-white rounded-[6px] font-[700] text-[14px] transition duration-200 cursor-pointer"
+            >
+              Thử lại
+            </button>
+          </div>
+        ) : orders.length > 0 ? (
+          orders.map((order) => (
             <OrderCard
               key={order.id}
               order={order}
@@ -362,11 +202,13 @@ export default function OrdersView() {
       </div>
 
       {/* Pagination Controls */}
-      <OrderPagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
-      />
+      {!loading && !error && (
+        <OrderPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      )}
     </CustomerServiceLayout>
   );
 }

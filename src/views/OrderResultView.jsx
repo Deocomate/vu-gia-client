@@ -52,8 +52,15 @@ export default function OrderResultView({ orderId }) {
     fetchOrder();
   }, [fetchOrder]);
 
-  // Poll only while the order is an unpaid ONL order.
-  const isUnpaidOnl = order?.paymentMethod === "ONL" && order?.paymentStatus !== "PAID";
+  // Poll only while the order is an unpaid ONL order that's still actually payable —
+  // a cancelled/returned order never carries a live `payment` from the backend (see
+  // OrderServiceImpl.buildResponse), so stop (and never show) the QR for one rather
+  // than polling toward a timeout that can never resolve.
+  const isUnpaidOnl =
+    order?.paymentMethod === "ONL" &&
+    order?.paymentStatus !== "PAID" &&
+    order?.status !== "CANCELLED" &&
+    order?.status !== "RETURNED";
 
   useEffect(() => {
     if (!isUnpaidOnl || stoppedRef.current) return undefined;
@@ -139,10 +146,10 @@ export default function OrderResultView({ orderId }) {
               bạn có thể quay lại kiểm tra hoặc thanh toán lại bất cứ lúc nào.
             </p>
             <Link
-              href={ROUTES.ORDERS}
+              href={ROUTES.ORDER_DETAIL(order.id)}
               className="inline-block bg-[#C76E00] text-white px-6 py-2.5 rounded-[3px] font-[600] text-[14px] hover:bg-[#AD5036] transition-colors duration-300"
             >
-              Xem đơn hàng của tôi
+              Xem chi tiết đơn hàng
             </Link>
           </div>
         ) : (
