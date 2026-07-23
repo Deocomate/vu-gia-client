@@ -7,6 +7,7 @@ import { PLACEHOLDER_IMAGE } from "@/lib/media";
 export default function CheckoutOrderSummary({
   items = [],
   discount = 0,
+  shippingFee = 0,
   tax = 0,
   total = 0,
   onApplyPromo = () => {},
@@ -204,11 +205,19 @@ export default function CheckoutOrderSummary({
 
       {/* Summary Breakdown */}
       <div className="flex flex-col gap-1.5 text-[#2E2F2A] mt-[18px]">
-        {/* Discount Row */}
+        {/* Discount Row — client-side preview only; the order response's discountAmount is authoritative */}
         <div className="flex justify-between items-center text-[12px] md:text-[13px] font-[400] md:font-[300] leading-[16px] md:leading-normal">
-          <span>Giảm giá</span>
+          <span>Giảm giá (tạm tính)</span>
           <span className="font-[500] md:font-[300]">
             {discount > 0 ? `-${formatNumber(discount)} ₫` : "-0000 ₫"}
+          </span>
+        </div>
+
+        {/* Shipping Fee Row */}
+        <div className="flex justify-between items-center text-[12px] md:text-[13px] font-[400] md:font-[300] leading-[16px] md:leading-normal">
+          <span>Phí vận chuyển</span>
+          <span className="font-[500] md:font-[300]">
+            {shippingFee > 0 ? formatCurrency(shippingFee) : "MIỄN PHÍ"}
           </span>
         </div>
 

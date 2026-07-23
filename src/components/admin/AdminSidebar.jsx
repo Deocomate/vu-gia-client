@@ -18,6 +18,7 @@ import {
   RefreshCcw,
   ShoppingCart,
   Tags,
+  Truck,
   Users,
 } from "lucide-react";
 import { ROUTES } from "@/utils/routes";
@@ -34,6 +35,7 @@ export const ADMIN_NAV = [
   { label: "FAQ", href: ROUTES.ADMIN_FAQ, icon: MessageSquare },
   { label: "Thư viện ảnh", href: ROUTES.ADMIN_GALLERY, icon: Boxes },
   { label: "Showroom", href: ROUTES.ADMIN_SHOWROOMS, icon: MapPin },
+  { label: "Vận chuyển", href: ROUTES.ADMIN_SHIPPING_METHODS, icon: Truck },
   { label: "Banner", href: ROUTES.ADMIN_BANNERS, icon: PanelTop },
   { label: "Liên hệ", href: ROUTES.ADMIN_CONTACT_LEADS, icon: Inbox },
   { label: "Newsletter", href: ROUTES.ADMIN_NEWSLETTER, icon: Layout },

@@ -9,8 +9,10 @@ import ProductCard from "@/components/shared/ProductCard";
 import { ROUTES } from "@/utils/routes";
 import { useCartStore } from "@/stores/cartStore";
 import { toCartLineVMList } from "@/features/cart/cart-view-model";
+import { validateCoupon } from "@/features/checkout/coupon-service";
 import { confirm, toast } from "@/utils/feedback";
 import { useFeaturedProductCards } from "@/hooks/useFeaturedProductCards";
+import { useDebouncedCallback } from "@/hooks/useDebouncedCallback";
 
 const RELATED_PRODUCTS_LIMIT = 4;
 
@@ -71,22 +73,36 @@ export default function CartView() {
     toast.info(`Chỉnh sửa tùy chọn cho sản phẩm #${id}`);
   };
 
-  const handleApplyPromoCode = (code) => {
-    if (code.trim().toUpperCase() === "VUGIA10") {
-      if (promoApplied) {
-        toast.error("Mã ưu đãi này đã được áp dụng trước đó.");
-        return;
-      }
-      const calculatedDiscount = Math.round(subtotal * 0.1);
-      setDiscountAmount(calculatedDiscount);
-      setPromoApplied(true);
-      toast.success("Áp dụng mã giảm giá VUGIA10 thành công! Bạn được giảm 10% tổng đơn.");
-    } else if (code.trim() === "") {
+  // RT-B: real server-validated preview (POST /api/coupons/validate, public,
+  // always 200) — replaces the previous fabricated fixed-code/10% estimate.
+  // The order response's discountAmount/totalAmount remain authoritative at checkout.
+  const runValidateCoupon = async (code, orderAmount) => {
+    const trimmed = code.trim();
+    if (!trimmed) {
       toast.error("Vui lòng nhập mã ưu đãi.");
-    } else {
-      toast.error("Mã ưu đãi không hợp lệ.");
+      return;
+    }
+    try {
+      const result = await validateCoupon({ code: trimmed, orderAmount });
+      if (result?.valid) {
+        setDiscountAmount(Number(result.discountAmount) || 0);
+        setPromoApplied(true);
+        toast.success(result.message || "Áp dụng mã ưu đãi thành công.");
+      } else {
+        setDiscountAmount(0);
+        setPromoApplied(false);
+        toast.error(result?.message || "Mã ưu đãi không hợp lệ.");
+      }
+    } catch (error) {
+      setDiscountAmount(0);
+      setPromoApplied(false);
+      toast.error(error?.message || "Không thể kiểm tra mã ưu đãi. Vui lòng thử lại.");
     }
   };
+
+  const handleApplyPromoCode = useDebouncedCallback((code) => {
+    runValidateCoupon(code, subtotal);
+  }, 400);
 
   const handleCheckout = () => {
     if (cartItems.length === 0) {

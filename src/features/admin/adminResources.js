@@ -187,6 +187,30 @@ export const resources = {
     defaults: { sortOrder: 0, isActive: true },
   },
 
+  shippingMethods: {
+    title: "Phương thức vận chuyển",
+    description: "Quản lý các phương thức vận chuyển và phí giao hàng hiển thị ở trang thanh toán.",
+    endpoint: "/shipping-methods",
+    searchable: true,
+    searchParam: "name",
+    filters: [{ name: "isActive", label: "Hoạt động", type: "boolean" }],
+    sortable: ["id", "sortOrder", "fee", "createdAt"],
+    defaultSort: { field: "sortOrder", direction: "asc" },
+    columns: [
+      { key: "name", label: "Tên", accessor: "name" },
+      { key: "fee", label: "Phí (VND)", accessor: "fee" },
+      { key: "sortOrder", label: "Thứ tự", accessor: "sortOrder" },
+      { key: "isActive", label: "Hoạt động", accessor: "isActive", type: "boolean" },
+    ],
+    fields: [
+      { name: "name", label: "Tên phương thức", required: true },
+      { name: "fee", label: "Phí vận chuyển", type: "money", min: 0, required: true },
+      { name: "sortOrder", label: "Thứ tự", type: "number" },
+      { name: "isActive", label: "Đang hoạt động", type: "boolean" },
+    ],
+    defaults: { sortOrder: 0, isActive: true },
+  },
+
   banners: {
     title: "Banner",
     description: "Quản lý banner trang chủ/category/promo.",
