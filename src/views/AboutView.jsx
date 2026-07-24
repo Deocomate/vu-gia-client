@@ -1,6 +1,6 @@
-import AboutHero from "@/components/about/AboutHero";
-import AboutHeritage from "@/components/about/AboutHeritage";
-import AboutProcessStats from "@/components/about/AboutProcessStats";
+import AboutHero from "@/features/storefront/about/components/AboutHero";
+import AboutHeritage from "@/features/storefront/about/components/AboutHeritage";
+import AboutProcessStats from "@/features/storefront/about/components/AboutProcessStats";
 
 export default function AboutView({ page }) {
   const hasHeroText = page?.heroTitle || page?.heroSubtitle || page?.heroDes;

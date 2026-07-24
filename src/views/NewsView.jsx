@@ -1,9 +1,9 @@
 "use client";
 import React, { useMemo } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import NewsHero from "@/components/news/NewsHero";
-import NewsTabs from "@/components/news/NewsTabs";
-import NewsRelatedProducts from "@/components/news/NewsRelatedProducts";
+import NewsHero from "@/features/storefront/news/components/NewsHero";
+import NewsTabs from "@/features/storefront/news/components/NewsTabs";
+import NewsRelatedProducts from "@/features/storefront/news/components/NewsRelatedProducts";
 import NewsCard from "@/shared/components/NewsCard";
 import Pagination from "@/shared/components/Pagination";
 import { formatImageUrl } from "@/shared/api/media";

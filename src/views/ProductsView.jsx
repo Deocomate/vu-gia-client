@@ -3,12 +3,12 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Pagination from "@/shared/components/Pagination";
-import ProductToolbar from "@/components/products/ProductToolbar";
-import CategoryNavigation from "@/components/products/CategoryNavigation";
-import CategoryDescription from "@/components/products/CategoryDescription";
-import ProductGrid from "@/components/products/ProductGrid";
-import CategorySEOContent from "@/components/products/CategorySEOContent";
-import CategoryNews from "@/components/products/CategoryNews";
+import ProductToolbar from "@/features/storefront/products/components/ProductToolbar";
+import CategoryNavigation from "@/features/storefront/products/components/CategoryNavigation";
+import CategoryDescription from "@/features/storefront/products/components/CategoryDescription";
+import ProductGrid from "@/features/storefront/products/components/ProductGrid";
+import CategorySEOContent from "@/features/storefront/products/components/CategorySEOContent";
+import CategoryNews from "@/features/storefront/products/components/CategoryNews";
 import AboutUsSection from "@/shared/components/AboutUsSection";
 import { formatImageUrl } from "@/shared/api/media";
 

@@ -1,10 +1,10 @@
-import HomeHero from "@/components/home/HomeHero";
-import HomeFeatures from "@/components/home/HomeFeatures";
-import HomeProductList from "@/components/home/HomeProductList";
-import HomeCategoryBanners from "@/components/home/HomeCategoryBanners";
-import HomeCraftsmanship from "@/components/home/HomeCraftsmanship";
-import HomeVideoProcess from "@/components/home/HomeVideoProcess";
-import HomeNews from "@/components/home/HomeNews";
+import HomeHero from "@/features/storefront/home/components/HomeHero";
+import HomeFeatures from "@/features/storefront/home/components/HomeFeatures";
+import HomeProductList from "@/features/storefront/home/components/HomeProductList";
+import HomeCategoryBanners from "@/features/storefront/home/components/HomeCategoryBanners";
+import HomeCraftsmanship from "@/features/storefront/home/components/HomeCraftsmanship";
+import HomeVideoProcess from "@/features/storefront/home/components/HomeVideoProcess";
+import HomeNews from "@/features/storefront/home/components/HomeNews";
 import AboutUsSection from "@/shared/components/AboutUsSection";
 
 export default function HomeView({
