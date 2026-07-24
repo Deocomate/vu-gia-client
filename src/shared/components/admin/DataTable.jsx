@@ -1,8 +1,8 @@
 "use client";
 
 import { ArrowDown, ArrowUp, ArrowUpDown, Eye, ImageIcon, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
-import EmptyState from "@/components/admin/EmptyState";
-import StatusBadge from "@/components/admin/StatusBadge";
+import EmptyState from "@/shared/components/admin/EmptyState";
+import StatusBadge from "@/shared/components/admin/StatusBadge";
 import { formatVnd, getValueByPath } from "@/shared/api/adminApi";
 import { formatImageUrl } from "@/shared/api/media";
 

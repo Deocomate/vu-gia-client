@@ -4,8 +4,8 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import NewsHero from "@/components/news/NewsHero";
 import NewsTabs from "@/components/news/NewsTabs";
 import NewsRelatedProducts from "@/components/news/NewsRelatedProducts";
-import NewsCard from "@/components/shared/NewsCard";
-import Pagination from "@/components/shared/Pagination";
+import NewsCard from "@/shared/components/NewsCard";
+import Pagination from "@/shared/components/Pagination";
 import { formatImageUrl } from "@/shared/api/media";
 
 /**

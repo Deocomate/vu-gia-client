@@ -10,9 +10,9 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy, arrayMove } from "@dnd-kit/sortable";
 import { AlertTriangle } from "lucide-react";
-import { parseBlockDoc, createEmptyBlock } from "@/lib/blocks/schema";
-import AddBlockMenu from "@/components/admin/inputs/block-builder/AddBlockMenu";
-import BlockBuilderRow from "@/components/admin/inputs/block-builder/BlockBuilderRow";
+import { parseBlockDoc, createEmptyBlock } from "@/shared/components/blocks/schema";
+import AddBlockMenu from "@/shared/components/blocks/editor/AddBlockMenu";
+import BlockBuilderRow from "@/shared/components/blocks/editor/BlockBuilderRow";
 
 /**
  * Controlled block-content field. Holds `{ blocks }` internally; emits a

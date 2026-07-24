@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ConfirmDialog from "@/components/admin/ConfirmDialog";
+import ConfirmDialog from "@/shared/components/admin/ConfirmDialog";
 import { adminApi } from "@/shared/api/adminApi";
 import { ORDER_STATUS, ORDER_STATUS_LABEL, PAYMENT_STATUS, PAYMENT_STATUS_LABEL } from "@/shared/api/apiEnums";
 import { toast } from "@/shared/utils/feedback";

@@ -1,4 +1,4 @@
-import PublicLayout from "@/components/shared/PublicLayout";
+import PublicLayout from "@/shared/components/PublicLayout";
 
 export default function ShopLayout({ children }) {
   return <PublicLayout>{children}</PublicLayout>;

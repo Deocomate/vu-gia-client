@@ -1,10 +1,10 @@
 "use client";
 
 import { useMemo } from "react";
-import { ImageField } from "@/components/admin/inputs/ImageUploader";
-import SearchableSelect from "@/components/admin/inputs/SearchableSelect";
-import DatePicker from "@/components/admin/inputs/DatePicker";
-import BlockBuilder from "@/components/admin/inputs/BlockBuilder";
+import { ImageField } from "@/shared/components/admin/inputs/ImageUploader";
+import SearchableSelect from "@/shared/components/admin/inputs/SearchableSelect";
+import DatePicker from "@/shared/components/admin/inputs/DatePicker";
+import BlockBuilder from "@/shared/components/blocks/editor/BlockBuilder";
 
 const inputClass =
   "h-11 w-full border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-950";

@@ -5,7 +5,7 @@ import HomeCategoryBanners from "@/components/home/HomeCategoryBanners";
 import HomeCraftsmanship from "@/components/home/HomeCraftsmanship";
 import HomeVideoProcess from "@/components/home/HomeVideoProcess";
 import HomeNews from "@/components/home/HomeNews";
-import AboutUsSection from "@/components/shared/AboutUsSection";
+import AboutUsSection from "@/shared/components/AboutUsSection";
 
 export default function HomeView({
   heroBanners = [],

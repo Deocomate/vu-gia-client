@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Breadcrumb from "@/components/shared/Breadcrumb";
+import Breadcrumb from "@/shared/components/Breadcrumb";
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import CheckoutOrderSummary from "@/components/checkout/CheckoutOrderSummary";
 import { ROUTES } from "@/shared/utils/routes";

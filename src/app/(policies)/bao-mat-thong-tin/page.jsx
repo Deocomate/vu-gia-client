@@ -1,5 +1,5 @@
 import PrivacyPolicyView from "@/views/PrivacyPolicyView";
-import JsonLd from "@/components/seo/JsonLd";
+import JsonLd from "@/shared/components/seo/JsonLd";
 import { getPageByKey } from "@/shared/lib/seo/pageByKey";
 import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";
 import { buildBreadcrumbSchema } from "@/shared/lib/seo/schemas";

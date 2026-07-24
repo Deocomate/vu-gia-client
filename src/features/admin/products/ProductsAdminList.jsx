@@ -2,10 +2,10 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Plus, RefreshCw, Search, Star } from "lucide-react";
-import DataTable from "@/components/admin/DataTable";
-import Pagination from "@/components/admin/Pagination";
-import SearchableSelect from "@/components/admin/inputs/SearchableSelect";
-import ConfirmDialog from "@/components/admin/ConfirmDialog";
+import DataTable from "@/shared/components/admin/DataTable";
+import Pagination from "@/shared/components/admin/Pagination";
+import SearchableSelect from "@/shared/components/admin/inputs/SearchableSelect";
+import ConfirmDialog from "@/shared/components/admin/ConfirmDialog";
 import { adminApi } from "@/shared/api/adminApi";
 import { PRODUCT_TYPE, PRODUCT_TYPE_LABEL, PRODUCT_STATUS, PRODUCT_STATUS_LABEL } from "@/shared/api/apiEnums";
 import { makeAsyncOptions } from "@/features/admin/adminResources";

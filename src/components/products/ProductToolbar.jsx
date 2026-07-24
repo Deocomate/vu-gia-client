@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { Search, ChevronDown } from "lucide-react";
-import Breadcrumb from "@/components/shared/Breadcrumb";
+import Breadcrumb from "@/shared/components/Breadcrumb";
 
 export default function ProductToolbar({
   totalResults = 34,

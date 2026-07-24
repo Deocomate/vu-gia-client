@@ -4,7 +4,7 @@ import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Search, ChevronDown, ChevronUp } from "lucide-react";
-import SafeImage from "@/components/shared/SafeImage";
+import SafeImage from "@/shared/components/SafeImage";
 import { formatImageUrl } from "@/shared/api/media";
 import { ROUTES } from "@/shared/utils/routes";
 import { useCartStore } from "@/shared/stores/cartStore";

@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import SectionTitle from "@/components/shared/SectionTitle";
-import ProductCard from "@/components/shared/ProductCard";
+import SectionTitle from "@/shared/components/SectionTitle";
+import ProductCard from "@/shared/components/ProductCard";
 import Image from "next/image";
 import { ROUTES } from "@/shared/utils/routes";
 import { mapProductToCardProps } from "@/shared/utils/productCard";

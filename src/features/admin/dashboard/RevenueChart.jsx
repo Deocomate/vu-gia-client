@@ -2,7 +2,7 @@
 
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { eachDayOfInterval, format, parseISO } from "date-fns";
-import DatePicker from "@/components/admin/inputs/DatePicker";
+import DatePicker from "@/shared/components/admin/inputs/DatePicker";
 import { formatVnd } from "@/shared/api/adminApi";
 
 function fillGaps(points, from, to) {

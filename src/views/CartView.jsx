@@ -2,10 +2,10 @@
 
 import React, { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import Breadcrumb from "@/components/shared/Breadcrumb";
+import Breadcrumb from "@/shared/components/Breadcrumb";
 import CartItemList from "@/components/cart/CartItemList";
 import CartSummary from "@/components/cart/CartSummary";
-import ProductCard from "@/components/shared/ProductCard";
+import ProductCard from "@/shared/components/ProductCard";
 import { ROUTES } from "@/shared/utils/routes";
 import { useCartStore } from "@/shared/stores/cartStore";
 import { toCartLineVMList } from "@/features/cart/cart-view-model";

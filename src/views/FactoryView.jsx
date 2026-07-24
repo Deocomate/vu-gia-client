@@ -1,5 +1,5 @@
 import React from "react";
-import SafeImage from "@/components/shared/SafeImage";
+import SafeImage from "@/shared/components/SafeImage";
 import FactoryBanner from "@/components/factory/FactoryBanner";
 import FactoryIntro from "@/components/factory/FactoryIntro";
 import FactoryQuote from "@/components/factory/FactoryQuote";

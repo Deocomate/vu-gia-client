@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import SafeImage from "@/components/shared/SafeImage";
+import SafeImage from "@/shared/components/SafeImage";
 import productCategoryThumb from "@/assets/images/products/product-category-thumb.png";
 
 export default function CategoryNavigation({

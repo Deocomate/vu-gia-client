@@ -1,5 +1,5 @@
 import ContactView from "@/views/ContactView";
-import JsonLd from "@/components/seo/JsonLd";
+import JsonLd from "@/shared/components/seo/JsonLd";
 import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";
 import { buildBreadcrumbSchema } from "@/shared/lib/seo/schemas";
 

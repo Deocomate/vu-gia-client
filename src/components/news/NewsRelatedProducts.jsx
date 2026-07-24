@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import ProductCard from "@/components/shared/ProductCard";
+import ProductCard from "@/shared/components/ProductCard";
 import { useFeaturedProductCards } from "@/shared/hooks/useFeaturedProductCards";
 
 const RELATED_LIMIT = 4;

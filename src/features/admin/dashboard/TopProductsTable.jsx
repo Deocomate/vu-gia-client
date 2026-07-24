@@ -1,4 +1,4 @@
-import DataTable from "@/components/admin/DataTable";
+import DataTable from "@/shared/components/admin/DataTable";
 
 export default function TopProductsTable({ items, limit, onLimitChange }) {
   return (

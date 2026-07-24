@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import AdminSidebar from "@/components/admin/AdminSidebar";
-import AdminTopbar from "@/components/admin/AdminTopbar";
-import AppToaster from "@/components/shared/AppToaster";
+import AdminSidebar from "@/shared/components/admin/AdminSidebar";
+import AdminTopbar from "@/shared/components/admin/AdminTopbar";
+import AppToaster from "@/shared/components/AppToaster";
 import { useAdminAuthStore } from "@/shared/stores/adminAuthStore";
 import { ROUTES } from "@/shared/utils/routes";
 

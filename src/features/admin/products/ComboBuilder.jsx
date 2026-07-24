@@ -1,8 +1,8 @@
 "use client";
 
 import { Plus, Trash2 } from "lucide-react";
-import SearchableSelect from "@/components/admin/inputs/SearchableSelect";
-import SortableList from "@/components/admin/inputs/SortableList";
+import SearchableSelect from "@/shared/components/admin/inputs/SearchableSelect";
+import SortableList from "@/shared/components/admin/inputs/SortableList";
 import { makeAsyncOptions } from "@/features/admin/adminResources";
 
 const loadProductOptions = makeAsyncOptions("/products", { searchParam: "name" });

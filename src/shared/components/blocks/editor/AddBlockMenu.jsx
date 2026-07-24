@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { BLOCK_TYPE_LIST, BLOCK_TYPE_LABELS } from "@/lib/blocks/schema";
+import { BLOCK_TYPE_LIST, BLOCK_TYPE_LABELS } from "@/shared/components/blocks/schema";
 
 export default function AddBlockMenu({ onAdd }) {
   const [open, setOpen] = useState(false);

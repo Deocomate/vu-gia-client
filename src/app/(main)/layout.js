@@ -1,4 +1,4 @@
-import PublicLayout from "@/components/shared/PublicLayout";
+import PublicLayout from "@/shared/components/PublicLayout";
 import { publicGet, PublicApiError } from "@/shared/api/publicApi";
 
 /**

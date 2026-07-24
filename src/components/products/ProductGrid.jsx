@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import ProductCard from "@/components/shared/ProductCard";
+import ProductCard from "@/shared/components/ProductCard";
 import { mapProductToCardProps } from "@/shared/utils/productCard";
 
 export default function ProductGrid({ products = [] }) {

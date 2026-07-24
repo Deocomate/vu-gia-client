@@ -1,6 +1,6 @@
 import { cache } from "react";
 import ProductDetailView from "@/views/ProductDetailView";
-import JsonLd from "@/components/seo/JsonLd";
+import JsonLd from "@/shared/components/seo/JsonLd";
 import { publicGet, PublicApiError } from "@/shared/api/publicApi";
 import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";
 import { buildProductSchema, buildBreadcrumbSchema } from "@/shared/lib/seo/schemas";

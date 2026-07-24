@@ -2,14 +2,14 @@
 
 import React, { useCallback, useEffect, useRef } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import Pagination from "@/components/shared/Pagination";
+import Pagination from "@/shared/components/Pagination";
 import ProductToolbar from "@/components/products/ProductToolbar";
 import CategoryNavigation from "@/components/products/CategoryNavigation";
 import CategoryDescription from "@/components/products/CategoryDescription";
 import ProductGrid from "@/components/products/ProductGrid";
 import CategorySEOContent from "@/components/products/CategorySEOContent";
 import CategoryNews from "@/components/products/CategoryNews";
-import AboutUsSection from "@/components/shared/AboutUsSection";
+import AboutUsSection from "@/shared/components/AboutUsSection";
 import { formatImageUrl } from "@/shared/api/media";
 
 const PAGE_SIZE = 8;

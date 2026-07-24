@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { KeyRound, Plus, RefreshCw, ShieldCheck, X } from "lucide-react";
-import DataTable from "@/components/admin/DataTable";
-import Pagination from "@/components/admin/Pagination";
+import DataTable from "@/shared/components/admin/DataTable";
+import Pagination from "@/shared/components/admin/Pagination";
 import { adminApi } from "@/shared/api/adminApi";
 import { ROLE, ROLE_LABEL } from "@/shared/api/apiEnums";
 import { useAdminAuthStore } from "@/shared/stores/adminAuthStore";

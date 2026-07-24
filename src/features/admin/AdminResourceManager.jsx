@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Plus, RefreshCw, Search, X } from "lucide-react";
-import ConfirmDialog from "@/components/admin/ConfirmDialog";
-import DataTable from "@/components/admin/DataTable";
-import FormField from "@/components/admin/FormField";
-import Pagination from "@/components/admin/Pagination";
-import SeoFields from "@/components/admin/SeoFields";
+import ConfirmDialog from "@/shared/components/admin/ConfirmDialog";
+import DataTable from "@/shared/components/admin/DataTable";
+import FormField from "@/shared/components/admin/FormField";
+import Pagination from "@/shared/components/admin/Pagination";
+import SeoFields from "@/shared/components/admin/SeoFields";
 import { adminApi, AdminApiError } from "@/shared/api/adminApi";
 import { useAdminAuthStore } from "@/shared/stores/adminAuthStore";
 import { toast } from "@/shared/utils/feedback";

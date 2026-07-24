@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Breadcrumb from "@/components/shared/Breadcrumb";
+import Breadcrumb from "@/shared/components/Breadcrumb";
 import VietQrPanel from "@/features/checkout/components/VietQrPanel";
 import OrderResultSummary from "@/features/checkout/components/OrderResultSummary";
 import { getOrder } from "@/features/orders/order-service";

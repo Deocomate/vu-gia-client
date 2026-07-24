@@ -1,5 +1,5 @@
 import Image from "next/image";
-import SafeImage from "@/components/shared/SafeImage";
+import SafeImage from "@/shared/components/SafeImage";
 import Link from "next/link";
 import { Menu, ChevronRight, Search } from "lucide-react";
 import heroBg from "@/assets/images/home/hero-image-1-top.png";

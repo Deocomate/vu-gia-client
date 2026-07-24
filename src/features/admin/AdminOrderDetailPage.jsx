@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, RefreshCw } from "lucide-react";
-import DataTable from "@/components/admin/DataTable";
-import StatusBadge from "@/components/admin/StatusBadge";
+import DataTable from "@/shared/components/admin/DataTable";
+import StatusBadge from "@/shared/components/admin/StatusBadge";
 import OrderStatusControls from "@/features/admin/orders/OrderStatusControls";
 import OrderPaymentPanel from "@/features/admin/orders/OrderPaymentPanel";
 import { adminApi, formatVnd } from "@/shared/api/adminApi";

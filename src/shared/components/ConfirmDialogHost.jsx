@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import ConfirmDialog from "@/components/shared/ConfirmDialog";
+import ConfirmDialog from "@/shared/components/ConfirmDialog";
 import { useConfirmStore } from "@/shared/stores/confirmStore";
 
 export default function ConfirmDialogHost() {

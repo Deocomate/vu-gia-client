@@ -1,6 +1,6 @@
 // src/components/home/HomeNews.jsx
 import React from "react";
-import NewsCard from "@/components/shared/NewsCard";
+import NewsCard from "@/shared/components/NewsCard";
 import { formatImageUrl } from "@/shared/api/media";
 
 export default function HomeNews({ news = [] }) {

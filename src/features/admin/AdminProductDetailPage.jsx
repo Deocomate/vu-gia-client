@@ -3,10 +3,10 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, RefreshCw } from "lucide-react";
-import FormField from "@/components/admin/FormField";
-import SeoFields from "@/components/admin/SeoFields";
-import SearchableSelect from "@/components/admin/inputs/SearchableSelect";
-import { ImageField } from "@/components/admin/inputs/ImageUploader";
+import FormField from "@/shared/components/admin/FormField";
+import SeoFields from "@/shared/components/admin/SeoFields";
+import SearchableSelect from "@/shared/components/admin/inputs/SearchableSelect";
+import { ImageField } from "@/shared/components/admin/inputs/ImageUploader";
 import ProductGalleryManager from "@/features/admin/products/ProductGalleryManager";
 import ComboBuilder from "@/features/admin/products/ComboBuilder";
 import { adminApi, AdminApiError } from "@/shared/api/adminApi";

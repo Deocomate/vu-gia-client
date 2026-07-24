@@ -1,5 +1,5 @@
 // src/components/home/HomeCategoryBanners.jsx
-import SafeImage from "@/components/shared/SafeImage";
+import SafeImage from "@/shared/components/SafeImage";
 import Link from "next/link";
 import { ROUTES } from "@/shared/utils/routes";
 import { formatImageUrl } from "@/shared/api/media";

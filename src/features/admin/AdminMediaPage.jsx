@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Check, Copy } from "lucide-react";
-import ImageUploader from "@/components/admin/inputs/ImageUploader";
+import ImageUploader from "@/shared/components/admin/inputs/ImageUploader";
 
 /**
  * Backend has no media-library GET — this is an upload-only utility that
