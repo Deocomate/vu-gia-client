@@ -6,7 +6,7 @@ import NewsTabs from "@/components/news/NewsTabs";
 import NewsRelatedProducts from "@/components/news/NewsRelatedProducts";
 import NewsCard from "@/components/shared/NewsCard";
 import Pagination from "@/components/shared/Pagination";
-import { formatImageUrl } from "@/lib/media";
+import { formatImageUrl } from "@/shared/api/media";
 
 /**
  * Real, searchParams-driven news listing. `news`/`categories`/`currentPage`/

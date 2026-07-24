@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Paintbrush } from "lucide-react";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 
 // Pages where the widget must stay hidden to keep purchase focus.
 const HIDDEN_PATHS = [ROUTES.CHECKOUT, ROUTES.CART, ROUTES.ALTAR_CUSTOMIZER];

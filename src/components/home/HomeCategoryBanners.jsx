@@ -1,8 +1,8 @@
 // src/components/home/HomeCategoryBanners.jsx
 import SafeImage from "@/components/shared/SafeImage";
 import Link from "next/link";
-import { ROUTES } from "@/utils/routes";
-import { formatImageUrl } from "@/lib/media";
+import { ROUTES } from "@/shared/utils/routes";
+import { formatImageUrl } from "@/shared/api/media";
 import placeholderBanner from "@/assets/images/home/categories-banner-image-1.png";
 
 export default function HomeCategoryBanners({ banners = [] }) {

@@ -5,10 +5,10 @@ import CustomerServiceLayout from "@/components/customer-service/CustomerService
 import OrderStatusTabs from "@/components/orders/OrderStatusTabs";
 import OrderCard from "@/components/orders/OrderCard";
 import OrderPagination from "@/components/orders/OrderPagination";
-import { ROUTES } from "@/utils/routes";
-import { confirm, toast } from "@/utils/feedback";
+import { ROUTES } from "@/shared/utils/routes";
+import { confirm, toast } from "@/shared/utils/feedback";
 import { listOrders, cancelOrder } from "@/features/orders/order-service";
-import { ORDER_STATUS } from "@/lib/apiEnums";
+import { ORDER_STATUS } from "@/shared/api/apiEnums";
 
 const PAGE_SIZE = 5;
 

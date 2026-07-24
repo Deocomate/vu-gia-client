@@ -5,8 +5,8 @@ import Link from "next/link";
 import SectionTitle from "@/components/shared/SectionTitle";
 import ProductCard from "@/components/shared/ProductCard";
 import Image from "next/image";
-import { ROUTES } from "@/utils/routes";
-import { mapProductToCardProps } from "@/lib/productCard";
+import { ROUTES } from "@/shared/utils/routes";
+import { mapProductToCardProps } from "@/shared/utils/productCard";
 
 export default function HomeProductList({ title, tabs = [], products = [] }) {
   const [activeTab, setActiveTab] = useState(0);

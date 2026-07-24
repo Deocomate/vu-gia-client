@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, ArrowRight, Loader2, CheckCircle } from "lucide-react";
-import { toast } from "@/utils/feedback";
+import { toast } from "@/shared/utils/feedback";
 
 // Image imports for Featured Products
 import productCardImage1 from "@/assets/images/product-detail/product-card-image-1.png";

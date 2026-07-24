@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useCustomerAuthStore } from "@/shared/stores/customer-auth-store";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 
 /**
  * Client guard for customer-only routes (`(user)` layout, checkout, and the

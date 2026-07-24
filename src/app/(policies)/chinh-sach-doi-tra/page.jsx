@@ -1,9 +1,9 @@
 import ReturnPolicyView from "@/views/ReturnPolicyView";
 import JsonLd from "@/components/seo/JsonLd";
-import { getPageByKey } from "@/lib/seo/pageByKey";
-import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/lib/seo/siteConfig";
-import { buildBreadcrumbSchema } from "@/lib/seo/schemas";
-import { formatImageUrl } from "@/lib/media";
+import { getPageByKey } from "@/shared/lib/seo/pageByKey";
+import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";
+import { buildBreadcrumbSchema } from "@/shared/lib/seo/schemas";
+import { formatImageUrl } from "@/shared/api/media";
 
 export async function generateMetadata() {
   const page = await getPageByKey("return-policy");

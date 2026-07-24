@@ -4,10 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 import { KeyRound, Plus, RefreshCw, ShieldCheck, X } from "lucide-react";
 import DataTable from "@/components/admin/DataTable";
 import Pagination from "@/components/admin/Pagination";
-import { adminApi } from "@/lib/adminApi";
-import { ROLE, ROLE_LABEL } from "@/lib/apiEnums";
-import { useAdminAuthStore } from "@/stores/adminAuthStore";
-import { toast } from "@/utils/feedback";
+import { adminApi } from "@/shared/api/adminApi";
+import { ROLE, ROLE_LABEL } from "@/shared/api/apiEnums";
+import { useAdminAuthStore } from "@/shared/stores/adminAuthStore";
+import { toast } from "@/shared/utils/feedback";
 
 const PAGE_SIZE = 20;
 

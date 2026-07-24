@@ -1,5 +1,5 @@
 import CartView from "@/views/CartView";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 
 export const metadata = {
   title: "Giỏ hàng",

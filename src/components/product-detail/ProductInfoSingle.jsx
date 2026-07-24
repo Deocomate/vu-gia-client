@@ -5,10 +5,10 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Search, ChevronDown, ChevronUp } from "lucide-react";
 import SafeImage from "@/components/shared/SafeImage";
-import { formatImageUrl } from "@/lib/media";
-import { ROUTES } from "@/utils/routes";
-import { useCartStore } from "@/stores/cartStore";
-import { toast } from "@/utils/feedback";
+import { formatImageUrl } from "@/shared/api/media";
+import { ROUTES } from "@/shared/utils/routes";
+import { useCartStore } from "@/shared/stores/cartStore";
+import { toast } from "@/shared/utils/feedback";
 
 /** Builds the ordered gallery image URL list from a real `ProductResponse` (PRODUCT_API.md §8). */
 function buildGalleryImages(product) {

@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import LoginForm from "@/features/auth/components/LoginForm";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 
 export const metadata = {
   title: "Đăng nhập",

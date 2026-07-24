@@ -9,11 +9,11 @@ import SearchableSelect from "@/components/admin/inputs/SearchableSelect";
 import { ImageField } from "@/components/admin/inputs/ImageUploader";
 import ProductGalleryManager from "@/features/admin/products/ProductGalleryManager";
 import ComboBuilder from "@/features/admin/products/ComboBuilder";
-import { adminApi, AdminApiError } from "@/lib/adminApi";
-import { PRODUCT_TYPE, PRODUCT_TYPE_LABEL, PRODUCT_STATUS, PRODUCT_STATUS_LABEL } from "@/lib/apiEnums";
+import { adminApi, AdminApiError } from "@/shared/api/adminApi";
+import { PRODUCT_TYPE, PRODUCT_TYPE_LABEL, PRODUCT_STATUS, PRODUCT_STATUS_LABEL } from "@/shared/api/apiEnums";
 import { makeAsyncOptions } from "@/features/admin/adminResources";
-import { ROUTES } from "@/utils/routes";
-import { toast } from "@/utils/feedback";
+import { ROUTES } from "@/shared/utils/routes";
+import { toast } from "@/shared/utils/feedback";
 
 const loadCategoryOptions = makeAsyncOptions("/product-categories", { searchParam: "name" });
 

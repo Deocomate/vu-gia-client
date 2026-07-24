@@ -21,7 +21,7 @@ import {
   Truck,
   Users,
 } from "lucide-react";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 
 export const ADMIN_NAV = [
   { label: "Tổng quan", href: ROUTES.ADMIN, icon: Gauge },

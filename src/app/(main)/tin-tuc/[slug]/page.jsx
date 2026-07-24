@@ -1,10 +1,10 @@
 import { cache } from "react";
 import NewsDetailView from "@/views/NewsDetailView";
 import JsonLd from "@/components/seo/JsonLd";
-import { publicGet, PublicApiError } from "@/lib/publicApi";
-import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/lib/seo/siteConfig";
-import { buildArticleSchema, buildBreadcrumbSchema } from "@/lib/seo/schemas";
-import { formatImageUrl } from "@/lib/media";
+import { publicGet, PublicApiError } from "@/shared/api/publicApi";
+import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";
+import { buildArticleSchema, buildBreadcrumbSchema } from "@/shared/lib/seo/schemas";
+import { formatImageUrl } from "@/shared/api/media";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;

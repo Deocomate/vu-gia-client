@@ -1,4 +1,4 @@
-import { publicGet, PublicApiError } from "@/lib/publicApi";
+import { publicGet, PublicApiError } from "@/shared/api/publicApi";
 
 /**
  * Fetches a `Page` entity by its `key` and returns ONLY its hero/SEO scalar

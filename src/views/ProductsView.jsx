@@ -10,7 +10,7 @@ import ProductGrid from "@/components/products/ProductGrid";
 import CategorySEOContent from "@/components/products/CategorySEOContent";
 import CategoryNews from "@/components/products/CategoryNews";
 import AboutUsSection from "@/components/shared/AboutUsSection";
-import { formatImageUrl } from "@/lib/media";
+import { formatImageUrl } from "@/shared/api/media";
 
 const PAGE_SIZE = 8;
 const SEARCH_DEBOUNCE_MS = 400;

@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import ConfirmDialog from "@/components/admin/ConfirmDialog";
-import { adminApi } from "@/lib/adminApi";
-import { ORDER_STATUS, ORDER_STATUS_LABEL, PAYMENT_STATUS, PAYMENT_STATUS_LABEL } from "@/lib/apiEnums";
-import { toast } from "@/utils/feedback";
+import { adminApi } from "@/shared/api/adminApi";
+import { ORDER_STATUS, ORDER_STATUS_LABEL, PAYMENT_STATUS, PAYMENT_STATUS_LABEL } from "@/shared/api/apiEnums";
+import { toast } from "@/shared/utils/feedback";
 
 const CONFIRM_STATUSES = new Set(["COMPLETED", "RETURNED"]);
 

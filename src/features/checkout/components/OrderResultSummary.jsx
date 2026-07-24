@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ORDER_STATUS_LABEL, PAYMENT_STATUS_LABEL, PAYMENT_METHOD_LABEL } from "@/lib/apiEnums";
+import { ORDER_STATUS_LABEL, PAYMENT_STATUS_LABEL, PAYMENT_METHOD_LABEL } from "@/shared/api/apiEnums";
 
 function Row({ label, value }) {
   return (

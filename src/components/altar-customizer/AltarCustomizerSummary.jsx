@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 
 const TRUST_ITEMS = [
   { src: "/icons/trust-1.png", lines: ["Tư vấn", "miễn phí"] },

@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 
 export default function Breadcrumb({ items, className = "" }) {
   // Fallback to default breadcrumb trail if no items are passed

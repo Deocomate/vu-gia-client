@@ -1,7 +1,7 @@
 // src/components/home/HomeNews.jsx
 import React from "react";
 import NewsCard from "@/components/shared/NewsCard";
-import { formatImageUrl } from "@/lib/media";
+import { formatImageUrl } from "@/shared/api/media";
 
 export default function HomeNews({ news = [] }) {
   // Real `News` entities (status=PUBLISHED, sorted by publishedAt desc).

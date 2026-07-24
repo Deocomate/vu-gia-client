@@ -6,13 +6,13 @@ import Breadcrumb from "@/components/shared/Breadcrumb";
 import CartItemList from "@/components/cart/CartItemList";
 import CartSummary from "@/components/cart/CartSummary";
 import ProductCard from "@/components/shared/ProductCard";
-import { ROUTES } from "@/utils/routes";
-import { useCartStore } from "@/stores/cartStore";
+import { ROUTES } from "@/shared/utils/routes";
+import { useCartStore } from "@/shared/stores/cartStore";
 import { toCartLineVMList } from "@/features/cart/cart-view-model";
 import { validateCoupon } from "@/features/checkout/coupon-service";
-import { confirm, toast } from "@/utils/feedback";
-import { useFeaturedProductCards } from "@/hooks/useFeaturedProductCards";
-import { useDebouncedCallback } from "@/hooks/useDebouncedCallback";
+import { confirm, toast } from "@/shared/utils/feedback";
+import { useFeaturedProductCards } from "@/shared/hooks/useFeaturedProductCards";
+import { useDebouncedCallback } from "@/shared/hooks/useDebouncedCallback";
 
 const RELATED_PRODUCTS_LIMIT = 4;
 

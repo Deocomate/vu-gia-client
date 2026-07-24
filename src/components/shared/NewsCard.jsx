@@ -1,7 +1,7 @@
 // src/components/shared/NewsCard.jsx
 import SafeImage from "@/components/shared/SafeImage";
 import Link from "next/link";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 
 export default function NewsCard({
   image = "/images/home/home-new-1.png",

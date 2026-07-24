@@ -17,8 +17,8 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripVertical, Loader2, Star, Trash2, UploadCloud } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { uploadMany, MediaUploadError } from "@/lib/mediaUpload";
-import { formatImageUrl } from "@/lib/media";
+import { uploadMany, MediaUploadError } from "@/shared/api/mediaUpload";
+import { formatImageUrl } from "@/shared/api/media";
 
 function SortableImage({ image, onRemove, onSetThumb, disabled }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({

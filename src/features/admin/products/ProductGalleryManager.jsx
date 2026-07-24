@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import SortableImageGallery from "@/components/admin/inputs/SortableImageGallery";
-import { adminApi } from "@/lib/adminApi";
-import { uploadMany } from "@/lib/mediaUpload";
-import { toast } from "@/utils/feedback";
+import { adminApi } from "@/shared/api/adminApi";
+import { uploadMany } from "@/shared/api/mediaUpload";
+import { toast } from "@/shared/utils/feedback";
 
 /**
  * `mode="create"`: purely local array state — parent submits `images` as

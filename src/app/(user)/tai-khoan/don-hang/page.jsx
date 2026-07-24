@@ -1,5 +1,5 @@
 import OrdersView from "@/views/OrdersView";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 
 export const metadata = {
   title: "Đơn hàng",

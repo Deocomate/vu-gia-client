@@ -3,8 +3,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import * as cartService from "@/features/cart/cart-service";
-import { formatImageUrl } from "@/lib/media";
-import { toast } from "@/utils/feedback";
+import { formatImageUrl } from "@/shared/api/media";
+import { toast } from "@/shared/utils/feedback";
 
 // ---------------------------------------------------------------------------
 // Cart store — dual-mode (Phase 3):

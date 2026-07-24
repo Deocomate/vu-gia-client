@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import RegisterForm from "@/features/auth/components/RegisterForm";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 
 export const metadata = {
   title: "Đăng ký",

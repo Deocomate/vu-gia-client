@@ -4,8 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCustomerAuthStore } from "@/shared/stores/customer-auth-store";
-import { ROUTES, sanitizeNextPath } from "@/utils/routes";
-import { toast } from "@/utils/feedback";
+import { ROUTES, sanitizeNextPath } from "@/shared/utils/routes";
+import { toast } from "@/shared/utils/feedback";
 import GoogleLoginButton from "./GoogleLoginButton";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

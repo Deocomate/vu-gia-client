@@ -1,5 +1,5 @@
-import { SITE_NAME, DEFAULT_OG_IMAGE, absoluteUrl } from "@/lib/seo/siteConfig";
-import { formatImageUrl } from "@/lib/media";
+import { SITE_NAME, DEFAULT_OG_IMAGE, absoluteUrl } from "@/shared/lib/seo/siteConfig";
+import { formatImageUrl } from "@/shared/api/media";
 
 /**
  * Resolves any backend-relative or storage-relative image path into an

@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Loader2, UploadCloud } from "lucide-react";
 import { useDropzone } from "react-dropzone";
-import { uploadOne, MediaUploadError } from "@/lib/mediaUpload";
-import { formatImageUrl } from "@/lib/media";
+import { uploadOne, MediaUploadError } from "@/shared/api/mediaUpload";
+import { formatImageUrl } from "@/shared/api/media";
 
 const inputClass =
   "h-10 w-full border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-950";

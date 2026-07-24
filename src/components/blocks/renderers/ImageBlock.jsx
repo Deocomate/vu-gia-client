@@ -1,4 +1,4 @@
-import { formatImageUrl } from "@/lib/media";
+import { formatImageUrl } from "@/shared/api/media";
 
 export default function ImageBlock({ block }) {
   if (!block.url) return null;

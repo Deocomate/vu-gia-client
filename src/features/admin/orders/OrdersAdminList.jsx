@@ -5,10 +5,10 @@ import { RefreshCw, Search } from "lucide-react";
 import DataTable from "@/components/admin/DataTable";
 import Pagination from "@/components/admin/Pagination";
 import DatePicker from "@/components/admin/inputs/DatePicker";
-import { adminApi } from "@/lib/adminApi";
-import { ORDER_STATUS, ORDER_STATUS_LABEL, PAYMENT_STATUS, PAYMENT_STATUS_LABEL } from "@/lib/apiEnums";
-import { ROUTES } from "@/utils/routes";
-import { toast } from "@/utils/feedback";
+import { adminApi } from "@/shared/api/adminApi";
+import { ORDER_STATUS, ORDER_STATUS_LABEL, PAYMENT_STATUS, PAYMENT_STATUS_LABEL } from "@/shared/api/apiEnums";
+import { ROUTES } from "@/shared/utils/routes";
+import { toast } from "@/shared/utils/feedback";
 
 const PAGE_SIZE = 20;
 

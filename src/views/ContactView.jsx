@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ROUTES } from "@/utils/routes";
-import { publicPost, PublicApiError } from "@/lib/publicApi";
-import { toast } from "@/utils/feedback";
+import { ROUTES } from "@/shared/utils/routes";
+import { publicPost, PublicApiError } from "@/shared/api/publicApi";
+import { toast } from "@/shared/utils/feedback";
 
 import heroBg from "@/assets/images/gallery/hero-bg.jpg";
 import vaseImage from "@/assets/images/lien-he/lien-he-main-thumbnail.png";

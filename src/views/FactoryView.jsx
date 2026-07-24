@@ -7,7 +7,7 @@ import FactorySlider from "@/components/factory/FactorySlider";
 import FactoryProcess from "@/components/factory/FactoryProcess";
 import FactoryDetailImage from "@/components/factory/FactoryDetailImage";
 import FactoryShowcase from "@/components/factory/FactoryShowcase";
-import { formatImageUrl } from "@/lib/media";
+import { formatImageUrl } from "@/shared/api/media";
 
 export default function FactoryView({ page }) {
   const hasHeroText = page?.heroTitle || page?.heroSubtitle || page?.heroDes;

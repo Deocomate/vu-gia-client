@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { publicGet, PublicApiError } from "@/lib/publicApi";
-import { mapProductToCardProps } from "@/lib/productCard";
+import { publicGet, PublicApiError } from "@/shared/api/publicApi";
+import { mapProductToCardProps } from "@/shared/utils/productCard";
 
 /**
  * Shared by the 3 "suggested products" widgets (altar customizer, news detail,

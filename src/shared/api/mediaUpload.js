@@ -1,5 +1,5 @@
-import { API_BASE_URL } from "@/lib/adminApi";
-import { useAdminAuthStore } from "@/stores/adminAuthStore";
+import { API_BASE_URL } from "@/shared/api/adminApi";
+import { useAdminAuthStore } from "@/shared/stores/adminAuthStore";
 
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
 

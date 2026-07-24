@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 import closingThumb from "@/assets/images/home/closing-thumb.png";
 import closingThumbMobile from "@/assets/images/home/closing-thumb-mobile.png";
 

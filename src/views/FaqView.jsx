@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 
 // Turns a (possibly Vietnamese-diacritic) category label into a stable,
 // URL-safe anchor id, e.g. "Vận chuyển & thời gian giao hàng" -> "van-chuyen-thoi-gian-giao-hang".

@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import CustomerServiceLayout from "@/components/customer-service/CustomerServiceLayout";
-import { ROUTES } from "@/utils/routes";
-import { toast } from "@/utils/feedback";
+import { ROUTES } from "@/shared/utils/routes";
+import { toast } from "@/shared/utils/feedback";
 import { useCustomerAuthStore } from "@/shared/stores/customer-auth-store";
 
 function formatDob(dob) {

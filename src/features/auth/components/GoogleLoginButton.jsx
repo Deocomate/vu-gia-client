@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useCustomerAuthStore } from "@/shared/stores/customer-auth-store";
-import { toast } from "@/utils/feedback";
+import { toast } from "@/shared/utils/feedback";
 
 // Gated on the user-provisioned Google Web client id — no `google-*` npm
 // dependency, loads Google Identity Services directly (per Phase 2 scope).

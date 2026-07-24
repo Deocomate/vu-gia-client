@@ -1,6 +1,6 @@
 import HomeView from "@/views/HomeView";
-import { publicGet, PublicApiError } from "@/lib/publicApi";
-import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/lib/seo/siteConfig";
+import { publicGet, PublicApiError } from "@/shared/api/publicApi";
+import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";
 
 export function generateMetadata() {
   const title = "Trang chủ";

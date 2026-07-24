@@ -3,7 +3,7 @@
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { eachDayOfInterval, format, parseISO } from "date-fns";
 import DatePicker from "@/components/admin/inputs/DatePicker";
-import { formatVnd } from "@/lib/adminApi";
+import { formatVnd } from "@/shared/api/adminApi";
 
 function fillGaps(points, from, to) {
   const byDate = new Map(points.map((point) => [point.date, point]));

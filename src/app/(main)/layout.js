@@ -1,5 +1,5 @@
 import PublicLayout from "@/components/shared/PublicLayout";
-import { publicGet, PublicApiError } from "@/lib/publicApi";
+import { publicGet, PublicApiError } from "@/shared/api/publicApi";
 
 /**
  * Header is a client component and can't fetch itself, so the active

@@ -5,8 +5,8 @@ import { Menu, ChevronRight, Search } from "lucide-react";
 import heroBg from "@/assets/images/home/hero-image-1-top.png";
 import heroImageLeft from "@/assets/images/home/hero-image-2-left.png";
 import heroImageRight from "@/assets/images/home/hero-image-3-right.png";
-import { ROUTES } from "@/utils/routes";
-import { formatImageUrl } from "@/lib/media";
+import { ROUTES } from "@/shared/utils/routes";
+import { formatImageUrl } from "@/shared/api/media";
 
 export default function HomeHero({ banners = [], categories = [] }) {
   // `banners` are real `Banner` entities (position=HOME_HERO), ordered by

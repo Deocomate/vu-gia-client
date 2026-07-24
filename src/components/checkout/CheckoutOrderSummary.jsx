@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { PLACEHOLDER_IMAGE } from "@/lib/media";
+import { PLACEHOLDER_IMAGE } from "@/shared/api/media";
 
 export default function CheckoutOrderSummary({
   items = [],

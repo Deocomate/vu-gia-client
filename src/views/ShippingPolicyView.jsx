@@ -2,7 +2,7 @@
 
 import React from "react";
 import CustomerServiceLayout from "@/components/customer-service/CustomerServiceLayout";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 
 export default function ShippingPolicyView({ page } = {}) {
   const breadcrumbs = [

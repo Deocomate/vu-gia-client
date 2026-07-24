@@ -1,5 +1,5 @@
 import AltarCustomizerView from "@/views/AltarCustomizerView";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 
 export const metadata = {
   title: "Tùy chỉnh bộ đồ thờ",

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ORDER_STATUS_LABEL, ORDER_STATUS_COLOR } from "@/lib/apiEnums";
+import { ORDER_STATUS_LABEL, ORDER_STATUS_COLOR } from "@/shared/api/apiEnums";
 
 // Static class strings per semantic color name — mirrors the color→class
 // convention already established by the admin `StatusBadge.jsx`

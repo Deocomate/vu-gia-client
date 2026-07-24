@@ -1,6 +1,6 @@
 import CheckoutView from "@/views/CheckoutView";
 import RequireCustomerAuth from "@/features/auth/RequireCustomerAuth";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 
 export const metadata = {
   title: "Thanh toán",

@@ -3,8 +3,8 @@
 import { ArrowDown, ArrowUp, ArrowUpDown, Eye, ImageIcon, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import EmptyState from "@/components/admin/EmptyState";
 import StatusBadge from "@/components/admin/StatusBadge";
-import { formatVnd, getValueByPath } from "@/lib/adminApi";
-import { formatImageUrl } from "@/lib/media";
+import { formatVnd, getValueByPath } from "@/shared/api/adminApi";
+import { formatImageUrl } from "@/shared/api/media";
 
 const renderCell = (row, column) => {
   const value =

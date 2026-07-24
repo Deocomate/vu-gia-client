@@ -1,5 +1,5 @@
 import ProfileView from "@/views/ProfileView";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 
 export const metadata = {
   title: "Tài khoản của tôi",

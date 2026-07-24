@@ -1,4 +1,4 @@
-import { formatVnd } from "@/lib/adminApi";
+import { formatVnd } from "@/shared/api/adminApi";
 
 export default function OrderPaymentPanel({ payment }) {
   if (!payment) return null;

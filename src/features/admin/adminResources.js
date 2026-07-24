@@ -1,5 +1,5 @@
-import { adminApi } from "@/lib/adminApi";
-import { toast } from "@/utils/feedback";
+import { adminApi } from "@/shared/api/adminApi";
+import { toast } from "@/shared/utils/feedback";
 import {
   DISCOUNT_TYPE,
   DISCOUNT_TYPE_LABEL,
@@ -9,7 +9,7 @@ import {
   CONTACT_STATUS_LABEL,
   CONTENT_STATUS,
   CONTENT_STATUS_LABEL,
-} from "@/lib/apiEnums";
+} from "@/shared/api/apiEnums";
 
 /** Async FK-picker loader for a `/{endpoint}?{searchParam}=` list. */
 export function makeAsyncOptions(endpoint, { searchParam = "name", labelField = "name" } = {}) {

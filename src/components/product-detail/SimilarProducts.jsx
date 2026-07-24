@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import ProductCard from "@/components/shared/ProductCard";
-import { publicGet, PublicApiError } from "@/lib/publicApi";
-import { mapProductToCardProps } from "@/lib/productCard";
+import { publicGet, PublicApiError } from "@/shared/api/publicApi";
+import { mapProductToCardProps } from "@/shared/utils/productCard";
 
 const RELATED_LIMIT = 4;
 

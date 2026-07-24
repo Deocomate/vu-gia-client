@@ -1,8 +1,8 @@
 import FaqView from "@/views/FaqView";
 import JsonLd from "@/components/seo/JsonLd";
-import { publicGet, PublicApiError } from "@/lib/publicApi";
-import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/lib/seo/siteConfig";
-import { buildBreadcrumbSchema } from "@/lib/seo/schemas";
+import { publicGet, PublicApiError } from "@/shared/api/publicApi";
+import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";
+import { buildBreadcrumbSchema } from "@/shared/lib/seo/schemas";
 
 export function generateMetadata() {
   const title = "Câu hỏi thường gặp";

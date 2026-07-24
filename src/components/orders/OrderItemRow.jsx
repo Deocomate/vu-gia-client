@@ -2,8 +2,8 @@
 
 import React from "react";
 import Image from "next/image";
-import { PLACEHOLDER_IMAGE } from "@/lib/media";
-import { PRODUCT_TYPE_LABEL } from "@/lib/apiEnums";
+import { PLACEHOLDER_IMAGE } from "@/shared/api/media";
+import { PRODUCT_TYPE_LABEL } from "@/shared/api/apiEnums";
 
 /**
  * Renders one `OrderItemResponse` snapshot line (ORDER_API.md §4):

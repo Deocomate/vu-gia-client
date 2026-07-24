@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import SafeImage from "@/components/shared/SafeImage";
 import Link from "next/link";
-import { ROUTES } from "@/utils/routes";
-import { formatImageUrl } from "@/lib/media";
+import { ROUTES } from "@/shared/utils/routes";
+import { formatImageUrl } from "@/shared/api/media";
 
 // Import local assets
 import heroBg from "@/assets/images/gallery/hero-bg.jpg";

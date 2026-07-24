@@ -7,9 +7,9 @@ import DataTable from "@/components/admin/DataTable";
 import FormField from "@/components/admin/FormField";
 import Pagination from "@/components/admin/Pagination";
 import SeoFields from "@/components/admin/SeoFields";
-import { adminApi, AdminApiError } from "@/lib/adminApi";
-import { useAdminAuthStore } from "@/stores/adminAuthStore";
-import { toast } from "@/utils/feedback";
+import { adminApi, AdminApiError } from "@/shared/api/adminApi";
+import { useAdminAuthStore } from "@/shared/stores/adminAuthStore";
+import { toast } from "@/shared/utils/feedback";
 
 const PAGE_SIZE = 20;
 

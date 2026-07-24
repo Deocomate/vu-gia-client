@@ -6,11 +6,11 @@ import DataTable from "@/components/admin/DataTable";
 import Pagination from "@/components/admin/Pagination";
 import SearchableSelect from "@/components/admin/inputs/SearchableSelect";
 import ConfirmDialog from "@/components/admin/ConfirmDialog";
-import { adminApi } from "@/lib/adminApi";
-import { PRODUCT_TYPE, PRODUCT_TYPE_LABEL, PRODUCT_STATUS, PRODUCT_STATUS_LABEL } from "@/lib/apiEnums";
+import { adminApi } from "@/shared/api/adminApi";
+import { PRODUCT_TYPE, PRODUCT_TYPE_LABEL, PRODUCT_STATUS, PRODUCT_STATUS_LABEL } from "@/shared/api/apiEnums";
 import { makeAsyncOptions } from "@/features/admin/adminResources";
-import { ROUTES } from "@/utils/routes";
-import { toast } from "@/utils/feedback";
+import { ROUTES } from "@/shared/utils/routes";
+import { toast } from "@/shared/utils/feedback";
 
 const PAGE_SIZE = 20;
 const loadCategoryOptions = makeAsyncOptions("/product-categories", { searchParam: "name" });

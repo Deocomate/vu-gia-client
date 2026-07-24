@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { toast } from "@/utils/feedback";
+import { toast } from "@/shared/utils/feedback";
 
 // OQ4 (Validation Decisions): COD is blocked at/above this order amount —
 // enforced client-side only, no backend field.

@@ -9,8 +9,8 @@ import {
 import localFont from "next/font/local";
 import "./globals.css";
 import JsonLd from "@/components/seo/JsonLd";
-import { buildOrganizationSchema } from "@/lib/seo/schemas";
-import { SITE_URL } from "@/lib/seo/siteConfig";
+import { buildOrganizationSchema } from "@/shared/lib/seo/schemas";
+import { SITE_URL } from "@/shared/lib/seo/siteConfig";
 
 // --- GOOGLE FONTS ---
 const montserrat = Montserrat({

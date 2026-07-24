@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import CustomerServiceLayout from "@/components/customer-service/CustomerServiceLayout";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 import returnPolicyPng from "@/assets/images/customer-services/chinh-sach-doi-tra.png";
 import returnPolicyMobilePng from "@/assets/images/customer-services/chinh-sach-doi-tra-mobile.png";
 import returnPolicyLastPng from "@/assets/images/customer-services/chinh-sach-doi-tra-last.png";

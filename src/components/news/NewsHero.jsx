@@ -2,7 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 import newsHeroBanner from "@/assets/images/news/news-hero-banner.png";
 
 export default function NewsHero({ activeCategoryName }) {

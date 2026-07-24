@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCustomerAuthStore } from "@/shared/stores/customer-auth-store";
-import { ROUTES, sanitizeNextPath } from "@/utils/routes";
+import { ROUTES, sanitizeNextPath } from "@/shared/utils/routes";
 import GoogleLoginButton from "./GoogleLoginButton";
 
 export default function LoginForm() {

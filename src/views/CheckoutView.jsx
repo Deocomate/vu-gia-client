@@ -6,16 +6,16 @@ import Link from "next/link";
 import Breadcrumb from "@/components/shared/Breadcrumb";
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import CheckoutOrderSummary from "@/components/checkout/CheckoutOrderSummary";
-import { ROUTES } from "@/utils/routes";
-import { useCartStore } from "@/stores/cartStore";
+import { ROUTES } from "@/shared/utils/routes";
+import { useCartStore } from "@/shared/stores/cartStore";
 import { toCartLineVMList } from "@/features/cart/cart-view-model";
 import { getCart } from "@/features/cart/cart-service";
 import { placeOrder } from "@/features/orders/order-service";
 import { useIdempotencyKey } from "@/features/checkout/use-idempotency-key";
 import { validateCoupon } from "@/features/checkout/coupon-service";
 import { listActiveShippingMethods } from "@/features/checkout/shipping-service";
-import { useDebouncedCallback } from "@/hooks/useDebouncedCallback";
-import { confirm, toast } from "@/utils/feedback";
+import { useDebouncedCallback } from "@/shared/hooks/useDebouncedCallback";
+import { confirm, toast } from "@/shared/utils/feedback";
 
 // Backend error codes surfaced inline (ORDER_API.md): 4001 validation, 4044
 // product gone, 4052 coupon not found, 4105 coupon not applicable (message

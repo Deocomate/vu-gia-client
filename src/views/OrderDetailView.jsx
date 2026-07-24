@@ -7,8 +7,8 @@ import OrderStatusBadge from "@/components/orders/OrderStatusBadge";
 import VietQrPanel from "@/features/checkout/components/VietQrPanel";
 import OrderResultSummary from "@/features/checkout/components/OrderResultSummary";
 import { getOrder, cancelOrder } from "@/features/orders/order-service";
-import { ROUTES } from "@/utils/routes";
-import { confirm, toast } from "@/utils/feedback";
+import { ROUTES } from "@/shared/utils/routes";
+import { confirm, toast } from "@/shared/utils/feedback";
 
 // Same cancellable-status rule as OrderCard (BE-3, ORDER_API.md).
 const CANCELLABLE_STATUSES = ["PENDING_PAYMENT", "PROCESSING"];

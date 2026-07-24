@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 import SafeImage from "@/components/shared/SafeImage";
 import productImageThumb from "@/assets/images/products/product-image-thumb.png";
 

@@ -1,4 +1,4 @@
-import { formatImageUrl } from "@/lib/media";
+import { formatImageUrl } from "@/shared/api/media";
 
 /**
  * Maps a raw backend `Product` DTO (see `GET /products`, `GET /products/slug/{slug}`)

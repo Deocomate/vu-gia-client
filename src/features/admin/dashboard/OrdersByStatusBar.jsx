@@ -1,4 +1,4 @@
-import { ORDER_STATUS, ORDER_STATUS_LABEL } from "@/lib/apiEnums";
+import { ORDER_STATUS, ORDER_STATUS_LABEL } from "@/shared/api/apiEnums";
 
 export default function OrdersByStatusBar({ ordersByStatus }) {
   if (!ordersByStatus) return null;

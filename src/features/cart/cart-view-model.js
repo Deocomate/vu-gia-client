@@ -6,7 +6,7 @@
 // ad-hoc `{title, sku, price, image}` shape. `cartStore.js` keeps both raw
 // shapes as-is (guest reducers untouched, server actions store the raw
 // `CartItemResponse[]`) — this module is the single place that bridges them.
-import { formatImageUrl } from "@/lib/media";
+import { formatImageUrl } from "@/shared/api/media";
 
 /** Normalizes a server `CartItemResponse` (CART_API.md §4) into the cart UI's line-item shape. */
 export function toCartLineVM(serverItem) {

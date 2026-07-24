@@ -7,9 +7,9 @@ import DataTable from "@/components/admin/DataTable";
 import StatusBadge from "@/components/admin/StatusBadge";
 import OrderStatusControls from "@/features/admin/orders/OrderStatusControls";
 import OrderPaymentPanel from "@/features/admin/orders/OrderPaymentPanel";
-import { adminApi, formatVnd } from "@/lib/adminApi";
-import { ORDER_STATUS_LABEL, PAYMENT_STATUS_LABEL } from "@/lib/apiEnums";
-import { ROUTES } from "@/utils/routes";
+import { adminApi, formatVnd } from "@/shared/api/adminApi";
+import { ORDER_STATUS_LABEL, PAYMENT_STATUS_LABEL } from "@/shared/api/apiEnums";
+import { ROUTES } from "@/shared/utils/routes";
 
 export default function AdminOrderDetailPage({ orderId }) {
   const [order, setOrder] = useState(null);

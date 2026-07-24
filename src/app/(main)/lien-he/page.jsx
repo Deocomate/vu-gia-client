@@ -1,7 +1,7 @@
 import ContactView from "@/views/ContactView";
 import JsonLd from "@/components/seo/JsonLd";
-import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/lib/seo/siteConfig";
-import { buildBreadcrumbSchema } from "@/lib/seo/schemas";
+import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";
+import { buildBreadcrumbSchema } from "@/shared/lib/seo/schemas";
 
 export function generateMetadata() {
   const title = "Liên hệ";

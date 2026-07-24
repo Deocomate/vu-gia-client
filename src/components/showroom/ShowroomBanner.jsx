@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ROUTES } from "@/utils/routes";
+import { ROUTES } from "@/shared/utils/routes";
 import showroomHeaderBanner from "@/assets/images/showroom/showroom-header-banner.png";
 
 export default function ShowroomBanner() {

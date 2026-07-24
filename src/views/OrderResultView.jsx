@@ -6,8 +6,8 @@ import Breadcrumb from "@/components/shared/Breadcrumb";
 import VietQrPanel from "@/features/checkout/components/VietQrPanel";
 import OrderResultSummary from "@/features/checkout/components/OrderResultSummary";
 import { getOrder } from "@/features/orders/order-service";
-import { ROUTES } from "@/utils/routes";
-import { toast } from "@/utils/feedback";
+import { ROUTES } from "@/shared/utils/routes";
+import { toast } from "@/shared/utils/feedback";
 
 // ONL polling cadence: fixed 4s interval, capped total wait (RT-D/RT-E — the
 // webhook never sets `paymentStatus = FAILED`, so we only ever stop on

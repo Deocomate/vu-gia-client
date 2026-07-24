@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
-import { useConfirmStore } from "@/stores/confirmStore";
+import { useConfirmStore } from "@/shared/stores/confirmStore";
 
 export default function ConfirmDialogHost() {
   const open = useConfirmStore((s) => s.open);
