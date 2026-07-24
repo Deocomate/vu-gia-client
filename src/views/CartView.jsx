@@ -3,8 +3,8 @@
 import React, { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Breadcrumb from "@/shared/components/Breadcrumb";
-import CartItemList from "@/components/cart/CartItemList";
-import CartSummary from "@/components/cart/CartSummary";
+import CartItemList from "@/features/cart/components/CartItemList";
+import CartSummary from "@/features/cart/components/CartSummary";
 import ProductCard from "@/shared/components/ProductCard";
 import { ROUTES } from "@/shared/utils/routes";
 import { useCartStore } from "@/shared/stores/cartStore";

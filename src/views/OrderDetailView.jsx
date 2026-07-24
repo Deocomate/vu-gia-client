@@ -2,8 +2,8 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import CustomerServiceLayout from "@/components/customer-service/CustomerServiceLayout";
-import OrderStatusBadge from "@/components/orders/OrderStatusBadge";
+import CustomerServiceLayout from "@/features/account/components/CustomerServiceLayout";
+import OrderStatusBadge from "@/features/orders/components/OrderStatusBadge";
 import VietQrPanel from "@/features/checkout/components/VietQrPanel";
 import OrderResultSummary from "@/features/checkout/components/OrderResultSummary";
 import { getOrder, cancelOrder } from "@/features/orders/order-service";
