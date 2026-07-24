@@ -8,33 +8,35 @@ import thumb1 from "@/assets/images/product-detail/chi-tiet-sp-thumb-1.png";
 import thumb2 from "@/assets/images/product-detail/chi-tiet-sp-thumb-2.png";
 import thumb3 from "@/assets/images/product-detail/chi-tiet-sp-thumb-3.png";
 
-export default function ProductDetail() {
-  const detailSections = [
+export default function ProductDetail({ sectionData }) {
+  const defaultSections = [
     {
       id: 1,
-      title: "A Decorative Statement",
+      title: "Nghệ Thuật Chế Tác Thủ Công",
       description:
-        'With its "infinity" board design and sturdy corner bases, the Regal Chess Set becomes a standout decorative masterpiece in any living space. Breaking away from traditional chessman designs, each piece in the Regal Chess Set embodies a minimalist and classic elegance, featuring sharp line details that leave an impression of refined artistry, infusing your display with a sense of luxury and sophistication.',
+        "Từng nét vẽ đắp nổi trên bề mặt gốm sứ Vũ Gia đều được các nghệ nhân Bát Tràng thực hiện hoàn toàn thủ công. Sự tỉ mỉ trong từng đường nét họa tiết Rồng Chầu, Hoa Sen hay Chim Phượng tạo nên khí chất trang nghiêm, tôn kính cho không gian thờ cúng linh thiêng.",
       image: thumb1,
       isImageRight: true,
     },
     {
       id: 2,
-      title: "A Decorative Statement",
+      title: "Chất Men Rạn & Men Lam Cổ",
       description:
-        'With its "infinity" board design and sturdy corner bases, the Regal Chess Set becomes a standout decorative masterpiece in any living space. Breaking away from traditional chessman designs, each piece in the Regal Chess Set embodies a minimalist and classic elegance, featuring sharp line details that leave an impression of refined artistry, infusing your display with a sense of luxury and sophistication.',
+        "Sản phẩm sử dụng công thức men truyền thống kinh điển của làng nghề Bát Tràng. Được nung luyện ở nhiệt độ cao trên 1.200°C giúp xương gốm đanh chắc, nước men sâu thẫm, bền màu vĩnh cửu cùng thời gian và chịu lực vượt trội.",
       image: thumb2,
       isImageRight: false,
     },
     {
       id: 3,
-      title: "A Decorative Statement",
+      title: "Giá Trị Phong Thủy & Tâm Linh",
       description:
-        'With its "infinity" board design and sturdy corner bases, the Regal Chess Set becomes a standout decorative masterpiece in any living space. Breaking away from traditional chessman designs, each piece in the Regal Chess Set embodies a minimalist and classic elegance, featuring sharp line details that leave an impression of refined artistry, infusing your display with a sense of luxury and sophistication.',
+        "Mỗi chi tiết hoa văn trên vật phẩm thờ cúng Vũ Gia đều chứa đựng những ý nghĩa phong thủy tốt lành, tụ khí tàng phong, mang lại may mắn, bình an và vượng khí cho gia chủ, thể hiện lòng thành kính hướng về nguồn cội gia tiên.",
       image: thumb3,
       isImageRight: true,
     },
   ];
+
+  const detailSections = sectionData || defaultSections;
 
   return (
     <div className="w-full pt-[30px] border-t border-[#E6E8EC]">
