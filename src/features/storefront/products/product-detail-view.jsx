@@ -1,12 +1,12 @@
 "use client";
 
 import React from "react";
-import ProductInfo from "@/features/storefront/products/components/ProductInfo";
-import ProductInfoSingle from "@/features/storefront/products/components/ProductInfoSingle";
-import ProductDescription from "@/features/storefront/products/components/ProductDescription";
-import ProductDetail from "@/features/storefront/products/components/ProductDetail";
-import ProductSpecifications from "@/features/storefront/products/components/ProductSpecifications";
-import SimilarProducts from "@/features/storefront/products/components/SimilarProducts";
+import ProductInfo from "@/features/storefront/products/components/product-info";
+import ProductInfoSingle from "@/features/storefront/products/components/product-info-single";
+import ProductDescription from "@/features/storefront/products/components/product-description";
+import ProductDetail from "@/features/storefront/products/components/product-detail";
+import ProductSpecifications from "@/features/storefront/products/components/product-specifications";
+import SimilarProducts from "@/features/storefront/products/components/similar-products";
 
 export default function ProductDetailView({ slug, type, product }) {
   // Real backend type (`SINGLE`/`COMBO`, ProductResponse) decides the layout

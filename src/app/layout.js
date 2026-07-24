@@ -8,9 +8,9 @@ import {
 } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
-import JsonLd from "@/shared/components/seo/JsonLd";
+import JsonLd from "@/shared/components/seo/json-ld";
 import { buildOrganizationSchema } from "@/shared/lib/seo/schemas";
-import { SITE_URL } from "@/shared/lib/seo/siteConfig";
+import { SITE_URL } from "@/shared/lib/seo/site-config";
 
 // --- GOOGLE FONTS ---
 const montserrat = Montserrat({

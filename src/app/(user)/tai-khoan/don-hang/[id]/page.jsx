@@ -1,4 +1,4 @@
-import OrderDetailView from "@/features/orders/OrderDetailView";
+import OrderDetailView from "@/features/orders/order-detail-view";
 
 export const metadata = {
   title: "Chi tiết đơn hàng",

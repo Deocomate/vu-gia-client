@@ -1,6 +1,6 @@
 import React from "react";
-import ShowroomBanner from "@/features/storefront/showroom/components/ShowroomBanner";
-import ShowroomGallery from "@/features/storefront/showroom/components/ShowroomGallery";
+import ShowroomBanner from "@/features/storefront/showroom/components/showroom-banner";
+import ShowroomGallery from "@/features/storefront/showroom/components/showroom-gallery";
 
 // Real `Showroom` entity list rendering (name/address/phone/openingHours/
 // mapEmbedUrl). Renders one info+map block per showroom instead of the old

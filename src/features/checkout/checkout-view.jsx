@@ -3,18 +3,18 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Breadcrumb from "@/shared/components/Breadcrumb";
-import CheckoutForm from "@/features/checkout/components/CheckoutForm";
-import CheckoutOrderSummary from "@/features/checkout/components/CheckoutOrderSummary";
+import Breadcrumb from "@/shared/components/breadcrumb";
+import CheckoutForm from "@/features/checkout/components/checkout-form";
+import CheckoutOrderSummary from "@/features/checkout/components/checkout-order-summary";
 import { ROUTES } from "@/shared/utils/routes";
-import { useCartStore } from "@/shared/stores/cartStore";
+import { useCartStore } from "@/shared/stores/cart-store";
 import { toCartLineVMList } from "@/features/cart/cart-view-model";
 import { getCart } from "@/features/cart/cart-service";
 import { placeOrder } from "@/features/orders/order-service";
 import { useIdempotencyKey } from "@/features/checkout/use-idempotency-key";
 import { validateCoupon } from "@/features/checkout/coupon-service";
 import { listActiveShippingMethods } from "@/features/checkout/shipping-service";
-import { useDebouncedCallback } from "@/shared/hooks/useDebouncedCallback";
+import { useDebouncedCallback } from "@/shared/hooks/use-debounced-callback";
 import { confirm, toast } from "@/shared/utils/feedback";
 
 // Backend error codes surfaced inline (ORDER_API.md): 4001 validation, 4044

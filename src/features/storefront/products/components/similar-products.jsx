@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import ProductCard from "@/shared/components/ProductCard";
-import { publicGet, PublicApiError } from "@/shared/api/publicApi";
-import { mapProductToCardProps } from "@/shared/utils/productCard";
+import ProductCard from "@/shared/components/product-card";
+import { publicGet, PublicApiError } from "@/shared/api/public-api";
+import { mapProductToCardProps } from "@/shared/utils/product-card";
 
 const RELATED_LIMIT = 4;
 

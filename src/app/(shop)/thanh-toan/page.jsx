@@ -1,5 +1,5 @@
-import CheckoutView from "@/features/checkout/CheckoutView";
-import RequireCustomerAuth from "@/features/auth/RequireCustomerAuth";
+import CheckoutView from "@/features/checkout/checkout-view";
+import RequireCustomerAuth from "@/features/auth/require-customer-auth";
 import { ROUTES } from "@/shared/utils/routes";
 
 export const metadata = {

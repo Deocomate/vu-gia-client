@@ -1,5 +1,5 @@
 import { BadgePercent, Boxes, Inbox, Mail, ShoppingCart, TrendingUp, Users } from "lucide-react";
-import { formatVnd } from "@/shared/api/adminApi";
+import { formatVnd } from "@/shared/api/admin-api";
 
 function Card({ icon: Icon, label, value }) {
   return (

@@ -1,5 +1,5 @@
-import OrderResultView from "@/features/checkout/OrderResultView";
-import RequireCustomerAuth from "@/features/auth/RequireCustomerAuth";
+import OrderResultView from "@/features/checkout/order-result-view";
+import RequireCustomerAuth from "@/features/auth/require-customer-auth";
 
 export const metadata = {
   title: "Kết quả đặt hàng",

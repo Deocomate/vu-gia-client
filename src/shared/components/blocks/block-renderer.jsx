@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import { parseBlockDoc, BLOCK_TYPES } from "@/shared/components/blocks/schema";
-import ParagraphBlock from "@/shared/components/blocks/renderers/ParagraphBlock";
-import HeadingBlock from "@/shared/components/blocks/renderers/HeadingBlock";
-import ImageBlock from "@/shared/components/blocks/renderers/ImageBlock";
-import ImageGridBlock from "@/shared/components/blocks/renderers/ImageGridBlock";
-import QuoteBlock from "@/shared/components/blocks/renderers/QuoteBlock";
-import ListSectionBlock from "@/shared/components/blocks/renderers/ListSectionBlock";
-import DividerBlock from "@/shared/components/blocks/renderers/DividerBlock";
+import ParagraphBlock from "@/shared/components/blocks/renderers/paragraph-block";
+import HeadingBlock from "@/shared/components/blocks/renderers/heading-block";
+import ImageBlock from "@/shared/components/blocks/renderers/image-block";
+import ImageGridBlock from "@/shared/components/blocks/renderers/image-grid-block";
+import QuoteBlock from "@/shared/components/blocks/renderers/quote-block";
+import ListSectionBlock from "@/shared/components/blocks/renderers/list-section-block";
+import DividerBlock from "@/shared/components/blocks/renderers/divider-block";
 
 const RENDERERS = {
   [BLOCK_TYPES.PARAGRAPH]: ParagraphBlock,

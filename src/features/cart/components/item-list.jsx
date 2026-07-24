@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import SafeImage from "@/shared/components/SafeImage";
+import SafeImage from "@/shared/components/safe-image";
 
 export default function CartItemList({
   items = [],

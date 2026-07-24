@@ -1,5 +1,5 @@
-import PublicLayout from "@/shared/components/PublicLayout";
-import RequireCustomerAuth from "@/features/auth/RequireCustomerAuth";
+import PublicLayout from "@/shared/components/public-layout";
+import RequireCustomerAuth from "@/features/auth/require-customer-auth";
 
 export default function UserLayout({ children }) {
   return (

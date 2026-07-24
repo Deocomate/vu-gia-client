@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import CustomerServiceLayout from "@/features/account/components/CustomerServiceLayout";
+import CustomerServiceLayout from "@/features/account/components/customer-service-layout";
 import { ROUTES } from "@/shared/utils/routes";
 import { toast } from "@/shared/utils/feedback";
 import { useCustomerAuthStore } from "@/shared/stores/customer-auth-store";

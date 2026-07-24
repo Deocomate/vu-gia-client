@@ -1,8 +1,8 @@
 "use client";
 import React, { useMemo } from "react";
-import NewsDetailHeader from "@/features/storefront/news/components/NewsDetailHeader";
-import NewsDetailContent from "@/features/storefront/news/components/NewsDetailContent";
-import NewsDetailSidebar from "@/features/storefront/news/components/NewsDetailSidebar";
+import NewsDetailHeader from "@/features/storefront/news/components/news-detail-header";
+import NewsDetailContent from "@/features/storefront/news/components/news-detail-content";
+import NewsDetailSidebar from "@/features/storefront/news/components/news-detail-sidebar";
 
 export default function NewsDetailView({ slug, des }) {
   // Mock metadata based on slug for dynamic title display

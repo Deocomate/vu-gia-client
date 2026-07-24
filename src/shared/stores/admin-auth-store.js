@@ -3,11 +3,11 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { apiRequest } from "@/shared/api/api-client";
-import { ADMIN_ROLES } from "@/shared/api/apiEnums";
+import { ADMIN_ROLES } from "@/shared/api/api-enums";
 
-// Calls the shared api-client directly (not `adminRequest` from `@/shared/api/adminApi`)
-// so this store never imports `@/shared/api/adminApi` — avoids a circular import,
-// since `@/shared/api/adminApi` imports THIS store to bind its own requests. Both
+// Calls the shared api-client directly (not `adminRequest` from `@/shared/api/admin-api`)
+// so this store never imports `@/shared/api/admin-api` — avoids a circular import,
+// since `@/shared/api/admin-api` imports THIS store to bind its own requests. Both
 // modules independently bind `@/shared/api/api-client` to `useAdminAuthStore`.
 export const useAdminAuthStore = create(
   persist(

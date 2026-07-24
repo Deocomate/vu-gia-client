@@ -1,7 +1,7 @@
 "use client";
 
 import { LogOut, Menu, ShieldCheck } from "lucide-react";
-import { useAdminAuthStore } from "@/shared/stores/adminAuthStore";
+import { useAdminAuthStore } from "@/shared/stores/admin-auth-store";
 
 export default function AdminTopbar({ onMenuClick }) {
   const { user, logout } = useAdminAuthStore();

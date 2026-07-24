@@ -1,4 +1,4 @@
-import CartView from "@/features/cart/CartView";
+import CartView from "@/features/cart/cart-view";
 import { ROUTES } from "@/shared/utils/routes";
 
 export const metadata = {

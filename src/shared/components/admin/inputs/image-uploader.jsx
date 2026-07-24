@@ -3,7 +3,7 @@
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { ImageIcon, Loader2, UploadCloud, X } from "lucide-react";
-import { uploadOne, uploadMany, MediaUploadError } from "@/shared/api/mediaUpload";
+import { uploadOne, uploadMany, MediaUploadError } from "@/shared/api/media-upload";
 import { formatImageUrl } from "@/shared/api/media";
 
 /**

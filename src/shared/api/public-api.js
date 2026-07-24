@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/shared/api/adminApi";
+import { API_BASE_URL } from "@/shared/api/admin-api";
 
 export class PublicApiError extends Error {
   constructor(message, { status, code, cause } = {}) {

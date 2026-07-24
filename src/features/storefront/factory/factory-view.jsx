@@ -1,12 +1,12 @@
 import React from "react";
-import SafeImage from "@/shared/components/SafeImage";
-import FactoryBanner from "@/features/storefront/factory/components/FactoryBanner";
-import FactoryIntro from "@/features/storefront/factory/components/FactoryIntro";
-import FactoryQuote from "@/features/storefront/factory/components/FactoryQuote";
-import FactorySlider from "@/features/storefront/factory/components/FactorySlider";
-import FactoryProcess from "@/features/storefront/factory/components/FactoryProcess";
-import FactoryDetailImage from "@/features/storefront/factory/components/FactoryDetailImage";
-import FactoryShowcase from "@/features/storefront/factory/components/FactoryShowcase";
+import SafeImage from "@/shared/components/safe-image";
+import FactoryBanner from "@/features/storefront/factory/components/factory-banner";
+import FactoryIntro from "@/features/storefront/factory/components/factory-intro";
+import FactoryQuote from "@/features/storefront/factory/components/factory-quote";
+import FactorySlider from "@/features/storefront/factory/components/factory-slider";
+import FactoryProcess from "@/features/storefront/factory/components/factory-process";
+import FactoryDetailImage from "@/features/storefront/factory/components/factory-detail-image";
+import FactoryShowcase from "@/features/storefront/factory/components/factory-showcase";
 import { formatImageUrl } from "@/shared/api/media";
 
 export default function FactoryView({ page }) {

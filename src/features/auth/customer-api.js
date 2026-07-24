@@ -2,10 +2,10 @@
 // to the customer session, for OTHER feature code (cart/checkout/orders,
 // Phase 3-5) to make customer-authenticated calls without touching
 // `api-client.js` internals directly — same method-surface shape as
-// `@/shared/api/adminApi`'s `adminApi`.
+// `@/shared/api/admin-api`'s `adminApi`.
 //
 // Deliberately NOT marked "use client" — see the equivalent note in
-// `@/shared/api/adminApi.js`: a plain data-access module like this one shouldn't
+// `@/shared/api/admin-api.js`: a plain data-access module like this one shouldn't
 // force a client boundary on whatever Server Component ends up importing it
 // transitively (adding "use client" to `adminApi.js` measurably broke
 // `next build` static generation for every storefront page).

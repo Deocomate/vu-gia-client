@@ -2,13 +2,13 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Plus, RefreshCw, Search, X } from "lucide-react";
-import ConfirmDialog from "@/shared/components/admin/ConfirmDialog";
-import DataTable from "@/shared/components/admin/DataTable";
-import FormField from "@/shared/components/admin/FormField";
-import Pagination from "@/shared/components/admin/Pagination";
-import SeoFields from "@/shared/components/admin/SeoFields";
-import { adminApi, AdminApiError } from "@/shared/api/adminApi";
-import { useAdminAuthStore } from "@/shared/stores/adminAuthStore";
+import ConfirmDialog from "@/shared/components/admin/confirm-dialog";
+import DataTable from "@/shared/components/admin/data-table";
+import FormField from "@/shared/components/admin/form-field";
+import Pagination from "@/shared/components/admin/pagination";
+import SeoFields from "@/shared/components/admin/seo-fields";
+import { adminApi, AdminApiError } from "@/shared/api/admin-api";
+import { useAdminAuthStore } from "@/shared/stores/admin-auth-store";
 import { toast } from "@/shared/utils/feedback";
 
 const PAGE_SIZE = 20;

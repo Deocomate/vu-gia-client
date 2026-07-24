@@ -2,10 +2,10 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import CustomerServiceLayout from "@/features/account/components/CustomerServiceLayout";
-import OrderStatusBadge from "@/features/orders/components/OrderStatusBadge";
-import VietQrPanel from "@/features/checkout/components/VietQrPanel";
-import OrderResultSummary from "@/features/checkout/components/OrderResultSummary";
+import CustomerServiceLayout from "@/features/account/components/customer-service-layout";
+import OrderStatusBadge from "@/features/orders/components/order-status-badge";
+import VietQrPanel from "@/features/checkout/components/viet-qr-panel";
+import OrderResultSummary from "@/features/checkout/components/order-result-summary";
 import { getOrder, cancelOrder } from "@/features/orders/order-service";
 import { ROUTES } from "@/shared/utils/routes";
 import { confirm, toast } from "@/shared/utils/feedback";

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useCustomerAuthStore } from "@/shared/stores/customer-auth-store";
-import { useCartStore } from "@/shared/stores/cartStore";
+import { useCartStore } from "@/shared/stores/cart-store";
 
 /**
  * Wires `customerAuthStore` (session state) to `cartStore` (guest/server

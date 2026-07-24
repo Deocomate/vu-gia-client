@@ -3,12 +3,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, RefreshCw } from "lucide-react";
-import DataTable from "@/shared/components/admin/DataTable";
-import StatusBadge from "@/shared/components/admin/StatusBadge";
+import DataTable from "@/shared/components/admin/data-table";
+import StatusBadge from "@/shared/components/admin/status-badge";
 import OrderStatusControls from "@/features/admin/orders/OrderStatusControls";
 import OrderPaymentPanel from "@/features/admin/orders/OrderPaymentPanel";
-import { adminApi, formatVnd } from "@/shared/api/adminApi";
-import { ORDER_STATUS_LABEL, PAYMENT_STATUS_LABEL } from "@/shared/api/apiEnums";
+import { adminApi, formatVnd } from "@/shared/api/admin-api";
+import { ORDER_STATUS_LABEL, PAYMENT_STATUS_LABEL } from "@/shared/api/api-enums";
 import { ROUTES } from "@/shared/utils/routes";
 
 export default function AdminOrderDetailPage({ orderId }) {

@@ -1,11 +1,11 @@
 "use client";
 import React, { useMemo } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import NewsHero from "@/features/storefront/news/components/NewsHero";
-import NewsTabs from "@/features/storefront/news/components/NewsTabs";
-import NewsRelatedProducts from "@/features/storefront/news/components/NewsRelatedProducts";
-import NewsCard from "@/shared/components/NewsCard";
-import Pagination from "@/shared/components/Pagination";
+import NewsHero from "@/features/storefront/news/components/news-hero";
+import NewsTabs from "@/features/storefront/news/components/news-tabs";
+import NewsRelatedProducts from "@/features/storefront/news/components/news-related-products";
+import NewsCard from "@/shared/components/news-card";
+import Pagination from "@/shared/components/pagination";
 import { formatImageUrl } from "@/shared/api/media";
 
 /**

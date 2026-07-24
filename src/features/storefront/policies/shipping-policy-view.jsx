@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import CustomerServiceLayout from "@/features/account/components/CustomerServiceLayout";
+import CustomerServiceLayout from "@/features/account/components/customer-service-layout";
 import { ROUTES } from "@/shared/utils/routes";
 
 export default function ShippingPolicyView({ page } = {}) {

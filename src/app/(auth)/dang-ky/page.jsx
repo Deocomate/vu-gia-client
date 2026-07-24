@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import RegisterForm from "@/features/auth/components/RegisterForm";
+import RegisterForm from "@/features/auth/components/register-form";
 import { ROUTES } from "@/shared/utils/routes";
 
 export const metadata = {

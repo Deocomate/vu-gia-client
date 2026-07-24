@@ -2,9 +2,9 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Breadcrumb from "@/shared/components/Breadcrumb";
-import VietQrPanel from "@/features/checkout/components/VietQrPanel";
-import OrderResultSummary from "@/features/checkout/components/OrderResultSummary";
+import Breadcrumb from "@/shared/components/breadcrumb";
+import VietQrPanel from "@/features/checkout/components/viet-qr-panel";
+import OrderResultSummary from "@/features/checkout/components/order-result-summary";
 import { getOrder } from "@/features/orders/order-service";
 import { ROUTES } from "@/shared/utils/routes";
 import { toast } from "@/shared/utils/feedback";

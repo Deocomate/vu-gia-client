@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import SortableImageGallery from "@/shared/components/admin/inputs/SortableImageGallery";
-import { adminApi } from "@/shared/api/adminApi";
-import { uploadMany } from "@/shared/api/mediaUpload";
+import SortableImageGallery from "@/shared/components/admin/inputs/sortable-image-gallery";
+import { adminApi } from "@/shared/api/admin-api";
+import { uploadMany } from "@/shared/api/media-upload";
 import { toast } from "@/shared/utils/feedback";
 
 /**

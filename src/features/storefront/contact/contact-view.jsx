@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ROUTES } from "@/shared/utils/routes";
-import { publicPost, PublicApiError } from "@/shared/api/publicApi";
+import { publicPost, PublicApiError } from "@/shared/api/public-api";
 import { toast } from "@/shared/utils/feedback";
 
 import heroBg from "@/assets/images/gallery/hero-bg.jpg";

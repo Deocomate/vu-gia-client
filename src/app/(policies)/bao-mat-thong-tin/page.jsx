@@ -1,7 +1,7 @@
-import PrivacyPolicyView from "@/features/storefront/policies/PrivacyPolicyView";
-import JsonLd from "@/shared/components/seo/JsonLd";
-import { getPageByKey } from "@/shared/lib/seo/pageByKey";
-import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";
+import PrivacyPolicyView from "@/features/storefront/policies/privacy-policy-view";
+import JsonLd from "@/shared/components/seo/json-ld";
+import { getPageByKey } from "@/shared/lib/seo/page-by-key";
+import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/site-config";
 import { buildBreadcrumbSchema } from "@/shared/lib/seo/schemas";
 import { formatImageUrl } from "@/shared/api/media";
 

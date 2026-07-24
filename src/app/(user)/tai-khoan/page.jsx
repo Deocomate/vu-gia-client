@@ -1,4 +1,4 @@
-import ProfileView from "@/features/account/ProfileView";
+import ProfileView from "@/features/account/profile-view";
 import { ROUTES } from "@/shared/utils/routes";
 
 export const metadata = {

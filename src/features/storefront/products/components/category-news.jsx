@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import NewsCard from "@/shared/components/NewsCard";
+import NewsCard from "@/shared/components/news-card";
 import productNewThumb from "@/assets/images/products/product-new-thumb.png";
 import productImageThumb from "@/assets/images/products/product-image-thumb.png";
 import productCategoryThumb from "@/assets/images/products/product-category-thumb.png";

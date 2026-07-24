@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import AdminSidebar from "@/shared/components/admin/AdminSidebar";
-import AdminTopbar from "@/shared/components/admin/AdminTopbar";
-import AppToaster from "@/shared/components/AppToaster";
-import { useAdminAuthStore } from "@/shared/stores/adminAuthStore";
+import AdminSidebar from "@/shared/components/admin/admin-sidebar";
+import AdminTopbar from "@/shared/components/admin/admin-topbar";
+import AppToaster from "@/shared/components/app-toaster";
+import { useAdminAuthStore } from "@/shared/stores/admin-auth-store";
 import { ROUTES } from "@/shared/utils/routes";
 
 export default function AdminShell({ children }) {

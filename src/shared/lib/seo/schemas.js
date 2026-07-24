@@ -1,4 +1,4 @@
-import { SITE_NAME, DEFAULT_OG_IMAGE, absoluteUrl } from "@/shared/lib/seo/siteConfig";
+import { SITE_NAME, DEFAULT_OG_IMAGE, absoluteUrl } from "@/shared/lib/seo/site-config";
 import { formatImageUrl } from "@/shared/api/media";
 
 /**

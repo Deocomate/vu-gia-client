@@ -2,17 +2,17 @@
 
 import React, { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import Breadcrumb from "@/shared/components/Breadcrumb";
-import CartItemList from "@/features/cart/components/CartItemList";
-import CartSummary from "@/features/cart/components/CartSummary";
-import ProductCard from "@/shared/components/ProductCard";
+import Breadcrumb from "@/shared/components/breadcrumb";
+import CartItemList from "@/features/cart/components/item-list";
+import CartSummary from "@/features/cart/components/summary";
+import ProductCard from "@/shared/components/product-card";
 import { ROUTES } from "@/shared/utils/routes";
-import { useCartStore } from "@/shared/stores/cartStore";
+import { useCartStore } from "@/shared/stores/cart-store";
 import { toCartLineVMList } from "@/features/cart/cart-view-model";
 import { validateCoupon } from "@/features/checkout/coupon-service";
 import { confirm, toast } from "@/shared/utils/feedback";
-import { useFeaturedProductCards } from "@/shared/hooks/useFeaturedProductCards";
-import { useDebouncedCallback } from "@/shared/hooks/useDebouncedCallback";
+import { useFeaturedProductCards } from "@/shared/hooks/use-featured-product-cards";
+import { useDebouncedCallback } from "@/shared/hooks/use-debounced-callback";
 
 const RELATED_PRODUCTS_LIMIT = 4;
 

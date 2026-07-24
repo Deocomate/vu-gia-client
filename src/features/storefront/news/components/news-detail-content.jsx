@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { Check } from "lucide-react";
-import NewsCard from "@/shared/components/NewsCard";
-import BlockRenderer from "@/shared/components/blocks/BlockRenderer";
+import NewsCard from "@/shared/components/news-card";
+import BlockRenderer from "@/shared/components/blocks/block-renderer";
 
 import craft1 from "@/assets/images/home/HomeCraftsmanship-1.png";
 import craft2 from "@/assets/images/home/HomeCraftsmanship-2.png";

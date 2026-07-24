@@ -1,11 +1,11 @@
-import HomeHero from "@/features/storefront/home/components/HomeHero";
-import HomeFeatures from "@/features/storefront/home/components/HomeFeatures";
-import HomeProductList from "@/features/storefront/home/components/HomeProductList";
-import HomeCategoryBanners from "@/features/storefront/home/components/HomeCategoryBanners";
-import HomeCraftsmanship from "@/features/storefront/home/components/HomeCraftsmanship";
-import HomeVideoProcess from "@/features/storefront/home/components/HomeVideoProcess";
-import HomeNews from "@/features/storefront/home/components/HomeNews";
-import AboutUsSection from "@/shared/components/AboutUsSection";
+import HomeHero from "@/features/storefront/home/components/home-hero";
+import HomeFeatures from "@/features/storefront/home/components/home-features";
+import HomeProductList from "@/features/storefront/home/components/home-product-list";
+import HomeCategoryBanners from "@/features/storefront/home/components/home-category-banners";
+import HomeCraftsmanship from "@/features/storefront/home/components/home-craftsmanship";
+import HomeVideoProcess from "@/features/storefront/home/components/home-video-process";
+import HomeNews from "@/features/storefront/home/components/home-news";
+import AboutUsSection from "@/shared/components/about-us-section";
 
 export default function HomeView({
   heroBanners = [],

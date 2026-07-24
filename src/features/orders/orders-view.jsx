@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import CustomerServiceLayout from "@/features/account/components/CustomerServiceLayout";
-import OrderStatusTabs from "@/features/orders/components/OrderStatusTabs";
-import OrderCard from "@/features/orders/components/OrderCard";
-import OrderPagination from "@/features/orders/components/OrderPagination";
+import CustomerServiceLayout from "@/features/account/components/customer-service-layout";
+import OrderStatusTabs from "@/features/orders/components/order-status-tabs";
+import OrderCard from "@/features/orders/components/order-card";
+import OrderPagination from "@/features/orders/components/order-pagination";
 import { ROUTES } from "@/shared/utils/routes";
 import { confirm, toast } from "@/shared/utils/feedback";
 import { listOrders, cancelOrder } from "@/features/orders/order-service";
-import { ORDER_STATUS } from "@/shared/api/apiEnums";
+import { ORDER_STATUS } from "@/shared/api/api-enums";
 
 const PAGE_SIZE = 5;
 

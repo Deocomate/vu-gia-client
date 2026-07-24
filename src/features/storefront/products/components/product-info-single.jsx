@@ -4,10 +4,10 @@ import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Search, ChevronDown, ChevronUp } from "lucide-react";
-import SafeImage from "@/shared/components/SafeImage";
+import SafeImage from "@/shared/components/safe-image";
 import { formatImageUrl } from "@/shared/api/media";
 import { ROUTES } from "@/shared/utils/routes";
-import { useCartStore } from "@/shared/stores/cartStore";
+import { useCartStore } from "@/shared/stores/cart-store";
 import { toast } from "@/shared/utils/feedback";
 
 /** Builds the ordered gallery image URL list from a real `ProductResponse` (PRODUCT_API.md §8). */

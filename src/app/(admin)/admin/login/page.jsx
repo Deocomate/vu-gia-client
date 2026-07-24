@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, LockKeyhole } from "lucide-react";
-import { useAdminAuthStore } from "@/shared/stores/adminAuthStore";
+import { useAdminAuthStore } from "@/shared/stores/admin-auth-store";
 import { ROUTES, sanitizeNextPath } from "@/shared/utils/routes";
 
 function AdminLoginForm() {

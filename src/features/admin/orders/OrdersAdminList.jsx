@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { RefreshCw, Search } from "lucide-react";
-import DataTable from "@/shared/components/admin/DataTable";
-import Pagination from "@/shared/components/admin/Pagination";
-import DatePicker from "@/shared/components/admin/inputs/DatePicker";
-import { adminApi } from "@/shared/api/adminApi";
-import { ORDER_STATUS, ORDER_STATUS_LABEL, PAYMENT_STATUS, PAYMENT_STATUS_LABEL } from "@/shared/api/apiEnums";
+import DataTable from "@/shared/components/admin/data-table";
+import Pagination from "@/shared/components/admin/pagination";
+import DatePicker from "@/shared/components/admin/inputs/date-picker";
+import { adminApi } from "@/shared/api/admin-api";
+import { ORDER_STATUS, ORDER_STATUS_LABEL, PAYMENT_STATUS, PAYMENT_STATUS_LABEL } from "@/shared/api/api-enums";
 import { ROUTES } from "@/shared/utils/routes";
 import { toast } from "@/shared/utils/feedback";
 

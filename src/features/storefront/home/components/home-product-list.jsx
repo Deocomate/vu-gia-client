@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import SectionTitle from "@/shared/components/SectionTitle";
-import ProductCard from "@/shared/components/ProductCard";
+import SectionTitle from "@/shared/components/section-title";
+import ProductCard from "@/shared/components/product-card";
 import Image from "next/image";
 import { ROUTES } from "@/shared/utils/routes";
-import { mapProductToCardProps } from "@/shared/utils/productCard";
+import { mapProductToCardProps } from "@/shared/utils/product-card";
 
 export default function HomeProductList({ title, tabs = [], products = [] }) {
   const [activeTab, setActiveTab] = useState(0);

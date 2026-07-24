@@ -1,2 +1,2 @@
 export { toast } from "sonner";
-export { confirm } from "@/shared/stores/confirmStore";
+export { confirm } from "@/shared/stores/confirm-store";

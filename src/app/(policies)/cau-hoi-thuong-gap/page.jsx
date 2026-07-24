@@ -1,7 +1,7 @@
-import FaqView from "@/features/storefront/faq/FaqView";
-import JsonLd from "@/shared/components/seo/JsonLd";
-import { publicGet, PublicApiError } from "@/shared/api/publicApi";
-import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";
+import FaqView from "@/features/storefront/faq/faq-view";
+import JsonLd from "@/shared/components/seo/json-ld";
+import { publicGet, PublicApiError } from "@/shared/api/public-api";
+import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/site-config";
 import { buildBreadcrumbSchema } from "@/shared/lib/seo/schemas";
 
 export function generateMetadata() {

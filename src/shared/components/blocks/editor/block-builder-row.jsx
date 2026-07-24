@@ -4,13 +4,13 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Copy, GripVertical, Trash2 } from "lucide-react";
 import { BLOCK_TYPE_LABELS, BLOCK_TYPES } from "@/shared/components/blocks/schema";
-import ParagraphEditor from "@/shared/components/blocks/editor/editors/ParagraphEditor";
-import HeadingEditor from "@/shared/components/blocks/editor/editors/HeadingEditor";
-import ImageEditor from "@/shared/components/blocks/editor/editors/ImageEditor";
-import ImageGridEditor from "@/shared/components/blocks/editor/editors/ImageGridEditor";
-import QuoteEditor from "@/shared/components/blocks/editor/editors/QuoteEditor";
-import ListSectionEditor from "@/shared/components/blocks/editor/editors/ListSectionEditor";
-import DividerEditor from "@/shared/components/blocks/editor/editors/DividerEditor";
+import ParagraphEditor from "@/shared/components/blocks/editor/editors/paragraph-editor";
+import HeadingEditor from "@/shared/components/blocks/editor/editors/heading-editor";
+import ImageEditor from "@/shared/components/blocks/editor/editors/image-editor";
+import ImageGridEditor from "@/shared/components/blocks/editor/editors/image-grid-editor";
+import QuoteEditor from "@/shared/components/blocks/editor/editors/quote-editor";
+import ListSectionEditor from "@/shared/components/blocks/editor/editors/list-section-editor";
+import DividerEditor from "@/shared/components/blocks/editor/editors/divider-editor";
 
 const EDITORS = {
   [BLOCK_TYPES.PARAGRAPH]: ParagraphEditor,

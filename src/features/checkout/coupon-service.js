@@ -2,7 +2,7 @@
 // Always responds 200 with `{valid, code, discountType, discountAmount,
 // freeShipping, message}` — never throws for an invalid/inapplicable code,
 // only for a genuine transport/server failure (`PublicApiError`).
-import { publicPost } from "@/shared/api/publicApi";
+import { publicPost } from "@/shared/api/public-api";
 
 /**
  * `POST /api/coupons/validate` — client-side preview only. The order

@@ -1,14 +1,14 @@
 "use client";
 
 import "@/features/storefront/altar-customizer/components/altar-customizer.css";
-import AltarCustomizerIntro from "@/features/storefront/altar-customizer/components/AltarCustomizerIntro";
-import AltarCustomizerLeftRail from "@/features/storefront/altar-customizer/components/AltarCustomizerLeftRail";
-import AltarCustomizerDesignerPanel from "@/features/storefront/altar-customizer/components/AltarCustomizerDesignerPanel";
-import AltarCustomizerSummary from "@/features/storefront/altar-customizer/components/AltarCustomizerSummary";
-import AltarSizeGuideSection from "@/features/storefront/altar-customizer/components/AltarSizeGuideSection";
-import AltarSimilarProductsSection from "@/features/storefront/altar-customizer/components/AltarSimilarProductsSection";
-import { INITIAL_CART_ITEMS } from "@/features/storefront/altar-customizer/components/data/altarCustomizerData";
-import { useAltarCustomizer } from "@/features/storefront/altar-customizer/components/hooks/useAltarCustomizer";
+import AltarCustomizerIntro from "@/features/storefront/altar-customizer/components/altar-customizer-intro";
+import AltarCustomizerLeftRail from "@/features/storefront/altar-customizer/components/altar-customizer-left-rail";
+import AltarCustomizerDesignerPanel from "@/features/storefront/altar-customizer/components/altar-customizer-designer-panel";
+import AltarCustomizerSummary from "@/features/storefront/altar-customizer/components/altar-customizer-summary";
+import AltarSizeGuideSection from "@/features/storefront/altar-customizer/components/altar-size-guide-section";
+import AltarSimilarProductsSection from "@/features/storefront/altar-customizer/components/altar-similar-products-section";
+import { INITIAL_CART_ITEMS } from "@/features/storefront/altar-customizer/components/data/altar-customizer-data";
+import { useAltarCustomizer } from "@/features/storefront/altar-customizer/components/hooks/use-altar-customizer";
 
 export default function AltarCustomizerView() {
   const {

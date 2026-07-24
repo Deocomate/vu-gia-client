@@ -1,6 +1,6 @@
-import ContactView from "@/features/storefront/contact/ContactView";
-import JsonLd from "@/shared/components/seo/JsonLd";
-import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";
+import ContactView from "@/features/storefront/contact/contact-view";
+import JsonLd from "@/shared/components/seo/json-ld";
+import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/site-config";
 import { buildBreadcrumbSchema } from "@/shared/lib/seo/schemas";
 
 export function generateMetadata() {

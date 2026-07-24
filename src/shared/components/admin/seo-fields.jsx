@@ -1,6 +1,6 @@
 "use client";
 
-import FormField from "@/shared/components/admin/FormField";
+import FormField from "@/shared/components/admin/form-field";
 
 const SEO_FIELDS = [
   { name: "seoTitle", label: "SEO title", fullWidth: true },

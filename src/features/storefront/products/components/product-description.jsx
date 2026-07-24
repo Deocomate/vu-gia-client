@@ -1,5 +1,5 @@
 import React from "react";
-import BlockRenderer from "@/shared/components/blocks/BlockRenderer";
+import BlockRenderer from "@/shared/components/blocks/block-renderer";
 
 export default function ProductDescription({ description }) {
   return (

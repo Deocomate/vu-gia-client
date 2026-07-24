@@ -1,5 +1,5 @@
 // src/components/shared/NewsCard.jsx
-import SafeImage from "@/shared/components/SafeImage";
+import SafeImage from "@/shared/components/safe-image";
 import Link from "next/link";
 import { ROUTES } from "@/shared/utils/routes";
 

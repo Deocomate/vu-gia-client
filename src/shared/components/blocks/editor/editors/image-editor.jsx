@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Loader2, UploadCloud } from "lucide-react";
 import { useDropzone } from "react-dropzone";
-import { uploadOne, MediaUploadError } from "@/shared/api/mediaUpload";
+import { uploadOne, MediaUploadError } from "@/shared/api/media-upload";
 import { formatImageUrl } from "@/shared/api/media";
 
 const inputClass =

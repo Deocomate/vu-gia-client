@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ROUTES } from "@/shared/utils/routes";
-import SafeImage from "@/shared/components/SafeImage";
+import SafeImage from "@/shared/components/safe-image";
 import productImageThumb from "@/assets/images/products/product-image-thumb.png";
 
 export default function ProductCard({

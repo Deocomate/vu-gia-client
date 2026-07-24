@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { PLACEHOLDER_IMAGE } from "@/shared/api/media";
-import { PRODUCT_TYPE_LABEL } from "@/shared/api/apiEnums";
+import { PRODUCT_TYPE_LABEL } from "@/shared/api/api-enums";
 
 /**
  * Renders one `OrderItemResponse` snapshot line (ORDER_API.md §4):

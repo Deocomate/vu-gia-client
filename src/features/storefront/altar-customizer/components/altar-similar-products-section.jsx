@@ -1,7 +1,7 @@
 "use client";
 
-import ProductCard from "@/shared/components/ProductCard";
-import { useFeaturedProductCards } from "@/shared/hooks/useFeaturedProductCards";
+import ProductCard from "@/shared/components/product-card";
+import { useFeaturedProductCards } from "@/shared/hooks/use-featured-product-cards";
 
 const RELATED_LIMIT = 4;
 

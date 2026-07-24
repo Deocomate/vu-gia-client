@@ -1,6 +1,6 @@
 // Public (unauthenticated) shipping-methods list (BE-2, `SHIPPING_API.md`).
 // Same pagination convention as the existing `/api/banners` public search.
-import { publicGet } from "@/shared/api/publicApi";
+import { publicGet } from "@/shared/api/public-api";
 
 /**
  * `GET /api/shipping-methods` — active methods sorted by `sortOrder`

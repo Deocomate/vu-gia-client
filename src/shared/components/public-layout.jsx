@@ -1,8 +1,8 @@
-import Footer from "@/shared/components/Footer";
-import Header from "@/shared/components/Header";
-import GlobalAltarWidget from "@/shared/components/GlobalAltarWidget";
-import AppToaster from "@/shared/components/AppToaster";
-import ConfirmDialogHost from "@/shared/components/ConfirmDialogHost";
+import Footer from "@/shared/components/footer";
+import Header from "@/shared/components/header";
+import GlobalAltarWidget from "@/shared/components/global-altar-widget";
+import AppToaster from "@/shared/components/app-toaster";
+import ConfirmDialogHost from "@/shared/components/confirm-dialog-host";
 import CartAuthBridge from "@/features/cart/cart-auth-bridge";
 
 export default function PublicLayout({ children, categories = [] }) {

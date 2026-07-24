@@ -1,4 +1,4 @@
-import OrdersView from "@/features/orders/OrdersView";
+import OrdersView from "@/features/orders/orders-view";
 import { ROUTES } from "@/shared/utils/routes";
 
 export const metadata = {

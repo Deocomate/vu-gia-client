@@ -6,7 +6,7 @@ import { subDays } from "date-fns";
 import KpiCards from "@/features/admin/dashboard/KpiCards";
 import TopProductsTable from "@/features/admin/dashboard/TopProductsTable";
 import OrdersByStatusBar from "@/features/admin/dashboard/OrdersByStatusBar";
-import { adminApi } from "@/shared/api/adminApi";
+import { adminApi } from "@/shared/api/admin-api";
 import { toast } from "@/shared/utils/feedback";
 
 const RevenueChart = dynamic(() => import("@/features/admin/dashboard/RevenueChart"), {

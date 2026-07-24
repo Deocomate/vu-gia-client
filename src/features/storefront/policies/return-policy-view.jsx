@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import CustomerServiceLayout from "@/features/account/components/CustomerServiceLayout";
+import CustomerServiceLayout from "@/features/account/components/customer-service-layout";
 import { ROUTES } from "@/shared/utils/routes";
 import returnPolicyPng from "@/assets/images/customer-services/chinh-sach-doi-tra.png";
 import returnPolicyMobilePng from "@/assets/images/customer-services/chinh-sach-doi-tra-mobile.png";

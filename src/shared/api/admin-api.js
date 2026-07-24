@@ -1,6 +1,6 @@
 // Thin binding of the shared session-aware HTTP client (`@/shared/api/api-client`)
 // to the admin CMS session. Kept at this exact path/export surface — 17 admin
-// feature files import from here (`grep -rl "@/shared/api/adminApi" src`), 2 of them
+// feature files import from here (`grep -rl "@/shared/api/admin-api" src`), 2 of them
 // check `instanceof AdminApiError`/`.name === "AdminApiError"` — so the export
 // set (`adminApi`, `adminRequest`, `AdminApiError`, `API_BASE_URL`, `formatVnd`,
 // `parseVnd`, `getValueByPath`) and the `AdminApiError` name must not change.
@@ -33,7 +33,7 @@ export class AdminApiError extends Error {
 // into every public page's render just to read a URL constant. `adminRequest`
 // is the only thing that actually needs the store, and only at call time.
 function getAdminAuthStore() {
-  return require("@/shared/stores/adminAuthStore").useAdminAuthStore;
+  return require("@/shared/stores/admin-auth-store").useAdminAuthStore;
 }
 
 export async function adminRequest(path, options = {}) {

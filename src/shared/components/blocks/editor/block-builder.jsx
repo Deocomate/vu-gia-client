@@ -11,8 +11,8 @@ import {
 import { SortableContext, verticalListSortingStrategy, arrayMove } from "@dnd-kit/sortable";
 import { AlertTriangle } from "lucide-react";
 import { parseBlockDoc, createEmptyBlock } from "@/shared/components/blocks/schema";
-import AddBlockMenu from "@/shared/components/blocks/editor/AddBlockMenu";
-import BlockBuilderRow from "@/shared/components/blocks/editor/BlockBuilderRow";
+import AddBlockMenu from "@/shared/components/blocks/editor/add-block-menu";
+import BlockBuilderRow from "@/shared/components/blocks/editor/block-builder-row";
 
 /**
  * Controlled block-content field. Holds `{ blocks }` internally; emits a

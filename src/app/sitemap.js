@@ -1,5 +1,5 @@
-import { publicGet, PublicApiError } from "@/shared/api/publicApi";
-import { absoluteUrl } from "@/shared/lib/seo/siteConfig";
+import { publicGet, PublicApiError } from "@/shared/api/public-api";
+import { absoluteUrl } from "@/shared/lib/seo/site-config";
 
 const STATIC_ROUTES = [
   "/",

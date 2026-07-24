@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import LoginForm from "@/features/auth/components/LoginForm";
+import LoginForm from "@/features/auth/components/login-form";
 import { ROUTES } from "@/shared/utils/routes";
 
 export const metadata = {

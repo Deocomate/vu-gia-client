@@ -1,4 +1,4 @@
-import { absoluteUrl } from "@/shared/lib/seo/siteConfig";
+import { absoluteUrl } from "@/shared/lib/seo/site-config";
 
 export default function robots() {
   return {

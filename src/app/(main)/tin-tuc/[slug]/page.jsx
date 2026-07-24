@@ -1,8 +1,8 @@
 import { cache } from "react";
-import NewsDetailView from "@/features/storefront/news/NewsDetailView";
-import JsonLd from "@/shared/components/seo/JsonLd";
-import { publicGet, PublicApiError } from "@/shared/api/publicApi";
-import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";
+import NewsDetailView from "@/features/storefront/news/news-detail-view";
+import JsonLd from "@/shared/components/seo/json-ld";
+import { publicGet, PublicApiError } from "@/shared/api/public-api";
+import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/site-config";
 import { buildArticleSchema, buildBreadcrumbSchema } from "@/shared/lib/seo/schemas";
 import { formatImageUrl } from "@/shared/api/media";
 

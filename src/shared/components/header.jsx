@@ -7,7 +7,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ROUTES } from "@/shared/utils/routes";
-import { useCartStore } from "@/shared/stores/cartStore";
+import { useCartStore } from "@/shared/stores/cart-store";
 import { useCustomerAuthStore } from "@/shared/stores/customer-auth-store";
 
 /**
