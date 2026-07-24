@@ -1,5 +1,5 @@
 import { cache } from "react";
-import NewsDetailView from "@/views/NewsDetailView";
+import NewsDetailView from "@/features/storefront/news/NewsDetailView";
 import JsonLd from "@/shared/components/seo/JsonLd";
 import { publicGet, PublicApiError } from "@/shared/api/publicApi";
 import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";

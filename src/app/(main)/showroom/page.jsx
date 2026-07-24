@@ -1,4 +1,4 @@
-import ShowroomView from "@/views/ShowroomView";
+import ShowroomView from "@/features/storefront/showroom/ShowroomView";
 import JsonLd from "@/shared/components/seo/JsonLd";
 import { publicGet, PublicApiError } from "@/shared/api/publicApi";
 import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";

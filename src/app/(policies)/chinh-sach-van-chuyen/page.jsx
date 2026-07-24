@@ -1,4 +1,4 @@
-import ShippingPolicyView from "@/views/ShippingPolicyView";
+import ShippingPolicyView from "@/features/storefront/policies/ShippingPolicyView";
 import JsonLd from "@/shared/components/seo/JsonLd";
 import { getPageByKey } from "@/shared/lib/seo/pageByKey";
 import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";

@@ -1,4 +1,4 @@
-import AboutView from "@/views/AboutView";
+import AboutView from "@/features/storefront/about/AboutView";
 import JsonLd from "@/shared/components/seo/JsonLd";
 import { getPageByKey } from "@/shared/lib/seo/pageByKey";
 import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";

@@ -1,4 +1,4 @@
-import CheckoutView from "@/views/CheckoutView";
+import CheckoutView from "@/features/checkout/CheckoutView";
 import RequireCustomerAuth from "@/features/auth/RequireCustomerAuth";
 import { ROUTES } from "@/shared/utils/routes";
 

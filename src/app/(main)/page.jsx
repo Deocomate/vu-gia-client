@@ -1,4 +1,4 @@
-import HomeView from "@/views/HomeView";
+import HomeView from "@/features/storefront/home/HomeView";
 import { publicGet, PublicApiError } from "@/shared/api/publicApi";
 import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";
 

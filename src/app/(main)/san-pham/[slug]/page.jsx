@@ -1,5 +1,5 @@
 import { cache } from "react";
-import ProductDetailView from "@/views/ProductDetailView";
+import ProductDetailView from "@/features/storefront/products/ProductDetailView";
 import JsonLd from "@/shared/components/seo/JsonLd";
 import { publicGet, PublicApiError } from "@/shared/api/publicApi";
 import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";

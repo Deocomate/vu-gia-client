@@ -1,4 +1,4 @@
-import PrivacyPolicyView from "@/views/PrivacyPolicyView";
+import PrivacyPolicyView from "@/features/storefront/policies/PrivacyPolicyView";
 import JsonLd from "@/shared/components/seo/JsonLd";
 import { getPageByKey } from "@/shared/lib/seo/pageByKey";
 import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";

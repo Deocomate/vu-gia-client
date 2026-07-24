@@ -1,4 +1,4 @@
-import OrderResultView from "@/views/OrderResultView";
+import OrderResultView from "@/features/checkout/OrderResultView";
 import RequireCustomerAuth from "@/features/auth/RequireCustomerAuth";
 
 export const metadata = {

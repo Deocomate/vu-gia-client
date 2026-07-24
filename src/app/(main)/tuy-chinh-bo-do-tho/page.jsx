@@ -1,4 +1,4 @@
-import AltarCustomizerView from "@/views/AltarCustomizerView";
+import AltarCustomizerView from "@/features/storefront/altar-customizer/AltarCustomizerView";
 import { ROUTES } from "@/shared/utils/routes";
 
 export const metadata = {

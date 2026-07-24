@@ -1,4 +1,4 @@
-import ProductsView from "@/views/ProductsView";
+import ProductsView from "@/features/storefront/products/ProductsView";
 import JsonLd from "@/shared/components/seo/JsonLd";
 import { publicGet, PublicApiError } from "@/shared/api/publicApi";
 import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/siteConfig";
