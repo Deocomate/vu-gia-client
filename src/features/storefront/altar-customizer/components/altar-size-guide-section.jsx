@@ -1,4 +1,4 @@
-import { SIZE_GUIDE_ROWS } from "./data/altarCustomizerData";
+import { SIZE_GUIDE_ROWS } from "./data/altar-customizer-data";
 
 export default function AltarSizeGuideSection() {
   return (

@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCustomerAuthStore } from "@/shared/stores/customer-auth-store";
 import { ROUTES, sanitizeNextPath } from "@/shared/utils/routes";
 import { toast } from "@/shared/utils/feedback";
-import GoogleLoginButton from "./GoogleLoginButton";
+import GoogleLoginButton from "./google-login-button";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

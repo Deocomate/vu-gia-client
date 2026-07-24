@@ -2,8 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
-import OrderItemRow from "./OrderItemRow";
-import OrderStatusBadge from "./OrderStatusBadge";
+import OrderItemRow from "./order-item-row";
+import OrderStatusBadge from "./order-status-badge";
 import { ROUTES } from "@/shared/utils/routes";
 
 // Matches BE-3's cancellable-status rule exactly (ORDER_API.md): only an

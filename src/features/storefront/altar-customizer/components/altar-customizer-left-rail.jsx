@@ -1,6 +1,6 @@
 import { ChevronRight, Clock, Phone } from "lucide-react";
 import Image from "next/image";
-import { SELECTOR_STEPS } from "./data/altarCustomizerData";
+import { SELECTOR_STEPS } from "./data/altar-customizer-data";
 
 export default function AltarCustomizerLeftRail({ activeStep, onStepChange }) {
   return (

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import CustomerServiceSidebar from "./CustomerServiceSidebar";
+import CustomerServiceSidebar from "./customer-service-sidebar";
 
 export default function CustomerServiceLayout({ children, breadcrumbs = [] }) {
   return (

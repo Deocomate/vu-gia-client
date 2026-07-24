@@ -14,7 +14,7 @@ import {
   CUSTOMIZER_PRODUCTS,
   PRODUCT_TABS,
   altarPreview,
-} from "./data/altarCustomizerData";
+} from "./data/altar-customizer-data";
 
 const TOOLBAR_BUTTONS = [
   { className: "undo-button", label: "Hoàn tác", Icon: Undo2 },
