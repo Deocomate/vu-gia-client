@@ -20,9 +20,21 @@ import { useDropzone } from "react-dropzone";
 import { uploadMany, MediaUploadError } from "@/shared/api/media-upload";
 import { formatImageUrl } from "@/shared/api/media";
 
+/**
+ * `url` alone isn't a safe identity — two gallery slots can share the same
+ * file (duplicate seed data, or an image reused across slots), which broke
+ * React keys and dnd-kit's sortable ids. `id` (edit mode, from the backend)
+ * or `priority` (always reassigned to the sequential array index on every
+ * add/remove/reorder — see ProductGalleryManager.jsx) are both guaranteed
+ * unique per render.
+ */
+function imageKey(image) {
+  return image.id != null ? `id-${image.id}` : `priority-${image.priority}`;
+}
+
 function SortableImage({ image, onRemove, onSetThumb, disabled }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: image.url,
+    id: imageKey(image),
     disabled,
   });
 
@@ -119,19 +131,19 @@ export default function SortableImageGallery({
   const handleDragEnd = (event) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
-    const oldIndex = images.findIndex((image) => image.url === active.id);
-    const newIndex = images.findIndex((image) => image.url === over.id);
+    const oldIndex = images.findIndex((image) => imageKey(image) === active.id);
+    const newIndex = images.findIndex((image) => imageKey(image) === over.id);
     onReorder(arrayMove(images, oldIndex, newIndex).map((image, index) => ({ ...image, priority: index })));
   };
 
   return (
     <div>
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={images.map((image) => image.url)} strategy={rectSortingStrategy}>
+        <SortableContext items={images.map(imageKey)} strategy={rectSortingStrategy}>
           <div className="mb-3 grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5">
             {images.map((image) => (
               <SortableImage
-                key={image.url}
+                key={imageKey(image)}
                 image={image}
                 onRemove={onRemove}
                 onSetThumb={onSetThumb}

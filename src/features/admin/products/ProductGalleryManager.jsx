@@ -42,7 +42,7 @@ export default function ProductGalleryManager({ mode, productId, images, onChang
             setBusy(false);
           }
         }}
-        onRemove={(image) => onChange(images.filter((item) => item.url !== image.url).map((item, i) => ({ ...item, priority: i })))}
+        onRemove={(image) => onChange(images.filter((item) => item.priority !== image.priority).map((item, i) => ({ ...item, priority: i })))}
       />
     );
   }
@@ -70,7 +70,7 @@ export default function ProductGalleryManager({ mode, productId, images, onChang
         }
       }}
       onReorder={async (reordered) => {
-        const changed = reordered.filter((image, index) => images.find((original) => original.url === image.url)?.priority !== index);
+        const changed = reordered.filter((image, index) => images.find((original) => original.id === image.id)?.priority !== index);
         onChange(reordered);
         if (!changed.length) return;
 
