@@ -8,8 +8,9 @@ import { makeAsyncOptions } from "@/features/admin/adminResources";
 const loadProductOptions = makeAsyncOptions("/products", { searchParam: "name" });
 
 /**
- * `value` = JSON string of [{productId, sortOrder}]; `onChange` emits the
- * updated JSON string (RT-F1: comboProducts is a string field).
+ * `value` = JSON string of [{productId, quantity, sortOrder}]; `onChange`
+ * emits the updated JSON string (RT-F1: comboProducts is a string field).
+ * Items without `quantity` (legacy data) default to 1.
  */
 export default function ComboBuilder({ value, onChange }) {
   let items = [];
@@ -20,13 +21,19 @@ export default function ComboBuilder({ value, onChange }) {
   }
 
   const emit = (next) => {
-    onChange(JSON.stringify(next.map((item, index) => ({ ...item, sortOrder: index }))));
+    onChange(
+      JSON.stringify(
+        next.map((item, index) => ({ ...item, quantity: item.quantity ?? 1, sortOrder: index })),
+      ),
+    );
   };
 
-  const addRow = () => emit([...items, { productId: "", sortOrder: items.length }]);
+  const addRow = () => emit([...items, { productId: "", quantity: 1, sortOrder: items.length }]);
   const removeRow = (index) => emit(items.filter((_, i) => i !== index));
   const setProduct = (index, productId) =>
     emit(items.map((item, i) => (i === index ? { ...item, productId } : item)));
+  const setQuantity = (index, quantity) =>
+    emit(items.map((item, i) => (i === index ? { ...item, quantity } : item)));
 
   const listItems = items.map((item, index) => ({ id: `combo-${index}`, item, index }));
 
@@ -62,6 +69,16 @@ export default function ComboBuilder({ value, onChange }) {
                   placeholder="Chọn sản phẩm"
                 />
               </div>
+              <label className="flex items-center gap-1.5">
+                <span className="text-xs font-semibold text-zinc-500">SL</span>
+                <input
+                  type="number"
+                  min={1}
+                  value={item.quantity ?? 1}
+                  onChange={(event) => setQuantity(index, Math.max(1, Number(event.target.value) || 1))}
+                  className="h-9 w-16 border border-zinc-300 px-2 text-sm text-zinc-900 outline-none focus:border-zinc-950"
+                />
+              </label>
               <button
                 type="button"
                 onClick={() => removeRow(index)}

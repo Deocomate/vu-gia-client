@@ -1,42 +1,67 @@
 "use client";
 
-import React from "react";
-import Image from "next/image";
+import React, { useMemo } from "react";
 import { ChevronRight } from "lucide-react";
+import SafeImage from "@/shared/components/safe-image";
+import { formatImageUrl } from "@/shared/api/media";
 
 import thumb1 from "@/assets/images/product-detail/chi-tiet-sp-thumb-1.png";
 import thumb2 from "@/assets/images/product-detail/chi-tiet-sp-thumb-2.png";
 import thumb3 from "@/assets/images/product-detail/chi-tiet-sp-thumb-3.png";
 
-export default function ProductDetail({ sectionData }) {
-  const defaultSections = [
-    {
-      id: 1,
-      title: "Nghệ Thuật Chế Tác Thủ Công",
-      description:
-        "Từng nét vẽ đắp nổi trên bề mặt gốm sứ Vũ Gia đều được các nghệ nhân Bát Tràng thực hiện hoàn toàn thủ công. Sự tỉ mỉ trong từng đường nét họa tiết Rồng Chầu, Hoa Sen hay Chim Phượng tạo nên khí chất trang nghiêm, tôn kính cho không gian thờ cúng linh thiêng.",
-      image: thumb1,
-      isImageRight: true,
-    },
-    {
-      id: 2,
-      title: "Chất Men Rạn & Men Lam Cổ",
-      description:
-        "Sản phẩm sử dụng công thức men truyền thống kinh điển của làng nghề Bát Tràng. Được nung luyện ở nhiệt độ cao trên 1.200°C giúp xương gốm đanh chắc, nước men sâu thẫm, bền màu vĩnh cửu cùng thời gian và chịu lực vượt trội.",
-      image: thumb2,
-      isImageRight: false,
-    },
-    {
-      id: 3,
-      title: "Giá Trị Phong Thủy & Tâm Linh",
-      description:
-        "Mỗi chi tiết hoa văn trên vật phẩm thờ cúng Vũ Gia đều chứa đựng những ý nghĩa phong thủy tốt lành, tụ khí tàng phong, mang lại may mắn, bình an và vượng khí cho gia chủ, thể hiện lòng thành kính hướng về nguồn cội gia tiên.",
-      image: thumb3,
-      isImageRight: true,
-    },
-  ];
+const DEFAULT_SECTIONS = [
+  {
+    id: 1,
+    title: "Nghệ Thuật Chế Tác Thủ Công",
+    description:
+      "Từng nét vẽ đắp nổi trên bề mặt gốm sứ Vũ Gia đều được các nghệ nhân Bát Tràng thực hiện hoàn toàn thủ công. Sự tỉ mỉ trong từng đường nét họa tiết Rồng Chầu, Hoa Sen hay Chim Phượng tạo nên khí chất trang nghiêm, tôn kính cho không gian thờ cúng linh thiêng.",
+    image: thumb1,
+    isImageRight: true,
+  },
+  {
+    id: 2,
+    title: "Chất Men Rạn & Men Lam Cổ",
+    description:
+      "Sản phẩm sử dụng công thức men truyền thống kinh điển của làng nghề Bát Tràng. Được nung luyện ở nhiệt độ cao trên 1.200°C giúp xương gốm đanh chắc, nước men sâu thẫm, bền màu vĩnh cửu cùng thời gian và chịu lực vượt trội.",
+    image: thumb2,
+    isImageRight: false,
+  },
+  {
+    id: 3,
+    title: "Giá Trị Phong Thủy & Tâm Linh",
+    description:
+      "Mỗi chi tiết hoa văn trên vật phẩm thờ cúng Vũ Gia đều chứa đựng những ý nghĩa phong thủy tốt lành, tụ khí tàng phong, mang lại may mắn, bình an và vượng khí cho gia chủ, thể hiện lòng thành kính hướng về nguồn cội gia tiên.",
+    image: thumb3,
+    isImageRight: true,
+  },
+];
 
-  const detailSections = sectionData || defaultSections;
+/** Parses `product.detailSections` (JSON string, type=SINGLE) defensively. */
+function parseDetailSections(value) {
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+export default function ProductDetail({ product }) {
+  // Layout (image side, dark background) is derived from position, not
+  // stored in data (Validation Session 1, decision 1) — matches the
+  // alternating pattern of the original static sections.
+  const detailSections = useMemo(() => {
+    const parsed = parseDetailSections(product?.detailSections);
+    if (parsed.length === 0) return DEFAULT_SECTIONS;
+    return parsed.map((section, index) => ({
+      id: index + 1,
+      title: section.title || "",
+      description: section.description || "",
+      image: formatImageUrl(section.image),
+      isImageRight: index % 2 === 0,
+    }));
+  }, [product]);
 
   return (
     <div className="w-full pt-[30px] border-t border-[#E6E8EC]">
@@ -84,7 +109,7 @@ export default function ProductDetail({ sectionData }) {
                     : "order-1 md:order-1"
                 }`}
               >
-                <Image
+                <SafeImage
                   src={section.image}
                   alt={section.title}
                   fill

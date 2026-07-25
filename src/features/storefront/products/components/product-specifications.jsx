@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
+import React, { useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import SafeImage from "@/shared/components/safe-image";
+import { formatImageUrl } from "@/shared/api/media";
 
 import productDetailBigThumb from "@/assets/images/product-detail/product-detail-big-thumb.png";
 import productDetailThumbnail from "@/assets/images/product-detail/product-detail-thumbnail.png";
@@ -10,20 +11,80 @@ import productCardImage1 from "@/assets/images/product-detail/product-card-image
 import productCardImage2 from "@/assets/images/product-detail/product-card-image-2.png";
 import productCardImage3 from "@/assets/images/product-detail/product-card-image-3.png";
 
-export default function ProductSpecifications() {
+const DEFAULT_SLIDER_IMAGES = [
+  productDetailBigThumb,
+  productDetailThumbnail,
+  productCardImage1,
+  productCardImage2,
+  productCardImage3,
+];
+
+const DEFAULT_FUNCTION_ROWS = [
+  { name: "Bát hương", quantity: "3", unit: "Chiếc", usage: "Dùng cắm hương, thờ Thần linh - Gia tiên" },
+  { name: "Bát thờ", quantity: "10", unit: "Chiếc", usage: "Dùng dâng cơm trắng và lễ vật" },
+  { name: "Chóe thờ", quantity: "3", unit: "Chiếc", usage: "Dùng đựng gạo, muối và nước" },
+  { name: "Bát sâm", quantity: "1 - 2", unit: "Chiếc", usage: "Dùng dâng nước, trà hoặc sâm" },
+  { name: "Bộ kỷ chén", quantity: "3 hoặc 5", unit: "Chén", usage: "Dùng đựng nước sạch hoặc rượu" },
+  { name: "Nậm rượu", quantity: "1 - 2", unit: "Chiếc", usage: "Dùng đựng và dâng rượu cúng" },
+  { name: "Bộ ấm chén thờ\n(1 ấm - 5 chén)", quantity: "1 - 2", unit: "Bộ", usage: "Dùng pha và dâng trà lên bàn thờ" },
+  { name: "Ống cắm hương", quantity: "1", unit: "Chiếc", usage: "Dùng cắm nhang chưa sử dụng" },
+  {
+    name: "Mâm bồng",
+    quantity: "3",
+    unit: "Chiếc",
+    usage: (
+      <div className="flex flex-col gap-1 text-left">
+        <span>Dùng bày hoa quả và lễ vật</span>
+        <div className="flex items-start gap-1.5 pl-4">
+          <span className="text-[#101010] flex-shrink-0">•</span>
+          <span>Thông thường 1 chiếc to dùng để bày mâm ngũ quả vào ngày lễ</span>
+        </div>
+        <div className="flex items-start gap-1.5 pl-4">
+          <span className="text-[#101010] flex-shrink-0">•</span>
+          <span>Ngày thường có thể bày 1 mâm bồng bé ở giữa hoặc vào giỗ lễ bày 2 mâm bé hai bên</span>
+        </div>
+      </div>
+    ),
+  },
+  { name: "Lọ hoa", quantity: "2", unit: "Chiếc", usage: "Dùng cắm hoa trang trí bàn thờ" },
+  { name: "Đèn thờ", quantity: "2", unit: "Chiếc", usage: "Dùng thắp sáng và tạo sự trang nghiêm" },
+  { name: "Chân nến", quantity: "2", unit: "Chiếc", usage: "Dùng thắp sáng và tạo sự trang nghiêm" },
+];
+
+/** Parses a JSON string field defensively; returns [] on empty/malformed input. */
+function parseJsonArray(value) {
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+export default function ProductSpecifications({ product }) {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
 
   const minSwipeDistance = 50;
 
-  const sliderImages = [
-    productDetailBigThumb,
-    productDetailThumbnail,
-    productCardImage1,
-    productCardImage2,
-    productCardImage3,
-  ];
+  // Gallery length varies per product now (was a fixed 5-item static array
+  // before), and Next.js soft-navigates between /san-pham/[slug] pages
+  // (e.g. via "Sản phẩm tương tự") without remounting this component — reset
+  // the slide index so it doesn't go out of range for the new product.
+  useEffect(() => {
+    setCurrentIdx(0);
+  }, [product]);
+
+  // `functions` / `comboGallery` (type=COMBO) — rỗng/malformed → static default
+  // (Validation Session 1: "Công năng sản phẩm" chỉ dùng cho COMBO).
+  const functionRows = useMemo(() => parseJsonArray(product?.functions), [product]);
+  const comboGalleryImages = useMemo(() => parseJsonArray(product?.comboGallery), [product]);
+
+  const sliderImages = comboGalleryImages.length > 0
+    ? comboGalleryImages.map((item) => formatImageUrl(item.url))
+    : DEFAULT_SLIDER_IMAGES;
 
   const handlePrev = () => {
     setCurrentIdx((prev) => (prev === 0 ? sliderImages.length - 1 : prev - 1));
@@ -54,111 +115,7 @@ export default function ProductSpecifications() {
     }
   };
 
-  const specs = [
-    {
-      stt: 1,
-      name: "Bát hương",
-      quantity: "3",
-      unit: "Chiếc",
-      usage: "Dùng cắm hương, thờ Thần linh - Gia tiên",
-    },
-    {
-      stt: 2,
-      name: "Bát thờ",
-      quantity: "10",
-      unit: "Chiếc",
-      usage: "Dùng dâng cơm trắng và lễ vật",
-      hideStt: true,
-    },
-    {
-      stt: 3,
-      name: "Chóe thờ",
-      quantity: "3",
-      unit: "Chiếc",
-      usage: "Dùng đựng gạo, muối và nước",
-    },
-    {
-      stt: 4,
-      name: "Bát sâm",
-      quantity: "1 - 2",
-      unit: "Chiếc",
-      usage: "Dùng dâng nước, trà hoặc sâm",
-      hideStt: true,
-    },
-    {
-      stt: 5,
-      name: "Bộ kỷ chén",
-      quantity: "3 hoặc 5",
-      unit: "Chén",
-      usage: "Dùng đựng nước sạch hoặc rượu",
-    },
-    {
-      stt: 6,
-      name: "Nậm rượu",
-      quantity: "1 - 2",
-      unit: "Chiếc",
-      usage: "Dùng đựng và dâng rượu cúng",
-    },
-    {
-      stt: 7,
-      name: "Bộ ấm chén thờ\n(1 ấm - 5 chén)",
-      quantity: "1 - 2",
-      unit: "Bộ",
-      usage: "Dùng pha và dâng trà lên bàn thờ",
-    },
-    {
-      stt: 8,
-      name: "Ống cắm hương",
-      quantity: "1",
-      unit: "Chiếc",
-      usage: "Dùng cắm nhang chưa sử dụng",
-    },
-    {
-      stt: 9,
-      name: "Mâm bồng",
-      quantity: "3",
-      unit: "Chiếc",
-      usage: (
-        <div className="flex flex-col gap-1 text-left">
-          <span>Dùng bày hoa quả và lễ vật</span>
-          <div className="flex items-start gap-1.5 pl-4">
-            <span className="text-[#101010] flex-shrink-0">•</span>
-            <span>
-              Thông thường 1 chiếc to dùng để bày mâm ngũ quả vào ngày lễ
-            </span>
-          </div>
-          <div className="flex items-start gap-1.5 pl-4">
-            <span className="text-[#101010] flex-shrink-0">•</span>
-            <span>
-              Ngày thường có thể bày 1 mâm bồng bé ở giữa hoặc vào giỗ lễ bày 2
-              mâm bé hai bên
-            </span>
-          </div>
-        </div>
-      ),
-    },
-    {
-      stt: 10,
-      name: "Lọ hoa",
-      quantity: "2",
-      unit: "Chiếc",
-      usage: "Dùng cắm hoa trang trí bàn thờ",
-    },
-    {
-      stt: 11,
-      name: "Đèn thờ",
-      quantity: "2",
-      unit: "Chiếc",
-      usage: "Dùng thắp sáng và tạo sự trang nghiêm",
-    },
-    {
-      stt: 12,
-      name: "Chân nến",
-      quantity: "2",
-      unit: "Chiếc",
-      usage: "Dùng thắp sáng và tạo sự trang nghiêm",
-    },
-  ];
+  const rows = functionRows.length > 0 ? functionRows : DEFAULT_FUNCTION_ROWS;
 
   return (
     <div className="w-full mt-5 lg:mt-8">
@@ -170,7 +127,7 @@ export default function ProductSpecifications() {
         onTouchEnd={onTouchEnd}
       >
         <div className="relative w-full h-full">
-          <Image
+          <SafeImage
             src={sliderImages[currentIdx]}
             alt={`Slide ${currentIdx + 1}`}
             fill
@@ -244,7 +201,7 @@ export default function ProductSpecifications() {
               </tr>
             </thead>
             <tbody>
-              {specs.map((item, idx) => (
+              {rows.map((item, idx) => (
                 <tr
                   key={idx}
                   className={`border-b border-[#E6E8EC] hover:bg-[#F2F3F5]/30 transition-colors ${
@@ -252,7 +209,7 @@ export default function ProductSpecifications() {
                   }`}
                 >
                   <td className="py-[21px] pl-6 pr-2 font-[400] text-[14px] lg:text-[18px] text-[#101010] text-center">
-                    {item.hideStt ? "" : item.stt}
+                    {idx + 1}
                   </td>
                   <td className="py-[21px] pl-[64px] pr-4 font-[600] text-[14px] lg:text-[18px] text-[#101010] text-left whitespace-pre-line">
                     {item.name}

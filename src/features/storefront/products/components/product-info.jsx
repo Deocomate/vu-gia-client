@@ -22,8 +22,8 @@ function buildGalleryImages(product) {
 
 /**
  * `comboProducts` (PRODUCT_API.md §5) is a FE-opaque JSON string of
- * `{productId, sortOrder}` refs — no name/price/image. Parses it defensively;
- * malformed/absent JSON just yields no sub-items instead of throwing.
+ * `{productId, quantity, sortOrder}` refs — no name/price/image. Parses it
+ * defensively; malformed/absent JSON just yields no sub-items instead of throwing.
  */
 function parseComboRefs(comboProducts) {
   if (!comboProducts) return [];
@@ -484,6 +484,9 @@ function ProductSubItemsAccordion({
                 <div>
                   <h4 className="text-[#141416] text-[16px] lg:text-[18px] font-[600] leading-snug font-montserrat">
                     {item.name}
+                    {item.quantity > 1 && (
+                      <span className="ml-2 text-[#97400C] text-[14px] font-[600]">x{item.quantity}</span>
+                    )}
                   </h4>
                   <div className="text-[#A0A0A0] text-[14px] font-[500] mt-[2px] font-montserrat">
                     {item.sku}
@@ -579,10 +582,12 @@ export default function ProductInfo({ product }) {
 
     Promise.all(
       comboRefs.map((ref) =>
-        publicGet(`/products/${ref.productId}`).catch((error) => {
-          if (!(error instanceof PublicApiError)) throw error;
-          return null; // deleted/unpublished combo member — skip it, don't fail the whole panel
-        }),
+        publicGet(`/products/${ref.productId}`)
+          .then((p) => ({ ...p, quantity: ref.quantity ?? 1 }))
+          .catch((error) => {
+            if (!(error instanceof PublicApiError)) throw error;
+            return null; // deleted/unpublished combo member — skip it, don't fail the whole panel
+          }),
       ),
     )
       .then((results) => {
@@ -597,6 +602,7 @@ export default function ProductInfo({ product }) {
                 id: p.id,
                 name: p.name,
                 sku: p.sku ? `MSP: ${p.sku}` : "",
+                quantity: p.quantity,
                 salePrice: `${itemPrice.toLocaleString("vi-VN")}đ`,
                 originalPrice:
                   itemCompareAt > itemPrice ? `${itemCompareAt.toLocaleString("vi-VN")}đ` : null,

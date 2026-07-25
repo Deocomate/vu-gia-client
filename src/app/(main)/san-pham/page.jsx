@@ -3,11 +3,32 @@ import JsonLd from "@/shared/components/seo/json-ld";
 import { publicGet, PublicApiError } from "@/shared/api/public-api";
 import { absoluteUrl, DEFAULT_OG_IMAGE } from "@/shared/lib/seo/site-config";
 import { buildBreadcrumbSchema } from "@/shared/lib/seo/schemas";
+import { formatImageUrl } from "@/shared/api/media";
 
-export function generateMetadata() {
-  const title = "Sản phẩm";
-  const description = "Danh mục sản phẩm gốm sứ Bát Tràng chính hãng tại Gốm Sứ Vũ Gia.";
-  const canonical = absoluteUrl("/san-pham");
+/** Fetches one of the 6 fixed categories by slug, for per-category SEO metadata. */
+async function fetchCategoryBySlug(slug) {
+  try {
+    return await publicGet(`/product-categories/slug/${slug}`);
+  } catch (error) {
+    if (error instanceof PublicApiError) {
+      if (error.status !== 404) console.error(`Failed to fetch category "${slug}":`, error.message);
+      return null;
+    }
+    throw error;
+  }
+}
+
+export async function generateMetadata({ searchParams }) {
+  const sParams = await searchParams;
+  const categorySlug = sParams?.category;
+  const category = categorySlug ? await fetchCategoryBySlug(categorySlug) : null;
+
+  const title = category?.seoTitle || category?.name || "Sản phẩm";
+  const description =
+    category?.seoDescription ||
+    "Danh mục sản phẩm gốm sứ Bát Tràng chính hãng tại Gốm Sứ Vũ Gia.";
+  const image = category?.seoImage ? formatImageUrl(category.seoImage) : DEFAULT_OG_IMAGE;
+  const canonical = absoluteUrl(categorySlug ? `/san-pham?category=${categorySlug}` : "/san-pham");
 
   return {
     title,
@@ -17,13 +38,13 @@ export function generateMetadata() {
       title,
       description,
       url: canonical,
-      images: [DEFAULT_OG_IMAGE],
+      images: [image],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [DEFAULT_OG_IMAGE],
+      images: [image],
     },
   };
 }
@@ -77,6 +98,24 @@ async function fetchProducts({ productCategoryId, sort, page, search }) {
   }
 }
 
+async function fetchNews() {
+  try {
+    const data = await publicGet("/news", {
+      status: "PUBLISHED",
+      sortBy: "publishedAt",
+      sortDirection: "desc",
+      size: 3,
+    });
+    return data?.content || [];
+  } catch (error) {
+    if (error instanceof PublicApiError) {
+      console.error("Failed to fetch news:", error.message);
+      return [];
+    }
+    throw error;
+  }
+}
+
 export default async function ProductsPage({ searchParams }) {
   const sParams = await searchParams;
   const categorySlug = sParams?.category || "all";
@@ -88,12 +127,15 @@ export default async function ProductsPage({ searchParams }) {
   const activeCategory =
     categorySlug !== "all" ? categories.find((category) => category.slug === categorySlug) : null;
 
-  const productsData = await fetchProducts({
-    productCategoryId: activeCategory?.id,
-    sort,
-    page,
-    search,
-  });
+  const [productsData, news] = await Promise.all([
+    fetchProducts({
+      productCategoryId: activeCategory?.id,
+      sort,
+      page,
+      search,
+    }),
+    fetchNews(),
+  ]);
 
   return (
     <>
@@ -107,6 +149,7 @@ export default async function ProductsPage({ searchParams }) {
         selectedCategory={categorySlug}
         selectedSort={sort}
         searchTerm={search}
+        news={news}
       />
     </>
   );

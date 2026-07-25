@@ -9,6 +9,9 @@ import SearchableSelect from "@/shared/components/admin/inputs/searchable-select
 import { ImageField } from "@/shared/components/admin/inputs/image-uploader";
 import ProductGalleryManager from "@/features/admin/products/ProductGalleryManager";
 import ComboBuilder from "@/features/admin/products/ComboBuilder";
+import ProductDetailSectionsBuilder from "@/features/admin/products/product-detail-sections-builder";
+import ProductFunctionsTable from "@/features/admin/products/product-functions-table";
+import ComboGalleryManager from "@/features/admin/products/combo-gallery-manager";
 import { adminApi, AdminApiError } from "@/shared/api/admin-api";
 import { PRODUCT_TYPE, PRODUCT_TYPE_LABEL, PRODUCT_STATUS, PRODUCT_STATUS_LABEL } from "@/shared/api/api-enums";
 import { makeAsyncOptions } from "@/features/admin/adminResources";
@@ -30,7 +33,10 @@ const EMPTY_FORM = {
   status: "DRAFT",
   thumb: "",
   description: "",
+  detailSections: "",
   comboProducts: "",
+  functions: "",
+  comboGallery: "",
   seoTitle: "",
   seoDescription: "",
   seoImage: "",
@@ -186,10 +192,12 @@ export default function AdminProductDetailPage({ productId }) {
           <ImageField value={form.thumb} onChange={(url) => setField("thumb", url)} folder="products" />
         </section>
 
-        <section className="border border-zinc-200 bg-white p-5">
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-950">Mô tả chi tiết</h2>
-          <FormField field={{ name: "description", label: "", type: "block-content", folder: "products" }} value={form.description} onChange={setField} />
-        </section>
+        {form.type === "COMBO" && (
+          <section className="border border-zinc-200 bg-white p-5">
+            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-950">Mô tả sản phẩm</h2>
+            <FormField field={{ name: "description", label: "", type: "block-content", folder: "products" }} value={form.description} onChange={setField} />
+          </section>
+        )}
 
         <section className="border border-zinc-200 bg-white p-5">
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-950">Gallery</h2>
@@ -211,11 +219,28 @@ export default function AdminProductDetailPage({ productId }) {
           )}
         </section>
 
-        {form.type === "COMBO" && (
+        {form.type === "SINGLE" && (
           <section className="border border-zinc-200 bg-white p-5">
-            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-950">Combo</h2>
-            <ComboBuilder value={form.comboProducts} onChange={(v) => setField("comboProducts", v)} />
+            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-950">Chi tiết sản phẩm</h2>
+            <ProductDetailSectionsBuilder value={form.detailSections} onChange={(v) => setField("detailSections", v)} />
           </section>
+        )}
+
+        {form.type === "COMBO" && (
+          <>
+            <section className="border border-zinc-200 bg-white p-5">
+              <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-950">Combo</h2>
+              <ComboBuilder value={form.comboProducts} onChange={(v) => setField("comboProducts", v)} />
+            </section>
+
+            <section className="border border-zinc-200 bg-white p-5">
+              <ProductFunctionsTable value={form.functions} onChange={(v) => setField("functions", v)} />
+            </section>
+
+            <section className="border border-zinc-200 bg-white p-5">
+              <ComboGalleryManager value={form.comboGallery} onChange={(v) => setField("comboGallery", v)} />
+            </section>
+          </>
         )}
 
         <SeoFields values={form} onChange={setField} />

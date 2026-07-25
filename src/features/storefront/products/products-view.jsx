@@ -24,6 +24,7 @@ export default function ProductsView({
   selectedCategory = "all",
   selectedSort = "newest",
   searchTerm = "",
+  news = [],
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -137,7 +138,7 @@ export default function ProductsView({
       </div>
 
       {/* Bottom Related news section */}
-      <CategoryNews />
+      <CategoryNews news={news} />
 
       {/* About Us section */}
       <AboutUsSection />

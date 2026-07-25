@@ -126,7 +126,7 @@ export default function HomeProductList({ title, tabs = [], products = [] }) {
         </div>
       ) : (
         <p className="text-center font-montserrat text-[15px] text-[#777777]">
-          Hiện chưa có sản phẩm nổi bật.
+          Hiện chưa có sản phẩm trong danh mục này.
         </p>
       )}
 

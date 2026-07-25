@@ -3,10 +3,9 @@
 import React from "react";
 import NewsCard from "@/shared/components/news-card";
 import productNewThumb from "@/assets/images/products/product-new-thumb.png";
-import productImageThumb from "@/assets/images/products/product-image-thumb.png";
-import productCategoryThumb from "@/assets/images/products/product-category-thumb.png";
+import { formatImageUrl } from "@/shared/api/media";
 
-export default function CategoryNews({ news }) {
+export default function CategoryNews({ news = [] }) {
   // Realistic fallback news items regarding pottery & ancestral worship culture
   const defaultNews = [
     {
@@ -38,7 +37,19 @@ export default function CategoryNews({ news }) {
     },
   ];
 
-  const list = news && news.length > 0 ? news : defaultNews;
+  // Real `News` entities (status=PUBLISHED, sorted by publishedAt desc); falls
+  // back to placeholder copy only when nothing has been published yet.
+  const list =
+    news.length > 0
+      ? news.map((item) => ({
+          id: item.id,
+          image: formatImageUrl(item.thumb),
+          category: item.category?.name || "Tin tức",
+          title: item.title,
+          description: item.shortContent,
+          slug: item.slug,
+        }))
+      : defaultNews;
 
   // Check if any title in the list is 2 lines (contains \n or length > 30)
   const hasTwoLineTitle = list.some(

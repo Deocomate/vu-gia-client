@@ -22,10 +22,12 @@ export function makeAsyncOptions(endpoint, { searchParam = "name", labelField = 
 export const resources = {
   productCategories: {
     title: "Danh mục sản phẩm",
-    description: "Quản lý cây danh mục, ảnh đại diện, nội dung và SEO danh mục.",
+    description: "6 danh mục cố định — chỉ sửa nội dung/ảnh/SEO, không thêm hoặc xoá được.",
     endpoint: "/product-categories",
     searchable: true,
     searchParam: "name",
+    readOnlyCreate: true,
+    noDelete: true,
     filters: [{ name: "isActive", label: "Hoạt động", type: "boolean" }],
     sortable: ["id", "name", "priority", "createdAt"],
     defaultSort: { field: "priority", direction: "asc" },

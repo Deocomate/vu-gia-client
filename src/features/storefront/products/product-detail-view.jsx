@@ -23,7 +23,7 @@ export default function ProductDetailView({ slug, type, product }) {
           <ProductInfoSingle product={product} />
 
           {/* Premium story layout with chessboard details */}
-          <ProductDetail />
+          <ProductDetail product={product} />
 
           {/* Related/similar items grid */}
           <SimilarProducts hideBorder={true} />
@@ -44,7 +44,7 @@ export default function ProductDetailView({ slug, type, product }) {
       </div>
 
       {/* Structured item specifications list (Slider is full-screen, table is auto-centered) */}
-      <ProductSpecifications />
+      <ProductSpecifications product={product} />
 
       <div className="max-w-[1470px] mx-auto px-[30px] lg:px-[60px]">
         {/* Related/similar items grid */}

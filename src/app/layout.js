@@ -11,6 +11,8 @@ import "./globals.css";
 import JsonLd from "@/shared/components/seo/json-ld";
 import { buildOrganizationSchema } from "@/shared/lib/seo/schemas";
 import { SITE_URL } from "@/shared/lib/seo/site-config";
+import ViewportScaler from "@/shared/components/viewport-scale/viewport-scaler";
+import { getViewportScaleInlineScript } from "@/shared/lib/viewport-scale/viewport-scale-inline-script";
 
 // --- GOOGLE FONTS ---
 const montserrat = Montserrat({
@@ -91,6 +93,10 @@ export default function RootLayout({ children }) {
           font-montserrat antialiased text-text-main
         `}
       >
+        <script
+          dangerouslySetInnerHTML={{ __html: getViewportScaleInlineScript() }}
+        />
+        <ViewportScaler />
         <JsonLd data={buildOrganizationSchema()} />
         {children}
       </body>

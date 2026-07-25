@@ -49,7 +49,7 @@ const renderCell = (row, column) => {
 export default function DataTable({
   columns,
   rows,
-  getRowId = (row) => row.id,
+  getRowId = (row, index) => row?.id ?? row?.productId ?? row?.key ?? index,
   sortable,
   sortBy,
   sortDirection,
@@ -68,15 +68,15 @@ export default function DataTable({
       <table className="min-w-full divide-y divide-zinc-200 text-left text-sm">
         <thead className="bg-zinc-50">
           <tr>
-            {columns.map((column) => {
-              const columnKey = column.key || column.accessor;
-              const isSortable = sortable?.includes(columnKey);
+            {columns.map((column, colIndex) => {
+              const columnKey = column.key || (typeof column.accessor === "string" ? column.accessor : undefined);
+              const isSortable = columnKey && sortable?.includes(columnKey);
               const isActive = sortBy === columnKey;
               const SortIcon = isActive ? (sortDirection === "asc" ? ArrowUp : ArrowDown) : ArrowUpDown;
 
               return (
                 <th
-                  key={columnKey || column.label}
+                  key={columnKey || column.label || colIndex}
                   scope="col"
                   className="whitespace-nowrap px-4 py-3 text-xs font-semibold uppercase tracking-wide text-zinc-500"
                 >
@@ -103,65 +103,71 @@ export default function DataTable({
           </tr>
         </thead>
         <tbody className="divide-y divide-zinc-100 bg-white">
-          {rows.map((row) => (
-            <tr key={getRowId(row)} className="hover:bg-zinc-50">
-              {columns.map((column) => (
-                <td
-                  key={column.key || column.accessor || column.label}
-                  className="max-w-[260px] truncate px-4 py-3 text-zinc-700"
-                  title={typeof renderCell(row, column) === "string" ? renderCell(row, column) : undefined}
-                >
-                  {renderCell(row, column)}
-                </td>
-              ))}
-              {(onView || onEdit || onDelete || actions?.length) && (
-                <td className="px-4 py-3">
-                  <div className="flex items-center justify-end gap-1">
-                    {onView && (
-                      <button
-                        type="button"
-                        onClick={() => onView(row)}
-                        className="inline-flex h-8 w-8 items-center justify-center text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950"
-                        aria-label="Xem"
-                      >
-                        <Eye className="h-4 w-4" aria-hidden="true" />
-                      </button>
-                    )}
-                    {onEdit && (
-                      <button
-                        type="button"
-                        onClick={() => onEdit(row)}
-                        className="inline-flex h-8 w-8 items-center justify-center text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950"
-                        aria-label="Sửa"
-                      >
-                        <Pencil className="h-4 w-4" aria-hidden="true" />
-                      </button>
-                    )}
-                    {actions?.map((action) => (
-                      <button
-                        key={action.label}
-                        type="button"
-                        onClick={() => action.onClick(row)}
-                        className="h-8 whitespace-nowrap border border-zinc-200 px-2 text-xs font-semibold text-zinc-700 hover:bg-zinc-100"
-                      >
-                        {action.label}
-                      </button>
-                    ))}
-                    {onDelete && (
-                      <button
-                        type="button"
-                        onClick={() => onDelete(row)}
-                        className="inline-flex h-8 w-8 items-center justify-center text-rose-500 hover:bg-rose-50 hover:text-rose-700"
-                        aria-label="Xóa"
-                      >
-                        <Trash2 className="h-4 w-4" aria-hidden="true" />
-                      </button>
-                    )}
-                  </div>
-                </td>
-              )}
-            </tr>
-          ))}
+          {rows.map((row, index) => {
+            const rowId = getRowId(row, index) ?? index;
+            return (
+              <tr key={rowId} className="hover:bg-zinc-50">
+                {columns.map((column, colIndex) => {
+                  const cellKey = column.key || (typeof column.accessor === "string" ? column.accessor : undefined) || column.label || colIndex;
+                  return (
+                    <td
+                      key={cellKey}
+                      className="max-w-[260px] truncate px-4 py-3 text-zinc-700"
+                      title={typeof renderCell(row, column) === "string" ? renderCell(row, column) : undefined}
+                    >
+                      {renderCell(row, column)}
+                    </td>
+                  );
+                })}
+                {(onView || onEdit || onDelete || actions?.length) && (
+                  <td className="px-4 py-3">
+                    <div className="flex items-center justify-end gap-1">
+                      {onView && (
+                        <button
+                          type="button"
+                          onClick={() => onView(row)}
+                          className="inline-flex h-8 w-8 items-center justify-center text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950"
+                          aria-label="Xem"
+                        >
+                          <Eye className="h-4 w-4" aria-hidden="true" />
+                        </button>
+                      )}
+                      {onEdit && (
+                        <button
+                          type="button"
+                          onClick={() => onEdit(row)}
+                          className="inline-flex h-8 w-8 items-center justify-center text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950"
+                          aria-label="Sửa"
+                        >
+                          <Pencil className="h-4 w-4" aria-hidden="true" />
+                        </button>
+                      )}
+                      {actions?.map((action, actionIndex) => (
+                        <button
+                          key={action.key || action.label || actionIndex}
+                          type="button"
+                          onClick={() => action.onClick(row)}
+                          className="h-8 whitespace-nowrap border border-zinc-200 px-2 text-xs font-semibold text-zinc-700 hover:bg-zinc-100"
+                        >
+                          {action.label}
+                        </button>
+                      ))}
+                      {onDelete && (
+                        <button
+                          type="button"
+                          onClick={() => onDelete(row)}
+                          className="inline-flex h-8 w-8 items-center justify-center text-rose-500 hover:bg-rose-50 hover:text-rose-700"
+                          aria-label="Xóa"
+                        >
+                          <Trash2 className="h-4 w-4" aria-hidden="true" />
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                )}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

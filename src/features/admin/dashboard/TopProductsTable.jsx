@@ -17,6 +17,7 @@ export default function TopProductsTable({ items, limit, onLimitChange }) {
       </div>
       <div className="mt-4">
         <DataTable
+          getRowId={(row) => row.productId ?? row.id}
           columns={[
             { key: "productName", label: "Sản phẩm", accessor: "productName" },
             { key: "totalQuantity", label: "Đã bán", accessor: "totalQuantity" },

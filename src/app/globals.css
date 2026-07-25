@@ -58,3 +58,9 @@
   }
 }
 
+@media print {
+  html {
+    zoom: 1 !important;
+  }
+}
+
