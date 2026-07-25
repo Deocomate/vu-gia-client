@@ -7,10 +7,11 @@ import ProductToolbar from "@/features/storefront/products/components/product-to
 import CategoryNavigation from "@/features/storefront/products/components/category-navigation";
 import CategoryDescription from "@/features/storefront/products/components/category-description";
 import ProductGrid from "@/features/storefront/products/components/product-grid";
-import CategorySEOContent from "@/features/storefront/products/components/category-seo-content";
+import CategoryDetailContent from "@/features/storefront/products/components/category-detail-content";
 import CategoryNews from "@/features/storefront/products/components/category-news";
 import AboutUsSection from "@/shared/components/about-us-section";
 import { formatImageUrl } from "@/shared/api/media";
+import { ROUTES } from "@/shared/utils/routes";
 
 const PAGE_SIZE = 8;
 const SEARCH_DEBOUNCE_MS = 400;
@@ -81,6 +82,14 @@ export default function ProductsView({
     image: formatImageUrl(category.thumb),
   }));
 
+  // Reflects the currently selected category (or "Sản phẩm" for the unfiltered "all" view)
+  // instead of a hardcoded label, so the trail matches the active filter.
+  const activeCategory = categories.find((category) => category.slug === selectedCategory);
+  const breadcrumbItems = [
+    { name: "Trang chủ", href: ROUTES.HOME },
+    { name: activeCategory ? activeCategory.name : "Sản phẩm", href: null },
+  ];
+
   const startShowingIndex =
     products.length > 0 ? (currentPage - 1) * PAGE_SIZE + 1 : 0;
   const endShowingIndex = Math.min(currentPage * PAGE_SIZE, totalElements);
@@ -96,6 +105,7 @@ export default function ProductsView({
           onSearch={handleSearch}
           onCategoryChange={handleCategoryChange}
           onSortChange={handleSortChange}
+          breadcrumbItems={breadcrumbItems}
           selectedCategory={selectedCategory}
           selectedSort={selectedSort}
           searchTerm={searchTerm}
@@ -109,8 +119,8 @@ export default function ProductsView({
           onCategoryChange={handleCategoryChange}
         />
 
-        {/* Category overview text */}
-        <CategoryDescription />
+        {/* Category overview text — only shown when a specific category is selected */}
+        {activeCategory && <CategoryDescription description={activeCategory.shortDescription} />}
 
         {/* Grid display of matched product cards */}
         {products.length > 0 ? (
@@ -133,8 +143,8 @@ export default function ProductsView({
           onPageChange={handlePageChange}
         />
 
-        {/* Expanded SEO rich text and history */}
-        <CategorySEOContent />
+        {/* Detail content blocks — only shown when a specific category is selected */}
+        {activeCategory && <CategoryDetailContent detailContent={activeCategory.detailContent} />}
       </div>
 
       {/* Bottom Related news section */}

@@ -5,6 +5,9 @@ import { ImageField } from "@/shared/components/admin/inputs/image-uploader";
 import SearchableSelect from "@/shared/components/admin/inputs/searchable-select";
 import DatePicker from "@/shared/components/admin/inputs/date-picker";
 import BlockBuilder from "@/shared/components/blocks/editor/block-builder";
+import BlockRenderer from "@/shared/components/blocks/block-renderer";
+import { categoryBlockRegistry } from "@/shared/components/category-blocks/registry";
+import CategoryDetailContent from "@/features/storefront/products/components/category-detail-content";
 
 const inputClass =
   "h-11 w-full border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-950";
@@ -55,6 +58,46 @@ export default function FormField({ field, value, onChange, error }) {
           onChange={(json) => onChange(field.name, json)}
           folder={field.folder}
         />
+      )}
+
+      {field.type === "news-block-content" && (
+        <div className="flex flex-col gap-3">
+          <BlockBuilder
+            value={value}
+            onChange={(json) => onChange(field.name, json)}
+            folder={field.folder}
+          />
+          <div>
+            <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-zinc-500">
+              Xem trước
+            </span>
+            <div className="border border-zinc-200 px-6 py-6 bg-[#F9F8F8]">
+              <BlockRenderer
+                value={value}
+                className="font-montserrat text-[#383838] text-[16px] leading-[26px] flex flex-col gap-6"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {field.type === "category-block-content" && (
+        <div className="flex flex-col gap-3">
+          <BlockBuilder
+            value={value}
+            onChange={(json) => onChange(field.name, json)}
+            folder={field.folder}
+            registry={categoryBlockRegistry}
+          />
+          <div>
+            <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-zinc-500">
+              Xem trước
+            </span>
+            <div className="border border-zinc-200 px-4">
+              <CategoryDetailContent detailContent={value} />
+            </div>
+          </div>
+        </div>
       )}
 
       {field.type === "select" && (

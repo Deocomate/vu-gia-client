@@ -12,7 +12,7 @@ import QuoteEditor from "@/shared/components/blocks/editor/editors/quote-editor"
 import ListSectionEditor from "@/shared/components/blocks/editor/editors/list-section-editor";
 import DividerEditor from "@/shared/components/blocks/editor/editors/divider-editor";
 
-const EDITORS = {
+export const DEFAULT_EDITORS = {
   [BLOCK_TYPES.PARAGRAPH]: ParagraphEditor,
   [BLOCK_TYPES.HEADING]: HeadingEditor,
   [BLOCK_TYPES.IMAGE]: ImageEditor,
@@ -22,12 +22,14 @@ const EDITORS = {
   [BLOCK_TYPES.DIVIDER]: DividerEditor,
 };
 
-export default function BlockBuilderRow({ block, onUpdate, onDuplicate, onRemove, folder }) {
+const DEFAULT_REGISTRY = { editors: DEFAULT_EDITORS, blockTypeLabels: BLOCK_TYPE_LABELS };
+
+export default function BlockBuilderRow({ block, onUpdate, onDuplicate, onRemove, folder, registry = DEFAULT_REGISTRY }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: block.id,
   });
 
-  const Editor = EDITORS[block.type];
+  const Editor = registry.editors[block.type];
 
   return (
     <div
@@ -48,7 +50,7 @@ export default function BlockBuilderRow({ block, onUpdate, onDuplicate, onRemove
       <div className="min-w-0 flex-1">
         <div className="mb-2 flex items-center justify-between">
           <span className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
-            {BLOCK_TYPE_LABELS[block.type] || block.type}
+            {registry.blockTypeLabels[block.type] || block.type}
           </span>
           <div className="flex items-center gap-1">
             <button

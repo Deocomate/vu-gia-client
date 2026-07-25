@@ -6,7 +6,7 @@ import NewsTabs from "@/features/storefront/news/components/news-tabs";
 import NewsRelatedProducts from "@/features/storefront/news/components/news-related-products";
 import NewsCard from "@/shared/components/news-card";
 import Pagination from "@/shared/components/pagination";
-import { formatImageUrl } from "@/shared/api/media";
+import { mapNewsToCardProps } from "@/shared/utils/news-card";
 
 /**
  * Real, searchParams-driven news listing. `news`/`categories`/`currentPage`/
@@ -78,11 +78,7 @@ export default function NewsView({
             {news.map((item) => (
               <NewsCard
                 key={item.id}
-                image={formatImageUrl(item.thumb)}
-                category={item.category?.name}
-                title={item.title}
-                description={item.shortContent}
-                slug={item.slug}
+                {...mapNewsToCardProps(item)}
                 hasTwoLineTitle={hasTwoLineTitle}
               />
             ))}

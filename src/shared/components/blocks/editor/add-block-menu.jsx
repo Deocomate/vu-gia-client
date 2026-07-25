@@ -4,7 +4,9 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import { BLOCK_TYPE_LIST, BLOCK_TYPE_LABELS } from "@/shared/components/blocks/schema";
 
-export default function AddBlockMenu({ onAdd }) {
+const DEFAULT_REGISTRY = { blockTypeList: BLOCK_TYPE_LIST, blockTypeLabels: BLOCK_TYPE_LABELS };
+
+export default function AddBlockMenu({ onAdd, registry = DEFAULT_REGISTRY }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -19,7 +21,7 @@ export default function AddBlockMenu({ onAdd }) {
       </button>
       {open && (
         <div className="absolute left-0 top-full z-10 mt-1 flex w-56 flex-col border border-zinc-200 bg-white py-1 shadow-md">
-          {BLOCK_TYPE_LIST.map((type) => (
+          {registry.blockTypeList.map((type) => (
             <button
               key={type}
               type="button"
@@ -29,7 +31,7 @@ export default function AddBlockMenu({ onAdd }) {
               }}
               className="px-3 py-2 text-left text-sm text-zinc-700 hover:bg-zinc-50"
             >
-              {BLOCK_TYPE_LABELS[type]}
+              {registry.blockTypeLabels[type]}
             </button>
           ))}
         </div>

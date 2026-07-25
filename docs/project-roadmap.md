@@ -44,7 +44,7 @@ Tài liệu này ghi nhận lịch sử phát triển, các cột mốc đã ho�
 *   **Reviews / Settings admin:** Đã xóa khỏi Admin CMS vì backend chưa có endpoint tương ứng. Cần
     scope lại yêu cầu nghiệp vụ trước khi backend team bổ sung API.
 *   **Storefront block-schema alignment:** `BlockContentEditor` (Editor.js) xuất schema
-    `{time, blocks, version}` cho `product.description`, `product-category.des`, `news.des`,
+    `{time, blocks, version}` cho `product.description`, `product-category.detailContent`, `news.des`,
     `page.content`. Cần audit renderer storefront (`news-detail`, `product-detail`, page views) để
     đảm bảo render đúng 1:1 với những gì admin soạn — chưa có test tự động cho việc này.
 *   **Media library dùng chung:** `/admin/media` hiện chỉ là tiện ích tải-ảnh-lên-rồi-copy-URL vì

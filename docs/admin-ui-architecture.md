@@ -39,7 +39,7 @@ Kiến trúc phân hệ quản trị (`vu-gia-client/src/**/admin`) sau khi rewi
 
 ## 4. JSON-string fields (quan trọng)
 
-`product.description`, `product-category.des`, `news.des`, `page.content` và `product.comboProducts`
+`product.description`, `product-category.detailContent`, `news.des`, `page.content` và `product.comboProducts`
 được backend lưu là **chuỗi JSON**, không phải object. `BlockContentEditor` giữ state là object
 `{time, blocks, version}` nội bộ nhưng luôn `JSON.stringify()` trước khi gọi `onChange` — **không bao
 giờ** `JSON.parse` trước khi gửi lên server. `ComboBuilder` áp dụng cùng nguyên tắc cho

@@ -4,30 +4,9 @@ import Image from "next/image";
 import { Check } from "lucide-react";
 import NewsCard from "@/shared/components/news-card";
 import BlockRenderer from "@/shared/components/blocks/block-renderer";
+import { mapNewsToCardProps } from "@/shared/utils/news-card";
 
-import craft1 from "@/assets/images/home/HomeCraftsmanship-1.png";
-import craft2 from "@/assets/images/home/HomeCraftsmanship-2.png";
-
-const RELATED_ARTICLES = [
-  {
-    id: 1,
-    image: craft1,
-    category: "Cẩm nang làng nghề",
-    title: "Ý nghĩa chữ Thọ tròn mà bạn cần nên biết",
-    description: "How do you create compelling presentations that wow your colleagues and impress your managers?",
-    slug: "y-nghia-chu-tho-tron-trong-tam-linh-viet",
-  },
-  {
-    id: 2,
-    image: craft2,
-    category: "Kiến thức sản phẩm",
-    title: "Ý nghĩa chữ Thọ tròn mà bạn cần nên biết",
-    description: "How do you create compelling presentations that wow your colleagues and impress your managers?",
-    slug: "phan-biet-men-ran-co-va-men-lam",
-  },
-];
-
-export default function NewsDetailContent({ article, des }) {
+export default function NewsDetailContent({ des, relatedArticles = [] }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopyLink = () => {
@@ -136,26 +115,21 @@ export default function NewsDetailContent({ article, des }) {
             <div className="h-[1px] bg-[#E1DEDE] w-full mt-[10px] hidden lg:block"></div>
 
             {/* RELATED ARTICLES SECTION (Mobile Only) */}
-            <div className="mt-8 flex flex-col gap-6 lg:hidden">
-              <h3 className="text-[20px] font-bold text-[#97400C] uppercase font-montserrat text-center md:text-left">
-                Bài viết liên quan
-              </h3>
-              
-              <div className="flex md:grid md:grid-cols-2 gap-[20px] overflow-x-auto md:overflow-x-visible no-scrollbar pb-4 md:pb-0 scroll-smooth snap-x snap-mandatory w-[calc(100%+62px)] mx-[-31px] px-[31px] scroll-px-[31px] md:w-auto md:mx-0 md:px-0">
-                {RELATED_ARTICLES.map((art) => (
-                  <div key={art.id} className="flex-shrink-0 w-[252px] md:w-auto snap-start">
-                    <NewsCard
-                      image={art.image}
-                      category={art.category}
-                      title={art.title}
-                      description={art.description}
-                      slug={art.slug}
-                      hasTwoLineTitle={true}
-                    />
-                  </div>
-                ))}
+            {relatedArticles.length > 0 && (
+              <div className="mt-8 flex flex-col gap-6 lg:hidden">
+                <h3 className="text-[20px] font-bold text-[#97400C] uppercase font-montserrat text-center md:text-left">
+                  Bài viết liên quan
+                </h3>
+
+                <div className="flex md:grid md:grid-cols-2 gap-[20px] overflow-x-auto md:overflow-x-visible no-scrollbar pb-4 md:pb-0 scroll-smooth snap-x snap-mandatory w-[calc(100%+62px)] mx-[-31px] px-[31px] scroll-px-[31px] md:w-auto md:mx-0 md:px-0">
+                  {relatedArticles.map((item) => (
+                    <div key={item.id} className="flex-shrink-0 w-[252px] md:w-auto snap-start">
+                      <NewsCard {...mapNewsToCardProps(item)} hasTwoLineTitle={true} />
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
       </div>
     </article>
   );

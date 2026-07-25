@@ -10,16 +10,30 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy, arrayMove } from "@dnd-kit/sortable";
 import { AlertTriangle } from "lucide-react";
-import { parseBlockDoc, createEmptyBlock } from "@/shared/components/blocks/schema";
+import {
+  parseBlockDoc,
+  createEmptyBlock,
+  BLOCK_TYPE_LIST,
+  BLOCK_TYPE_LABELS,
+} from "@/shared/components/blocks/schema";
 import AddBlockMenu from "@/shared/components/blocks/editor/add-block-menu";
-import BlockBuilderRow from "@/shared/components/blocks/editor/block-builder-row";
+import BlockBuilderRow, { DEFAULT_EDITORS } from "@/shared/components/blocks/editor/block-builder-row";
+
+const DEFAULT_REGISTRY = {
+  blockTypeList: BLOCK_TYPE_LIST,
+  blockTypeLabels: BLOCK_TYPE_LABELS,
+  createEmptyBlock,
+  editors: DEFAULT_EDITORS,
+};
 
 /**
  * Controlled block-content field. Holds `{ blocks }` internally; emits a
  * JSON **string** to `onChange` on every mutation (RT-F1: backend stores a
- * string, never a parsed object).
+ * string, never a parsed object). `registry` swaps the block-type set
+ * (list/labels/factory/editors) for a different domain — defaults to the
+ * product/news registry so existing callers are unaffected.
  */
-export default function BlockBuilder({ value, onChange, folder = "content" }) {
+export default function BlockBuilder({ value, onChange, folder = "content", registry = DEFAULT_REGISTRY }) {
   const [blocks, setBlocks] = useState([]);
   const [malformed, setMalformed] = useState(false);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
@@ -39,7 +53,7 @@ export default function BlockBuilder({ value, onChange, folder = "content" }) {
   };
 
   const handleAdd = (type) => {
-    commit([...blocks, createEmptyBlock(type)]);
+    commit([...blocks, registry.createEmptyBlock(type)]);
   };
 
   const handleUpdate = (id, nextBlock) => {
@@ -49,7 +63,7 @@ export default function BlockBuilder({ value, onChange, folder = "content" }) {
   const handleDuplicate = (id) => {
     const index = blocks.findIndex((block) => block.id === id);
     if (index === -1) return;
-    const duplicate = { ...blocks[index], id: createEmptyBlock(blocks[index].type).id };
+    const duplicate = { ...blocks[index], id: registry.createEmptyBlock(blocks[index].type).id };
     commit([...blocks.slice(0, index + 1), duplicate, ...blocks.slice(index + 1)]);
   };
 
@@ -85,6 +99,7 @@ export default function BlockBuilder({ value, onChange, folder = "content" }) {
                 onDuplicate={handleDuplicate}
                 onRemove={handleRemove}
                 folder={folder}
+                registry={registry}
               />
             ))}
           </SortableContext>
@@ -98,7 +113,7 @@ export default function BlockBuilder({ value, onChange, folder = "content" }) {
       </div>
 
       <div className="mt-3">
-        <AddBlockMenu onAdd={handleAdd} />
+        <AddBlockMenu onAdd={handleAdd} registry={registry} />
       </div>
     </div>
   );

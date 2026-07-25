@@ -59,9 +59,27 @@ const fetchNewsBySlug = cache(async function fetchNewsBySlug(slug) {
   }
 });
 
+async function fetchRelatedNews(categoryId, excludeId) {
+  if (!categoryId) return [];
+  try {
+    const data = await publicGet("/news", {
+      newsCategoryId: categoryId,
+      status: "PUBLISHED",
+      sortBy: "publishedAt",
+      sortDirection: "DESC",
+      size: 3,
+    });
+    return (data?.content ?? []).filter((item) => item.id !== excludeId).slice(0, 2);
+  } catch (error) {
+    if (error instanceof PublicApiError) return [];
+    throw error;
+  }
+}
+
 export default async function NewsDetailPage({ params }) {
   const { slug } = await params;
   const news = await fetchNewsBySlug(slug);
+  const relatedArticles = await fetchRelatedNews(news?.category?.id, news?.id);
 
   const breadcrumb = buildBreadcrumbSchema([
     { name: "Trang chủ", url: "/" },
@@ -76,7 +94,7 @@ export default async function NewsDetailPage({ params }) {
     <>
       <JsonLd data={buildArticleSchema(news)} />
       <JsonLd data={breadcrumb} />
-      <NewsDetailView slug={slug} des={news?.des} />
+      <NewsDetailView news={news} relatedArticles={relatedArticles} />
     </>
   );
 }
