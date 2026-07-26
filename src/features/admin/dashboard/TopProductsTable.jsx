@@ -1,6 +1,7 @@
 import DataTable from "@/shared/components/admin/data-table";
+import TableSkeleton from "@/shared/components/admin/table-skeleton";
 
-export default function TopProductsTable({ items, limit, onLimitChange }) {
+export default function TopProductsTable({ items, limit, onLimitChange, loading = false }) {
   return (
     <section className="border border-zinc-200 bg-white p-5">
       <div className="flex items-center justify-between">
@@ -16,15 +17,19 @@ export default function TopProductsTable({ items, limit, onLimitChange }) {
         </select>
       </div>
       <div className="mt-4">
-        <DataTable
-          getRowId={(row) => row.productId ?? row.id}
-          columns={[
-            { key: "productName", label: "Sản phẩm", accessor: "productName" },
-            { key: "totalQuantity", label: "Đã bán", accessor: "totalQuantity" },
-            { key: "totalRevenue", label: "Doanh thu", accessor: "totalRevenue", type: "money" },
-          ]}
-          rows={items || []}
-        />
+        {loading ? (
+          <TableSkeleton columns={3} rows={Math.min(limit || 5, 6)} hasActionsColumn={false} />
+        ) : (
+          <DataTable
+            getRowId={(row) => row.productId ?? row.id}
+            columns={[
+              { key: "productName", label: "Sản phẩm", accessor: "productName" },
+              { key: "totalQuantity", label: "Đã bán", accessor: "totalQuantity" },
+              { key: "totalRevenue", label: "Doanh thu", accessor: "totalRevenue", type: "money" },
+            ]}
+            rows={items || []}
+          />
+        )}
       </div>
     </section>
   );

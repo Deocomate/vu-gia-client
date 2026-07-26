@@ -1,15 +1,17 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { KeyRound, Plus, RefreshCw, ShieldCheck, X } from "lucide-react";
-import DataTable from "@/shared/components/admin/data-table";
-import Pagination from "@/shared/components/admin/pagination";
+import { useState } from "react";
+import AdminResourceManager from "@/features/admin/AdminResourceManager";
+import { resources } from "@/features/admin/adminResources";
+import Modal from "@/shared/components/admin/modal";
 import { adminApi } from "@/shared/api/admin-api";
 import { ROLE, ROLE_LABEL } from "@/shared/api/api-enums";
-import { useAdminAuthStore } from "@/shared/stores/admin-auth-store";
 import { toast } from "@/shared/utils/feedback";
 
-const PAGE_SIZE = 20;
+// Users has no generic PUT/POST/DELETE contract (see `adminResources.js`'s `users` entry) —
+// role change, password reset, and account creation are separate endpoints with their own
+// shapes, so they stay as bespoke modals wired in as custom row actions / a custom create
+// override on the generic engine, instead of the field-driven editor every other resource uses.
 
 function RoleModal({ user, onClose, onSaved }) {
   const [role, setRole] = useState(user.role);
@@ -30,14 +32,8 @@ function RoleModal({ user, onClose, onSaved }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/50 px-4">
-      <form onSubmit={submit} className="w-full max-w-sm border border-zinc-200 bg-white p-5 shadow-xl">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-base font-semibold text-zinc-950">Đổi vai trò — {user.username}</h2>
-          <button type="button" onClick={onClose} aria-label="Đóng">
-            <X className="h-4 w-4" aria-hidden="true" />
-          </button>
-        </div>
+    <Modal open onClose={onClose} title={`Đổi vai trò — ${user.username}`} size="sm" preventClose={saving}>
+      <form onSubmit={submit} className="p-5">
         <select
           value={role}
           onChange={(event) => setRole(event.target.value)}
@@ -50,7 +46,7 @@ function RoleModal({ user, onClose, onSaved }) {
           ))}
         </select>
         <div className="mt-5 flex justify-end gap-2">
-          <button type="button" onClick={onClose} className="h-10 border border-zinc-300 px-4 text-sm font-semibold text-zinc-700">
+          <button type="button" onClick={onClose} disabled={saving} className="h-10 border border-zinc-300 px-4 text-sm font-semibold text-zinc-700 disabled:cursor-not-allowed disabled:opacity-60">
             Hủy
           </button>
           <button type="submit" disabled={saving} className="h-10 bg-zinc-950 px-4 text-sm font-semibold text-white disabled:opacity-60">
@@ -58,7 +54,7 @@ function RoleModal({ user, onClose, onSaved }) {
           </button>
         </div>
       </form>
-    </div>
+    </Modal>
   );
 }
 
@@ -81,14 +77,8 @@ function PasswordModal({ user, onClose, onSaved }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/50 px-4">
-      <form onSubmit={submit} className="w-full max-w-sm border border-zinc-200 bg-white p-5 shadow-xl">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-base font-semibold text-zinc-950">Đặt lại mật khẩu — {user.username}</h2>
-          <button type="button" onClick={onClose} aria-label="Đóng">
-            <X className="h-4 w-4" aria-hidden="true" />
-          </button>
-        </div>
+    <Modal open onClose={onClose} title={`Đặt lại mật khẩu — ${user.username}`} size="sm" preventClose={saving}>
+      <form onSubmit={submit} className="p-5">
         <input
           type="password"
           value={password}
@@ -99,7 +89,7 @@ function PasswordModal({ user, onClose, onSaved }) {
           className="h-11 w-full border border-zinc-300 px-3 text-sm outline-none focus:border-zinc-950"
         />
         <div className="mt-5 flex justify-end gap-2">
-          <button type="button" onClick={onClose} className="h-10 border border-zinc-300 px-4 text-sm font-semibold text-zinc-700">
+          <button type="button" onClick={onClose} disabled={saving} className="h-10 border border-zinc-300 px-4 text-sm font-semibold text-zinc-700 disabled:cursor-not-allowed disabled:opacity-60">
             Hủy
           </button>
           <button type="submit" disabled={saving} className="h-10 bg-zinc-950 px-4 text-sm font-semibold text-white disabled:opacity-60">
@@ -107,7 +97,7 @@ function PasswordModal({ user, onClose, onSaved }) {
           </button>
         </div>
       </form>
-    </div>
+    </Modal>
   );
 }
 
@@ -132,14 +122,8 @@ function CreateUserModal({ onClose, onSaved }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/50 px-4">
-      <form onSubmit={submit} className="w-full max-w-md border border-zinc-200 bg-white p-5 shadow-xl">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-base font-semibold text-zinc-950">Tạo tài khoản quản trị</h2>
-          <button type="button" onClick={onClose} aria-label="Đóng">
-            <X className="h-4 w-4" aria-hidden="true" />
-          </button>
-        </div>
+    <Modal open onClose={onClose} title="Tạo tài khoản quản trị" size="md" preventClose={saving}>
+      <form onSubmit={submit} className="p-5">
         {error && <p className="mb-3 text-sm font-semibold text-rose-600">{error}</p>}
         <div className="grid gap-3">
           <input required placeholder="Tên đăng nhập" value={form.username} onChange={(e) => setForm((c) => ({ ...c, username: e.target.value }))} className="h-11 border border-zinc-300 px-3 text-sm outline-none focus:border-zinc-950" />
@@ -153,7 +137,7 @@ function CreateUserModal({ onClose, onSaved }) {
           </select>
         </div>
         <div className="mt-5 flex justify-end gap-2">
-          <button type="button" onClick={onClose} className="h-10 border border-zinc-300 px-4 text-sm font-semibold text-zinc-700">
+          <button type="button" onClick={onClose} disabled={saving} className="h-10 border border-zinc-300 px-4 text-sm font-semibold text-zinc-700 disabled:cursor-not-allowed disabled:opacity-60">
             Hủy
           </button>
           <button type="submit" disabled={saving} className="h-10 bg-zinc-950 px-4 text-sm font-semibold text-white disabled:opacity-60">
@@ -161,151 +145,62 @@ function CreateUserModal({ onClose, onSaved }) {
           </button>
         </div>
       </form>
-    </div>
+    </Modal>
   );
 }
 
-export default function UsersAdminPage() {
-  const currentUser = useAdminAuthStore((state) => state.user);
-  const isSuperadmin = currentUser?.role === ROLE.SUPERADMIN;
+// Mirrors the original page's `canResetPassword`: superadmins can reset anyone's password,
+// everyone else (i.e. other admins) can only reset CUSTOMER accounts. The button itself stays
+// visible either way (matching prior behavior) — the click is a no-op when not permitted.
+const canResetPassword = (user, currentUser) =>
+  currentUser?.role === ROLE.SUPERADMIN || user.role === ROLE.CUSTOMER;
 
-  const [rows, setRows] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [creating, setCreating] = useState(false);
-  const [roleTarget, setRoleTarget] = useState(null);
-  const [passwordTarget, setPasswordTarget] = useState(null);
+const usersResource = {
+  ...resources.users,
+  rowActions: (row, { reload, currentUser, openModal, closeModal }) => {
+    const actions = [];
 
-  const loadRows = useCallback(async () => {
-    setLoading(true);
-    try {
-      const data = await adminApi.get("/users", { page, size: PAGE_SIZE, username: search || undefined });
-      setRows(data?.content || []);
-      setTotal(data?.totalElements ?? 0);
-    } catch (error) {
-      toast.error(error.message || "Không thể tải danh sách người dùng.");
-      setRows([]);
-      setTotal(0);
-    } finally {
-      setLoading(false);
+    if (currentUser?.role === ROLE.SUPERADMIN) {
+      actions.push({
+        label: "Đổi vai trò",
+        onClick: () =>
+          openModal(
+            <RoleModal
+              user={row}
+              onClose={closeModal}
+              onSaved={() => {
+                closeModal();
+                reload();
+              }}
+            />,
+          ),
+      });
     }
-  }, [page, search]);
 
-  useEffect(() => {
-    loadRows();
-  }, [loadRows]);
+    actions.push({
+      label: "Reset mật khẩu",
+      onClick: () => {
+        if (!canResetPassword(row, currentUser)) return;
+        openModal(
+          <PasswordModal user={row} onClose={closeModal} onSaved={closeModal} />,
+        );
+      },
+    });
 
-  const canResetPassword = (user) => isSuperadmin || user.role === ROLE.CUSTOMER;
+    return actions;
+  },
+  onCreate: ({ reload, openModal, closeModal }) =>
+    openModal(
+      <CreateUserModal
+        onClose={closeModal}
+        onSaved={() => {
+          closeModal();
+          reload();
+        }}
+      />,
+    ),
+};
 
-  const actions = [
-    ...(isSuperadmin
-      ? [{ label: "Đổi vai trò", onClick: setRoleTarget }]
-      : []),
-    { label: "Reset mật khẩu", onClick: (user) => canResetPassword(user) && setPasswordTarget(user) },
-  ];
-
-  return (
-    <section>
-      <div className="mb-4 flex flex-col gap-3 border border-zinc-200 bg-white p-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h2 className="text-xl font-semibold text-zinc-950">Người dùng</h2>
-          <p className="mt-1 text-sm leading-6 text-zinc-500">
-            Không có API sửa/xóa chung — chỉ đổi vai trò (SUPERADMIN) và reset mật khẩu.
-          </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={loadRows}
-            className="inline-flex h-10 items-center gap-2 border border-zinc-300 px-3 text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
-          >
-            <RefreshCw className="h-4 w-4" aria-hidden="true" />
-            Tải lại
-          </button>
-          {isSuperadmin && (
-            <button
-              type="button"
-              onClick={() => setCreating(true)}
-              className="inline-flex h-10 items-center gap-2 bg-zinc-950 px-3 text-sm font-semibold text-white hover:bg-zinc-800"
-            >
-              <Plus className="h-4 w-4" aria-hidden="true" />
-              Tạo tài khoản
-            </button>
-          )}
-        </div>
-      </div>
-
-      <div className="mb-4 border border-zinc-200 bg-white p-4">
-        <input
-          value={search}
-          onChange={(event) => {
-            setPage(1);
-            setSearch(event.target.value);
-          }}
-          placeholder="Tìm theo tên đăng nhập"
-          className="h-11 w-full max-w-sm border border-zinc-300 px-3 text-sm outline-none focus:border-zinc-950"
-        />
-      </div>
-
-      {loading ? (
-        <div className="border border-zinc-200 bg-white p-8 text-sm font-semibold text-zinc-500">
-          Đang tải dữ liệu...
-        </div>
-      ) : (
-        <>
-          <DataTable
-            columns={[
-              { key: "username", label: "Tên đăng nhập", accessor: "username" },
-              { key: "email", label: "Email", accessor: "email" },
-              { key: "name", label: "Họ tên", accessor: "name" },
-              {
-                key: "role",
-                label: "Vai trò",
-                accessor: "role",
-                render: (value) => (
-                  <span className="inline-flex items-center gap-1.5 text-sm">
-                    <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
-                    {ROLE_LABEL[value] || value}
-                  </span>
-                ),
-              },
-              { key: "createdAt", label: "Ngày tạo", accessor: "createdAt", type: "date" },
-            ]}
-            rows={rows}
-            actions={actions}
-          />
-          <Pagination page={page} pageSize={PAGE_SIZE} total={total} onPageChange={setPage} />
-        </>
-      )}
-
-      {creating && (
-        <CreateUserModal
-          onClose={() => setCreating(false)}
-          onSaved={() => {
-            setCreating(false);
-            loadRows();
-          }}
-        />
-      )}
-      {roleTarget && (
-        <RoleModal
-          user={roleTarget}
-          onClose={() => setRoleTarget(null)}
-          onSaved={() => {
-            setRoleTarget(null);
-            loadRows();
-          }}
-        />
-      )}
-      {passwordTarget && (
-        <PasswordModal
-          user={passwordTarget}
-          onClose={() => setPasswordTarget(null)}
-          onSaved={() => setPasswordTarget(null)}
-        />
-      )}
-    </section>
-  );
+export default function UsersAdminPage() {
+  return <AdminResourceManager resource={usersResource} />;
 }

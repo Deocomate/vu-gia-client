@@ -23,7 +23,11 @@ export default function FormField({ field, value, onChange, error }) {
   }
 
   return (
-    <label className={field.fullWidth ? "block md:col-span-2" : "block"} htmlFor={id}>
+    <label
+      className={field.fullWidth ? "block md:col-span-2" : "block"}
+      htmlFor={id}
+      data-field-name={field.name}
+    >
       <span className="mb-1.5 block text-sm font-semibold text-zinc-800">
         {field.label}
         {field.required && <span className="text-rose-600"> *</span>}

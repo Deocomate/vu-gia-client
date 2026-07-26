@@ -49,11 +49,17 @@ Tài liệu này ghi nhận lịch sử phát triển, các cột mốc đã ho�
     đảm bảo render đúng 1:1 với những gì admin soạn — chưa có test tự động cho việc này.
 *   **Media library dùng chung:** `/admin/media` hiện chỉ là tiện ích tải-ảnh-lên-rồi-copy-URL vì
     backend không có API liệt kê media đã upload.
-*   **Lỗi serialize `isActive` (backend, phát hiện 2026-07):** 6 resource admin (Banner, Coupon, Faq,
-    GalleryImage, Newsletter, Showroom) luôn trả JSON key `"active"` sai giá trị (Lombok `@Builder` +
-    getter boolean nguyên thủy không khớp tên) — cột "Hoạt động" trên các bảng admin tương ứng hiển thị
-    sai bất kể giá trị thật trong DB. `shippingMethods` (resource mới) đã fix đúng. 6 resource cũ **chưa
-    sửa** — cần một đợt sửa riêng ở backend (`vu-gia-backend-api`), không chỉ đổi FE.
+*   **Bảng dữ liệu admin trên di động — layout dạng thẻ (card) xếp chồng:** Bảng rộng (Products 8 cột,
+    Orders 7 cột...) hiện chỉ dùng `overflow-x-auto` trên màn hình hẹp, chưa có layout dạng thẻ riêng
+    cho mobile. Cố ý hoãn (xác nhận với user 2026-07-26) — khu vực admin chủ đích thiết kế dày đặc cho
+    desktop, xem `docs/design-guidelines.md` §5 (loại trừ `/admin` khỏi công thức bù zoom theo tỉ lệ hệ
+    điều hành Windows của storefront). Chỉ nên làm nếu thực sự có nhu cầu truy cập admin từ di động.
+*   **Cỡ chữ tiêu đề trang Dashboard/Order-detail chưa đồng bộ với `AdminPageHeader`:**
+    `AdminDashboard.jsx` và `AdminOrderDetailPage.jsx` có hình dạng header khác (không có thanh
+    tìm kiếm/hành động) nên chưa dùng `AdminPageHeader` — component này hiện được mọi trang danh
+    sách dùng generic engine (`AdminResourceManager`, bao gồm cả Products/Orders/Users) render qua
+    — nếu muốn đồng nhất tuyệt đối cỡ chữ tiêu đề trên mọi trang admin, đây là việc nhỏ riêng (chỉ
+    chỉnh class `text-*`, không cần áp dụng toàn bộ component header).
 *   **Vi phạm ranh giới `shared → features` (đã biết, chưa xử lý):** `shared/components/public-layout.jsx`
     và `shared/stores/cart-store.js` import trực tiếp `features/cart/*` — có từ giai đoạn xây
     server-synced cart, trước khi quy tắc một chiều được chính thức hoá. Xử lý đúng cần tách lại code,

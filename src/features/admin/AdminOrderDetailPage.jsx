@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, RefreshCw } from "lucide-react";
 import DataTable from "@/shared/components/admin/data-table";
 import StatusBadge from "@/shared/components/admin/status-badge";
+import TableSkeleton from "@/shared/components/admin/table-skeleton";
 import OrderStatusControls from "@/features/admin/orders/OrderStatusControls";
 import OrderPaymentPanel from "@/features/admin/orders/OrderPaymentPanel";
 import { adminApi, formatVnd } from "@/shared/api/admin-api";
@@ -44,7 +45,20 @@ export default function AdminOrderDetailPage({ orderId }) {
   );
 
   if (loading) {
-    return <div className="border border-zinc-200 bg-white p-8">Đang tải đơn hàng...</div>;
+    return (
+      <div>
+        <div className="mb-5 h-28 animate-pulse border border-zinc-200 bg-white" />
+        <div className="grid gap-5 xl:grid-cols-3">
+          <section className="border border-zinc-200 bg-white p-5 xl:col-span-2">
+            <div className="mb-4 h-5 w-48 animate-pulse rounded-sm bg-zinc-100" />
+            <TableSkeleton columns={5} rows={4} hasActionsColumn={false} />
+          </section>
+          <section className="border border-zinc-200 bg-white p-5">
+            <div className="h-52 animate-pulse rounded-sm bg-zinc-100" />
+          </section>
+        </div>
+      </div>
+    );
   }
 
   if (error || !order) {

@@ -82,10 +82,12 @@ export default function AdminDashboard() {
             </div>
             <OrdersByStatusBar ordersByStatus={summary?.ordersByStatus} />
           </div>
-
-          <TopProductsTable items={topProducts} limit={limit} onLimitChange={setLimit} />
         </div>
       )}
+
+      <div className="mt-5">
+        <TopProductsTable items={topProducts} limit={limit} onLimitChange={setLimit} loading={loading} />
+      </div>
     </div>
   );
 }

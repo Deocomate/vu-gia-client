@@ -5,7 +5,6 @@ import Link from "next/link";
 import { ArrowLeft, RefreshCw } from "lucide-react";
 import FormField from "@/shared/components/admin/form-field";
 import SeoFields from "@/shared/components/admin/seo-fields";
-import SearchableSelect from "@/shared/components/admin/inputs/searchable-select";
 import { ImageField } from "@/shared/components/admin/inputs/image-uploader";
 import ProductGalleryManager from "@/features/admin/products/ProductGalleryManager";
 import ComboBuilder from "@/features/admin/products/ComboBuilder";
@@ -167,11 +166,19 @@ export default function AdminProductDetailPage({ productId }) {
             <FormField field={{ name: "name", label: "Tên sản phẩm", required: true }} value={form.name} onChange={setField} error={fieldErrors.name} />
             <FormField field={{ name: "slug", label: "Slug", description: "Để trống sẽ tự sinh từ tên" }} value={form.slug} onChange={setField} error={fieldErrors.slug} />
             <FormField field={{ name: "sku", label: "SKU" }} value={form.sku} onChange={setField} error={fieldErrors.sku} />
-            <label className="block">
-              <span className="mb-1.5 block text-sm font-semibold text-zinc-800">Danh mục<span className="text-rose-600"> *</span></span>
-              <SearchableSelect value={form.productCategoryId} onChange={(v) => setField("productCategoryId", v)} loadOptions={loadCategoryOptions} placeholder="Chọn danh mục" />
-              {fieldErrors.productCategoryId && <span className="mt-1.5 block text-xs font-semibold text-rose-600">{fieldErrors.productCategoryId}</span>}
-            </label>
+            <FormField
+              field={{
+                name: "productCategoryId",
+                label: "Danh mục",
+                type: "searchable-select",
+                required: true,
+                loadOptions: loadCategoryOptions,
+                placeholder: "Chọn danh mục",
+              }}
+              value={form.productCategoryId}
+              onChange={setField}
+              error={fieldErrors.productCategoryId}
+            />
             <FormField field={{ name: "type", label: "Loại sản phẩm", type: "select", required: true, options: PRODUCT_TYPE.map((v) => ({ value: v, label: PRODUCT_TYPE_LABEL[v] })) }} value={form.type} onChange={setField} />
             <FormField field={{ name: "status", label: "Trạng thái", type: "select", options: PRODUCT_STATUS.map((v) => ({ value: v, label: PRODUCT_STATUS_LABEL[v] })) }} value={form.status} onChange={setField} />
             <FormField field={{ name: "price", label: "Giá bán", type: "money", required: true, min: 0 }} value={form.price} onChange={setField} error={fieldErrors.price} />

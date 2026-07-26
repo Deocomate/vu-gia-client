@@ -1,5 +1,7 @@
+import { ShieldCheck, Star } from "lucide-react";
 import { adminApi } from "@/shared/api/admin-api";
 import { toast } from "@/shared/utils/feedback";
+import { ROUTES } from "@/shared/utils/routes";
 import {
   DISCOUNT_TYPE,
   DISCOUNT_TYPE_LABEL,
@@ -9,6 +11,16 @@ import {
   CONTACT_STATUS_LABEL,
   CONTENT_STATUS,
   CONTENT_STATUS_LABEL,
+  ORDER_STATUS,
+  ORDER_STATUS_LABEL,
+  PAYMENT_STATUS,
+  PAYMENT_STATUS_LABEL,
+  PRODUCT_TYPE,
+  PRODUCT_TYPE_LABEL,
+  PRODUCT_STATUS,
+  PRODUCT_STATUS_LABEL,
+  ROLE,
+  ROLE_LABEL,
 } from "@/shared/api/api-enums";
 
 /** Async FK-picker loader for a `/{endpoint}?{searchParam}=` list. */
@@ -416,5 +428,194 @@ export const resources = {
     ],
     defaults: { status: "DRAFT" },
     seo: true,
+  },
+
+  // No generic create/edit form: create/edit both happen on the dedicated
+  // `AdminProductDetailPage.jsx` (gallery/combo builder, SEO, block content) — `fields` stays
+  // empty, `noEdit: true` suppresses the pencil icon (the view/eye icon already routes to that
+  // page via `detailPath`), and `onCreate` below redirects to the "new" route instead of opening
+  // the generic modal. Status and "Nổi bật" stay quick-editable inline from the list via
+  // `column.render`, mirroring the pre-migration bespoke table exactly (same endpoints/methods).
+  products: {
+    title: "Sản phẩm",
+    description: "Catalog, giá, gallery và SEO.",
+    endpoint: "/products",
+    searchable: true,
+    searchParam: "name",
+    detailPath: ROUTES.ADMIN_PRODUCTS,
+    noEdit: true,
+    createLabel: "Tạo sản phẩm",
+    emptyTitle: "Chưa có sản phẩm",
+    emptyDescription: "Tạo sản phẩm đầu tiên để hiển thị trên cửa hàng.",
+    // Additive resource-level override for the generic delete-confirm copy (see
+    // `AdminResourceManager.jsx`'s `ConfirmDialog` — falls back to the generic wording when
+    // absent) — deleting a product also deletes its images on MinIO, worth calling out.
+    deleteTitle: "Xóa sản phẩm",
+    deleteDescription: "Xóa sản phẩm sẽ xóa cả ảnh trên MinIO. Bạn muốn tiếp tục?",
+    filters: [
+      {
+        name: "productCategoryId",
+        label: "Danh mục",
+        // Additive filter type — async FK picker backed by `loadOptions`, reusing the shared
+        // `SearchableSelect` input `fields`' "searchable-select"
+        // type already uses.
+        type: "async-select",
+        loadOptions: makeAsyncOptions("/product-categories", { searchParam: "name" }),
+      },
+      { name: "type", label: "Loại (tất cả)", options: PRODUCT_TYPE.map((v) => ({ value: v, label: PRODUCT_TYPE_LABEL[v] })) },
+      { name: "status", label: "Trạng thái (tất cả)", options: PRODUCT_STATUS.map((v) => ({ value: v, label: PRODUCT_STATUS_LABEL[v] })) },
+      { name: "isFeatured", label: "Nổi bật", type: "boolean" },
+      // Additive filter type — numeric `<input type="number">`, falls back cleanly to the
+      // existing text-input branch for every other resource.
+      { name: "minPrice", label: "Giá từ", type: "number" },
+      { name: "maxPrice", label: "Giá đến", type: "number" },
+    ],
+    sortable: ["id", "name", "price", "priority", "soldCount", "createdAt"],
+    defaultSort: { field: "createdAt", direction: "desc" },
+    columns: [
+      { key: "thumb", label: "Ảnh", accessor: "thumb", type: "image" },
+      { key: "name", label: "Tên", accessor: "name" },
+      { key: "sku", label: "SKU", accessor: "sku" },
+      { key: "type", label: "Loại", accessor: "type", type: "status" },
+      { key: "price", label: "Giá", accessor: "price", type: "money" },
+      {
+        key: "status",
+        label: "Trạng thái",
+        accessor: "status",
+        render: (value, row, { reload }) => (
+          <select
+            value={value}
+            onChange={async (event) => {
+              const status = event.target.value;
+              try {
+                await adminApi.patchBody(`/products/${row.id}/status`, { status });
+                toast.success("Đã cập nhật trạng thái.");
+                reload();
+              } catch (error) {
+                toast.error(error.message || "Không thể cập nhật trạng thái.");
+              }
+            }}
+            onClick={(event) => event.stopPropagation()}
+            className="h-8 border border-zinc-200 bg-white px-1.5 text-xs font-semibold outline-none"
+          >
+            {PRODUCT_STATUS.map((status) => (
+              <option key={status} value={status}>{PRODUCT_STATUS_LABEL[status]}</option>
+            ))}
+          </select>
+        ),
+      },
+      { key: "soldCount", label: "Đã bán", accessor: "soldCount" },
+      {
+        key: "isFeatured",
+        label: "Nổi bật",
+        accessor: "isFeatured",
+        render: (value, row, { reload }) => (
+          <button
+            type="button"
+            onClick={async () => {
+              try {
+                await adminApi.patch(`/products/${row.id}/featured`, { featured: !value });
+                toast.success(value ? "Đã bỏ nổi bật." : "Đã đặt nổi bật.");
+                reload();
+              } catch (error) {
+                toast.error(error.message || "Không thể cập nhật.");
+              }
+            }}
+            className={`inline-flex h-8 w-8 items-center justify-center border ${value ? "border-amber-300 bg-amber-50 text-amber-500" : "border-zinc-200 text-zinc-300"}`}
+            aria-label="Bật/tắt nổi bật"
+          >
+            <Star className="h-4 w-4" aria-hidden="true" fill={value ? "currentColor" : "none"} />
+          </button>
+        ),
+      },
+    ],
+    fields: [],
+    onCreate: () => window.location.assign(`${ROUTES.ADMIN_PRODUCTS}/new`),
+  },
+
+  // No generic create/edit form and no delete: orders are read/transition-only (status changes
+  // go through `/orders/{id}/status`, not a generic PUT). `fields` stays empty and `noEdit`/
+  // `noDelete` suppress the generic editor/delete affordances — status/paymentStatus transitions
+  // and VietQR payment access are wired as custom `rowActions` at the page level (see
+  // `features/admin/orders/OrdersAdminList.jsx`), reusing `OrderStatusControls`/
+  // `OrderPaymentPanel` (the same components `AdminOrderDetailPage.jsx` uses, untouched).
+  orders: {
+    title: "Đơn hàng",
+    description: "Theo dõi và cập nhật trạng thái đơn.",
+    endpoint: "/orders/admin",
+    searchable: true,
+    searchParam: "orderCode",
+    searchPlaceholder: "Mã đơn",
+    detailPath: ROUTES.ADMIN_ORDERS,
+    readOnlyCreate: true,
+    noEdit: true,
+    noDelete: true,
+    emptyTitle: "Chưa có đơn hàng",
+    emptyDescription: "Đơn hàng mới sẽ xuất hiện tại đây khi khách hàng đặt mua.",
+    filters: [
+      {
+        name: "status",
+        label: "Trạng thái (tất cả)",
+        options: ORDER_STATUS.map((v) => ({ value: v, label: ORDER_STATUS_LABEL[v] })),
+      },
+      {
+        name: "paymentStatus",
+        label: "Thanh toán (tất cả)",
+        options: PAYMENT_STATUS.map((v) => ({ value: v, label: PAYMENT_STATUS_LABEL[v] })),
+      },
+      { name: "placedFrom", label: "Từ ngày", type: "date" },
+      { name: "placedTo", label: "Đến ngày", type: "date" },
+      { name: "couponCode", label: "Mã coupon" },
+    ],
+    sortable: ["id", "orderCode", "totalAmount", "status", "createdAt"],
+    defaultSort: { field: "id", direction: "desc" },
+    columns: [
+      { key: "orderCode", label: "Mã đơn", accessor: "orderCode" },
+      { key: "receiverName", label: "Người nhận", accessor: "receiverName" },
+      { key: "receiverPhone", label: "Điện thoại", accessor: "receiverPhone" },
+      { key: "totalAmount", label: "Tổng", accessor: "totalAmount", type: "money" },
+      { key: "status", label: "Trạng thái", accessor: "status", type: "status" },
+      { key: "paymentStatus", label: "Thanh toán", accessor: "paymentStatus", type: "status" },
+      { key: "createdAt", label: "Ngày đặt", accessor: "createdAt", type: "date" },
+    ],
+    fields: [],
+  },
+
+  // No generic create/edit form: there's no single PUT/POST contract that covers a user (role
+  // change and password reset are separate endpoints, and create takes its own shape) — `fields`
+  // stays empty and the generic editor modal is never opened for this resource (`noEdit: true`,
+  // and the page-level wrapper always supplies a custom `onCreate`/`rowActions`, see
+  // `features/admin/users/UsersAdminPage.jsx`).
+  users: {
+    title: "Người dùng",
+    description: "Không có API sửa/xóa chung — chỉ đổi vai trò (SUPERADMIN) và reset mật khẩu.",
+    endpoint: "/users",
+    searchable: true,
+    searchParam: "username",
+    searchPlaceholder: "Tìm theo tên đăng nhập",
+    createRoles: [ROLE.SUPERADMIN],
+    createLabel: "Tạo tài khoản",
+    noEdit: true,
+    noDelete: true,
+    emptyTitle: "Chưa có người dùng",
+    emptyDescription: "Tài khoản mới sẽ xuất hiện tại đây sau khi được tạo.",
+    columns: [
+      { key: "username", label: "Tên đăng nhập", accessor: "username" },
+      { key: "email", label: "Email", accessor: "email" },
+      { key: "name", label: "Họ tên", accessor: "name" },
+      {
+        key: "role",
+        label: "Vai trò",
+        accessor: "role",
+        render: (value) => (
+          <span className="inline-flex items-center gap-1.5 text-sm">
+            <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
+            {ROLE_LABEL[value] || value}
+          </span>
+        ),
+      },
+      { key: "createdAt", label: "Ngày tạo", accessor: "createdAt", type: "date" },
+    ],
+    fields: [],
   },
 };

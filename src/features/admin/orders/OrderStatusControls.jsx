@@ -8,7 +8,7 @@ import { toast } from "@/shared/utils/feedback";
 
 const CONFIRM_STATUSES = new Set(["COMPLETED", "RETURNED"]);
 
-export default function OrderStatusControls({ order, onUpdated }) {
+export default function OrderStatusControls({ order, onUpdated, onSavingChange }) {
   const [status, setStatus] = useState(order.status);
   const [paymentStatus, setPaymentStatus] = useState(order.paymentStatus);
   const [saving, setSaving] = useState(false);
@@ -16,6 +16,7 @@ export default function OrderStatusControls({ order, onUpdated }) {
 
   const persist = async () => {
     setSaving(true);
+    onSavingChange?.(true);
     try {
       await adminApi.patchBody(`/orders/${order.id}/status`, { status, paymentStatus });
       toast.success("Đã cập nhật trạng thái đơn.");
@@ -24,6 +25,7 @@ export default function OrderStatusControls({ order, onUpdated }) {
       toast.error(error.message || "Không thể cập nhật trạng thái.");
     } finally {
       setSaving(false);
+      onSavingChange?.(false);
     }
   };
 
