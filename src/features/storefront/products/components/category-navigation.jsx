@@ -12,28 +12,33 @@ export default function CategoryNavigation({
   // Default list of sub-categories if none provided
   const defaultSubCategories = [
     {
-      id: "men-lam",
-      name: "Men lam",
-      image: productCategoryThumb, // fallback to existing homepage images
-    },
-    {
-      id: "men-ran",
-      name: "Men rạn",
+      id: "bo-do-tho",
+      name: "Bộ đồ thờ",
       image: productCategoryThumb,
     },
     {
-      id: "men-lam-ve-vang",
-      name: "Men lam vẽ vàng",
+      id: "binh-phong-thuy",
+      name: "Bình phong thủy",
       image: productCategoryThumb,
     },
     {
-      id: "men-ran-dat-vang",
-      name: "Men rạn dát vàng",
+      id: "luc-binh-gom-su",
+      name: "Lục bình gốm sứ",
       image: productCategoryThumb,
     },
     {
-      id: "men-mau-theo-menh",
-      name: "Men màu theo mệnh",
+      id: "am-chen-bat-trang",
+      name: "Ấm chén Bát Tràng",
+      image: productCategoryThumb,
+    },
+    {
+      id: "qua-tang-gom-su",
+      name: "Quà tặng gốm sứ",
+      image: productCategoryThumb,
+    },
+    {
+      id: "chum-sanh-ngam-ruou",
+      name: "Chum sành ngâm rượu",
       image: productCategoryThumb,
     },
   ];
