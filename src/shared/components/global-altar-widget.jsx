@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Paintbrush, X } from "lucide-react";
@@ -10,7 +10,7 @@ import { useProductCategoryStore } from "@/shared/stores/product-category-store"
 // Pages where the widget must stay hidden to keep purchase focus.
 const HIDDEN_PATHS = [ROUTES.CHECKOUT, ROUTES.CART, ROUTES.ALTAR_CUSTOMIZER];
 
-export default function GlobalAltarWidget() {
+function AltarWidgetContent() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const activeCategorySlug = useProductCategoryStore((s) => s.activeCategorySlug);
@@ -98,5 +98,13 @@ export default function GlobalAltarWidget() {
         </div>
       )}
     </>
+  );
+}
+
+export default function GlobalAltarWidget() {
+  return (
+    <Suspense fallback={null}>
+      <AltarWidgetContent />
+    </Suspense>
   );
 }
