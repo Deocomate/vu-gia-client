@@ -56,7 +56,15 @@ renderer storefront hiện có trước khi coi nội dung khối là "final" �
   newsletter (isActive-only), tin tức, trang CMS.
 - **Custom**: `products/` (gallery hai chế độ + combo + block-content), `orders/` (status/paymentStatus
   transition + VietQR payment panel), `dashboard/` (KPI + recharts + top-products), `users/` (không có
-  generic PUT/DELETE — chỉ đổi role/reset password).
+  generic PUT/DELETE — chỉ đổi role/reset password), `site-settings/` (bộ chuyển đổi cài đặt toàn site, singleton,
+  không có endpoint danh sách — AdminSiteSettingsPage.jsx với lưu xác nhận modal).
+
+## 5.1 Site Settings (Custom Singleton Module)
+
+**`AdminSiteSettingsPage.jsx`** là một custom module bespoke (không phải entry trong `adminResources.js`) vì nó quản lý một singleton config, không có danh sách phân trang nào. Hạng lưu được bảo vệ bằng:
+- **Client-side role check**: `currentUser?.role === ROLE.SUPERADMIN` — chỉ SUPERADMIN mới nhìn thấy nút Save.
+- **Server-side enforcement**: Backend yêu cầu `hasRole('SUPERADMIN')` trên `PUT /api/site-settings` (không dựa vào client check).
+- **Confirm dialog**: Trước khi gửi `PUT`, người dùng phải xác nhận qua modal (`base-confirm-dialog.jsx`) vì thay đổi này ảnh hưởng toàn site.
 
 ## 6. Đã loại bỏ
 

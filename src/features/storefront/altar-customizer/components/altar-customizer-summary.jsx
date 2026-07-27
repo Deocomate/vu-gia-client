@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   Bookmark,
   Clock,
@@ -10,6 +11,9 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/shared/utils/routes";
+import { useSiteConfigStore } from "@/shared/stores/site-config-store";
+import { absoluteUrl } from "@/shared/lib/seo/site-config";
+import ContactModal from "@/features/storefront/contact/contact-modal";
 
 const TRUST_ITEMS = [
   { src: "/icons/trust-1.png", lines: ["Tư vấn", "miễn phí"] },
@@ -26,8 +30,26 @@ export default function AltarCustomizerSummary({
   onRemove,
 }) {
   const router = useRouter();
+  const cartEnabled = useSiteConfigStore((s) => s.cartEnabled);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
-  const goToCart = () => router.push(ROUTES.CART);
+  // The customizer's "product" is a configured combo, not a single catalog
+  // product — build a readable description from the selected line items
+  // (name/qty) for the contact modal's pre-filled message, since there's no
+  // single product name/url to reuse here.
+  const comboDescription =
+    items.length > 0
+      ? items.map((item) => getItemText(item.name, item.qty)).join(", ")
+      : "Bộ đồ thờ tùy chỉnh";
+  const customizerUrl = absoluteUrl(ROUTES.ALTAR_CUSTOMIZER);
+
+  const goToCart = () => {
+    if (!cartEnabled) {
+      setIsContactModalOpen(true);
+      return;
+    }
+    router.push(ROUTES.CART);
+  };
 
   return (
     <aside className="right-rail" aria-label="Tóm tắt vật phẩm đã chọn">
@@ -125,6 +147,12 @@ export default function AltarCustomizerSummary({
           Thời gian: 8:00 - 18:00 (T2 - CN)
         </p>
       </div>
+
+      <ContactModal
+        open={isContactModalOpen}
+        onOpenChange={setIsContactModalOpen}
+        productContext={{ name: comboDescription, url: customizerUrl }}
+      />
     </aside>
   );
 }

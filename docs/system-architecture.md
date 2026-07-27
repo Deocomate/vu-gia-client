@@ -127,3 +127,14 @@ sequenceDiagram
 
 *   **Toaster & Host được đặt ở đâu?** Cả `AppToaster` (nhận diện Sonner) và `ConfirmDialogHost` (nhận diện modal xác nhận) được gắn tại layout dùng chung `PublicLayout` bao quanh toàn bộ các trang công cộng để sẵn sàng nhận tín hiệu thông báo từ bất kỳ view nào.
 *   **Phân hệ quản trị:** Phân hệ Admin CMS sử dụng layout riêng (`AdminShell`) nhưng vẫn tích hợp `AppToaster` và thừa hưởng component `BaseConfirmDialog` với cấu hình theme `"admin"` (palette màu zinc tối giản).
+
+---
+
+## 4. Site Config Store & Bridge (Feature Flag: Cart-Mode Toggle)
+
+Toàn site sử dụng một cơ chế thống nhất để lấy và đồng bộ hóa thiết đặt trang thương mại (site-wide settings), bao gồm cờ bật/tắt chế độ giỏ hàng.
+
+### Thành phần cốt lõi:
+- **`shared/stores/site-config-store.js`** (Zustand): lưu trạng thái `{ cartEnabled: boolean, isLoaded: boolean }`. Giá trị mặc định là `cartEnabled: true` cho đến khi dữ liệu được load từ server.
+- **`shared/components/site-config-bridge.jsx`**: được mount trong `PublicLayout` (cạnh `CartAuthBridge`) → gọi `GET /api/site-settings` ngay khi component mount để fetch cấu hình và cập nhật store. Khi component unmount hoặc route khác nhau khiến `PublicLayout` re-mount, `SiteConfigBridge` cũng re-mount → gọi lại fetch. Hiện tại có **5 route groups riêng biệt** (mỗi cái mount `PublicLayout` độc lập), nên API được gọi tối đa 5 lần trên một phiên — **đây là một đánh đổi đã chấp nhận**: thay vì fetch 1 lần duy nhất ở session-level (cần thêm session store), chúng tôi chọn re-fetch ở mỗi mount để tránh mức độ phức tạp. Đơn giản và an toàn hơn là sự tối ưu tuyệt đối.
+- **Consumer (Product, Customizer, Header)**: đọc `store.cartEnabled` trực tiếp qua hook để quyết định hiển thị/ẩn các CTA giỏ hàng; nếu `!store.isLoaded` thì hiển thị placeholder cho đến khi load xong.

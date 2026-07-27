@@ -1,6 +1,6 @@
 ---
 name: backend-test-compile-verification-gap
-description: vu-gia-backend-api Lombok boolean-wrapper changes can break test source compilation even when `mvn compile` (main only) is clean — always run test-compile/test too
+description: vu-gia-backend-api changes (Lombok boolean-wrapper renames, new constructor deps on @Service/@InjectMocks classes) can pass `mvn compile` and even `test-compile` while still breaking at test runtime — always run `mvn test` (not just compile/test-compile) before trusting a subagent's "tests unaffected" claim
 metadata:
   type: feedback
 ---
@@ -32,3 +32,16 @@ in this repo, always run `./mvnw test-compile` (or `./mvnw test`) yourself — d
 implementation report's claim that "tests weren't affected" based on main-only compile success.
 Grep the test tree for direct (non-builder) getter/setter calls on the changed class
 (`\.setXxx(`, `\.isXxx()`) before concluding zero blast radius.
+
+**Second case (260727 cart-mode-toggle plan review):** adding a new constructor dependency to an
+existing `@Service` (`ContactRequestServiceImpl` gained `ApplicationEventPublisher eventPublisher`
+for Phase 2's async contact-notification email) compiles clean under both `mvn compile` AND
+`mvn test-compile` — Mockito's `@InjectMocks` doesn't require every constructor param to be mocked
+at compile time, it just injects `null` for unmocked ones. The break only surfaces as a runtime
+`NullPointerException` inside the actual test execution (`mvn test`), when the untouched test method
+exercises the code path that now calls the new dependency. Orchestrator had only run `mvn compile`
+before declaring the phase clean; `mvn test` caught 1 failure out of 310 tests. **Escalates the
+rule above:** `test-compile` passing is *also* insufficient whenever a class gains/loses a
+constructor-injected dependency — always run the actual test suite (`mvn test`), not just
+compile-level checks, before accepting a "no regressions" claim on any `@Service`/`@Component`
+whose constructor changed.

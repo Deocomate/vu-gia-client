@@ -9,7 +9,10 @@ import { formatImageUrl } from "@/shared/api/media";
 import { publicGet, PublicApiError } from "@/shared/api/public-api";
 import { ROUTES } from "@/shared/utils/routes";
 import { useCartStore } from "@/shared/stores/cart-store";
+import { useSiteConfigStore } from "@/shared/stores/site-config-store";
 import { toast } from "@/shared/utils/feedback";
+import { absoluteUrl } from "@/shared/lib/seo/site-config";
+import ContactModal from "@/features/storefront/contact/contact-modal";
 
 /** Builds the ordered gallery image URL list from a real `ProductResponse` (PRODUCT_API.md §8). */
 function buildGalleryImages(product) {
@@ -248,6 +251,8 @@ function ProductPurchasePanel({
   setMainQuantity,
   onBuyNow,
   onAddToCart,
+  cartEnabled,
+  onContactClick,
 }) {
   const price = Number(product?.price) || 0;
   const compareAtPrice = Number(product?.compareAtPrice) || 0;
@@ -366,20 +371,32 @@ function ProductPurchasePanel({
 
       {/* 2. Mobile-only Primary Mua ngay / Thêm vào giỏ row (height 43px, border-radius 4px) */}
       <div className="flex lg:hidden items-center gap-[12px] mb-[25px] w-full">
-        <button
-          onClick={onBuyNow}
-          disabled={!product}
-          className="flex-1 bg-[#97400C] text-white h-[43px] rounded-[4px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider hover:bg-opacity-95 transition-all duration-300 shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Mua ngay
-        </button>
-        <button
-          onClick={onAddToCart}
-          disabled={!product}
-          className="flex-1 border border-[#97400C] text-[#97400C] bg-white h-[43px] rounded-[4px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider hover:bg-[#97400C]/5 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Thêm vào giỏ
-        </button>
+        {cartEnabled ? (
+          <>
+            <button
+              onClick={onBuyNow}
+              disabled={!product}
+              className="flex-1 bg-[#97400C] text-white h-[43px] rounded-[4px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider hover:bg-opacity-95 transition-all duration-300 shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Mua ngay
+            </button>
+            <button
+              onClick={onAddToCart}
+              disabled={!product}
+              className="flex-1 border border-[#97400C] text-[#97400C] bg-white h-[43px] rounded-[4px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider hover:bg-[#97400C]/5 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Thêm vào giỏ
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={onContactClick}
+            disabled={!product}
+            className="flex-1 bg-[#97400C] text-white h-[43px] rounded-[4px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider hover:bg-opacity-95 transition-all duration-300 shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Liên hệ tư vấn
+          </button>
+        )}
       </div>
 
       {/* 3. Desktop-only Quantity Selector & Purchase buttons */}
@@ -402,20 +419,32 @@ function ProductPurchasePanel({
           </button>
         </div>
 
-        <button
-          onClick={onBuyNow}
-          disabled={!product}
-          className="flex-1 bg-[#97400C] text-white border border-[#97400C] rounded-[8px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider py-[15px] hover:bg-opacity-95 transition-all duration-300 shadow-md cursor-pointer min-w-0 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Mua ngay
-        </button>
-        <button
-          onClick={onAddToCart}
-          disabled={!product}
-          className="flex-1 border border-[#97400C] text-[#97400C] bg-white rounded-[8px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider py-[15px] hover:bg-[#97400C]/5 transition-all duration-300 cursor-pointer min-w-0 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Thêm vào giỏ
-        </button>
+        {cartEnabled ? (
+          <>
+            <button
+              onClick={onBuyNow}
+              disabled={!product}
+              className="flex-1 bg-[#97400C] text-white border border-[#97400C] rounded-[8px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider py-[15px] hover:bg-opacity-95 transition-all duration-300 shadow-md cursor-pointer min-w-0 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Mua ngay
+            </button>
+            <button
+              onClick={onAddToCart}
+              disabled={!product}
+              className="flex-1 border border-[#97400C] text-[#97400C] bg-white rounded-[8px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider py-[15px] hover:bg-[#97400C]/5 transition-all duration-300 cursor-pointer min-w-0 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Thêm vào giỏ
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={onContactClick}
+            disabled={!product}
+            className="flex-1 bg-[#97400C] text-white border border-[#97400C] rounded-[8px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider py-[15px] hover:bg-opacity-95 transition-all duration-300 shadow-md cursor-pointer min-w-0 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Liên hệ tư vấn
+          </button>
+        )}
       </div>
     </div>
   );
@@ -431,6 +460,8 @@ function ProductSubItemsAccordion({
   subItemsLoading,
   onBuyNow,
   onAddToCart,
+  cartEnabled,
+  onContactClick,
 }) {
   return (
     <div>
@@ -514,18 +545,29 @@ function ProductSubItemsAccordion({
             <>
               {/* Desktop Checkout buttons: 25px space above, 50px space below */}
               <div className="hidden lg:flex items-center gap-4 mt-[25px] mb-[50px]">
-                <button
-                  onClick={onBuyNow}
-                  className="flex-1 bg-[#97400C] text-white rounded-[8px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider py-[15px] hover:bg-opacity-95 transition-all duration-300 cursor-pointer"
-                >
-                  Mua ngay
-                </button>
-                <button
-                  onClick={onAddToCart}
-                  className="flex-1 border border-[#97400C] text-[#97400C] rounded-[8px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider py-[15px] hover:bg-[#97400C]/5 transition-all duration-300 cursor-pointer"
-                >
-                  Thêm vào giỏ
-                </button>
+                {cartEnabled ? (
+                  <>
+                    <button
+                      onClick={onBuyNow}
+                      className="flex-1 bg-[#97400C] text-white rounded-[8px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider py-[15px] hover:bg-opacity-95 transition-all duration-300 cursor-pointer"
+                    >
+                      Mua ngay
+                    </button>
+                    <button
+                      onClick={onAddToCart}
+                      className="flex-1 border border-[#97400C] text-[#97400C] rounded-[8px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider py-[15px] hover:bg-[#97400C]/5 transition-all duration-300 cursor-pointer"
+                    >
+                      Thêm vào giỏ
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={onContactClick}
+                    className="flex-1 bg-[#97400C] text-white rounded-[8px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider py-[15px] hover:bg-opacity-95 transition-all duration-300 cursor-pointer"
+                  >
+                    Liên hệ tư vấn
+                  </button>
+                )}
               </div>
 
               {/* Mobile: Xem thêm button */}
@@ -551,8 +593,10 @@ function ProductSubItemsAccordion({
 export default function ProductInfo({ product }) {
   const router = useRouter();
   const addToCart = useCartStore((s) => s.addToCart);
+  const cartEnabled = useSiteConfigStore((s) => s.cartEnabled);
   const [isInfoExpanded, setIsInfoExpanded] = useState(true);
   const [mainQuantity, setMainQuantity] = useState(1);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   const galleryImages = useMemo(() => buildGalleryImages(product), [product]);
   const [mainImage, setMainImage] = useState(galleryImages[0] || "");
@@ -635,6 +679,8 @@ export default function ProductInfo({ product }) {
     }
   };
 
+  const productDetailUrl = product?.slug ? absoluteUrl(`${ROUTES.PRODUCTS}/${product.slug}`) : "";
+
   return (
     <div className="w-full pt-[20px] lg:pt-[50px]">
       {/* Mobile-only Search input field */}
@@ -678,6 +724,8 @@ export default function ProductInfo({ product }) {
               setMainQuantity={setMainQuantity}
               onBuyNow={handleBuyNow}
               onAddToCart={handleAddToCart}
+              cartEnabled={cartEnabled}
+              onContactClick={() => setIsContactModalOpen(true)}
             />
             <ProductSubItemsAccordion
               isInfoExpanded={isInfoExpanded}
@@ -686,9 +734,19 @@ export default function ProductInfo({ product }) {
               subItemsLoading={subItemsLoading}
               onBuyNow={handleBuyNow}
               onAddToCart={handleAddToCart}
+              cartEnabled={cartEnabled}
+              onContactClick={() => setIsContactModalOpen(true)}
             />
           </div>
         </div>
+      )}
+
+      {product && (
+        <ContactModal
+          open={isContactModalOpen}
+          onOpenChange={setIsContactModalOpen}
+          productContext={{ name: product.name, url: productDetailUrl }}
+        />
       )}
     </div>
   );

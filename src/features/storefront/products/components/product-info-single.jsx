@@ -8,7 +8,10 @@ import SafeImage from "@/shared/components/safe-image";
 import { formatImageUrl } from "@/shared/api/media";
 import { ROUTES } from "@/shared/utils/routes";
 import { useCartStore } from "@/shared/stores/cart-store";
+import { useSiteConfigStore } from "@/shared/stores/site-config-store";
 import { toast } from "@/shared/utils/feedback";
+import { absoluteUrl } from "@/shared/lib/seo/site-config";
+import ContactModal from "@/features/storefront/contact/contact-modal";
 
 /** Builds the ordered gallery image URL list from a real `ProductResponse` (PRODUCT_API.md §8). */
 function buildGalleryImages(product) {
@@ -232,6 +235,8 @@ function ProductPurchasePanel({
   setMainQuantity,
   onBuyNow,
   onAddToCart,
+  cartEnabled,
+  onContactClick,
 }) {
   const [isInfoExpanded, setIsInfoExpanded] = useState(true);
 
@@ -399,52 +404,71 @@ function ProductPurchasePanel({
           </div>
 
           <button
-            onClick={onBuyNow}
+            onClick={cartEnabled ? onBuyNow : onContactClick}
             disabled={!product}
             className="flex-1 bg-[#97400C] text-white border border-[#97400C] rounded-[4px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider h-[48px] hover:bg-opacity-95 transition-all duration-300 cursor-pointer min-w-0 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Mua ngay
+            {cartEnabled ? "Mua ngay" : "Liên hệ tư vấn"}
           </button>
         </div>
 
-        {/* Row 2: Thêm vào giỏ hàng (Full width 504px) */}
-        <button
-          onClick={onAddToCart}
-          disabled={!product}
-          className="w-full border border-[#97400C] text-[#97400C] bg-white rounded-[4px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider h-[48px] hover:bg-[#97400C]/5 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Thêm vào giỏ hàng
-        </button>
+        {/* Row 2: Thêm vào giỏ hàng (Full width 504px) — hidden when cart mode is off since Row 1's
+            button already becomes the single "Liên hệ tư vấn" CTA (don't show two contact buttons
+            where two purchase buttons used to be). */}
+        {cartEnabled && (
+          <button
+            onClick={onAddToCart}
+            disabled={!product}
+            className="w-full border border-[#97400C] text-[#97400C] bg-white rounded-[4px] font-montserrat font-[700] text-[15px] text-center uppercase tracking-wider h-[48px] hover:bg-[#97400C]/5 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Thêm vào giỏ hàng
+          </button>
+        )}
       </div>
 
       {/* 3. Mobile-only full-bleed Bottom Checkout Bar */}
       <div className="flex lg:hidden items-center justify-between w-[calc(100%+60px)] mx-[-30px] h-[89px] bg-[#97400C] text-white shrink-0">
-        {/* Thêm vào giỏ hàng button */}
-        <button
-          onClick={onAddToCart}
-          disabled={!product}
-          className="flex-1 flex flex-col items-center justify-center gap-1.5 h-full transition-all hover:bg-black/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <div className="w-[24px] h-[24px] relative brightness-0 invert">
-            <Image src="/icons/cart-2.svg" alt="Cart" fill className="object-contain" sizes="24px" />
-          </div>
-          <span className="text-[16px] font-[700] leading-[16px] text-white">Thêm vào giỏ hàng</span>
-        </button>
+        {cartEnabled ? (
+          <>
+            {/* Thêm vào giỏ hàng button */}
+            <button
+              onClick={onAddToCart}
+              disabled={!product}
+              className="flex-1 flex flex-col items-center justify-center gap-1.5 h-full transition-all hover:bg-black/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <div className="w-[24px] h-[24px] relative brightness-0 invert">
+                <Image src="/icons/cart-2.svg" alt="Cart" fill className="object-contain" sizes="24px" />
+              </div>
+              <span className="text-[16px] font-[700] leading-[16px] text-white">Thêm vào giỏ hàng</span>
+            </button>
 
-        {/* Separator line */}
-        <div className="h-[66px] w-[1px] bg-white/40" />
+            {/* Separator line */}
+            <div className="h-[66px] w-[1px] bg-white/40" />
 
-        {/* Mua ngay button */}
-        <button
-          onClick={onBuyNow}
-          disabled={!product}
-          className="flex-1 flex flex-col items-center justify-center gap-1.5 h-full transition-all hover:bg-black/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <div className="w-[24px] h-[24px] relative brightness-0 invert">
-            <Image src="/icons/wallet.svg" alt="Wallet" fill className="object-contain" sizes="24px" />
-          </div>
-          <span className="text-[16px] font-[700] leading-[16px] text-white">Mua ngay</span>
-        </button>
+            {/* Mua ngay button */}
+            <button
+              onClick={onBuyNow}
+              disabled={!product}
+              className="flex-1 flex flex-col items-center justify-center gap-1.5 h-full transition-all hover:bg-black/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <div className="w-[24px] h-[24px] relative brightness-0 invert">
+                <Image src="/icons/wallet.svg" alt="Wallet" fill className="object-contain" sizes="24px" />
+              </div>
+              <span className="text-[16px] font-[700] leading-[16px] text-white">Mua ngay</span>
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={onContactClick}
+            disabled={!product}
+            className="flex-1 flex flex-col items-center justify-center gap-1.5 h-full transition-all hover:bg-black/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <div className="w-[24px] h-[24px] relative brightness-0 invert">
+              <Image src="/icons/wallet.svg" alt="Wallet" fill className="object-contain" sizes="24px" />
+            </div>
+            <span className="text-[16px] font-[700] leading-[16px] text-white">Liên hệ tư vấn</span>
+          </button>
+        )}
       </div>
 
       {/* Information Accordion - Desktop */}
@@ -478,7 +502,9 @@ function ProductPurchasePanel({
 export default function ProductInfoSingle({ product }) {
   const router = useRouter();
   const addToCart = useCartStore((s) => s.addToCart);
+  const cartEnabled = useSiteConfigStore((s) => s.cartEnabled);
   const [mainQuantity, setMainQuantity] = useState(1);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   const galleryImages = useMemo(() => buildGalleryImages(product), [product]);
   const [mainImage, setMainImage] = useState(galleryImages[0] || "");
@@ -503,6 +529,8 @@ export default function ProductInfoSingle({ product }) {
       setTimeout(() => router.push(ROUTES.CART), 150);
     }
   };
+
+  const productDetailUrl = product?.slug ? absoluteUrl(`${ROUTES.PRODUCTS}/${product.slug}`) : "";
 
   return (
     <div className="w-full pt-[20px] lg:pt-[50px] lg:pb-[64px]">
@@ -546,9 +574,19 @@ export default function ProductInfoSingle({ product }) {
               setMainQuantity={setMainQuantity}
               onBuyNow={handleBuyNow}
               onAddToCart={handleAddToCart}
+              cartEnabled={cartEnabled}
+              onContactClick={() => setIsContactModalOpen(true)}
             />
           </div>
         </div>
+      )}
+
+      {product && (
+        <ContactModal
+          open={isContactModalOpen}
+          onOpenChange={setIsContactModalOpen}
+          productContext={{ name: product.name, url: productDetailUrl }}
+        />
       )}
     </div>
   );

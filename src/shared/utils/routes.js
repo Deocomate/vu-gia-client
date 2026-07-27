@@ -27,6 +27,7 @@ export const ROUTES = {
   ADMIN_MEDIA: "/admin/media",
   ADMIN_ORDERS: "/admin/orders",
   ADMIN_COUPONS: "/admin/coupons",
+  ADMIN_SITE_SETTINGS: "/admin/site-settings",
   ADMIN_NEWS: "/admin/news",
   ADMIN_PAGES: "/admin/pages",
   ADMIN_FAQ: "/admin/faq",

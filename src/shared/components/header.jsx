@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ROUTES } from "@/shared/utils/routes";
 import { useCartStore } from "@/shared/stores/cart-store";
 import { useCustomerAuthStore } from "@/shared/stores/customer-auth-store";
+import { useSiteConfigStore } from "@/shared/stores/site-config-store";
 
 /**
  * Builds nav links, wiring the "Sản phẩm" submenu to real `ProductCategory`
@@ -166,6 +167,7 @@ export default function Header({ categories = [] }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const navLinks = buildNavLinks(categories);
+  const cartEnabled = useSiteConfigStore((s) => s.cartEnabled);
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
@@ -298,7 +300,7 @@ export default function Header({ categories = [] }) {
 
           <AccountMenu className="hidden lg:block" />
 
-          <CartLink />
+          {cartEnabled && <CartLink />}
 
           <AccountMenu className="lg:hidden" />
         </div>
@@ -359,7 +361,7 @@ export default function Header({ categories = [] }) {
                     />
                   </button>
 
-                  <CartLink onClick={closeMobileMenu} />
+                  {cartEnabled && <CartLink onClick={closeMobileMenu} />}
                 </div>
 
                 <button

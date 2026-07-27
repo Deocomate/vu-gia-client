@@ -44,6 +44,11 @@ export default function BaseConfirmDialog({
   theme = "brand",
   onCancel,
   onConfirm,
+  // `children`, when provided, replaces the `description` paragraph AND the
+  // confirm/cancel footer entirely — the caller (e.g. `ContactModal`) owns
+  // its own body content/actions (a form with its own submit button), so
+  // this dialog only supplies the overlay/panel/header/focus-trap chrome.
+  children,
 }) {
   const titleId = useId();
   const descriptionId = useId();
@@ -68,7 +73,14 @@ export default function BaseConfirmDialog({
     document.body.style.overflow = "hidden";
 
     const focusTimer = requestAnimationFrame(() => {
-      cancelRef.current?.focus();
+      // No footer (and thus no `cancelRef` button) when `children` is
+      // provided — fall back to the first focusable element inside the
+      // panel (e.g. the first form input) instead of leaving focus unset.
+      if (cancelRef.current) {
+        cancelRef.current.focus();
+      } else {
+        panelRef.current?.querySelector(FOCUSABLE_SELECTOR)?.focus();
+      }
     });
 
     const handleKeyDown = (event) => {
@@ -130,7 +142,7 @@ export default function BaseConfirmDialog({
         aria-modal="true"
         aria-labelledby={titleId}
         aria-describedby={description ? descriptionId : undefined}
-        className={`w-full max-w-md bg-white ${styles.panel}`}
+        className={`w-full ${children ? "max-w-lg" : "max-w-md"} bg-white ${styles.panel}`}
       >
         <div className={`flex items-center justify-between px-5 py-4 ${styles.header}`}>
           <h2 id={titleId} className={`text-base font-semibold ${styles.title}`}>
@@ -145,30 +157,36 @@ export default function BaseConfirmDialog({
             <X className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
-        {description ? (
-          <p id={descriptionId} className={`px-5 py-5 text-sm leading-6 ${styles.description}`}>
-            {description}
-          </p>
-        ) : null}
-        <div className={`flex justify-end gap-2 px-5 py-4 ${styles.footer}`}>
-          <button
-            ref={cancelRef}
-            type="button"
-            onClick={handleCancel}
-            className={`h-10 px-4 text-sm font-semibold ${styles.cancelBtn}`}
-          >
-            {cancelLabel}
-          </button>
-          <button
-            type="button"
-            onClick={handleConfirm}
-            className={`h-10 px-4 text-sm font-semibold ${
-              destructive ? styles.confirmDestructive : styles.confirmBtn
-            }`}
-          >
-            {confirmLabel}
-          </button>
-        </div>
+        {children ? (
+          <div className="px-5 py-5 max-h-[80vh] overflow-y-auto">{children}</div>
+        ) : (
+          <>
+            {description ? (
+              <p id={descriptionId} className={`px-5 py-5 text-sm leading-6 ${styles.description}`}>
+                {description}
+              </p>
+            ) : null}
+            <div className={`flex justify-end gap-2 px-5 py-4 ${styles.footer}`}>
+              <button
+                ref={cancelRef}
+                type="button"
+                onClick={handleCancel}
+                className={`h-10 px-4 text-sm font-semibold ${styles.cancelBtn}`}
+              >
+                {cancelLabel}
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirm}
+                className={`h-10 px-4 text-sm font-semibold ${
+                  destructive ? styles.confirmDestructive : styles.confirmBtn
+                }`}
+              >
+                {confirmLabel}
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
