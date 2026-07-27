@@ -78,7 +78,7 @@ export default function DataTable({
   return (
     <div className="overflow-x-auto border border-zinc-200 bg-white">
       <table className="min-w-full divide-y divide-zinc-200 text-left text-sm">
-        <thead className="sticky top-16 z-10 bg-zinc-50">
+        <thead className="sticky top-0 z-10 bg-zinc-50">
           <tr>
             {columns.map((column, colIndex) => {
               const columnKey = column.key || (typeof column.accessor === "string" ? column.accessor : undefined);
