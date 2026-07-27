@@ -1,14 +1,19 @@
 ---
-title: "Scope Fixed Altar Customizer Banner to Altar Category & Detail Pages"
-description: "Restrict fixed bottom Altar Customizer banner widget strictly to Altar Items Category and Altar Item Detail pages."
-status: pending
+title: Scope Fixed Altar Customizer Banner to Altar Category & Detail Pages
+description: >-
+  Restrict fixed bottom Altar Customizer banner widget strictly to Altar Items
+  Category and Altar Item Detail pages.
+status: completed
 priority: P2
-branch: "main"
-tags: ["storefront", "widget", "category"]
+branch: main
+tags:
+  - storefront
+  - widget
+  - category
 blockedBy: []
 blocks: []
-created: "2026-07-27T05:44:26.475Z"
-createdBy: "ck-cli"
+created: '2026-07-27T05:44:26.475Z'
+createdBy: ck-cli
 source: cli
 ---
 
@@ -24,9 +29,9 @@ Restrict the fixed bottom-centered "TÙY CHỈNH BỘ ĐỒ THỜ" banner widget
 
 | Phase | Name | Status |
 |-------|------|--------|
-| 1 | [Research](./phase-01-research.md) | Pending |
-| 2 | [Implement](./phase-02-implement.md) | Pending |
-| 3 | [Test](./phase-03-test.md) | Pending |
+| 1 | [Research](./phase-01-research.md) | Completed |
+| 2 | [Implement](./phase-02-implement.md) | Completed |
+| 3 | [Test](./phase-03-test.md) | Completed |
 
 ## Dependencies
 

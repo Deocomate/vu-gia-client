@@ -1,9 +1,10 @@
 ---
 phase: 2
-title: "Implement"
-status: pending
+title: Implement
+status: completed
 priority: P2
-dependencies: [1]
+dependencies:
+  - 1
 ---
 
 # Phase 2: Implement Category Store and Widget Filtering

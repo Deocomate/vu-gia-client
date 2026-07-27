@@ -1,9 +1,10 @@
 ---
 phase: 3
-title: "Test"
-status: pending
+title: Test
+status: completed
 priority: P2
-dependencies: [2]
+dependencies:
+  - 2
 ---
 
 # Phase 3: Verification and Build Test
