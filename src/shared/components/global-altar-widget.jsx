@@ -2,20 +2,31 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Paintbrush, X } from "lucide-react";
 import { ROUTES } from "@/shared/utils/routes";
+import { useProductCategoryStore } from "@/shared/stores/product-category-store";
 
 // Pages where the widget must stay hidden to keep purchase focus.
 const HIDDEN_PATHS = [ROUTES.CHECKOUT, ROUTES.CART, ROUTES.ALTAR_CUSTOMIZER];
 
 export default function GlobalAltarWidget() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const activeCategorySlug = useProductCategoryStore((s) => s.activeCategorySlug);
   const [isDismissed, setIsDismissed] = useState(false);
 
   if (HIDDEN_PATHS.includes(pathname)) return null;
 
-  const isProductPage = pathname ? pathname.startsWith(ROUTES.PRODUCTS) : false;
+  const isAltarCategory = (slug) => {
+    if (!slug) return false;
+    const s = slug.toLowerCase();
+    return s === "bo-do-tho" || s.includes("do-tho") || s.includes("thờ");
+  };
+
+  const currentCategory = searchParams.get("category") || activeCategorySlug;
+  const isAltarPage =
+    pathname?.startsWith(ROUTES.PRODUCTS) && isAltarCategory(currentCategory);
 
   return (
     <>
@@ -38,8 +49,8 @@ export default function GlobalAltarWidget() {
         </Link>
       </div>
 
-      {/* Product Pages Fixed Bottom Banner (Centered Pill Box with Icon & Text) */}
-      {isProductPage && !isDismissed && (
+      {/* Altar Category & Item Detail Fixed Bottom Banner (Centered Pill Box with Icon & Text) */}
+      {isAltarPage && !isDismissed && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-[460px] animate-in fade-in slide-in-from-bottom-5 duration-300">
           <div className="relative flex items-center justify-between gap-3 bg-primary text-white py-3 px-5 rounded-full shadow-[0_10px_35px_rgba(0,0,0,0.3)] border border-white/20 group hover:brightness-105 active:scale-[0.99] transition-all duration-300">
             <Link
@@ -71,8 +82,8 @@ export default function GlobalAltarWidget() {
         </div>
       )}
 
-      {/* Mobile Fixed Widget (bottom-left corner) - Shown on non-product pages */}
-      {!isProductPage && (
+      {/* Mobile Fixed Widget (bottom-left corner) - Shown on non-altar pages */}
+      {!isAltarPage && (
         <div className="fixed left-4 bottom-6 z-[100] md:hidden">
           <Link
             href={ROUTES.ALTAR_CUSTOMIZER}

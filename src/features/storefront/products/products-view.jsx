@@ -12,6 +12,7 @@ import CategoryNews from "@/features/storefront/products/components/category-new
 import AboutUsSection from "@/shared/components/about-us-section";
 import { formatImageUrl } from "@/shared/api/media";
 import { ROUTES } from "@/shared/utils/routes";
+import { useProductCategoryStore } from "@/shared/stores/product-category-store";
 
 const PAGE_SIZE = 8;
 const SEARCH_DEBOUNCE_MS = 400;
@@ -31,6 +32,20 @@ export default function ProductsView({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const searchDebounceRef = useRef(null);
+  const setActiveCategory = useProductCategoryStore((s) => s.setActiveCategory);
+  const clearActiveCategory = useProductCategoryStore((s) => s.clearActiveCategory);
+
+  useEffect(() => {
+    const currentCategory = searchParams.get("category") || selectedCategory;
+    if (currentCategory && currentCategory !== "all") {
+      setActiveCategory(currentCategory);
+    } else {
+      clearActiveCategory();
+    }
+    return () => {
+      clearActiveCategory();
+    };
+  }, [searchParams, selectedCategory, setActiveCategory, clearActiveCategory]);
 
   // Updates the URL's query string (adding/removing keys); the Server Component
   // at `page.jsx` reads `searchParams` and re-fetches, so no client-side data

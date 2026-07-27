@@ -1,14 +1,31 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import ProductInfo from "@/features/storefront/products/components/product-info";
 import ProductInfoSingle from "@/features/storefront/products/components/product-info-single";
 import ProductDescription from "@/features/storefront/products/components/product-description";
 import ProductDetail from "@/features/storefront/products/components/product-detail";
 import ProductSpecifications from "@/features/storefront/products/components/product-specifications";
 import SimilarProducts from "@/features/storefront/products/components/similar-products";
+import { useProductCategoryStore } from "@/shared/stores/product-category-store";
 
 export default function ProductDetailView({ slug, type, product }) {
+  const setActiveCategory = useProductCategoryStore((s) => s.setActiveCategory);
+  const clearActiveCategory = useProductCategoryStore((s) => s.clearActiveCategory);
+
+  useEffect(() => {
+    const categorySlug = product?.category?.slug;
+    const categoryName = product?.category?.name;
+    if (categorySlug) {
+      setActiveCategory(categorySlug, categoryName);
+    } else {
+      clearActiveCategory();
+    }
+    return () => {
+      clearActiveCategory();
+    };
+  }, [product, setActiveCategory, clearActiveCategory]);
+
   // Real backend type (`SINGLE`/`COMBO`, ProductResponse) decides the layout
   // by default; an explicit `?type=single` query override still wins so
   // existing links aren't broken (RT-A: this used to always default to the
