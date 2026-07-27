@@ -15,14 +15,14 @@ export default function GlobalAltarWidget() {
   return (
     <>
       {/* Desktop Widget (right-side flyout) */}
-      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-[100] hidden md:flex flex-col items-end group">
+      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-[100] hidden md:flex flex-col items-end">
         <Link
           href={ROUTES.ALTAR_CUSTOMIZER}
           aria-label="Tự tạo bộ đồ thờ"
-          className="flex items-center gap-3 bg-primary text-white py-3 pl-4 pr-3 rounded-l-xl shadow-[-4px_4px_15px_rgba(0,0,0,0.15)] transition-transform duration-300 translate-x-[130px] hover:translate-x-0 focus-visible:translate-x-0"
+          className="group flex items-center bg-primary text-white py-3 pl-3.5 pr-3.5 rounded-l-xl shadow-[-4px_4px_15px_rgba(0,0,0,0.15)] transition-all duration-300 ease-in-out overflow-hidden max-w-[52px] hover:max-w-[280px] focus-visible:max-w-[280px]"
         >
           <Paintbrush className="w-6 h-6 flex-shrink-0" />
-          <div className="flex flex-col whitespace-nowrap">
+          <div className="flex flex-col whitespace-nowrap pl-3 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-200">
             <span className="text-[12px] font-montserrat font-medium text-white/80 leading-tight">
               Chưa tìm thấy mẫu ưng ý?
             </span>
