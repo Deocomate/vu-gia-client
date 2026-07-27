@@ -38,6 +38,7 @@ export default function HomeProductList({ title, tabs = [], products = [] }) {
             <button
               key={idx}
               onClick={() => setActiveTab(idx)}
+              onMouseEnter={() => setActiveTab(idx)}
               className={`px-[32px] py-[8px] rounded-[8px] font-montserrat font-[700] text-[18px] leading-[24px] transition-all duration-300 ${
                 idx === activeTab
                   ? "bg-primary text-white shadow-md scale-102"
