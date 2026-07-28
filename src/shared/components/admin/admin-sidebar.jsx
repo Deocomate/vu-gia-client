@@ -4,45 +4,78 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   BadgePercent,
-  Boxes,
   FileText,
   Gauge,
   ImageIcon,
   Inbox,
-  Layout,
+  Layers,
+  LayoutGrid,
   MapPin,
-  MessageSquare,
   Newspaper,
   Package,
+  Palette,
   PanelTop,
-  RefreshCcw,
   Settings,
   ShoppingCart,
+  Table2,
   Tags,
   Truck,
   Users,
 } from "lucide-react";
 import { ROUTES } from "@/shared/utils/routes";
 
+/** Grouped nav data: a `section: null` group renders no header (e.g. "Tổng quan" standalone
+ * at the top); every other group renders a small uppercase section label above its items.
+ * Labels tagged "(merged)" point at a route that now hosts 2+ resources behind a tab bar
+ * (see `AdminPagesAndFaqPage.jsx` and its 3 siblings) — same href, so active-route
+ * highlighting below needs no special casing. */
 export const ADMIN_NAV = [
-  { label: "Tổng quan", href: ROUTES.ADMIN, icon: Gauge },
-  { label: "Sản phẩm", href: ROUTES.ADMIN_PRODUCTS, icon: Package },
-  { label: "Danh mục", href: ROUTES.ADMIN_CATEGORIES, icon: Tags },
-  { label: "Tải ảnh lên", href: ROUTES.ADMIN_MEDIA, icon: ImageIcon },
-  { label: "Đơn hàng", href: ROUTES.ADMIN_ORDERS, icon: ShoppingCart },
-  { label: "Coupon", href: ROUTES.ADMIN_COUPONS, icon: BadgePercent },
-  { label: "Chế độ giỏ hàng", href: ROUTES.ADMIN_SITE_SETTINGS, icon: Settings },
-  { label: "Tin tức", href: ROUTES.ADMIN_NEWS, icon: Newspaper },
-  { label: "Trang CMS", href: ROUTES.ADMIN_PAGES, icon: FileText },
-  { label: "FAQ", href: ROUTES.ADMIN_FAQ, icon: MessageSquare },
-  { label: "Thư viện ảnh", href: ROUTES.ADMIN_GALLERY, icon: Boxes },
-  { label: "Showroom", href: ROUTES.ADMIN_SHOWROOMS, icon: MapPin },
-  { label: "Vận chuyển", href: ROUTES.ADMIN_SHIPPING_METHODS, icon: Truck },
-  { label: "Banner", href: ROUTES.ADMIN_BANNERS, icon: PanelTop },
-  { label: "Liên hệ", href: ROUTES.ADMIN_CONTACT_LEADS, icon: Inbox },
-  { label: "Newsletter", href: ROUTES.ADMIN_NEWSLETTER, icon: Layout },
-  { label: "Redirect", href: ROUTES.ADMIN_REDIRECTS, icon: RefreshCcw },
-  { label: "Người dùng", href: ROUTES.ADMIN_USERS, icon: Users },
+  {
+    section: null,
+    items: [{ label: "Tổng quan", href: ROUTES.ADMIN, icon: Gauge }],
+  },
+  {
+    section: "Bán hàng",
+    items: [
+      { label: "Sản phẩm", href: ROUTES.ADMIN_PRODUCTS, icon: Package },
+      { label: "Danh mục", href: ROUTES.ADMIN_CATEGORIES, icon: Tags },
+      { label: "Đơn hàng", href: ROUTES.ADMIN_ORDERS, icon: ShoppingCart },
+      { label: "Coupon", href: ROUTES.ADMIN_COUPONS, icon: BadgePercent },
+      { label: "Vận chuyển", href: ROUTES.ADMIN_SHIPPING_METHODS, icon: Truck },
+    ],
+  },
+  {
+    section: "Bàn thờ tùy chỉnh",
+    items: [
+      { label: "Nhóm sản phẩm thờ", href: ROUTES.ADMIN_ALTAR_ITEM_GROUPS, icon: Layers },
+      { label: "Kiểu men", href: ROUTES.ADMIN_ALTAR_STYLES, icon: Palette },
+      { label: "Loại bàn thờ", href: ROUTES.ADMIN_ALTAR_MODELS, icon: Table2 },
+      { label: "Bộ gợi ý", href: ROUTES.ADMIN_ALTAR_PRESETS, icon: LayoutGrid },
+    ],
+  },
+  {
+    section: "Nội dung",
+    items: [
+      { label: "Tin tức", href: ROUTES.ADMIN_NEWS, icon: Newspaper },
+      { label: "Trang & FAQ", href: ROUTES.ADMIN_PAGES, icon: FileText },
+      { label: "Banner & Thư viện ảnh", href: ROUTES.ADMIN_BANNERS, icon: PanelTop },
+      { label: "Tải ảnh lên", href: ROUTES.ADMIN_MEDIA, icon: ImageIcon },
+    ],
+  },
+  {
+    section: "Khách hàng & Tiếp thị",
+    items: [
+      { label: "Liên hệ & Newsletter", href: ROUTES.ADMIN_CONTACT_LEADS, icon: Inbox },
+      { label: "Showroom", href: ROUTES.ADMIN_SHOWROOMS, icon: MapPin },
+    ],
+  },
+  {
+    section: "Hệ thống",
+    items: [
+      { label: "Cấu hình hệ thống", href: ROUTES.ADMIN_SITE_SETTINGS, icon: Settings },
+      { label: "Người dùng", href: ROUTES.ADMIN_USERS, icon: Users },
+    ],
+  },
 ];
 
 export default function AdminSidebar({ open, onClose }) {
@@ -69,28 +102,37 @@ export default function AdminSidebar({ open, onClose }) {
           </Link>
         </div>
         <nav className="h-[calc(100vh-4rem)] overflow-y-auto px-3 py-4">
-          {ADMIN_NAV.map((item) => {
-            const Icon = item.icon;
-            const active =
-              pathname === item.href ||
-              (item.href !== ROUTES.ADMIN && pathname.startsWith(`${item.href}/`));
+          {ADMIN_NAV.map((group) => (
+            <div key={group.section ?? "top"} className="mb-3">
+              {group.section && (
+                <p className="mb-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
+                  {group.section}
+                </p>
+              )}
+              {group.items.map((item) => {
+                const Icon = item.icon;
+                const active =
+                  pathname === item.href ||
+                  (item.href !== ROUTES.ADMIN && pathname.startsWith(`${item.href}/`));
 
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={onClose}
-                className={`mb-1 flex h-10 items-center gap-3 px-3 text-sm font-semibold transition ${
-                  active
-                    ? "bg-white text-zinc-950"
-                    : "text-zinc-300 hover:bg-white/10 hover:text-white"
-                }`}
-              >
-                <Icon className="h-4 w-4" aria-hidden="true" />
-                {item.label}
-              </Link>
-            );
-          })}
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={onClose}
+                    className={`mb-1 flex h-10 items-center gap-3 px-3 text-sm font-semibold transition ${
+                      active
+                        ? "bg-white text-zinc-950"
+                        : "text-zinc-300 hover:bg-white/10 hover:text-white"
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" aria-hidden="true" />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          ))}
         </nav>
       </aside>
     </>

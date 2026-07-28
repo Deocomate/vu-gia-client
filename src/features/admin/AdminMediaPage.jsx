@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy } from "lucide-react";
+import { Check, Copy, ImageOff } from "lucide-react";
 import ImageUploader from "@/shared/components/admin/inputs/image-uploader";
 
 /**
@@ -11,6 +11,7 @@ import ImageUploader from "@/shared/components/admin/inputs/image-uploader";
 export default function AdminMediaPage() {
   const [urls, setUrls] = useState([]);
   const [copied, setCopied] = useState("");
+  const [failedUrls, setFailedUrls] = useState(() => new Set());
 
   const copy = async (url) => {
     await navigator.clipboard.writeText(url);
@@ -36,8 +37,20 @@ export default function AdminMediaPage() {
         <div className="mt-4 grid gap-3 border border-zinc-200 bg-white p-4 sm:grid-cols-2 lg:grid-cols-4">
           {urls.map((url) => (
             <div key={url} className="border border-zinc-200 p-2">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={url} alt="" className="aspect-square w-full object-cover" />
+              {failedUrls.has(url) ? (
+                <div className="flex aspect-square w-full flex-col items-center justify-center gap-1 bg-rose-50 text-center text-[11px] font-semibold text-rose-600">
+                  <ImageOff className="h-5 w-5" aria-hidden="true" />
+                  Ảnh không hiển thị được
+                </div>
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={url}
+                  alt=""
+                  className="aspect-square w-full object-cover"
+                  onError={() => setFailedUrls((current) => new Set(current).add(url))}
+                />
+              )}
               <button
                 type="button"
                 onClick={() => copy(url)}

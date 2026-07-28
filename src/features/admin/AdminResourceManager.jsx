@@ -40,6 +40,9 @@ const makeInitialForm = (resource, row = null) => {
         form[field.name] = false;
       } else if (field.type === "json-string") {
         form[field.name] = field.defaultJson || "";
+      } else if (field.type === "altar-sizes") {
+        // Nested-collection field — always an array, never the generic "" default below.
+        form[field.name] = [];
       } else {
         form[field.name] = "";
       }
@@ -59,6 +62,12 @@ const toPayload = (resource, form, mode) => {
   fieldNames.forEach((name) => {
     const field = resource.fields?.find((item) => item.name === name);
     const value = form[name];
+
+    // Nested-collection field — persisted via its own CRUD endpoints (see
+    // `AltarSizesEditor`), never part of the parent resource's create/update payload.
+    if (field?.type === "altar-sizes") {
+      return;
+    }
 
     if (mode === "update" && value === undefined) {
       return;
@@ -543,6 +552,10 @@ export default function AdminResourceManager({ resource, compact = false }) {
                   field={field}
                   value={form[field.name]}
                   error={fieldErrors[field.name]}
+                  // Only consumed by the "altar-sizes" field type — its nested CRUD endpoints
+                  // are scoped under the parent record's id, which doesn't exist yet for a
+                  // brand-new row (`editingRow` is null while creating).
+                  recordId={editingRow?.[resource.idField || "id"]}
                   onChange={(name, value) =>
                     setForm((current) => ({ ...current, [name]: value }))
                   }

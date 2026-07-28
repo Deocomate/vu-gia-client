@@ -18,6 +18,8 @@ import { ROUTES } from "@/shared/utils/routes";
 import { toast } from "@/shared/utils/feedback";
 
 const loadCategoryOptions = makeAsyncOptions("/product-categories", { searchParam: "name" });
+const loadAltarItemGroupOptions = makeAsyncOptions("/altar-item-groups", { searchParam: "name" });
+const loadAltarStyleOptions = makeAsyncOptions("/altar-styles", { searchParam: "name" });
 
 const EMPTY_FORM = {
   name: "",
@@ -25,6 +27,11 @@ const EMPTY_FORM = {
   sku: "",
   type: "SINGLE",
   productCategoryId: "",
+  // Optional FKs, only meaningful for products in the "Bộ đồ thờ" category — `null` (not "")
+  // so a cleared picker is sent as an explicit null rather than dropped from the payload
+  // (see `buildPayload`/`setNullableField` below).
+  altarItemGroupId: null,
+  altarStyleId: null,
   price: "",
   compareAtPrice: "",
   priority: 0,
@@ -74,6 +81,8 @@ export default function AdminProductDetailPage({ productId }) {
         ...EMPTY_FORM,
         ...product,
         productCategoryId: product.category?.id ?? product.productCategoryId ?? "",
+        altarItemGroupId: product.altarItemGroup?.id ?? product.altarItemGroupId ?? null,
+        altarStyleId: product.altarStyle?.id ?? product.altarStyleId ?? null,
       });
       setImages((product.images || []).sort((a, b) => a.priority - b.priority));
     } catch (requestError) {
@@ -88,6 +97,10 @@ export default function AdminProductDetailPage({ productId }) {
   }, [load]);
 
   const setField = (name, value) => setForm((current) => ({ ...current, [name]: value }));
+  // `SearchableSelect` emits "" on clear (see its "Bỏ chọn" button); normalize that to `null`
+  // for the two optional altar FK pickers so clearing sends an explicit null instead of being
+  // silently dropped by `buildPayload`'s "" == unset stripping on partial updates.
+  const setNullableField = (name, value) => setForm((current) => ({ ...current, [name]: value === "" ? null : value }));
 
   const submit = async (event) => {
     event.preventDefault();
@@ -178,6 +191,32 @@ export default function AdminProductDetailPage({ productId }) {
               value={form.productCategoryId}
               onChange={setField}
               error={fieldErrors.productCategoryId}
+            />
+            <FormField
+              field={{
+                name: "altarItemGroupId",
+                label: "Nhóm sản phẩm thờ",
+                type: "searchable-select",
+                loadOptions: loadAltarItemGroupOptions,
+                placeholder: "Chọn nhóm (tùy chọn)",
+                description: "Chỉ áp dụng cho sản phẩm thuộc danh mục Bộ đồ thờ.",
+              }}
+              value={form.altarItemGroupId}
+              onChange={setNullableField}
+              error={fieldErrors.altarItemGroupId}
+            />
+            <FormField
+              field={{
+                name: "altarStyleId",
+                label: "Kiểu men",
+                type: "searchable-select",
+                loadOptions: loadAltarStyleOptions,
+                placeholder: "Chọn kiểu men (tùy chọn)",
+                description: "Chỉ áp dụng cho sản phẩm thuộc danh mục Bộ đồ thờ.",
+              }}
+              value={form.altarStyleId}
+              onChange={setNullableField}
+              error={fieldErrors.altarStyleId}
             />
             <FormField field={{ name: "type", label: "Loại sản phẩm", type: "select", required: true, options: PRODUCT_TYPE.map((v) => ({ value: v, label: PRODUCT_TYPE_LABEL[v] })) }} value={form.type} onChange={setField} />
             <FormField field={{ name: "status", label: "Trạng thái", type: "select", options: PRODUCT_STATUS.map((v) => ({ value: v, label: PRODUCT_STATUS_LABEL[v] })) }} value={form.status} onChange={setField} />

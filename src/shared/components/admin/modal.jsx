@@ -24,6 +24,7 @@ const SIZE_CLASSES = {
   sm: "max-w-sm",
   md: "max-w-md",
   lg: "max-w-4xl",
+  full: "w-screen h-[100dvh] max-w-none rounded-none",
 };
 
 export default function Modal({
@@ -107,11 +108,12 @@ export default function Modal({
     return null;
   }
 
+  const isFull = size === "full";
   const alignmentClasses = align === "start" ? "items-start overflow-y-auto py-8" : "items-center";
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex justify-center bg-zinc-950/50 px-4 ${alignmentClasses}`}
+      className={`fixed inset-0 z-50 flex justify-center bg-zinc-950/50 ${isFull ? "p-0" : `px-4 ${alignmentClasses}`}`}
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) {
           requestClose();
@@ -125,10 +127,10 @@ export default function Modal({
         aria-labelledby={title ? titleId : undefined}
         aria-describedby={description ? descriptionId : undefined}
         tabIndex={-1}
-        className={`w-full border border-zinc-200 bg-white shadow-xl outline-none ${SIZE_CLASSES[size] || SIZE_CLASSES.md}`}
+        className={`w-full bg-white outline-none ${isFull ? "flex flex-col" : "border border-zinc-200 shadow-xl"} ${SIZE_CLASSES[size] || SIZE_CLASSES.md}`}
       >
         {title && (
-          <div className="flex items-center justify-between border-b border-zinc-200 px-5 py-4">
+          <div className="flex shrink-0 items-center justify-between border-b border-zinc-200 px-5 py-4">
             <div>
               <h2 id={titleId} className="text-lg font-semibold text-zinc-950">
                 {title}

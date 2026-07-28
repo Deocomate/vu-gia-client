@@ -8,13 +8,14 @@ import BlockBuilder from "@/shared/components/blocks/editor/block-builder";
 import BlockRenderer from "@/shared/components/blocks/block-renderer";
 import { categoryBlockRegistry } from "@/shared/components/category-blocks/registry";
 import CategoryDetailContent from "@/features/storefront/products/components/category-detail-content";
+import AltarSizesEditor from "@/features/admin/altar/altar-sizes-editor";
 
 const inputClass =
   "h-11 w-full border border-zinc-300 bg-white px-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-950";
 const textareaClass =
   "min-h-[120px] w-full border border-zinc-300 bg-white px-3 py-2 text-sm leading-6 text-zinc-900 outline-none transition focus:border-zinc-950";
 
-export default function FormField({ field, value, onChange, error }) {
+export default function FormField({ field, value, onChange, error, recordId }) {
   const id = `field-${field.name}`;
   const options = useMemo(() => field.options || [], [field.options]);
 
@@ -102,6 +103,14 @@ export default function FormField({ field, value, onChange, error }) {
             </div>
           </div>
         </div>
+      )}
+
+      {field.type === "altar-sizes" && (
+        <AltarSizesEditor
+          modelId={recordId}
+          value={value}
+          onChange={(next) => onChange(field.name, next)}
+        />
       )}
 
       {field.type === "select" && (

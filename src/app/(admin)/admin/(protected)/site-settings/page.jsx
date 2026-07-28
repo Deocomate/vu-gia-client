@@ -1,5 +1,5 @@
-import AdminSiteSettingsPage from "@/features/admin/AdminSiteSettingsPage";
+import AdminSystemSettingsPage from "@/features/admin/AdminSystemSettingsPage";
 
 export default function SiteSettingsPage() {
-  return <AdminSiteSettingsPage />;
+  return <AdminSystemSettingsPage />;
 }

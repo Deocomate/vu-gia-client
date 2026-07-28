@@ -1,5 +1,5 @@
-import AdminResourcePage from "@/features/admin/AdminResourcePage";
+import AdminPagesAndFaqPage from "@/features/admin/AdminPagesAndFaqPage";
 
 export default function AdminPagesPage() {
-  return <AdminResourcePage resourceKey="pages" />;
+  return <AdminPagesAndFaqPage />;
 }

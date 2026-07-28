@@ -262,6 +262,147 @@ export const resources = {
     defaults: { position: "HOME_HERO", sortOrder: 0, isActive: true },
   },
 
+  altarItemGroups: {
+    title: "Nhóm sản phẩm thờ",
+    description: "Quản lý nhóm sản phẩm thờ (bộ tam sự - ngũ sự, bát hương, lọ hoa, phụ kiện, thần tài - thổ địa) dùng cho công cụ tùy chỉnh bàn thờ.",
+    endpoint: "/altar-item-groups",
+    searchable: true,
+    searchParam: "name",
+    filters: [{ name: "isActive", label: "Hoạt động", type: "boolean" }],
+    sortable: ["id", "name", "priority", "createdAt"],
+    defaultSort: { field: "priority", direction: "asc" },
+    columns: [
+      { key: "thumb", label: "Ảnh", accessor: "thumb", type: "image" },
+      { key: "name", label: "Tên", accessor: "name" },
+      { key: "slug", label: "Slug", accessor: "slug" },
+      { key: "renderOnAltar", label: "Hiện trên bàn thờ", accessor: "renderOnAltar", type: "boolean" },
+      { key: "priority", label: "Thứ tự", accessor: "priority" },
+      { key: "isActive", label: "Hoạt động", accessor: "isActive", type: "boolean" },
+    ],
+    fields: [
+      { name: "name", label: "Tên nhóm", required: true },
+      { name: "thumb", label: "Ảnh đại diện", type: "media", required: true, fullWidth: true, folder: "altar" },
+      { name: "slug", label: "Slug", description: "Để trống sẽ tự sinh từ tên." },
+      {
+        name: "renderOnAltar",
+        label: "Hiển thị trên bàn thờ",
+        type: "boolean",
+        helper: "Bật",
+        description: "Tắt nếu nhóm này chỉ là phụ kiện liệt kê tóm tắt, không đặt trực tiếp lên bàn thờ.",
+      },
+      { name: "priority", label: "Thứ tự", type: "number" },
+      { name: "isActive", label: "Đang hoạt động", type: "boolean" },
+    ],
+    defaults: { priority: 0, isActive: true, renderOnAltar: true },
+  },
+
+  altarStyles: {
+    title: "Kiểu men",
+    description: "Quản lý kiểu men/dáng (men lam, men rạn, men lam vẽ vàng, men rạn dát vàng, men màu theo mệnh) dùng cho công cụ tùy chỉnh bàn thờ.",
+    endpoint: "/altar-styles",
+    searchable: true,
+    searchParam: "name",
+    filters: [{ name: "isActive", label: "Hoạt động", type: "boolean" }],
+    sortable: ["id", "name", "priority", "createdAt"],
+    defaultSort: { field: "priority", direction: "asc" },
+    columns: [
+      { key: "thumb", label: "Ảnh", accessor: "thumb", type: "image" },
+      { key: "name", label: "Tên", accessor: "name" },
+      { key: "slug", label: "Slug", accessor: "slug" },
+      { key: "priority", label: "Thứ tự", accessor: "priority" },
+      { key: "isActive", label: "Hoạt động", accessor: "isActive", type: "boolean" },
+    ],
+    fields: [
+      { name: "name", label: "Tên kiểu men", required: true },
+      { name: "thumb", label: "Ảnh đại diện", type: "media", required: true, fullWidth: true, folder: "altar" },
+      { name: "slug", label: "Slug", description: "Để trống sẽ tự sinh từ tên." },
+      { name: "description", label: "Mô tả", type: "textarea", rows: 4, required: true, fullWidth: true },
+      { name: "priority", label: "Thứ tự", type: "number" },
+      { name: "isActive", label: "Đang hoạt động", type: "boolean" },
+    ],
+    defaults: { priority: 0, isActive: true },
+  },
+
+  altarModels: {
+    title: "Loại bàn thờ",
+    description: "Quản lý loại bàn thờ (kích thước, ảnh nền, vùng đặt đồ) dùng cho công cụ tùy chỉnh bàn thờ.",
+    endpoint: "/altar-models",
+    searchable: true,
+    searchParam: "name",
+    filters: [{ name: "isActive", label: "Hoạt động", type: "boolean" }],
+    sortable: ["id", "name", "priority", "createdAt"],
+    defaultSort: { field: "priority", direction: "asc" },
+    columns: [
+      { key: "thumb", label: "Ảnh", accessor: "thumb", type: "image" },
+      { key: "name", label: "Tên", accessor: "name" },
+      { key: "slug", label: "Slug", accessor: "slug" },
+      {
+        key: "sizes",
+        label: "Kích thước",
+        accessor: "sizes",
+        render: (value) => (Array.isArray(value) ? value.length : 0),
+      },
+      { key: "priority", label: "Thứ tự", accessor: "priority" },
+      { key: "isActive", label: "Hoạt động", accessor: "isActive", type: "boolean" },
+    ],
+    fields: [
+      { name: "name", label: "Tên loại bàn thờ", required: true },
+      { name: "thumb", label: "Ảnh đại diện", type: "media", required: true, fullWidth: true, folder: "altar" },
+      { name: "slug", label: "Slug", description: "Để trống sẽ tự sinh từ tên." },
+      { name: "description", label: "Mô tả", type: "textarea", rows: 4, required: true, fullWidth: true },
+      { name: "priority", label: "Thứ tự", type: "number" },
+      { name: "isActive", label: "Đang hoạt động", type: "boolean" },
+      // Nested-collection field — sizes have their own CRUD endpoints
+      // (`/altar-models/{modelId}/sizes[/{sizeId}]`), see `AltarSizesEditor`. Disabled
+      // (with an explanatory placeholder) until the model itself has been saved once.
+      { name: "sizes", label: "Kích thước", type: "altar-sizes", fullWidth: true },
+    ],
+    defaults: { priority: 0, isActive: true },
+  },
+
+  // No generic create/edit form: authoring a preset means arranging items on the shared
+  // `altar-canvas.jsx`, which only makes sense as a dedicated page (`AltarPresetBuilder`), not a
+  // generic field-driven modal — same reasoning/mechanism as `products` above (`fields` stays
+  // empty, `noEdit: true` suppresses the pencil icon, `detailPath` routes the eye icon to the
+  // builder page, `onCreate` redirects to the "new" route). List/search/delete still go through
+  // the generic manager against the same `/altar-presets` endpoint.
+  altarPresets: {
+    title: "Bộ gợi ý",
+    description: "Quản lý các bộ bàn thờ dựng sẵn (\"bộ gợi ý\") để khách chọn nhanh khi tùy chỉnh.",
+    endpoint: "/altar-presets",
+    searchable: true,
+    searchParam: "name",
+    detailPath: ROUTES.ADMIN_ALTAR_PRESETS,
+    noEdit: true,
+    createLabel: "Tạo bộ gợi ý",
+    emptyTitle: "Chưa có bộ gợi ý",
+    emptyDescription: "Tạo bộ gợi ý đầu tiên để khách chọn nhanh trong bước \"Chọn bộ gợi ý\".",
+    filters: [{ name: "isActive", label: "Hoạt động", type: "boolean" }],
+    sortable: ["id", "name", "priority", "createdAt"],
+    defaultSort: { field: "priority", direction: "asc" },
+    columns: [
+      { key: "thumb", label: "Ảnh", accessor: "thumb", type: "image" },
+      { key: "name", label: "Tên", accessor: "name" },
+      { key: "slug", label: "Slug", accessor: "slug" },
+      {
+        key: "altarModelSize",
+        label: "Kích thước",
+        accessor: "altarModelSize",
+        render: (value, row) => value?.label || row.altarModelSizeId || "—",
+      },
+      {
+        key: "altarStyle",
+        label: "Kiểu men",
+        accessor: "altarStyle",
+        render: (value) => value?.name || "Mọi kiểu men",
+      },
+      { key: "priority", label: "Thứ tự", accessor: "priority" },
+      { key: "isActive", label: "Hoạt động", accessor: "isActive", type: "boolean" },
+    ],
+    fields: [],
+    onCreate: () => window.location.assign(`${ROUTES.ADMIN_ALTAR_PRESETS}/new`),
+  },
+
   redirects: {
     title: "Redirects",
     description: "Quản lý 301/302 redirect cho SEO khi đổi slug.",

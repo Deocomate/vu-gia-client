@@ -1,5 +1,5 @@
-import AdminResourcePage from "@/features/admin/AdminResourcePage";
+import AdminContactAndNewsletterPage from "@/features/admin/AdminContactAndNewsletterPage";
 
 export default function AdminContactLeadsPage() {
-  return <AdminResourcePage resourceKey="contactRequests" />;
+  return <AdminContactAndNewsletterPage />;
 }

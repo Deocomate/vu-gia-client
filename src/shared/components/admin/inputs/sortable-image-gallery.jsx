@@ -14,7 +14,7 @@ import {
   arrayMove,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { GripVertical, Loader2, Star, Trash2, UploadCloud } from "lucide-react";
+import { GripVertical, Loader2, MapPin, Star, Trash2, UploadCloud } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { uploadMany, MediaUploadError } from "@/shared/api/media-upload";
@@ -32,7 +32,7 @@ function imageKey(image) {
   return image.id != null ? `id-${image.id}` : `priority-${image.priority}`;
 }
 
-function SortableImage({ image, onRemove, onSetThumb, disabled }) {
+function SortableImage({ image, onRemove, onSetThumb, disabled, onEditPlacement, placementDisabled, hasPlacement }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: imageKey(image),
     disabled,
@@ -56,6 +56,26 @@ function SortableImage({ image, onRemove, onSetThumb, disabled }) {
       >
         <GripVertical className="h-4 w-4" aria-hidden="true" />
       </button>
+      {onEditPlacement && (
+        <button
+          type="button"
+          onClick={() => onEditPlacement(image)}
+          disabled={placementDisabled}
+          title={
+            placementDisabled
+              ? "Lưu sản phẩm trước"
+              : hasPlacement
+                ? "Đã đặt vị trí trên bàn thờ — bấm để sửa"
+                : "Chưa đặt vị trí trên bàn thờ — bấm để thêm"
+          }
+          className={`absolute left-1/2 top-1 flex h-7 w-7 -translate-x-1/2 items-center justify-center bg-white/90 disabled:cursor-not-allowed disabled:opacity-50 ${
+            hasPlacement ? "text-emerald-600" : "text-zinc-400"
+          }`}
+          aria-label="Vị trí trên bàn thờ"
+        >
+          <MapPin className="h-4 w-4" aria-hidden="true" fill={hasPlacement ? "currentColor" : "none"} />
+        </button>
+      )}
       {onSetThumb && (
         <button
           type="button"
@@ -94,6 +114,11 @@ export default function SortableImageGallery({
   onSetThumb,
   folder = "products",
   disabled,
+  // Altar-placement hook-in (Phase 2): omit `onEditPlacement` entirely to keep this gallery's
+  // original behavior (no button rendered) for callers that don't need it.
+  onEditPlacement,
+  placementDisabled,
+  placementMap = {},
 }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
@@ -148,6 +173,9 @@ export default function SortableImageGallery({
                 onRemove={onRemove}
                 onSetThumb={onSetThumb}
                 disabled={disabled}
+                onEditPlacement={onEditPlacement}
+                placementDisabled={placementDisabled}
+                hasPlacement={placementMap[image.id]}
               />
             ))}
           </div>

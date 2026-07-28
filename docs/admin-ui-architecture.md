@@ -51,13 +51,36 @@ renderer storefront hiện có trước khi coi nội dung khối là "final" �
 
 ## 5. CRUD engine vs. custom modules
 
-- **Generic** (`AdminResourceManager` + `adminResources.js`): 13 resource phẳng — danh mục sản phẩm,
-  coupon, danh mục tin, FAQ, gallery ảnh, showroom, banner, redirect, liên hệ (status-only),
-  newsletter (isActive-only), tin tức, trang CMS.
+- **Generic** (`AdminResourceManager` + `adminResources.js`): resource phẳng — danh mục sản phẩm,
+  coupon, danh mục tin, FAQ, gallery ảnh (`galleryImages`), showroom, banner, redirect, liên hệ
+  (`contactRequests`, status-only), newsletter (`newsletterSubscribers`, isActive-only), tin tức,
+  trang CMS, cùng các resource bàn thờ tùy chỉnh (`altarItemGroups`, `altarStyles`, `altarModels`,
+  `altarPresets`).
 - **Custom**: `products/` (gallery hai chế độ + combo + block-content), `orders/` (status/paymentStatus
   transition + VietQR payment panel), `dashboard/` (KPI + recharts + top-products), `users/` (không có
   generic PUT/DELETE — chỉ đổi role/reset password), `site-settings/` (bộ chuyển đổi cài đặt toàn site, singleton,
   không có endpoint danh sách — AdminSiteSettingsPage.jsx với lưu xác nhận modal).
+
+### 5.2 Sidebar grouping & merged pages
+
+`admin-sidebar.jsx`'s `ADMIN_NAV` là một mảng nhóm (`{ section, items }`), không còn danh sách phẳng —
+mỗi nhóm render một tiêu đề nhỏ (trừ "Tổng quan" đứng riêng ở đầu, không có tiêu đề nhóm). 6 nhóm:
+Bán hàng, Bàn thờ tùy chỉnh, Nội dung, Khách hàng & Tiếp thị, Hệ thống (cộng "Tổng quan" đứng riêng).
+
+4 cặp resource đơn giản/liên quan được gộp thành 1 route + tab-bar (`shared/components/admin/tab-bar.jsx`),
+route cũ của resource thứ hai bị xóa hẳn (không có redirect shim — hệ thống chưa launch, không cần giữ
+bookmark cũ):
+
+| Route (giữ nguyên) | Tab 1 | Tab 2 | Component |
+|---|---|---|---|
+| `/admin/pages` | Trang CMS (`pages`) | FAQ (`faqs`) | `AdminPagesAndFaqPage.jsx` |
+| `/admin/banners` | Banner (`banners`) | Thư viện ảnh (`galleryImages`) | `AdminBannersAndGalleryPage.jsx` |
+| `/admin/contact-leads` | Liên hệ (`contactRequests`) | Newsletter (`newsletterSubscribers`) | `AdminContactAndNewsletterPage.jsx` |
+| `/admin/site-settings` | Chế độ giỏ hàng (`AdminSiteSettingsPage`) | Redirect (`redirects`) | `AdminSystemSettingsPage.jsx` |
+
+Route đã xóa: `/admin/faq`, `/admin/gallery`, `/admin/newsletter`, `/admin/redirects` (404 — không còn
+trong app tree). Tab state là local (`useState`), không nằm trên URL, nên active-route highlighting của
+sidebar không cần thay đổi (vẫn match theo prefix route).
 
 ## 5.1 Site Settings (Custom Singleton Module)
 

@@ -20,6 +20,7 @@ export const ROUTES = {
   ORDERS: "/tai-khoan/don-hang",
   ORDER_DETAIL: (orderId) => `/tai-khoan/don-hang/${orderId}`,
   ALTAR_CUSTOMIZER: "/tuy-chinh-bo-do-tho",
+  ALTAR_DESIGN_LIBRARY: "/tai-khoan/thu-vien-thiet-ke",
   ADMIN: "/admin",
   ADMIN_LOGIN: "/admin/login",
   ADMIN_PRODUCTS: "/admin/products",
@@ -30,15 +31,15 @@ export const ROUTES = {
   ADMIN_SITE_SETTINGS: "/admin/site-settings",
   ADMIN_NEWS: "/admin/news",
   ADMIN_PAGES: "/admin/pages",
-  ADMIN_FAQ: "/admin/faq",
-  ADMIN_GALLERY: "/admin/gallery",
   ADMIN_SHOWROOMS: "/admin/showrooms",
   ADMIN_SHIPPING_METHODS: "/admin/shipping-methods",
   ADMIN_BANNERS: "/admin/banners",
   ADMIN_CONTACT_LEADS: "/admin/contact-leads",
-  ADMIN_NEWSLETTER: "/admin/newsletter",
-  ADMIN_REDIRECTS: "/admin/redirects",
   ADMIN_USERS: "/admin/users",
+  ADMIN_ALTAR_ITEM_GROUPS: "/admin/altar-item-groups",
+  ADMIN_ALTAR_STYLES: "/admin/altar-styles",
+  ADMIN_ALTAR_MODELS: "/admin/altar-models",
+  ADMIN_ALTAR_PRESETS: "/admin/altar-presets",
 };
 
 /**

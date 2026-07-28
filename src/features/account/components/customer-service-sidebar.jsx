@@ -12,6 +12,7 @@ export default function CustomerServiceSidebar() {
   const menuItems = [
     { name: "Trạng thái đơn hàng", href: ROUTES.ORDERS },
     { name: "Tài khoản của tôi", href: ROUTES.ACCOUNT },
+    { name: "Thư viện thiết kế", href: ROUTES.ALTAR_DESIGN_LIBRARY },
     { name: "Chính sách vận chuyển", href: ROUTES.SHIPPING_POLICY },
     { name: "Chính sách đổi trả", href: ROUTES.RETURN_POLICY },
     { name: "Bảo mật thông tin", href: ROUTES.PRIVACY_POLICY },

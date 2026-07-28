@@ -1,5 +1,5 @@
-import AdminResourcePage from "@/features/admin/AdminResourcePage";
+import AdminBannersAndGalleryPage from "@/features/admin/AdminBannersAndGalleryPage";
 
 export default function AdminBannersPage() {
-  return <AdminResourcePage resourceKey="banners" />;
+  return <AdminBannersAndGalleryPage />;
 }

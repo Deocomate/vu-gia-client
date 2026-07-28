@@ -85,12 +85,31 @@ graph TD
     `PAID`).
 
 ### B. Cơ chế hoạt động của Bộ tùy chỉnh đồ thờ (Altar Customizer)
-Bộ tùy chỉnh đồ thờ (`/tuy-chinh-bo-do-tho`) là một tính năng tương tác trực tiếp giúp người dùng tự cấu hình phòng thờ:
-1.  **Khởi tạo dữ liệu:** Trạng thái bàn thờ được load từ cấu hình mặc định trong `data/altar-customizer-data.js` (kích thước bàn thờ, danh sách các vật phẩm thờ cần có: bát hương, mâm bồng, lọ hoa...).
-2.  **Quản lý tương tác:** Custom hook `hooks/use-altar-customizer.js` theo dõi:
-    *   Loại sản phẩm được chọn (ví dụ: gốm men lam, gốm men rạn).
-    *   Số lượng và kích thước của từng loại vật phẩm.
-3.  **Đồng bộ hóa & Hiển thị:** Thay đổi của người dùng lập tức kích hoạt tính toán tổng tiền ước tính và vẽ mô phỏng sơ đồ sắp xếp tương ứng trên giao diện kéo thả trực quan.
+
+Bộ tùy chỉnh đồ thờ (`/tuy-chinh-bo-do-tho`, `features/storefront/altar-customizer/`) là canvas kéo-thả
+cho khách tự sắp xếp vật phẩm thờ lên ảnh bàn thờ, chọn model/kích thước/style, nạp preset dựng sẵn, tải
+ảnh HTML offline, và (nếu đăng nhập) lưu/tải lại thiết kế từ thư viện cá nhân. Toàn bộ 6 phase build (bao
+gồm Phase 6 — seed dữ liệu thật + verification) đã hoàn tất; tính năng **không còn dùng mock data** —
+mọi domain đọc trực tiếp từ backend qua các API thật:
+
+1.  **Nạp catalog (`hooks/use-altar-catalog.js`):** một lần khi mount, gọi song song
+    `GET /altar-models` (kèm size), `GET /altar-item-groups`, `GET /altar-styles`, và
+    `GET /altar-customizer/items` (feed sản phẩm `BO_DO_THO` đã gộp category/item-group/style — xem
+    `vu-gia-backend-api/docs/system-architecture.md` mục 9). Lọc theo tab nhóm/style thực hiện **ở
+    client** trên feed đã tải 1 lần (không refetch mỗi lần đổi filter) — hợp lý với quy mô catalog seed
+    hiện tại (9 sản phẩm altar-set, xem Phase 6 report), cân nhắc refetch nếu catalog lớn hơn nhiều.
+2.  **Canvas state (`hooks/use-altar-canvas-reducer.js` + `-core.js`):** reducer thuần quản lý danh sách
+    item đã đặt (vị trí, scale, lật ngang, z-index), tách khỏi phần fetch dữ liệu.
+3.  **Placement:** chỉ sản phẩm có `AltarPlacementEntity` thật (backend) mới kéo được lên canvas — hiện
+    tại seed data chỉ có **bát hương** (3 ảnh `bat-huong-1/2/3.png`), các nhóm còn lại hiện trong palette
+    với ảnh/giá thật nhưng nút "thêm vào bàn thờ" bị vô hiệu hoá có lý do rõ ràng, không phải lỗi (quyết
+    định D1, xem backend docs mục 9).
+4.  **Lưu thiết kế (`altar-design-service.js`):** khách đã đăng nhập lưu/đổi tên/xoá/tải lại thiết kế qua
+    `/altar-designs/*` (giới hạn 20 thiết kế/tài khoản, enforce ở backend).
+5.  **`components/data/altar-customizer-data.js`** giờ chỉ còn giữ lại `SIZE_GUIDE_ROWS` — bảng hướng
+    dẫn chọn kích thước tĩnh, thuần nội dung biên tập, không có entity/seeder/admin CRUD tương ứng
+    (quyết định D4) — mọi dữ liệu khác trước đây hardcode ở file này (model, style, sản phẩm, phụ kiện,
+    giỏ hàng, sản phẩm tương tự) đã chuyển hết sang API thật.
 
 ---
 

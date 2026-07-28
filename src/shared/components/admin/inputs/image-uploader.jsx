@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { ImageIcon, Loader2, UploadCloud, X } from "lucide-react";
 import { uploadOne, uploadMany, MediaUploadError } from "@/shared/api/media-upload";
@@ -12,6 +12,11 @@ import { formatImageUrl } from "@/shared/api/media";
 export function ImageField({ value, onChange, folder = "misc", disabled }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
+  const [previewFailed, setPreviewFailed] = useState(false);
+
+  useEffect(() => {
+    setPreviewFailed(false);
+  }, [value]);
 
   const onDrop = useCallback(
     async (accepted) => {
@@ -19,6 +24,7 @@ export function ImageField({ value, onChange, folder = "misc", disabled }) {
       if (!file) return;
       setUploading(true);
       setError("");
+      setPreviewFailed(false);
       try {
         const url = await uploadOne(file, folder);
         onChange(url);
@@ -51,9 +57,18 @@ export function ImageField({ value, onChange, folder = "misc", disabled }) {
         } ${disabled ? "cursor-not-allowed opacity-60" : ""}`}
       >
         <input {...getInputProps()} />
-        {value ? (
+        {value && previewFailed ? (
+          <span className="text-xs font-semibold text-rose-600">
+            Ảnh đã tải lên nhưng không hiển thị được — kiểm tra lại đường dẫn ảnh hoặc cấu hình CORS.
+          </span>
+        ) : value ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={formatImageUrl(value)} alt="" className="max-h-32 object-contain" />
+          <img
+            src={formatImageUrl(value)}
+            alt=""
+            className="max-h-32 object-contain"
+            onError={() => setPreviewFailed(true)}
+          />
         ) : uploading ? (
           <Loader2 className="h-6 w-6 animate-spin text-zinc-400" aria-hidden="true" />
         ) : (

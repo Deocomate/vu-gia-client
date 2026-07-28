@@ -1,27 +1,35 @@
-import { ChevronRight, Clock, Phone } from "lucide-react";
+import { Clock, Phone } from "lucide-react";
 import Image from "next/image";
-import { SELECTOR_STEPS } from "./data/altar-customizer-data";
+import AltarCustomizerSelectors from "./altar-customizer-selectors";
 
-export default function AltarCustomizerLeftRail({ activeStep, onStepChange }) {
+export default function AltarCustomizerLeftRail({
+  models,
+  styles,
+  loadingCatalog,
+  altarModelId,
+  altarSizeId,
+  altarStyleId,
+  presetId,
+  onSelectModel,
+  onSelectSize,
+  onSelectStyle,
+  onSelectPreset,
+}) {
   return (
     <aside className="left-rail">
-      <div className="selector-card">
-        {SELECTOR_STEPS.map((step, index) => (
-          <button
-            key={step.id}
-            type="button"
-            className={`selector-row${activeStep === index ? " is-active" : ""}`}
-            onClick={() => onStepChange(index)}
-          >
-            <span className="step-index">{step.id}</span>
-            <span>
-              <strong>{step.title}</strong>
-              <em>{step.value}</em>
-            </span>
-            <ChevronRight className="selector-chevron" aria-hidden="true" />
-          </button>
-        ))}
-      </div>
+      <AltarCustomizerSelectors
+        models={models}
+        styles={styles}
+        loadingCatalog={loadingCatalog}
+        altarModelId={altarModelId}
+        altarSizeId={altarSizeId}
+        altarStyleId={altarStyleId}
+        presetId={presetId}
+        onSelectModel={onSelectModel}
+        onSelectSize={onSelectSize}
+        onSelectStyle={onSelectStyle}
+        onSelectPreset={onSelectPreset}
+      />
 
       <div className="guide-card">
         <h3>

@@ -1,163 +1,158 @@
 "use client";
 
-import {
-  AlignCenter,
-  CirclePlus,
-  FlipHorizontal2,
-  Redo2,
-  RotateCcw,
-  Trash2,
-  Undo2,
-} from "lucide-react";
-import {
-  ACCESSORIES,
-  CUSTOMIZER_PRODUCTS,
-  PRODUCT_TABS,
-  altarPreview,
-} from "./data/altar-customizer-data";
+import { useEffect, useRef, useState } from "react";
+import { CirclePlus } from "lucide-react";
+import { confirm, toast } from "@/shared/utils/feedback";
+import { publicGet, PublicApiError } from "@/shared/api/public-api";
+import AltarCanvas, { resolveItemId } from "@/shared/components/altar/altar-canvas";
+import { mapPresetToCanvasState } from "./hooks/use-altar-canvas-reducer";
+import AltarCustomizerToolbar from "./altar-customizer-toolbar";
+import AltarCustomizerCanvasControls from "./altar-customizer-canvas-controls";
+import AltarCustomizerItemPalette from "./altar-customizer-item-palette";
 
-const TOOLBAR_BUTTONS = [
-  { className: "undo-button", label: "Hoàn tác", Icon: Undo2 },
-  { className: "redo-button", label: "Làm lại", Icon: Redo2 },
-  { className: "center-button", label: "Căn giữa", Icon: AlignCenter },
-  { className: "mirror-button", label: "Tạo đối xứng", Icon: FlipHorizontal2 },
-  { className: "clear-button", label: "Xóa tất cả", Icon: Trash2 },
-  { className: "restore-button", label: "Khôi phục mẫu", Icon: RotateCcw },
-];
-
-function formatDisplayPrice(price) {
-  return `${new Intl.NumberFormat("vi-VN").format(price)} ₫`;
+function clampZoom(value) {
+  return Math.max(50, Math.min(150, Number(value) || 100));
 }
 
+/**
+ * The interactive canvas + toolbar + palette panel. Wraps the shared, presentation-only
+ * `altar-canvas.jsx` (Phase 3) — never a second canvas implementation — adding zoom (local UI
+ * state, not canvas content, so it isn't part of the reducer). Dragging is fully free-form: no
+ * grid/snap, no alignment-guide nudging.
+ */
 export default function AltarCustomizerDesignerPanel({
-  zoom,
-  onZoomIn,
-  onZoomOut,
-  onZoomChange,
-  activeTab,
-  onTabChange,
-  onAddItem,
+  activeSize,
+  canvasState,
+  canUndo,
+  canRedo,
+  actions,
+  feedItems,
+  groups,
+  styles,
 }) {
-  const visibleProducts =
-    activeTab === "Tất cả"
-      ? CUSTOMIZER_PRODUCTS
-      : CUSTOMIZER_PRODUCTS.filter((product) => product.tab === activeTab);
+  const [zoom, setZoom] = useState(100);
+  const [restoring, setRestoring] = useState(false);
+  const canvasWrapperRef = useRef(null);
+
+  const { items, accessories, selectedInstanceId, presetId } = canvasState;
+
+  // "Khôi phục mẫu" re-fetches the currently-loaded preset by id and reloads it wholesale,
+  // discarding any manual edits made since — the reducer only remembers the preset's id, not its
+  // original items, so restoring re-reads the source of truth instead of caching a duplicate copy.
+  const handleRestorePreset = async () => {
+    if (!presetId || restoring) return;
+    setRestoring(true);
+    try {
+      const preset = await publicGet(`/altar-presets/${presetId}`);
+      const mapped = mapPresetToCanvasState(preset);
+      actions.loadPreset({ presetId: preset.id, ...mapped });
+    } catch (requestError) {
+      toast.error(
+        requestError instanceof PublicApiError ? requestError.message : "Không thể khôi phục bộ gợi ý.",
+      );
+    } finally {
+      setRestoring(false);
+    }
+  };
+
+  // Delete/Backspace removes the selected item — ignored while focus is in a text/number input
+  // (e.g. the zoom field) so it doesn't fight normal text editing.
+  useEffect(() => {
+    if (!selectedInstanceId) return undefined;
+    const handleKeyDown = (event) => {
+      if (event.key !== "Delete" && event.key !== "Backspace") return;
+      const tag = event.target?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+      actions.remove(selectedInstanceId);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedInstanceId, actions]);
+
+  const handleCanvasChange = (nextItems) => {
+    const changed = nextItems.find((item, index) => {
+      const prev = items[index];
+      return prev && resolveItemId(prev) === resolveItemId(item) && (prev.x !== item.x || prev.y !== item.y);
+    });
+    if (!changed) return;
+
+    actions.move({ instanceId: resolveItemId(changed), x: changed.x, y: changed.y });
+  };
+
+  const selectedItem = items.find((item) => resolveItemId(item) === selectedInstanceId) || null;
+
+  const handleClear = async () => {
+    const ok = await confirm({
+      title: "Xóa tất cả vật phẩm",
+      description: "Toàn bộ vật phẩm và phụ kiện đã thêm sẽ bị xóa khỏi bố cục hiện tại. Bạn có chắc chắn?",
+      confirmLabel: "Xóa tất cả",
+      cancelLabel: "Hủy",
+      destructive: true,
+    });
+    if (ok) actions.clear();
+  };
 
   return (
     <section className="designer-panel" aria-label="Khu vực tùy chỉnh bố cục đồ thờ">
-      <div className="tool-bar" aria-label="Thanh công cụ">
-        {TOOLBAR_BUTTONS.map(({ className, label, Icon }) => (
-          <button
-            key={className}
-            className={`tool-button ${className}`}
-            type="button"
-            disabled
-            title="Tính năng sắp ra mắt"
-            aria-disabled="true"
-          >
-            <Icon className="tool-icon" aria-hidden="true" />
-            <span>{label}</span>
-          </button>
-        ))}
-        <div className="zoom-control" aria-label="Điều khiển thu phóng">
-          <button type="button" aria-label="Thu nhỏ" onClick={onZoomOut} className="zoom-btn zoom-btn-minus">
-            −
-          </button>
-          <div className="zoom-input-wrap">
-            <input
-              type="number"
-              value={zoom}
-              onChange={(e) => onZoomChange(e.target.value)}
-              className="zoom-input"
-              min={50}
-              max={150}
-              aria-label="Phần trăm thu phóng"
-            />
-            <span className="zoom-input-suffix">%</span>
-          </div>
-          <button type="button" aria-label="Phóng to" onClick={onZoomIn} className="zoom-btn zoom-btn-plus">
-            +
-          </button>
-        </div>
-      </div>
+      <AltarCustomizerToolbar
+        canUndo={canUndo}
+        canRedo={canRedo}
+        hasSelection={Boolean(selectedItem)}
+        hasItems={items.length > 0 || accessories.length > 0}
+        hasPreset={Boolean(presetId) && !restoring}
+        onUndo={actions.undo}
+        onRedo={actions.redo}
+        onCenter={() => selectedInstanceId && actions.center(selectedInstanceId)}
+        onMirror={() => selectedInstanceId && actions.mirror(selectedInstanceId)}
+        onClear={handleClear}
+        onRestorePreset={handleRestorePreset}
+        zoom={zoom}
+        onZoomIn={() => setZoom((v) => clampZoom(v + 10))}
+        onZoomOut={() => setZoom((v) => clampZoom(v - 10))}
+        onZoomChange={(value) => setZoom(clampZoom(value))}
+      />
 
       <div className="altar-preview">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={altarPreview.src}
-          alt="Không gian bàn thờ gỗ"
-          style={{
-            transform: `scale(${zoom / 100})`,
-            transformOrigin: "center top",
-          }}
-        />
-        <div className="drag-hint">
-          <CirclePlus className="drag-hint-icon" aria-hidden="true" />
-          <span>Kéo thả vật phẩm để thay đổi vị trí</span>
+        <div
+          ref={canvasWrapperRef}
+          className="altar-canvas-wrapper"
+          style={{ transform: `scale(${zoom / 100})`, transformOrigin: "center top" }}
+        >
+          <AltarCanvas
+            size={activeSize}
+            items={items}
+            onChange={handleCanvasChange}
+            selectedId={selectedInstanceId}
+            onSelect={actions.select}
+          />
         </div>
+
+        <AltarCustomizerCanvasControls
+          selectedItem={selectedItem}
+          items={items}
+          onFlip={() => actions.flip(selectedInstanceId)}
+          onBringToFront={(z) => actions.setZ(selectedInstanceId, z)}
+          onSendToBack={(z) => actions.setZ(selectedInstanceId, z)}
+          onRemove={() => actions.remove(selectedInstanceId)}
+        />
+
+        {!activeSize && (
+          <div className="drag-hint">
+            <CirclePlus className="drag-hint-icon" aria-hidden="true" />
+            <span>Chọn loại bàn thờ và kích thước để bắt đầu</span>
+          </div>
+        )}
       </div>
 
-      <div className="product-tabs" role="tablist" aria-label="Nhóm vật phẩm">
-        {PRODUCT_TABS.map((tab) => (
-          <button
-            key={tab}
-            className={`tab-button${activeTab === tab ? " is-active" : ""}`}
-            type="button"
-            role="tab"
-            aria-selected={activeTab === tab}
-            onClick={() => onTabChange(tab)}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
-
-      <div className="custom-products" aria-label="Danh sách sản phẩm có thể thêm">
-        {visibleProducts.map((product) => (
-          <article key={product.id} className="mini-product-card">
-            <figure>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={product.image.src} alt={product.displayName} />
-            </figure>
-            <h3>{product.displayName}</h3>
-            <p>{product.size}</p>
-            <strong>{formatDisplayPrice(product.price)}</strong>
-            <button
-              className="add-item"
-              type="button"
-              onClick={() => onAddItem(product.name, product.price)}
-            >
-              Thêm
-            </button>
-          </article>
-        ))}
-      </div>
-
-      <div className="accessory-title">
-        <strong>Phụ kiện đi kèm</strong> <span>(không hiển thị trên bàn thờ)</span>
-      </div>
-      <div className="accessory-list">
-        {ACCESSORIES.map((accessory) => (
-          <article key={accessory.id}>
-            <span className={`accessory-image ${accessory.spriteClass}`}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={accessory.image.src} alt={accessory.name} />
-            </span>
-            <div>
-              <b>{accessory.name}</b>
-              <span>{formatDisplayPrice(accessory.price)}</span>
-            </div>
-            <button
-              className="add-item"
-              type="button"
-              aria-label={`Thêm ${accessory.name}`}
-              onClick={() => onAddItem(accessory.name, accessory.price)}
-            >
-              +
-            </button>
-          </article>
-        ))}
-      </div>
+      <AltarCustomizerItemPalette
+        items={feedItems}
+        groups={groups}
+        styles={styles}
+        altarStyleId={canvasState.altarStyleId}
+        onChangeStyle={(styleId) => actions.changeSize({ altarStyleId: styleId })}
+        onAddPlaceable={actions.add}
+        onAddAccessory={actions.addAccessory}
+      />
     </section>
   );
 }

@@ -68,6 +68,19 @@ const nextConfig = {
       },
     ];
   },
+  // Phase 5 decision D2: admin-uploaded altar overlay images are served absolute
+  // (`${imageBaseUrl.origin}/files/...`, see WebStorageConfig/StorageUrlSerializer on the
+  // backend) — cross-origin from this client, which taints any <canvas> that draws them and
+  // makes `toDataURL()` throw a SecurityError the first time a real (non-seed) overlay is
+  // composed. Proxying /files/** through this app's own origin (same env var/default as
+  // `imageBaseUrl` above, so there's exactly one place that knows the backend's file-serving
+  // origin) turns every such URL same-origin once `formatImageUrl()` (shared/api/media.js)
+  // rewrites it to the relative form below. Rejected alternative: CORS headers on /files/** —
+  // deliberately not used because that depends on getting an origin allow-list right in every
+  // environment, whereas this rewrite can't silently regress per-environment.
+  async rewrites() {
+    return [{ source: "/files/:path*", destination: `${imageBaseUrl.origin}/files/:path*` }];
+  },
 };
 
 export default nextConfig;
