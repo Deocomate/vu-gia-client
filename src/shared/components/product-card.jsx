@@ -42,8 +42,8 @@ export default function ProductCard({
       <div className="flex flex-col pt-[10px] lg:pt-[15px] pb-[12px] lg:pb-[18px]">
         {/* Tên sản phẩm */}
         <h3 
-          className={`font-montserrat font-[700] text-[14px] lg:text-[18px] xl:text-[20px] leading-[18px] lg:leading-[24px] text-[#141416] px-[10px] lg:px-[18px] line-clamp-2 whitespace-pre-line ${
-            hasTwoLineTitle ? "min-h-[36px] lg:min-h-[48px]" : ""
+          className={`font-montserrat font-[700] text-[13px] lg:text-[16px] xl:text-[18px] leading-[16px] lg:leading-[22px] text-[#141416] px-[10px] lg:px-[18px] line-clamp-2 whitespace-pre-line ${
+            hasTwoLineTitle ? "min-h-[32px] lg:min-h-[44px]" : ""
           }`}
         >
           {name}
@@ -76,11 +76,11 @@ export default function ProductCard({
         {/* Khối Giá & Đã bán */}
         <div className="flex items-start justify-between px-[10px] lg:px-[18px]">
           <div className="flex flex-col">
-            <span className="font-montserrat font-[700] text-primary text-[18px] lg:text-[24px] leading-[22px] lg:leading-[32px]">
+            <span className="font-montserrat font-[700] text-primary text-[16px] lg:text-[22px] leading-[20px] lg:leading-[28px]">
               {salePrice}
             </span>
             {originalPrice && (
-              <span className="font-montserrat font-[400] text-[12px] lg:text-[14px] leading-[16px] lg:leading-[24px] text-[#838383] line-through mt-[-1px] lg:mt-[-2px]">
+              <span className="font-montserrat font-[400] text-[11px] lg:text-[13px] leading-[14px] lg:leading-[22px] text-[#838383] line-through mt-[-1px] lg:mt-[-2px]">
                 {originalPrice}
               </span>
             )}
