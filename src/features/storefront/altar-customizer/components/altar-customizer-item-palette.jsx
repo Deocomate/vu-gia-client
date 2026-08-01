@@ -104,7 +104,10 @@ export default function AltarCustomizerItemPalette({
               <strong>{formatPrice(item.price)}</strong>
               {placeable ? (
                 <button className="add-item" type="button" onClick={() => onAddPlaceable(item)}>
-                  Thêm vào bàn thờ
+                  {/* The narrow (≤720px) card is too small for the full label — CSS swaps which
+                      span is displayed rather than duplicating the button per breakpoint. */}
+                  <span className="add-item-label-full">Thêm vào bàn thờ</span>
+                  <span className="add-item-label-short">Thêm</span>
                 </button>
               ) : (
                 <span

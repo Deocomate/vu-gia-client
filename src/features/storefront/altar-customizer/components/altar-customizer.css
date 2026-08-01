@@ -1530,6 +1530,16 @@
   mix-blend-mode: normal;
 }
 
+/* Product names come from the catalog and vary in length. Clamp to two lines so the card's text
+ * block has a bounded height — without this a three-line name grows past the absolutely
+ * positioned button below and the two overlap. */
+.altar-customizer .mini-product-card h3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .altar-customizer .mini-product-card .add-item {
   position: absolute;
   left: 20px;
@@ -1669,6 +1679,172 @@
   .altar-customizer .selector-step:nth-child(3) .selector-row,
   .altar-customizer .selector-step:nth-child(4) .selector-row {
     border-bottom: 0;
+  }
+}
+
+/* Default (wide) label inside the "add to altar" button — the short variant only appears at the
+ * narrow breakpoint below. `display: none` also removes the hidden one from the a11y tree, so the
+ * button is never announced with both labels. */
+.altar-customizer .add-item-label-short {
+  display: none;
+}
+
+/* ---------------------------------------------------------------------------------------------
+ * Narrow designer panel (370px card spec)
+ *
+ * Placed last so it wins over both the earlier @media blocks and the unconditional flow-layout
+ * overrides above — every rule here is `.altar-customizer .x` (equal specificity), so source
+ * order decides. Sizes are expressed as ratios of the panel width rather than the mock's literal
+ * pixel values, because the panel is fluid below this breakpoint while the mock is a fixed 370px
+ * card.
+ * ------------------------------------------------------------------------------------------- */
+
+@media (max-width: 720px) {
+  /* Toolbar: six 39px icon buttons (width forced earlier with !important) + a 63px zoom box, on
+   * a single row as in the mock. Below the mock's 370px card the row scrolls rather than wrapping
+   * — wrapping would double the panel header height and push the canvas out of view. */
+  .altar-customizer .tool-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 8px;
+  }
+
+  .altar-customizer .zoom-control {
+    width: 63px;
+    flex: 0 0 63px;
+  }
+
+  /* The mock renders "100%" as a single 16px string: right-align the number so the suffix sits
+   * flush against it instead of trailing the input's centred whitespace. */
+  .altar-customizer .zoom-control .zoom-input {
+    max-width: 30px;
+    font-size: 16px;
+    text-align: right;
+  }
+
+  .altar-customizer .zoom-control .zoom-input-suffix {
+    font-size: 16px;
+    padding-right: 0;
+  }
+
+  /* The canvas strip bleeds to both card edges, outdenting the panel's 14px padding. The floor
+   * matches the mock's 173px strip; the canvas itself still grows to its own aspect ratio. */
+  .altar-customizer .altar-preview {
+    width: calc(100% + 28px);
+    margin-inline: -14px;
+    min-height: 173px;
+  }
+
+  .altar-customizer .product-tabs {
+    gap: 25px;
+  }
+
+  .altar-customizer .tab-button {
+    font-size: 14px;
+    line-height: 17px;
+  }
+
+  /* Product grid is a horizontal strip showing exactly two cards, as in the mock. `stretch`
+   * overrides the base `flex-start` so every card takes the height of the tallest one — otherwise
+   * a name that wraps to two lines makes its card taller than its neighbour. */
+  .altar-customizer .custom-products {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .altar-customizer .mini-product-card {
+    flex: 0 0 calc(50% - 5px);
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 12px;
+  }
+
+  /* 148/163 of the card in the mock — as a ratio so it tracks the fluid card width. `flex: 0 0
+   * auto` stops a stretched card from squashing the image to fill its extra height. */
+  .altar-customizer .mini-product-card figure {
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 163 / 148;
+  }
+
+  .altar-customizer .mini-product-card h3,
+  .altar-customizer .mini-product-card p,
+  .altar-customizer .mini-product-card strong {
+    margin-left: 15px;
+    margin-right: 12px;
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  /* Guarantees breathing room under the price. `margin-top: auto` alone leaves zero gap on the
+   * tallest card in the row, which is exactly the one with no spare space to distribute. */
+  .altar-customizer .mini-product-card strong {
+    margin-bottom: 12px;
+  }
+
+  /* `margin-top: auto` pins the button to the card bottom now that the card height is content-
+   * driven, replacing the fixed-height card's absolute positioning. Combined with the stretch
+   * above, the buttons line up across the row regardless of name length. */
+  .altar-customizer .mini-product-card .add-item {
+    position: static;
+    width: auto;
+    height: 26px;
+    margin: auto 15px 0;
+    font-size: 14px;
+  }
+
+  .altar-customizer .add-item-label-full {
+    display: none;
+  }
+
+  .altar-customizer .add-item-label-short {
+    display: inline;
+  }
+
+  .altar-customizer .accessory-title {
+    font-size: 14px;
+    line-height: 17px;
+  }
+
+  /* Accessory strip scrolls horizontally and keeps the hairline between entries (the mock clips
+   * the second entry at the card edge, so the divider is visible there). */
+  .altar-customizer .accessory-list {
+    flex-wrap: nowrap;
+    gap: 30px;
+  }
+
+  .altar-customizer .accessory-list article {
+    width: 217px;
+    height: auto;
+    grid-template-columns: 79px minmax(0, 1fr) 27px;
+    gap: 12px;
+  }
+
+  .altar-customizer .accessory-list article + article::before {
+    display: block;
+    left: -15px;
+    top: 7px;
+    height: 58px;
+  }
+
+  .altar-customizer .accessory-image {
+    width: 79px;
+    height: 72px;
+  }
+
+  .altar-customizer .accessory-list b,
+  .altar-customizer .accessory-list div span {
+    font-size: 14px;
+    line-height: 17px;
+  }
+
+  .altar-customizer .accessory-list b {
+    margin-bottom: 5px;
   }
 }
 
