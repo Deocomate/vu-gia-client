@@ -504,15 +504,21 @@
   margin: 0;
   width: 217px;
   height: 200px;
+  padding: 18px;
   border-radius: 8px 8px 0 0;
   background: #fff;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .altar-customizer .mini-product-card figure img {
-  position: absolute;
-  max-width: none;
+  position: static;
   display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center;
   mix-blend-mode: darken;
 }
 
@@ -1526,7 +1532,8 @@
   width: 100%;
   height: 100%;
   max-width: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
   mix-blend-mode: normal;
 }
 
@@ -1770,6 +1777,8 @@
     width: 100%;
     height: auto;
     aspect-ratio: 163 / 148;
+    padding: 14px;
+    box-sizing: border-box;
   }
 
   .altar-customizer .mini-product-card h3,

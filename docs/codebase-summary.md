@@ -130,8 +130,8 @@ chung xuyên-tính-năng nằm trong `shared/`. Không còn thư mục `views/`/
     coupon-validate, shipping-methods...) — không đính token, không tự refresh.
 *   `src/shared/api/api-enums.js`: hằng số enum thật của backend (role, product type/status, order/payment
     status, payment method, discount type, banner position, contact status) kèm nhãn tiếng Việt.
-*   `src/shared/api/media-upload.js`: wrapper `uploadOne`/`uploadMany` cho `/media/upload` và
-    `/media/upload-multiple` (MinIO), validate ảnh ≤10MB trước khi gửi.
+*   `src/shared/api/media-upload.js`: wrapper `uploadOne`/`uploadMany` cho `/api/v1/files/upload` và
+    `/api/v1/files/upload-multiple` (Backend Local Storage), validate ảnh ≤10MB trước khi gửi.
 
 ### Admin CMS — kiến trúc rewire
 
